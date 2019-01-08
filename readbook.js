@@ -636,13 +636,11 @@ let person = {
 };
 let anotherPerson = createAnother(person);
 anotherPerson.sayHi(); // hi*/
-
 /*function object(o) {
     function F() {}
     F.prototype = o;
     return new F();
 }*/
-
 /*function SuperType(name){
     this.name = name;
     this.colors = ["red", "blue", "green"];
@@ -659,7 +657,6 @@ SubType.prototype.constructor = SubType;
 SubType.prototype.sayAge = function(){
     console.log(this.age);
 };*/
-
 /*
 function object(o) {
     function F() {}
@@ -689,7 +686,25 @@ SubType.prototype.sayAge = function () {
 }
 */
 
-
+let book = {
+    _year: 2004,
+    edition: 1
+};
+Object.defineProperty(book,'year', {
+    get: function () {
+        return this._year;
+    },
+    set: function (newValue) {
+        if (newValue > 2004) {
+            this._year = newValue;
+            this.edition += newValue - 2004;
+        } else {
+            this.edition = newValue - this._year;
+        }
+    }
+});
+book.year = 2003;
+console.log(book.edition); // 2
 
 
 
