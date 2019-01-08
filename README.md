@@ -1,2 +1,3 @@
 # readBook
-the lists of read redBook-3 
+
+JavaScript 高级程序设计3阅读笔记

@@ -660,6 +660,7 @@ SubType.prototype.sayAge = function(){
     console.log(this.age);
 };*/
 
+/*
 function object(o) {
     function F() {}
     F.prototype = o;
@@ -686,6 +687,7 @@ inheritPrototype(SubType, SuperType);
 SubType.prototype.sayAge = function () {
     console.log(this.age);
 }
+*/
 
 
 
