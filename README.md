@@ -1,3 +1,3 @@
 # readBook
 
-JavaScript 高级程序设计3阅读笔记
+JavaScript 高级程序设计3学习笔记
