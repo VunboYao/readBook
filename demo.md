@@ -1896,8 +1896,7 @@ function inheritPrototype(subType, superType) {
 > 这个示例中的 inheritPrototype() 函数实现了寄生组合式继承的最简单形式。这个函数接收两
   个参数：子类型构造函数和超类型构造函数。在函数内部，第一步是创建超类型原型的一个副本。第二
   步是为创建的副本添加 constructor 属性，从而弥补因重写原型而失去的默认的 constructor 属性。
-  最后一步，将新创建的对象（即副本）赋值给子类型的原型。这样，我们就可以用调用 inherit-
-  Prototype() 函数的语句，去替换前面例子中为子类型原型赋值的语句了，例如：
+  最后一步，将新创建的对象（即副本）赋值给子类型的原型。这样，我们就可以用调用 inheritPrototype() 函数的语句，去替换前面例子中为子类型原型赋值的语句了，例如：
 
 ```
 function object(o) {
@@ -1944,18 +1943,84 @@ JavaScript 主要通过原型链实现继承。原型链的构建是通过将一
 - 寄生式继承，与原型式继承非常相似，也是基于某个对象或某些信息创建一个对象，然后增强对象，最后返回对象。为了解决组合继承模式由于多次调用超类型构造函数而导致的低效率问题，可以将这个模式与组合继承一起使用。
 - 寄生组合式继承，集寄生式继承和组合继承的优点与一身，是实现基于类型继承的最有效方式。
 
+# 第六章 函数表达式
 
+## 递归
 
+递归函数是在一个函数通过名字调用自身的情况下构成的。
 
+```
+// 严格模式下禁止使用arguments.callee
+function factorial(num) {
+    if (num < 1) {
+        return 1;
+    } else {
+        return num * arguments.callee(num - 1);
+    }
+} 
+// 更稳妥的方式。实现阶乘递归
+let factorial = (function f(num) {
+    if (num < 1) {
+        return 1;
+    } else {
+        return num * f(num - 1);
+    }
+});
+```
 
+## 闭包
 
+- 闭包是指有权访问**另一个函数作用域**中的变量的**函数**
+- 闭包常见的创建方式，就是在一个函数内部，创建另一个函数，并调用外层函数的变量。
+- 内部定义的函数会将外部函数的活动对象添加到它的作用域中。
 
+```
+function makeSize(size) {
+    return function () {
+        document.body.style.fontSize = size + 'px';
+    }
+}
+btn1.onclick = makeSize(12);
+btn2.onclick = makeSize(14); 
+```
+- **在 createComparisonFunction() 函数内部定义的匿名函数的作用域链中，实际上将会包含外部函数 createComparisonFunction() 的活动对象。**
 
+```
+function createComparisonFunction(propertyName) {
+    return function (object1, object2) {
+        let value1 = object1[propertyName];
+        let value2 = object2[propertyName];
+        if (value1 < value2) {
+            return -1;
+        } else if (value1 > value2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    };
+}
+let compare = createComparisonFunction('name');
+let result = compare({name: 'Nicholas'}, {name: 'Greg'}); 
+```
 
+在匿名函数从 createComparisonFunction() 中被返回后，它的作用域链被初始化为包含createComparisonFunction() 函数的活动对象和全局变量对象。这样，匿名函数就可以访问在createComparisonFunction() 中定义的所有变量。更为重要的是， createComparisonFunction()函数在执行完毕后，其活动对象也不会被销毁，因为匿名函数的作用域链仍然在引用这个活动对象。换句话说，当 createComparisonFunction() 函数返回后，其执行环境的作用域链会被销毁，但它的活动对象仍然会留在内存中；直到匿名函数被销毁后， createComparisonFunction() 的活动对象才会被销毁
 
+```
+// 创建函数
+let compare = createComparisonFunction('name');
 
+//调用函数
+let result = compare({name: 'Nicholas'}, {name: 'Greg'});
 
+//解除对匿名函数的引用（以便释放内存）
+compare = null; 
+```
+首先，创建的比较函数被保存在变量 compareNames 中。而通过将 compareNames设置为等于 null解除该函数的引用，就等于通知垃圾回收例程将其清除。随着匿名函数的作用域链被销毁，其他作用域(除了全局作用域）也都可以安全地销毁了。
 
+### 闭包与变量
+
+- 作用域链的这种配置机制引出了一个副作用，即闭包只能取得包含函数中任何变量的最后一个值。
+- 闭包保存的是整个变量对象，而不是某个特殊的值。
 
 
 

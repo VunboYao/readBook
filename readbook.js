@@ -685,8 +685,7 @@ SubType.prototype.sayAge = function () {
     console.log(this.age);
 }
 */
-
-let book = {
+/*let book = {
     _year: 2004,
     edition: 1
 };
@@ -704,26 +703,42 @@ Object.defineProperty(book,'year', {
     }
 });
 book.year = 2003;
-console.log(book.edition); // 2
+console.log(book.edition); // 2*/
+/*function factorial(num) {
+    if (num < 1) {
+        return 1;
+    } else {
+        return num * arguments.callee(num - 1);
+    }
+}
+let factorial = (function f(num) {
+    if (num < 1) {
+        return 1;
+    } else {
+        return num * f(num - 1);
+    }
+});*/
+/*function createComparisonFunction(propertyName) {
+    return function (object1, object2) {
+        let value1 = object1[propertyName];
+        let value2 = object2[propertyName];
+        if (value1 < value2) {
+            return -1;
+        } else if (value1 > value2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    };
+}
+// 创建函数
+let compare = createComparisonFunction('name');
 
+//调用函数
+let result = compare({name: 'Nicholas'}, {name: 'Greg'});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//解除对匿名函数的引用（以便释放内存）
+compare = null;*/
 
 
 
