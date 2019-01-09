@@ -739,14 +739,52 @@ let result = compare({name: 'Nicholas'}, {name: 'Greg'});
 
 //解除对匿名函数的引用（以便释放内存）
 compare = null;*/
+/*function createFunctions() {
+    let result = new Array();
+    for (let i = 0; i < 10; i++) {
+        result[i] = function () {
+            return i;
+        }
+    }
+    return result;
+}*/
+/*function createFunctions() {
+    var result = new Array();
+    for (var i = 0; i < 10; i++) {
+        result[i] = (function(num) {
+            return function() {
+                console.log(num);
+            };
+        })(i);
+    }
+    return result;
+}
 
-
-
-
-
-
-
-
+console.dir(createFunctions());*/
+/*function foo() {
+    var a = 2;
+    function bar() {
+        console.log(a);
+    }
+    return bar();
+}
+var baz = foo()
+baz();*/
+/*var name = "The Window";
+var object = {
+    name : "My Object",
+    getNameFunc : function(){
+        var that = this;
+        return function(){
+            return that.name;
+        };
+    }
+};
+console.log(object.getNameFunc()()); // My Object*/
+/*
+(function () {
+   // 这里是块级作用域
+})();*/
 
 
 
