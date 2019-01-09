@@ -785,23 +785,65 @@ console.log(object.getNameFunc()()); // My Object*/
 (function () {
    // 这里是块级作用域
 })();*/
+/*var blocked = false;
+try {
+    var wroxWin = window.open("http://www.wrox.com", "_blank");
+    if (wroxWin == null){
+        blocked = true;
+    }
+} catch (ex){
+    blocked = true;
+}
+if (blocked){
+    alert("The popup was blocked!");
+}*/
+/*let a = confirm('Are you sure?');
+if (a) {
+    alert('I am so glad you re sure！ ')
+} else {
+    alert('I am sorry to hear you are not sure!')
+}*/
 
+/*var result = prompt("What is your name? ", "");
+console.log(result);
+if (result !== null) {
+    alert("Welcome, " + result);
+}*/
 
+function getQueryStringArgs() {
+    // 取得查询字符串并去掉开头的问好
+    let qs = (location.search.length > 0 ? location.search.substring(1) : ""),
+        // 保存数据的对象
+        args = {},
+        // 取得每一项
+        items = qs.length ? qs.split('&') : [],
+        item = null,
+        name = null,
+        value = null;
+    // 逐个将每一项添加到args对象中
+    for (let i = 0; i < items.length; i++) {
+        item = items[i].split('=');
+        name = decodeURIComponent(item[0]);
+        value = decodeURIComponent(item[1]);
+        if (name.length) {
+            args[name] = value;
+        }
+    }
+    return args;
+}
 
+function hasPlugin(name) {
+    name = name.toLowerCase();
+    for (let i = 0; i < navigator.plugins.length; i++) {
+        if (navigator.plugins[i].name.toLowerCase().indexOf(name) > -1) {
+            return true;
+        }
+    }
+    return false;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+console.log(hasPlugin('Flash'));
+console.log(hasPlugin('QuickTime'));
 
 
 
