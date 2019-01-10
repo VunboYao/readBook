@@ -842,7 +842,6 @@ function hasPlugin(name) {
 
 console.log(hasPlugin('Flash'));
 console.log(hasPlugin('QuickTime'));*/
-
 /*function getElement(id) {
     if (document.getElementById) {
         return document.getElementById(id);
@@ -852,31 +851,35 @@ console.log(hasPlugin('QuickTime'));*/
         throw new Error('No way to retrieve element');
     }
 }*/
-
-
-let android = /Android (\d+\.\d+)/.test(navigator.userAgent);
+/*let android = /Android (\d+\.\d+)/.test(navigator.userAgent);
 console.log(RegExp.$1);
 
 let iOS = /CPU (?:iPhone )?OS (\d+_\d+)/.test(navigator.userAgent);
 console.log(RegExp.$1); // 11_0
 let system = RegExp.$1.replace('_', '.');
-console.log(system); // 11.0
+console.log(system); // 11.0*/
 
 
+let a = document.getElementById('div');
+let p = document.getElementsByTagName('p');
 
+/*let deepList = a.cloneNode(true)
+console.log(deepList.childNodes.length); // 7
+let shallowList = a.cloneNode(false);
+console.log(shallowList.childNodes.length); // 0*/
 
+let Img = document.getElementsByTagName('img')
+console.log(Img.namedItem('img'));
 
+var animals = [     { animal: 'Horse', name: 'Henry', age: 43 },     { animal: 'Dog', name: 'Fred', age: 13 },     { animal: 'Cat', name: 'Frodo', age: 18 }     ];
+console.table(animals);
 
-
-
-
-
-
-
-
-
-
-
+/*console.time('Timer1');
+var items = [];
+for(var i = 0; i < 100000; i++){
+    items.push({index: i});
+}
+console.timeEnd('Timer1');*/
 
 
 

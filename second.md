@@ -267,6 +267,179 @@ function getElement(id) {
     console.log(system); // 11.0 
     ```
 
-# DOM
+# 第10章：DOM
 
-    
+## 节点层次
+
+### Node类型
+
+JavaScript 中的所有节点类型都继承自 Node 类型，因此所有节点类型都共享着相同的基本属性和方法。每个节点都有一个 nodeType 属性，用于表明节点的类型。
+- Node.ELEMENT_NODE (1)；
+- Node.ATTRIBUTE_NODE (2)；
+- Node.TEXT_NODE (3)；
+- Node.CDATA_SECTION_NODE (4)；
+- Node.ENTITY_REFERENCE_NODE (5)；
+- Node.ENTITY_NODE (6)；
+- Node.PROCESSING_INSTRUCTION_NODE (7)；
+- Node.COMMENT_NODE (8)；
+- Node.DOCUMENT_NODE (9)；
+- Node.DOCUMENT_TYPE_NODE (10)；
+- Node.DOCUMENT_FRAGMENT_NODE (11)；
+- Node.NOTATION_NODE (12)。
+    ```
+    if (someNode.nodeType == Node.ELEMENT_NODE){ //在 IE 中无效
+        alert("Node is an element.");
+    } 
+    // 为了确保跨浏览器兼容，最好还是将 nodeType 属性与数字值进行比较
+    if (someNode.nodeType == 1){ // 适用于所有浏览器
+        alert("Node is an element.");
+    }
+    ```
+
+**1.nodeName 和 nodeValue 属性**
+
+```
+if (someNode.nodeType == 1){
+    value = someNode.nodeName; //nodeName 的值是元素的标签名
+} 
+```
+
+**2.节点关系**
+- 每个节点都有一个childNodes属性，其中保存着一个 NodeList 对象。
+- NodeList 是一种类数组对象，用于保存一组有序的节点，可以通过位置来访问它们。
+- 可以通过方括号语法来访问 NodeList 的值，也有length 属性，但不是Array的实例。
+- 可以通过方括号、也可以使用item()方法。访问保存在NodeList 中的节点。
+    ```
+    var firstChild = someNode.childNodes[0];
+    var secondChild = someNode.childNodes.item(1);
+    var count = someNode.childNodes.length; 
+    ```
+- 对 arguments 对象使用 Array.prototype.slice() 方法可以将其转换为数组
+- 每个节点都有一个 parentNode 属性，该属性指向文档树中的父节点
+- 在childNodes 列表中的每个节点相互之间都是同胞节点。通过使用列表中每个节点的 previousSibling和 nextSibling 属性，可以访问同一列表中的其他节点。列表中第一个节点的 previousSibling 属性值为 null ，而列表中最后一个节点的 nextSibling 属性的值同样也为 null
+- 父节点的 firstChild 和 lastChild属性分别指向其 childNodes 列表中的第一个和最后一个节点。
+-  hasChildNodes() 方法在节点包含一或多个子节点的情况下返回true.
+- 所有节点都有一个属性 ownerDocument, 该属性指向表示整个文档的文档节点。#document。通过整个属性，可以不必在节点层次中通过层层回溯到达顶端，而是直接访问文档节点。
+
+**3.操作节点** 
+
+- appendChild()添加节点，用于向 childNodes 列表的末尾添加一个节点。返回新增的节点。
+- insertBefore()插入节点，该方法接收2个参数：要插入的节点和作为参照的节点。
+    - 插入节点后，被插入的节点会变成参照节点的前一个同胞节点（previousSibling），同时被方法返回。
+    - 如果参照节点是null,则 insertBefore() 和 appendChild() 执行相同的操作。
+- replaceChild()替换节点，该方法接收2个参数：要插入的节点和要替换的节点。
+- removeChild()移除一个节点，接收一个参数。
+- **以上方法操作的都是某个节点的子节点，使用这几个方法必须先取得父节点(使用 parentNode 属性)**
+
+**4.其他方法**
+
+- cloneNode(),用于创建调用这个方法的节点的一个完全的副本。
+    - 接受一个布尔值参数，表示是否执行深复制。参数为true时，执行深复制;为false时，执行浅复制。
+    - 复制后返回的节点属于文档所有，但没有为它指定父节点，除非使用以上appendChild() 、 insertBefore() 或 replaceChild()将它添加到文档中，否则是一个“孤儿”。
+    ```
+     let deepList = a.cloneNode(true)
+     console.log(deepList.childNodes.length); // 7
+     let shallowList = a.cloneNode(false);
+     console.log(shallowList.childNodes.length); // 0
+    ```
+
+### Document类型
+
+JavaScript 通过 Document 类型表示文档。在浏览器中， document 对象是 HTMLDocument （继承
+自 Document 类型）的一个实例，表示整个 HTML 页面。而且， document 对象是 window 对象的一个
+属性，因此可以将其作为全局对象来访问。 Document 节点具有下列特征：
+- nodeType 的值为 9；
+- nodeName 的值为 "#document" ；
+- nodeValue 的值为 null ；
+- parentNode 的值为 null ；
+- ownerDocument 的值为 null ；
+- 其子节点可能是一个 DocumentType （最多一个）、 Element （最多一个）、 ProcessingInstruction或 Comment 。
+
+**1.文档的子节点**
+- documentElement属性，该属性始终指向HTML页面中的<html>元素。=== document.childNodes[0] === document.firstChild
+- document.body属性，取得对<body>的引用
+- document.doctype属性，取得对<!DOCTYPE>的引用
+
+**2.文档信息**
+- document.title, 获取当前页面的标题，也可以修改当前的页面标题。
+- document.URL, 包含页面完整的URL（即地址栏中显示的URL）
+- document.domain，属性中包含页面的域名
+- document.referrer，保存着连接到当前页面的那个页面的URL，在没有来源页面的情况下，referrer属性中可能会包含空字符串。
+- 只有domain可以设置，但必须是包含的域。
+    ```
+    //假设页面来自 p2p.wrox.com 域
+    document.domain = "wrox.com"; // 成功
+    document.domain = "nczonline.net"; // 出错！ 
+    ```
+- 浏览器对 domain 属性还有一个限制，即如果域名一开始是“松散的”（loose），那么不能将它再设置为“紧绷的”（tight）。换句话说，在将 document.domain 设置为 "wrox.com" 之后，就不能再将其设置回 "p2p.wrox.com" ，否则将会导致错误.    
+
+**3.查找元素**
+- getElementById(), 如果不存在相应的ID则返回null
+- getElementByTagName(), 返回包含零或多个元素的 NodeList。在HTML中，返回一个HTMLCollection 对象。 可以使用方括号语法或item()来访问，通过length获取元素的数量
+- HTMLCollection 对象还有一个方法，叫做 namedItem() ，使用这个方法可以通过元素的 name特性取得集合中的项。
+- 在后台，对数值索引就会调用 item() ，而对字符串索引就会调用 namedItem()
+- 要想取得文档中的所有元素，可以向 getElementsByTagName() 中传入 "*" 
+-  getElementsByName()，会返回带有给定 name 特性的所有元素。最常使用 getElementsByName() 方法的情况是取得单选按钮。对于这里的单选按钮来说， namedItem() 方法则只会取得第一项（因为每一项的 name 特性都相同）。
+
+**4.特殊集合**
+- document.anchors, 包含文档中所有带 name 特性的<a>元素
+- document.forms, 包含文档中所有的<form>元素，与document.getElementByTagName('form')得到的结果相同
+- document.images, 包含文档中所有的<img>元素， 与document.getElementsByTagName("img")得到的结果相同；
+- document.links ，包含文档中所有带 href 特性的 <a> 元素。
+
+**5.DOM 一致性检测**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
