@@ -47,7 +47,7 @@ window.open('https://www.baidu.com/',"topFrame");
 
 设置|值|说明
 ---|---|---|
-fullscreen|yes或no|表示浏览器窗口是否最大化。仅限IE
+fullscreen|yes/no|表示浏览器窗口是否最大化。仅限IE
 height|数值|表示新窗口的高度。
 width|数值|表示新窗口的宽度。
 left|数值| 表示新窗口的左坐标。不能是负值
@@ -234,3 +234,39 @@ function getQueryStringArgs() {
 - 使用 location 对象可以通过编程方式来访问浏览器的导航系统。设置相应的属性，可以逐段或整体性地修改浏览器的 URL。
 - 调用 replace() 方法可以导航到一个新 URL，同时该 URL 会替换浏览器历史记录中当前显示的页面。
 - navigator 对象提供了与浏览器有关的信息。到底提供哪些信息，很大程度上取决于用户的浏览器；不过，也有一些公共的属性（如 userAgent ）存在于所有浏览器中。
+
+# 第九章：客户端检测
+
+## 能力检测
+
+能力检测的目标不是识别特定的浏览器，而是识别浏览器的能力。采用这种方式不必顾及特定的浏览器如何如何，只要确定浏览器支持特定的能力，就可以给出解决方案。
+
+```
+function getElement(id) {
+    if (document.getElementById) {
+        return document.getElementById(id);
+    } else if (document.all) {
+        return document.all[id];
+    } else {
+        throw new Error('No way to retrieve element');
+    }
+} 
+```
+
+- 安卓操作系统检测
+    ```
+    // 搜索字符串 "Android" 并取得紧随其后的版本号。
+    let android = /Android (\d+\.\d+)/.test(navigator.userAgent);
+    console.log(RegExp.$1); 
+    ```
+- IOS操作系统检测
+    ```
+    let iOS = /CPU (?:iPhone )?OS (\d+_\d+)/.test(navigator.userAgent);
+    console.log(RegExp.$1); // 11_0
+    let system = RegExp.$1.replace('_', '.');
+    console.log(system); // 11.0 
+    ```
+
+# DOM
+
+    

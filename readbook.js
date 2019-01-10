@@ -803,14 +803,12 @@ if (a) {
 } else {
     alert('I am sorry to hear you are not sure!')
 }*/
-
 /*var result = prompt("What is your name? ", "");
 console.log(result);
 if (result !== null) {
     alert("Welcome, " + result);
 }*/
-
-function getQueryStringArgs() {
+/*function getQueryStringArgs() {
     // 取得查询字符串并去掉开头的问好
     let qs = (location.search.length > 0 ? location.search.substring(1) : ""),
         // 保存数据的对象
@@ -843,22 +841,26 @@ function hasPlugin(name) {
 }
 
 console.log(hasPlugin('Flash'));
-console.log(hasPlugin('QuickTime'));
+console.log(hasPlugin('QuickTime'));*/
+
+/*function getElement(id) {
+    if (document.getElementById) {
+        return document.getElementById(id);
+    } else if (document.all) {
+        return document.all[id];
+    } else {
+        throw new Error('No way to retrieve element');
+    }
+}*/
 
 
+let android = /Android (\d+\.\d+)/.test(navigator.userAgent);
+console.log(RegExp.$1);
 
-
-
-
-
-
-
-
-
-
-
-
-
+let iOS = /CPU (?:iPhone )?OS (\d+_\d+)/.test(navigator.userAgent);
+console.log(RegExp.$1); // 11_0
+let system = RegExp.$1.replace('_', '.');
+console.log(system); // 11.0
 
 
 

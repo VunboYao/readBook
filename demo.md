@@ -642,6 +642,14 @@ xly|匹配‘x'或’y'
 ### RegExp构造函数属性
 - 9 个用于存储捕获组的构造函数属性。
 - $1, $2, $3, $4....匹配相应的捕获组
+    ```
+    var text = "this has been a short summer";
+    var pattern = /(..)or(.)/g;
+    if (pattern.test(text)){
+        alert(RegExp.$1); //sh
+        alert(RegExp.$2); //t
+    } 
+    ```
 
 ### demo
 ```
