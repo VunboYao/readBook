@@ -858,63 +858,97 @@ let iOS = /CPU (?:iPhone )?OS (\d+_\d+)/.test(navigator.userAgent);
 console.log(RegExp.$1); // 11_0
 let system = RegExp.$1.replace('_', '.');
 console.log(system); // 11.0*/
-
-
+/*
 let a = document.getElementById('div');
-let p = document.getElementsByTagName('p');
-
+let p = document.getElementsByTagName('p');*/
 /*let deepList = a.cloneNode(true)
 console.log(deepList.childNodes.length); // 7
 let shallowList = a.cloneNode(false);
 console.log(shallowList.childNodes.length); // 0*/
-
-let Img = document.getElementsByTagName('img')
+/*let Img = document.getElementsByTagName('img')
 console.log(Img.namedItem('img'));
 
 var animals = [     { animal: 'Horse', name: 'Henry', age: 43 },     { animal: 'Dog', name: 'Fred', age: 13 },     { animal: 'Cat', name: 'Frodo', age: 18 }     ];
-console.table(animals);
-
+console.table(animals);*/
 /*console.time('Timer1');
 var items = [];
 for(var i = 0; i < 100000; i++){
     items.push({index: i});
 }
 console.timeEnd('Timer1');*/
+/*function getQueryStringArgs() {
+    let qs = location.search.length > 0 ? location.search.substring(1) : '',
+        args = {},
+        items = qs.length > 0 ? qs.split('&') : [],
+        item = null,
+        name = null,
+        value = null;
+    for (let i = 0; i < items.length; i++) {
+        item = items[i].split('=');
+        name = decodeURIComponent(item[0]);
+        value = decodeURIComponent(item[1]);
+        if (name.length) {
+            args[name] = value;
+        }
+    }
+    return args;
+}*/
+/*var fragment = document.createDocumentFragment();
 
+let ul = document.getElementById('myList');
 
+let li = null;
+for (let i = 0; i < 3; i++) {
+    li = document.createElement('li');
+    li.appendChild(document.createTextNode('Item' + (i + 1)));
+    fragment.appendChild(li);
+}
+ul.appendChild(fragment);*/
+/*function loadScript(url){
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = url;
+    document.body.appendChild(script);
+}
+loadScript("client.js");*/
+/*function loadStyles(url) {
+    let link = document.createElement('link');
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.href = url;
+    let head = document.getElementsByTagName("head")[0];
+    head.appendChild(link);
+}
+loadStyles("styles.css");*/
+/*
+let table = document.createElement('table');
+table.border = '1';
+table.width = '100%';
+let tbody = document.createElement('tbody');
+let tr1 = document.createElement('tr');
+let tr2 = document.createElement('tr');
+let td1 = document.createElement('td');
+let td2 = document.createElement('td');
+let td3 = document.createElement('td');
+let td4 = document.createElement('td');
+td1.appendChild(document.createTextNode('Cell 1, 1'))
+td2.appendChild(document.createTextNode('Cell 2, 1'))
+td3.appendChild(document.createTextNode('Cell 1, 2'))
+td4.appendChild(document.createTextNode('Cell 2, 2'))
+tr1.appendChild(td1)
+tr1.appendChild(td2)
+tr2.appendChild(td3)
+tr2.appendChild(td4)
+tbody.appendChild(tr1)
+tbody.appendChild(tr2)
+table.appendChild(tbody)
+document.body.appendChild(table)*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*let table = document.getElementsByTagName('table')[0]
+let a = table.insertRow(1);
+a.insertCell(0).innerText = '1221'
+a.insertCell(1).innerText = '1221221*/
+// table.rows[1].cells[1].innerText = '121212';
 
 
 
