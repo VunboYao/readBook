@@ -949,50 +949,69 @@ let a = table.insertRow(1);
 a.insertCell(0).innerText = '1221'
 a.insertCell(1).innerText = '1221221*/
 // table.rows[1].cells[1].innerText = '121212';
+/*let a = document.getElementsByTagName('div')[0].webkitMatchesSelector('.div');
+console.log(a);*/
+/*function matchesSelector(element, selector) {
+    if (element.matchesSelector) {
+        return element.matchesSelector(selector);
+    } else if (element.msMatchesSelector) {
+        return element.msMatchesSelector(selector);
+    } else if (element.mozMatchesSelector) {
+        return element.mozMatchesSelector(selector);
+    } else if (element.webkitMatchesSelector) {
+        return element.webkitMatchesSelector(selector);
+    } else {
+        throw new Error('Not supported.')
+    }
+}*/
+/*let activeList = document.getElementsByTagName('li');
+let a = 0; // 暂存当前 active 类
+Array.from(activeList).forEach((item,index) => {
+    item.onclick = function () {
+        activeList[a].classList.toggle('active'); // 移除当前的类
+        this.classList.add('active'); // 添加类
+        a = index;
+    }
+})*/
+/*let button = document.getElementById('myButton');
+button.focus();
+console.log(document.activeElement === button); // true
+console.log(document.hasFocus()); // true*/
+/*if (document.compatMode === 'CSS1Compat') {
+    alert('Standards mode')
+} else {
+    alert('Quirks mode')
+}*/
+/*let a = document.getElementById('myButton')
 
+// 作为前一个同辈元素插入
+a.insertAdjacentHTML('beforebegin', '<p>Hello world!</p>');
+// 作为第一个子元素插入
+a.insertAdjacentHTML('afterbegin', '<p>Hello world!</p>');
+// 最为最后一个子元素插入
+a.insertAdjacentHTML('beforeend', '<p>Hello world!</p>');
+// 作为后一个同辈元素插入
+a.insertAdjacentHTML('afterend', '<p>Hello world!</p>');*/
+/*function getInnerText(element) {
+    return (typeof element.textContent === 'string') ? element.textContent : element.innerText;
+}*/
 
+/*let supportsDOM2Core = document.implementation.hasFeature('Core', '2.0');
+let supportsDOM3Core = document.implementation.hasFeature('Core', '3.0');
+let supportsDOM2HTML = document.implementation.hasFeature('HTML', '2.0');
+let supportsDOM2Views = document.implementation.hasFeature('Views', '2.0');
+let supportsDOM2XML = document.implementation.hasFeature('XML', '2.0');*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*// 取得元素在页面上的偏移量
+function getElementLeft(element){
+    var actualLeft = element.offsetLeft;
+    var current = element.offsetParent;
+    while (current !== null){
+        actualLeft += current.offsetLeft;
+        current = current.offsetParent;
+    }
+    return actualLeft;
+}*/
 
 
 

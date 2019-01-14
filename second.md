@@ -391,6 +391,10 @@ JavaScript 通过 Document 类型表示文档。在浏览器中， document 对�
 
 document.implementation 属性就是为此提供相应信息和功能的对象，与浏览器对 DOM 的实现直接对应。DOM1 级只为 document.implementation 规定了一个方法，即 hasFeature() 。这个方法接受两个参数：要检测的 DOM 功能的名称及版本号。如果浏览器支持给定名称和版本的功能，则该方法返回 true
 
+> 尽管使用 hasFeature() 确实方便，但也有缺点。因为实现者可以自行决定是否与 DOM 规范的不
+  同部分保持一致。事实上，要想让 hasFearture() 方法针对所有值都返回 true 很容易，但返回 true
+  有时候也不意味着实现与规范一致。
+
 `var hasXmlDom = document.implementation.hasFeature("XML", "1.0");`
 
 **6.文档写入**
@@ -532,6 +536,8 @@ alert(div.tagName == div.nodeName); //true
     - nodeValue 的值为 null ；
     - parentNode 的值为 null ；
     - 子节点可以是 Element 、 ProcessingInstruction 、 Comment 、 Text 、 CDATASection 或EntityReference 。
+    
+    `var fragment = document.createDocumentFragment();`
 
 ### Attr类型
 - nodeType 的值为 2；
@@ -651,6 +657,372 @@ DOM 由各种节点构成，简要总结如下。
 - Element 节点表示文档中的所有 HTML 或 XML 元素，可以用来操作这些元素的内容和特性。
 - DOM 操作往往是 JavaScript程序中开销最大的部分，而因访问 NodeList导致的问题为最多。 NodeList 对象都是“动态的”，这就意味着每次访问NodeList对象，都会运行一次查询。有鉴于此，最好的办法就是尽量减少 DOM 操作
 
+# DOM扩展
+
+## 选择符API
+
+### querySelector() 方法
+
+该方法接收一个CSS选择符。
+
+### querySelectorAll() 方法
+
+该方法接收一个CSS选择符，返回一个NodeList的实例。要取得返回的 NodeList中的每一个元素，可以使用 item() 方法，也可以使用方括号语法
+
+### matchesSelector() 方法
+
+这个方法接收一个参数，即 CSS 选择符，如果调用元素与该选择符匹配，返回 true ；否则，返回 false 。
+
+```
+// 实验性实现
+function matchesSelector(element, selector) {
+    if (element.matchesSelector) {
+        return element.matchesSelector(selector);
+    } else if (element.msMatchesSelector) {
+        return element.msMatchesSelector(selector);
+    } else if (element.mozMatchesSelector) {
+        return element.mozMatchesSelector(selector);
+    } else if (element.webkitMatchesSelector) {
+        return element.webkitMatchesSelector(selector);
+    } else {
+        throw new Error('Not supported.')
+    }
+} 
+```
+
+## 元素遍历
+
+> 对于元素间的空格，IE9及之前版本不会返回文本节点，而其他所有浏览器都会返回文本节点。这样，
+  就导致了在使用 childNodes 和 firstChild 等属性时的行为不一致。为了弥补这一差异，而同时又保
+  持 DOM规范不变，Element Traversal规范（www.w3.org/TR/ElementTraversal/）新定义了一组属性。
+
+- **利用这些元素不必担心空白文本节点**
+- childElementCount: 返回子元素（不包括文本节点和注释）的个数
+- firstElementCount: 指向第一个子元素；firstChild 的元素版。
+- lastElementChild： 指向最后一个子元素；lastChild 的元素版
+- previousElementSibling: 指向前一个同辈元素； previousSibling的元素版
+- nextElementSibling ：指向后一个同辈元素； nextSibling 的元素版。
+
+## HTML5
+
+### 与类相关的扩展
+
+**1.getElementsByClassName() 方法**
+> getElementsByClassName() 方法接收一个参数，即一个包含一或多个类名的字符串，返回带有
+指定类的所有元素的 NodeList 。传入多个类名时，类名的先后顺序不重要
+
+**2. classList 属性**
+> 这个 classList 属性是新集合类型 DOMTokenList 的实例。与其他 DOM 集合类似，DOMTokenList 有一个表示自己包含多少元素的 length 属性，而要取得每个元素可以使用 item()方法，也可以使用方括号语法。
+- add(value): 将给定的字符串值添加到列表中。如果值已经存在，就不添加了。
+- contains(value): 表示列表中是否存在给定的值，如果存在则返回 true ，否则返回 false 。
+- remove(value) ：从列表中删除给定的字符串。
+- toggle(value) ：如果列表中已经存在给定的值，删除它；如果列表中没有给定的值，添加它。
+
+```
+// tab 切换实例实现。该方法只支持Firefox 和 Chrome
+let activeList = document.getElementsByTagName('li');
+let a = 0; // 暂存当前 active 类
+Array.from(activeList).forEach((item,index) => {
+    item.onclick = function () {
+        activeList[a].classList.toggle('active'); // 移除当前的类
+        this.classList.add('active'); // 添加类
+        a = index;
+    }
+}) 
+```
+
+### 焦点管理
+
+document.activeElement 获取 DOM 焦点。这个属性始终会引用 DOM 中当前获得了焦点的元素。元素获得焦点的方式有页面加载、用户输入（通常是通过按 Tab 键）和在代码中调用 focus() 方法。
+
+```
+let button = document.getElementById('myButton');
+button.focus();
+console.log(document.activeElement === button); // true 
+```
+> 默认情况下，文档刚刚加载完成时， document.activeElement 中保存的是 document.body 元
+  素的引用。文档加载期间， document.activeElement 的值为 null 。
+
+新增 document.hasFocus()方法，这个方法确定文档是否获得了焦点。
+
+```
+let button = document.getElementById('myButton');
+button.focus();
+console.log(document.activeElement === button); // true
+console.log(document.hasFocus()); // true 
+```
+
+### HTMLDocument 的变化
+
+**1.readyState 属性**
+- loading,正在加载文档；
+- complete,已经加载完文档。
+> 在这个属性得到广泛支持之前，要实现这样一个指示器，必须借助 onload 事件处理程序设置一
+  个标签，表明文档已经加载完毕。 
+
+**2.兼容模式**
+> 自从 IE6 开始区分渲染页面的模式是标准的还是混杂的，检测页面的兼容模式就成为浏览器的必要
+  功能。IE 为此给 document 添加了一个名为 compatMode 的属性，这个属性就是为了告诉开发人员浏
+  览器采用了哪种渲染模式。
+
+```
+if (document.compatMode === 'CSS1Compat') {
+    alert('Standards mode')
+} else {
+    alert('Quirks mode')
+} 
+```
+
+**3.head 属性**
+- document.head属性，作为对<head\>元素的引用
+- `var head = document.head || document.getElementsByTagName('head')[0]`
+- 实现 document.head 属性的浏览器包括 Chrome 和 Safari .
+
+### 字符集属性
+
+- charset 属性表示文档中实际使用的字符集，也可以用来指定新字符集。
+- `document.charset`, // UTF-8
+
+### 自定义数据属性
+- HTML5规定可以为元素添加非标准的属性，但要添加前缀 data-,目的是为元素提供与渲染无关的信息，或者提供语义信息。
+- 添加了自定义属性之后，可以通过元素的 dataset 属性来访问自定义属性的值。属性名没有data-前缀。
+
+### 插入标记
+
+**1.innerHTML属性**
+- 在读模式下，innerHTML 属性返回与调用元素的所有子节点（包括元素、注释和文本节点）对应的 HTML 标记。
+- 在写模式下，innerHTML 会根据指定的值创建新的DOM树，然后用这个DOM树完全替换调用元素原先的所有子节点。
+
+**2.outerHTML属性**
+- 在读模式下， outerHTML 返回调用它的元素及所有子节点的 HTML 标签。
+- 在写模式下， outerHTML会根据指定的 HTML 字符串创建新的 DOM子树，然后用这个 DOM 子树完全替换调用元素。
+
+**3.insertAdjacentHTML()方法**
+- 该方法接收两个参数：插入位置和要插入的HTML文本。第一个参数必须是下列值之一
+- "beforebegin" ，在当前元素之前插入一个紧邻的同辈元素；
+- "afterbegin" ，在当前元素之下插入一个新的子元素或在第一个子元素之前再插入新的子元素；
+- "beforeend" ，在当前元素之下插入一个新的子元素或在最后一个子元素之后再插入新的子元素；
+- "afterend" ，在当前元素之后插入一个紧邻的同辈元素。
+
+```
+// 作为前一个同辈元素插入
+a.insertAdjacentHTML('beforebegin', '<p>Hello world!</p>');
+// 作为第一个子元素插入
+a.insertAdjacentHTML('afterbegin', '<p>Hello world!</p>');
+// 最为最后一个子元素插入
+a.insertAdjacentHTML('beforeend', '<p>Hello world!</p>');
+// 作为后一个同辈元素插入
+a.insertAdjacentHTML('afterend', '<p>Hello world!</p>'); 
+```
+**4.内存与性能问题**
+> 在使用 innerHTML 、outerHTML 属性和 insertAdjacentHTML() 方法时，最好先手工删除要被替换的元素的所有事件处理程序和 JavaScript 对象属性
+
+### scrollIntoView() 方法
+
+- 可以在所有HTML元素上调用。
+- 如果给这个方法传入 true 作为参数，或者不传入任何参数，那么窗口滚动之后会让调用元素的顶部与视口顶部尽可能平齐。
+- 如果传入 false 作为参数，调用元素会尽可能全部出现在视口中，（可能的话，调用元素的底部会与视口顶部平齐。）不过顶部不一定平齐。
+
+## 专有扩展
+
+### 文档模式
+
+> IE8引入了一个新的概念叫‘文档模式’(document mode)。页面的文档模式决定了可以使用什么功能。文档模式决定了你可以使用哪个级别的CSS，可以在JavaScript中使用哪些API，以及如何对待文档类型。
+
+### children 属性
+
+> 由于IE9之前的版本与其他浏览器在处理文本节点中的空白符时有差异，因此就出现了children属性。该属性是HTMLCollections 的实例，只包含元素中同样还是元素的子节点。除此之外，children 属性与 childNodes 没有什么区别，即在元素只包含元素字节点时，这两个属性的值相同。
+
+### contains() 方法
+- 查询某个节点是不是另一个节点的后代。
+- 接收一个参数，即要检测的后代节点。
+- 使用DOM Level 3 compareDocumentPosition()也能够确定节点间的关系。返回一个表示该关系的位掩码（bitmask)。
+
+掩码|节点关系
+---|---
+1|无关(给定的节点不在当前文档中)
+2|居前(给定的节点在DOM树中位于参考节点之前)
+4|居后(给定的节点在DOM树中位于参考节点之后)
+8|包含(给定的节点是参考节点的祖先)
+16|被包含(给定的节点是参考节点的后代)
+
+`document.documentElement.compareDocumentPosition(document.body); // 20 body被包含，同时在html的后面`
+
+### 插入文本
+
+**1.innerText 属性**
+- innerText 读取值时，它会按照由浅入深的顺序，将子文档树中的所有文本拼接起来。
+- innerText 写入值时，结果会删除元素的子节点，插入包含相应文本值的文本节点。
+- Firefox 不支持innerText,但支持作用类似的textContent属性。
+- textContent 是 DOM Level 3 规定的一个属性。IE9以上支持。
+
+```
+// 检测这个元素是否有textContent属性，如果有，则类型检测是 string。如果没有，则使用innerText
+function getInnerText(element) {
+    return (typeof element.textContent === 'string') ? element.textContent : element.innerText;
+} 
+```
+> 实际上， innerText 与 textContent 返回的内容并不完全一样。比如，
+  innerText 会忽略行内的样式和脚本，而 textContent 则会像返回其他文本一样返
+  回行内的样式和脚本代码。避免跨浏览器兼容问题的最佳途径，就是从不包含行内样
+  式或行内脚本的 DOM 子树副本或 DOM 片段中读取文本。
+
+**2.outerText 属性**
+- outerText 不只是替换调用它的元素的子节点，而是会替换整个元素（包括子节点）
+- 少用
+
+### 滚动
+
+- scrollIntoViewIfNeeded(alignCenter) ：只在当前元素在视口中不可见的情况下，才滚动浏览器窗口或容器元素，最终让它可见。如果当前元素在视口中可见，这个方法什么也不做。如果将可选的 alignCenter 参数设置为 true ，则表示尽量将元素显示在视口中部（垂直方向）。
+- scrollByLines(lineCount) ：将元素的内容滚动指定的行高， lineCount 值可以是正值，也可以是负值。
+- scrollByPages(pageCount) ：将元素的内容滚动指定的页面高度，具体高度由元素的高度决定。
+
+# DOM2 和 DOM3
+
+## DOM 变化
+
+检测浏览器是否支持DOM模块
+
+```
+let supportsDOM2Core = document.implementation.hasFeature('Core', '2.0');
+let supportsDOM3Core = document.implementation.hasFeature('Core', '3.0');
+let supportsDOM2HTML = document.implementation.hasFeature('HTML', '2.0');
+let supportsDOM2Views = document.implementation.hasFeature('Views', '2.0');
+let supportsDOM2XML = document.implementation.hasFeature('XML', '2.0'); 
+``` 
+
+- createHTMLDocument(),创建一个完整的HTML文档。包含 <html\> 、 <head\> 、 <title\> 和 <body\>元素。这个方法只接受一个参数，即新创建文档的标题（放在 <title\> 元素中的字符串），返回新的 HTML 文档。只有 Opera 和 Safari 支持这个方法
+
+```
+var htmldoc = document.implementation.createHTMLDocument("New Doc");
+alert(htmldoc.title); //"New Doc"
+alert(typeof htmldoc.body); //"obje 
+```
+
+-  isSupported() 方法。与DOM1级为document.implementation引入的hasFeature()方法类似， isSupported()方法用于确定当前节点具有什么能力。接收两个参数：特性名和特性版本号。
+
+```
+if (document.body.isSupported("HTML", "2.0")){
+//执行只有"DOM2 级 HTML"才支持的操作
+} 
+```
+
+- DOM3级引入了两个辅助比较节点的方法： isSameNode() 和 isEqualNode() 。
+> 这两个方法都接受一个节点参数，并在传入节点与引用的节点相同或相等时返回 true 。所谓相同，指的是两个节点引用的是同一个对象。所谓相等，指的是两个节点是相同的类型，具有相等的属性（ nodeName 、 nodeValue ，等等），而且它们的 attributes 和 childNodes 属性也相等（相同位置包含相同的值）。
+
+```
+var div1 = document.createElement("div");
+div1.setAttribute("class", "box");
+var div2 = document.createElement("div");
+div2.setAttribute("class", "box");
+alert(div1.isSameNode(div1)); //true
+alert(div1.isEqualNode(div2)); //true
+alert(div1.isSameNode(div2)); //false 
+```
+
+- DOM3 级还针对为 DOM 节点添加额外数据引入了新方法。其中， setUserData() 方法会将数据指定给节点，它接受 3 个参数：要设置的键、实际的数据（可以是任何数据类型）和处理函数。
+
+`document.body.setUserData("name", "Nicholas", function(){});`
+
+- 通过使用getUserData()并传入相同的键，就可以取得该数据。
+> 传入 setUserData() 中的处理函数会在带有数据的节点被复制、删除、重命名或引入一个文档时
+  调用，因而你可以事先决定在上述操作发生时如何处理用户数据。处理函数接受 5 个参数：表示操作类
+  型的数值（1 表示复制，2 表示导入，3 表示删除，4 表示重命名）、数据键、数据值、源节点和目标节
+  点。在删除节点时，源节点是 null ；除在复制节点时，目标节点均为 null 。在函数内部，你可以决定
+  如何存储数据。
+
+## 样式
+
+**定义样式的方式有3种**
+- 通过 <link\/> 元素包含外部样式表文件
+- 使用 <style\/> 元素定义嵌入式样式
+- 使用 style 特性定义针对特定元素的样式
+
+### 访问元素的样式
+
+任何支持style特性的HTML元素在JavaScript中都有一个对应的style属性。这个style对象是CSSStyleDeclaration的实例，包含着通过HTML的style特性指定的所有样式信息，但不包含与外部样式表或嵌入样式表经层叠而来的样式。
+
+CSS属性|JavaScript属性
+---|---
+background-image|style.backgroundImage
+color|style.color
+display|style.display
+font-family|style.fontFamily
+
+**由于float是JavaScript中的保留字，因此不能用作属性名。“DOM2级样式”规范规定样式对象上相应的属性名应该是cssFloat**
+
+**1.DOM样式属性和方法**
+- cssText:能够访问到style特性中的CSS代码
+- length: 应用给元素的CSS属性的数量
+- parentRule: 表示 CSS 信息的 CSSRule 对象
+- getPropertyCSSValue(propertyName) ：返回包含给定属性值的 CSSValue 对象。
+- getPropertyPriority(propertyName) ：如果给定的属性使用了 !important 设置，则返回 "important" ；否则，返回空字符串。
+- getPropertyValue(propertyName) ：返回给定属性的字符串值。
+- item(index) ：返回给定位置的 CSS 属性的名称。
+- removeProperty(propertyName) ：从样式中删除给定属性。
+- setProperty(propertyName,value,priority) ：将给定属性设置为相应的值，并加上优先
+  权标志（ "important" 或者一个空字符串）。
+
+**2.计算的样式**
+- DOM2级样式增强了 document.defaultView,提供了 getComputedStyle()方法。
+- getComputedStyle()方法，接受2个参数：要取得计算样式的元素和一个伪元素字符串（例如":after"）。如果不需要伪元素，第二个参数可以是null.
+- 能够获取到<style\>中定义的CSS样式
+- IE中使用 元素的 currentStyle 属性
+
+```
+let div = document.getElementById('myDiv')
+let computedStyle = document.defaultView.getComputedStyle(div, null);
+console.log(computedStyle.border); 
+```
+> 无论在哪个浏览器中，最重要的一条是要记住所有计算的样式都是只读的；不能修改计算后样式对
+  象中的 CSS 属性。此外，计算后的样式也包含属于浏览器内部样式表的样式信息，因此任何具有默认值
+  的 CSS 属性都会表现在计算后的样式中。例如，所有浏览器中的 visibility 属性都有一个默认值，
+  但这个值会因实现而异。在默认情况下，有的浏览器将 visibility 属性设置为 "visible" ，而有的
+  浏览器则将其设置为 "inherit" 。换句话说，不能指望某个 CSS 属性的默认值在不同浏览器中是相同
+  的。如果你需要元素具有某个特定的默认值，应该手工在样式表中指定该值
+
+### 操作样式表
+
+CSSStyleSheet 类型表示的是样式表，包括通过 <link\> 元素包含的样式表和在 <style\> 元素中定义的样式表。这两个元素本身分别是由 HTMLLinkElement 和 HTMLStyleElement 类型表示的
+- document.implementation.hasFeature("StyleSheets", "2.0"),检测是否支持DOM2级样式表
+
+**1.CSS规则**
+- cssText ：返回整条规则对应的文本。
+- style ：一个 CSSStyleDeclaration 对象，可以通过它设置和取得规则中特定的样式值。
+
+**2.创建规则**
+
+insertRule() 方法。向现有样式表中添加新规则。这个方法接受两个参数：规则文本和表示在哪里插入规则的索引。
+
+**3.删除规则**
+deleteRule()方法，接收一个参数，要删除的的规则的位置。
+
+### 元素的大小
+
+**1.偏移量**
+- offsetHeight: 元素在垂直方向上占用的空间大小，像素计算。包括元素的高度、可见的水平滚动条的高度、上下边框的高度。
+- offsetWeight: 元素在水平方向上占用的空间大小，以像素计。包括元素的宽度、（可见的）垂直滚动条的宽度、左边框宽度和右边框宽度。
+- offsetLeft ：元素的左外边框至包含元素的左内边框之间的像素距离。
+- offsetTop ：元素的上外边框至包含元素的上内边框之间的像素距离。
+
+![偏移量](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1548060621&di=be498e21241e36f290ab413f67b7670d&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.th7.cn%2Fd%2Ffile%2Fp%2F2016%2F06%2F26%2F4e5175de1dbdc9ce0f9dfd178134b5db.jpg)
+
+```
+// 取得元素在页面上的偏移量
+function getElementLeft(element){
+    var actualLeft = element.offsetLeft;
+    var current = element.offsetParent;
+    while (current !== null){
+        actualLeft += current.offsetLeft;
+        current = current.offsetParent;
+    }
+    return actualLeft;
+} 
+```
+
+> 所有这些偏移量属性都是只读的，而且每次访问它们都需要重新计算。因此，应
+  该尽量避免重复访问这些属性；如果需要重复使用其中某些属性的值，可以将它们保
+  存在局部变量中，以提高性能。
 
 
 
