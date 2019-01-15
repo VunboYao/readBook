@@ -1021,9 +1021,173 @@ function getElementLeft(element){
 } 
 ```
 
-> 所有这些偏移量属性都是只读的，而且每次访问它们都需要重新计算。因此，应
-  该尽量避免重复访问这些属性；如果需要重复使用其中某些属性的值，可以将它们保
-  存在局部变量中，以提高性能。
+> 所有这些偏移量属性都是只读的，而且每次访问它们都需要重新计算。因此，应该尽量避免重复访问这些属性；如果需要重复使用其中某些属性的值，可以将它们保存在局部变量中，以提高性能。
+
+**2.客户区大小**
+- clientWidth:元素内容区宽度加上左右内边距宽度
+- clientHeight: 元素内容区高度加上上下内边距高度
+> 与偏移量相似，客户区大小也是只读的，也是每次访问都要重新计算的。
+
+**3.滚动大小**（可以设置）
+- scrollHeight: 在没有滚动条的情况下，元素内容的总高度
+- scrollWidth: 在没有滚动条的情况下，元素内容的总宽度
+- scrollLeft: 被隐藏在内容区域左侧的像素数。通过设置这个属性可以改变元素的滚动位置。
+- scrollTop ：被隐藏在内容区域上方的像素数。通过设置这个属性可以改变元素的滚动位置。
+
+![滚动](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547539718511&di=6ee0eed7bd0485e012182e52693aa1e5&imgtype=jpg&src=http%3A%2F%2Fs1.knowsky.com%2F20170206%2Feohsizo4zso00.png)
+
+**4.确定元素大小**
+-  getBoundingClientRect()，返回一个矩形对象。包含四个属性：left, top, right和 bottom.
+- IE8及更早版本左上角坐标是（2，2），IE9及其他传统是（0，0）
+
+## 遍历
+
+> “DOM2 级遍历和范围”模块定义了两个用于辅助完成顺序遍历 DOM结构的类型： NodeIterator 和 TreeWalker 。这两个类型能够基于给定的起点对 DOM结构执行深度优先（depth-first）的遍历操作。
+
+### NodeIterator
+
+- 可以使用document.createNodeIterator() 方法创建它的新实例。
+- root: 想要作为搜索起点的树中的节点
+- whatToShow: 表示要访问哪些节点的数字代码
+- filter: 是一个 NodeFilter 对象，或者一个表示应该接受还是拒绝某种特定节点的函数。
+- entityReferenceExpansion: 布尔值，表示是否要扩展实体引用。
+
+whatToShow 参数是一个位掩码，通过应用一或多个过滤器（filter）来确定要访问哪些节点。这个参数的值以常量形式在 NodeFilter 类型中定义
+- NodeFilter.SHOW_ALL ：显示所有类型的节点。
+- NodeFilter.SHOW_ELEMENT ：显示元素节点。
+- NodeFilter.SHOW_TEXT ：显示文本节点
+- NodeFilter.SHOW_COMMENT ：显示注释节点。
+- NodeFilter.SHOW_DOCUMENT ：显示文档节点。
+- NodeFilter.SHOW_DOCUMENT_TYPE ：显示文档类型节点。
+
+> 可以通过 createNodeIterator() 方法的 filter 参数来指定自定义的 NodeFilter 对象，或者指定一个功能类似节点过滤器（node filter）的函数。每个 NodeFilter 对象只有一个方法，即 acceptNode() ；如果应该访问给定的节点，该方法返回 NodeFilter.FILTER_ACCEPT ，如果不应该访问给定的节点，该方法返回 NodeFilter.FILTER_SKIP 。由于 NodeFilter 是一个抽象的类型，因此不能直接创建它的实例。在必要时，只要创建一个包含 acceptNode() 方法的对象，然后将这个对象传入createNodeIterator() 中即可。
+
+```
+let filter = {
+    acceptNode: function (node) {
+        return node.tagName.toLocaleLowerCase() === 'p' ? 
+            NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+    }
+}
+
+let iterator = document.createNodeIterator(root, NodeFilter.SHOW_ELEMENT, filter, false);
+// 如果不指定过滤器，则第三个参数为空
+let iterator = document.createNodeIterator(root, NodeFilter.SHOW_ELEMENT, null, false); 
+```
+
+> NodeIterator 类型的两个主要方法是 nextNode() 和 previousNode() 。顾名思义，在深度优先的 DOM 子树遍历中， nextNode() 方法用于向前前进一步，而 previousNode() 用于向后后退一步。在刚刚创建的 NodeIterator 对象中，有一个内部指针指向根节点，因此第一次调用 nextNode() 会返回根节点。当遍历到 DOM子树的最后一个节点时， nextNode() 返回 null 。 previousNode() 方法的工作机制类似。当遍历到 DOM 子树的最后一个节点，且 previousNode() 返回根节点之后，再次调用它就会返回 null 。
+
+```
+<div id="div1">
+    <p><b>Hello</b> world!</p>
+    <ul>
+        <li>List item 1</li>
+        <li>List item 2</li>
+        <li>List item 3</li>
+    </ul>
+</div> 
+
+let div = document.getElementById('div1');
+let iterator = document.createNodeIterator(div, NodeFilter.SHOW_ELEMENT, null, false)
+
+let node = iterator.nextNode();
+while(node !== null) {
+    console.log(node.tagName);
+    node = iterator.nextNode();
+}
+
+DIV
+P
+B
+UL
+LI
+LI
+LI
+```
+
+### TReeWalker
+
+> TreeWalker 是 NodeIterator 的一个更高级的版本。除了包括 nextNode() 和 previousNode()在内的相同的功能之外，这个类型还提供了下列用于在不同方向上遍历 DOM 结构的方法。
+
+- parentNode()：遍历到当前节点的父节点；
+- firstChild(): 遍历到当前节点的第一个子节点；
+- lastChild(): 遍历到当前节点的最后一个子节点；
+- nextSibling(): 遍历到当前节点的下一个同辈节点；
+- previousSibling(): 遍历到当前节点的上一个同辈节点。
+
+创建 TreeWalker 对象要使用 document.createTreeWalker() 方法，这个方法接受的 4 个参数与 document.createNodeIterator() 方法相同：作为遍历起点的根节点、要显示的节点类型、过滤器和一个表示是否扩展实体引用的布尔值。由于这两个创建方法很相似，所以很容易用 TreeWalker来代替 NodeIterator
+
+-  filter 可以返回的值有所不同。除了 NodeFilter.FILTER_ACCEPT 和 NodeFilter.FILTER_SKIP 之外，还可以使用 NodeFilter.FILTER_REJECT 。
+- NodeFilter.FILTER_SKIP 与 NodeFilter.FILTER_REJECT 的作用相同：跳过指定的节点。
+- 但在使用 TreeWalker 对象时， NodeFilter.FILTER_SKIP 会跳过相应节点继续前进到子树中的下一个节点，而 **NodeFilter.FILTER_REJECT 则会跳过相应节点及该节点的整个子树**。
+- TreeWalker 类型还有一个属性，名叫 currentNode ，表示任何遍历方法在上一次遍历中返回的节点。通过设置这个属性也可以修改遍历继续进行的起点
+
+## 范围 ？
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

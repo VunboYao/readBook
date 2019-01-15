@@ -943,7 +943,6 @@ tbody.appendChild(tr1)
 tbody.appendChild(tr2)
 table.appendChild(tbody)
 document.body.appendChild(table)*/
-
 /*let table = document.getElementsByTagName('table')[0]
 let a = table.insertRow(1);
 a.insertCell(0).innerText = '1221'
@@ -995,13 +994,11 @@ a.insertAdjacentHTML('afterend', '<p>Hello world!</p>');*/
 /*function getInnerText(element) {
     return (typeof element.textContent === 'string') ? element.textContent : element.innerText;
 }*/
-
 /*let supportsDOM2Core = document.implementation.hasFeature('Core', '2.0');
 let supportsDOM3Core = document.implementation.hasFeature('Core', '3.0');
 let supportsDOM2HTML = document.implementation.hasFeature('HTML', '2.0');
 let supportsDOM2Views = document.implementation.hasFeature('Views', '2.0');
 let supportsDOM2XML = document.implementation.hasFeature('XML', '2.0');*/
-
 /*// 取得元素在页面上的偏移量
 function getElementLeft(element){
     var actualLeft = element.offsetLeft;
@@ -1012,32 +1009,49 @@ function getElementLeft(element){
     }
     return actualLeft;
 }*/
-
-let ul = document.getElementById('ul');
+/*let ul = document.getElementById('ul');
 console.log(ul.childElementCount);
 let newD = document.createElement('p');
 newD.textContent = '0000';
 let span = document.querySelector('.span');
 ul.lastElementChild.appendChild(newD);
-
 ul.removeChild(ul.lastChild)
-console.log(ul.lastChild);
 
+console.log(ul.getBoundingClientRect())*/
+/*let filter = {
+    acceptNode: function (node) {
+        return node.tagName.toLocaleLowerCase() === 'p' ?
+            NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+    }
+}
 
-let name = document.getElementsByName('name');
-console.log(name);
-console.log(document.images);
+let iterator = document.createNodeIterator(root, NodeFilter.SHOW_ELEMENT, filter, false)*/
+/*let div = document.getElementById('div1');
+let iterator = document.createNodeIterator(div, NodeFilter.SHOW_ELEMENT, null, false)
 
+let node = iterator.nextNode();
+while(node !== null) {
+    console.log(node.tagName);
+    node = iterator.nextNode();
+}*/
+/*let div = document.getElementById('div1')
+let filter = function (node) {
+    return node.tagName.toLowerCase() === 'li' ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+}
+let walker = document.createTreeWalker(div, NodeFilter.SHOW_ELEMENT, filter,  false)*/
 
-
-
-
-
-
-
-
-
-
+let btn = document.getElementById('myBtn')
+btn.onclick = function (ev) {
+    alert(ev.eventPhase);
+    // alert('btn')
+    // ev.stopPropagation()
+}
+document.body.onclick = function (e) {
+    alert(e.eventPhase);
+}
+document.body.addEventListener('click', function (e) {
+    alert(e.eventPhase);
+},true)
 
 
 
