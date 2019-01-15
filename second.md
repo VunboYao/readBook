@@ -156,7 +156,7 @@ function getQueryStringArgs() {
      window.location = "http://www.wrox.com";
      location.href = "http://www.wrox.com";
     ```
-- 设置hash, search, hostname, pathname和post属性来改变URL，除了hash属性，都会重新加载页面。
+- 设置hash, search, hostname, pathname和port属性来改变URL，除了hash属性，都会重新加载页面。
 - 当通过上述任何一种方式修改 URL 之后，浏览器的历史记录中就会生成一条新记录，因此用户通过单击“后退”按钮都会导航到前一个页面。
 - 要禁用这种行为，可以使用 replace() 方法。这个方法只接受一个参数，即要导航到的 URL；结果虽然会导致浏览器位置改变，但不会在历史记录中生成新记录。
     ```
@@ -255,12 +255,14 @@ function getElement(id) {
 
 - 安卓操作系统检测
     ```
+    // "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36"
     // 搜索字符串 "Android" 并取得紧随其后的版本号。
     let android = /Android (\d+\.\d+)/.test(navigator.userAgent);
     console.log(RegExp.$1); 
     ```
 - IOS操作系统检测
     ```
+    // "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1"
     let iOS = /CPU (?:iPhone )?OS (\d+_\d+)/.test(navigator.userAgent);
     console.log(RegExp.$1); // 11_0
     let system = RegExp.$1.replace('_', '.');
@@ -357,7 +359,7 @@ JavaScript 通过 Document 类型表示文档。在浏览器中， document 对�
 
 **1.文档的子节点**
 - documentElement属性，该属性始终指向HTML页面中的<html>元素。=== document.childNodes[0] === document.firstChild
-- document.body属性，取得对<body>的引用
+- document.body属性，取得对<body\>的引用
 - document.doctype属性，取得对<!DOCTYPE>的引用
 
 **2.文档信息**
@@ -546,8 +548,7 @@ alert(div.tagName == div.nodeName); //true
 - parentNode 的值为 null ；
 - 在 HTML 中不支持（没有）子节点；
 
-> 尽管它们也是节点，但特性却不被认为是 DOM 文档树的一部分。开发人员最常使用的是 getAt-
-  tribute() 、 setAttribute() 和 removeAttribute() 方法，很少直接引用特性节点。
+> 尽管它们也是节点，但特性却不被认为是 DOM 文档树的一部分。开发人员最常使用的是 getAttribute() 、 setAttribute() 和 removeAttribute() 方法，很少直接引用特性节点。
 
 > Attr 对象有 3 个属性： name 、 value 和 specified 。其中， name 是特性名称（与 nodeName 的
   值相同）， value 是特性的值（与 nodeValue 的值相同），而 specified 是一个布尔值，用以区别特

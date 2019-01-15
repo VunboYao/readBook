@@ -1013,19 +1013,20 @@ function getElementLeft(element){
     return actualLeft;
 }*/
 
+let ul = document.getElementById('ul');
+console.log(ul.childElementCount);
+let newD = document.createElement('p');
+newD.textContent = '0000';
+let span = document.querySelector('.span');
+ul.lastElementChild.appendChild(newD);
+
+ul.removeChild(ul.lastChild)
+console.log(ul.lastChild);
 
 
-
-
-
-
-
-
-
-
-
-
-
+let name = document.getElementsByName('name');
+console.log(name);
+console.log(document.images);
 
 
 
