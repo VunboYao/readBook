@@ -1039,7 +1039,7 @@ let filter = function (node) {
     return node.tagName.toLowerCase() === 'li' ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
 }
 let walker = document.createTreeWalker(div, NodeFilter.SHOW_ELEMENT, filter,  false)*/
-
+/*
 let btn = document.getElementById('myBtn')
 btn.onclick = function (ev) {
     alert(ev.eventPhase);
@@ -1051,23 +1051,84 @@ document.body.onclick = function (e) {
 }
 document.body.addEventListener('click', function (e) {
     alert(e.eventPhase);
-},true)
+},true)*/
+/*window.addEventListener('load', function() {
+   let image = document.createElement('img');
+   image.addEventListener('load', function(e) {
+       alert(e.target.src);
+   });
+   document.body.appendChild(image);
+   image.src = './img/bg.jpg';
+});*/
+/*
+let fragment = document.createDocumentFragment();
+for (let i = 0; i < 100; i++) {
+    let p = document.createElement('p');
+    p.textContent = i;
+    fragment.appendChild(p);
+}
+*/
+/*// 无限加载
+let loading = document.querySelector('.loading');
+let flag = true;
+window.addEventListener('scroll', (e) => {
+    let top = document.documentElement.scrollTop; // 获取页面滚动的高度
+    let allH = document.documentElement.offsetHeight; // 获取页面总高度
+    let crH = document.documentElement.clientHeight;// 视图区高度
+    console.log("当前滚动高度" + top);
+    console.log("总的高度" + allH);
+    // 300的误差即继续加载
+    if (top > (allH - crH - 500)) { // 加载区间判定
+        if (flag) {
+            // 中间件判定正在加载
+            flag = false;
+            loading.style.display = 'block'; // 显示loading
+            async function f() { // 异步判定
+                let b = await setTimeout(() => {
+                    let fragment = document.createDocumentFragment();
+                    for (let i = 0; i < 50; i++) {
+                        let p = document.createElement('li');
+                        p.textContent = i;
+                        fragment.appendChild(p);
+                    }
+                    document.getElementById('ul').appendChild(fragment);
+                    flag = true; // 加载结束
+                    loading.style.display = 'none'; // 关闭loading
+                }, 1000);
+            }
+            f();
+        }
+    }
+})*/
 
+/*window.addEventListener('click', function (e) {
+    console.log(e.clientX);
+    console.log(e.clientY);
+    console.log(e.pageX);
+    console.log(e.pageY);
+    console.log(e.screenX);
+    console.log(e.screenY);
+})*/
+/*document.addEventListener('click', function (e) {
+    let keys = [];
+    if (e.shiftKey) {
+        keys.push('shift');
+    }
+    if (e.ctrlKey) {
+        keys.push('ctrl');
+    }
+    if (e.altKey) {
+        keys.push('alt')
+    }
+    if (e.metaKey) {
+        keys.push('meta')
+    }
+    alert('keys: ' + keys.join(','))
+})*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+document.addEventListener('keypress', (e) => {
+    console.log(e.keyCode);
+})
 
 
 
