@@ -232,6 +232,25 @@ window.addEventListener('scroll', (e) => {
 - Alt: altKey
 - Meta(windows\Cmd): metaKey
 
+```
+document.addEventListener('click', function (e) {
+    let keys = [];
+    if (e.shiftKey) {
+        keys.push('shift');
+    }
+    if (e.ctrlKey) {
+        keys.push('ctrl');
+    }
+    if (e.altKey) {
+        keys.push('alt')
+    }
+    if (e.metaKey) {
+        keys.push('meta')
+    }
+    alert('keys: ' + keys.join(','))
+}) 
+```
+
 **5.相关元素**
 
 > 在发生 mouseover 和 mouserout 事件时，还会涉及更多的元素。这两个事件都会涉及把鼠标指针从一个元素的边界之内移动到另一个元素的边界之内。对 mouseover 事件而言，事件的主目标是获得光标的元素，而相关元素就是那个失去光标的元素。类似地，对 mouseout 事件而言，事件的主目标是失去光标的元素，而相关元素则是获得光标的元素。
@@ -273,100 +292,366 @@ window.addEventListener('scroll', (e) => {
 **1.键码**
 - 在发生keydown和keyup事件时，event 对象的**keyCode** 属性中会包含一个代码，与键盘上一个特定的键对应。
 - 对数字字母字符键，keyCode 属性的值与ASCII码中对应小写字母或数字的编码相同。
+- 在Firefox 和 Opera 中，按分号键时keyCode值为59，但IE和Safari返回186.
 
 **所有非字符键的键码**
 
 ![keycode](http://www.vunbo.com/usr/uploads/2019/01/3685867797.png)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**2.字符编码**
+- 发生keypress事件时，通过charCode属性，可以获取按下的键的字符编码。如果charCode不可用，则使用keyCode。
+- 在取得字符编码之后，就可以使用 String.fromCharCode()将其转换成实际的字符。
+
+**3.DOM3级变化**
+- DOM3级事件中的键盘事件，不再包含charCode属性，而是包含两个新属性：key 和 char.
+- key 属性是为了取代 keyCode 而新增的，它的值是一个字符串。按下某个字符键时，key的值就是相应的文本字符。
+- char 属性在按下字符键时的行为与key相同，但在按下非字符键时值为null(实测为undefined和null)
+- 不推荐使用key，keyIdentifier 或 char
+- location 属性，表示按下了什么位置上的键。chrome始终为0，不推荐使用。
+- 最后是给 event 对象添加了 getModifierState() 方法。这个方法接收一个参数，即等于 Shift 、Control 、 AltGraph 或 Meta 的字符串，表示要检测的修改键。如果指定的修改键是活动的（也就是处于被按下的状态），这个方法返回 true ，否则返回 false 。
+- IE9 是唯一支持 getModifierState() 方法的浏览器。
+
+**4.textInput事件**
+- 任何可以获得焦点的元素都可以触发keypress事件，但只有可编辑区域才能触发textInput事件。
+- textInput事件只会在用户按下能够输入实际字符的键时才会被触发，而keypress事件则在按下那些能够影响文本显示的键时也会触发。（如退格键）
+- textInput 事件主要考虑的是字符，因此它的 event 对象中还包含着一个data属性，该属性的值就是用户输入的字符（而非字符编码）。
+
+```
+let textbox = document.getElementById('myText')
+textbox.addEventListener('textInput', function (e) {
+    console.log(e.data);
+}) 
+```
+
+- event 对象还有一个属性，叫 inputMethod, 表示把文本输入到文本框中的方式。
+-  0，表示浏览器不确定是怎么输入的。
+-  1，表示是使用键盘输入的。
+-  2，表示文本是粘贴进来的。
+-  3，表示文本是拖放进来的。
+-  4，表示文本是使用 IME 输入的。
+-  5，表示文本是通过在表单中选择某一项输入的。
+-  6，表示文本是通过手写输入的（比如使用手写笔）。
+-  7，表示文本是通过语音输入的。
+-  8，表示文本是通过几种方法组合输入的。
+-  9，表示文本是通过脚本输入的。    
+
+- 只有IE支持inputMethod属性
+
+### 复合事件
+
+- 复合事件（composition event）是 DOM3 级事件中新添加的一类事件，用于处理 IME 的输入序列。IME（Input Method Editor，输入法编辑器）可以让用户输入在物理键盘上找不到的字符。
+- IE9支持。
+
+### 变动事件
+
+DOM2 级的变动（mutation）事件能在 DOM中的某一部分发生变化时给出提示。
+
+- DOMSubtreeModified ：在 DOM 结构中发生任何变化时触发。这个事件在其他任何事件触发后都会触发。
+- DOMNodeInserted ：在一个节点作为子节点被插入到另一个节点中时触发
+- DOMNodeRemoved ：在节点从其父节点中被移除时触发。
+- DOMNodeInsertedIntoDocument ：在一个节点被直接插入文档或通过子树间接插入文档之后触发。这个事件在 DOMNodeInserted 之后触发
+- DOMNodeRemovedFromDocument ：在一个节点被直接从文档中移除或通过子树间接从文档中移除之前触发。这个事件在 DOMNodeRemoved 之后触发。
+- DOMAttrModified ：在特性被修改之后触发
+- DOMCharacterDataModified ：在文本节点的值发生变化时触发。
+
+**1.删除节点**
+
+- 在使用removeChild() 或 replaceChild() 从DOM中删除节点时，首先会触发 DOMNodeRemoved事件。
+- 这个事件的目标（event.target）是被删除的节点,而event.relatedNode属性中包含着对目标节点父节点的引用。
+- 这个事件触发时，节点尚未从其父节点删除， 因此其parentNode 属性仍然指向父节点（与 event.relatedNode相同）。
+- 这个事件会冒泡，因此可以在DOM的任何层次处理。
+- 如果被移除的节点包含子节点，那么在其所有子节点以及这个被移除的的节点上会相继触发 DOMNodeRemovedFromDocument事件。该事件不会冒泡，所以只有直接指定给其中一个子节点的事件处理程序才会被调用。
+- 紧随其后的DOMSubtreeModified事件，这个事件的目标是被移除节点的父节点；
+
+```
+<! DOCTYPE html>
+<html>
+<head>
+    <title>Node Removal Events Example</title>
+</head>
+<body>
+    <ul id="myList">
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+    </ul>
+</body>
+</html> 
+
+window.addEventListener('load', function (e) {
+    let ul = document.getElementById('myList')
+
+    document.addEventListener('DOMSubtreeModified', function (e) {
+        console.log(e.type);
+        console.log(e.target);
+    });
+    document.addEventListener('DOMNodeRemoved', function (e) {
+        console.log(e.type);
+        console.log(e.target);
+        console.log(e.relatedNode);
+    })
+    //  DOMNodeRemovedFromDocument不冒泡，所以针对ul的第一个子节点
+    ul.firstChild.addEventListener('DOMNodeRemovedFromDocument', function (e) {
+        console.log(e.type);
+        console.log(e.target);
+    })
+    ul.parentNode.removeChild(ul);
+})
+
+// 在这个例子中，我们假设要移除 <ul> 元素。此时，就会依次触发以下事件。
+1. 在 <ul> 元素上触发 DOMNodeRemoved 事件。 relatedNode 属性等于 document.body 。
+2. 在 <ul> 元素上触发 DOMNodeRemovedFromDocument 事件。
+3. 在身为 <ul> 元素子节点的每个 <li> 元素及文本节点上触发 DOMNodeRemovedFromDocument事件。
+4. 在 document.body 上触发 DOMSubtreeModified 事件，因为 <ul> 元素是 document.body的直接子元素。
+```
+
+**2.插入节点**
+
+- 在使用 appendChild() 、 replaceChild() 或 insertBefore() 向 DOM 中插入节点时，首先会触发 DOMNodeInserted 事件
+- 这个事件的目标是被插入的节点，而 event.relatedNode 属性中包含一个对父节点的引用。
+- 在这个事件触发时，节点已经被插入到了新的父节点中。这个事件是冒泡的，因此可以在 DOM的各个层次上处理它。
+- 紧接着，会在新插入的节点上面触发 DOMNodeInsertedIntoDocument 事件。这个事件不冒泡，因此必须在插入节点之前为它添加这个事件处理程序。
+- 最后一个触发的事件是 DOMSubtreeModified ，触发于新插入节点的父节点。
+
+```
+window.addEventListener('load', function (e) {
+    let list = document.getElementById('myList')
+    let item = document.createElement('li')
+    item.appendChild(document.createTextNode('Item 4'))
+
+    document.addEventListener('DOMSubtreeModified', function (e) {
+        console.log(e.type);
+        console.log(e.target);
+    })
+    document.addEventListener('DOMNodeInserted', function (e) {
+        console.log(e.type);
+        console.log(e.target);
+        console.log(e.relatedNode);
+    });
+    item.addEventListener('DOMNodeInsertedIntoDocument', function (e) {
+        console.log(e.type);
+        console.log(e.target);
+    })
+    list.appendChild(item);
+}) 
+
+以上代码首先创建了一个包含文本 "Item 4" 的新 <li> 元素。由于 DOMSubtreeModified 和
+DOMNodeInserted 事件是冒泡的，所以把它们的事件处理程序添加到了文档中。在将列表项插入到其
+父节点之前，先将 DOMNodeInsertedIntoDocument 事件的事件处理程序添加给它。最后一步就是使
+用 appendChild() 来添加这个列表项；此时，事件开始依次被触发。首先是在新 <li> 元素项上触发
+DOMNodeInserted 事件，其 relatedNode 是 <ul> 元素。然后是触发新 <li> 元素上的 DOMNode-
+InsertedIntoDocument 事件，最后触发的是 <ul> 元素上的 DOMSubtreeModified 事件。
+```
+
+### HTML5事件
+
+**1.contextmenu事件**
+
+- 通过单机鼠标右键可以调出上下文菜单。
+- 由于contextmenu事件是冒泡的，因此可以为document指定一个事件处理程序，用以处理页面上发生的所有此类事件。
+- 这个事件的目标是发生用户操作的元素，可以通过event.preventDefault()来取消。IE中event.returnValue的值设置为false.
+- 因为contextmenu事件属于鼠标事件，所以其事件对象中包含与光标位置有关的所有属性。
+- 通过使用contextmenu 事件来显示自定义的上下文菜单，而使用onclick事件来隐藏该菜单。
+
+```
+window.addEventListener('load', function (e) {
+    let div = document.getElementById('myDiv')
+    div.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+        let menu = document.getElementById('myMenu')
+        menu.style.left = e.clientX + 'px';
+        menu.style.top = e.clientY + 'px'
+        menu.style.visibility = 'visible';
+    })
+    document.addEventListener('click', function (e) {
+        document.getElementById('myMenu').style.visibility = 'hidden';
+    })
+}) 
+```
+
+**2.beforeunload事件**
+
+- window 对象上的beforeunload 事件，是为了让开发人员有可能在页面卸载前阻止这一操作。
+- 必须将event.returnValue 的值设置为要显示给用户的字符串。（对IE和Fiefox而言），同时作为函数的值返回（对Safari 和 Chrome 而言）
+
+**3.DOMContentLoaded事件**
+
+- 在形成完整的DOM数之后就会触发，不理会图像、JavaScript文件、CSS文件或其他资源是否已经下载完毕。
+- 与load 事件不同，DOMContentLoaded 支持在页面下载的早期添加事件处理程序，这也就意味着用户能够尽早地与页面进行交互。
+- 要处理DOMContentLoaded 事件，可以为document或 window 添加相应的事件处理程序（尽管这个事件会冒泡到window,但它的目标实际上是document）
+
+**4.readystatechange 事件**
+
+支持 readystatechange 事件的每个对象都有一个 readyState 属性，可能包含下列5个值中的一个。
+- uninitialized(未初始化)： 对象存在但尚未初始化
+- loading(正在加载)： 对象正在加载数据
+- loaded(加载完毕): 对象加载数据完成
+- interactive(交互)： 可以操作对象了，但还没有完成加载
+- complete(完成)：对象已经加载完毕
+
+> 这些状态看起来很直观，但并非所有对象都会经历 readyState 的这几个阶段。换句话说，如果某个阶段不适用某个对象，则该对象完全可能跳过该阶段；并没有规定哪个阶段适用于哪个对象。显然，这意味着 readystatechange 事件经常会少于 4 次，而 readyState 属性的值也不总是连续的。
+
+> 对于 document 而言，值为 "interactive" 的 readyState 会在与 DOMContentLoaded 大致相同的时刻触发 readystatechange 事件。此时，DOM树已经加载完毕，可以安全地操作它了，因此就会进入交互（interactive）阶段。但与此同时，图像及其他外部文件不一定可用。
+
+**5.pageshow 和 pagehide 事件**
+
+- “往返缓存（back-forward cache,或bfcache）”，可以在用户使用浏览器的‘后退’和‘前进’按钮时加快页面的转换速度。
+- 该缓存不仅保存着页面数据，还保存了DOM和JavaScript的状态。
+- pageshow 事件会在页面显示时触发，无论该页面是否来自bfcache。虽然这个事件的目标是 document，但必须将其事件处理程序添加到 window 
+- pageshow事件的event对象还包含一个名为 persisted 的布尔值属性。如果页面保存在了bfcache中，则这个属性的值为true;否则，这个属性的值为false.
+- 与 pageshow 事件对应的是 pagehide 事件，该事件会在浏览器卸载页面的时候触发，而且是在 unload 事件之前触发.这个事件的 event 对象也包含 persisted 属性，如果页面卸载后会被保存在bfcache中，则 persisted的值也会被设置为true.
+
+> 指定了 onunload 事件处理程序的页面会被自动排除在 bfcache 之外，即使事件处理程序是空的。原因在于， onunload 最常用于撤销在 onload 中所执行的操作，而跳过 onload 后再次显示页面很可能就会导致页面不正常。
+
+**6.haschange事件**
+- HTML5 新增了 hashchange 事件，以便在 URL 的参数列表（及 URL 中“#”号后面的所有字符串）
+  发生变化时通知开发人员。
+- 必须要把 hashchange 事件处理程序添加给 window 对象，然后 URL 参数列表只要变化就会调用它。此时的 event 对象应该额外包含两个属性： oldURL 和 newURL 。这两个属性分别保存着参数列表变化前后的完整 URL。
+- 最好使用location对象来确定当前的参数列表。`location.hash`
+- var isSupported = ("onhashchange" in window); //这里有 bug
+- 如果 IE8 是在 IE7 文档模式下运行，即使功能无效它也会返回 true 。为解决这个问题，可以使用以下这个更稳妥的检测方式：
+- var isSupported = ("onhashchange" in window) && (document.documentMode === undefined || document.documentMode > 7);
+- document.documentMode 检测IE浏览器版本
+
+### 设备事件
+
+**1.orientationchange 事件**
+- window.orientation 属性中包含3个值：0表示肖像模式， 90 表示向左旋转的横向模式，-90 表示向右旋转的横向模式。
+- 当用户改变了设备的查看模式，就会触发 orientationchange事件，可以通过window.orientation 访问到信息。
+
+```
+window.addEventListener('load', function (e) {
+    let div = document.getElementById('myDiv');
+    div.innerHTML = 'Current orientation is ' + window.orientation;
+    window.addEventListener('orientationchange', function (e) {
+        div.innerHTML = 'Current orientation is ' + window.orientation;
+    })
+}) 
+```
+
+**2.deviceorientation事件**
+
+触发 deviceorientation 事件时，事件对象中包含着每个轴相对于设备静止状态下发生变化的信息。事件对象包含以下 5 个属性
+
+- alpha: 在围绕 z轴旋转时（即左右旋转时），y 轴的度数差；是一个介于 0 到 360 之间的浮点数。
+- beta: 在围绕 x轴旋转时（即前后旋转时），z轴的度数差；是一个介于180到 180之间的浮点数。
+- gamma ：在围绕 y轴旋转时（即扭转设备时），z轴的度数差；是一个介于90到 90之间的浮点数。
+- absolute ：布尔值，表示设备是否返回一个绝对值。
+- compassCalibrated ：布尔值，表示设备的指南针是否校准过。
+- 这个例子只能在移动 WebKit 浏览器中运行，因为它使用了专有的 webkitTransform 属性（即 CSS标准属性 transform 的临时版）。
+
+**3.devicemotion事件**
+
+devicemotion事件包含以下属性。
+- acceleration: 一个包含x、y和z属性的对象，在不考虑重力的情况下，告诉你在每个方向上的加速度。
+- accelerationIncludingGravity: 一个包含 x 、 y 和 z 属性的对象，在考虑 z 轴自然重力加速度的情况下，告诉你在每个方向上的加速度
+- interval ：以毫秒表示的时间值，必须在另一个 devicemotion 事件触发前传入。这个值在每个事件中应该是一个常量。
+- rotationRate ：一个包含表示方向的 alpha 、 beta 和 gamma 属性的对象。
+- 如果读取不到 acceleration 、 accelerationIncludingGravity 和 rotationRate 值，应该先检测确定它们的值不是null.`if (event.rotationRate !== null){`
+
+### 触摸与手势事件
+
+- touchstart: 当手指触摸屏幕时触发；即使已经有一个手指放在了屏幕上也会触发。
+- touchmove: 当手指在屏幕上滑动时连续地触发。在这个事件发生期间，调用preventDefault()可以阻止滚动。
+- touchend: 当手指从屏幕上移开时触发。
+- touchcancel: 当系统停止跟踪触摸时触发。
+- 这些事件都会冒泡，也都可以取消。
+
+跟踪触摸的属性
+- touches: 表示当前跟踪的触摸操作的Touch对象的数组。
+- targetTouches: 特定于事件目标的Touch对象的数组。
+- changedTouches: 表示自上次触摸以来发生了什么改变的Touch对象的数组。
+
+每个Touch对象包含下列属性：
+- clientX ：触摸目标在视口中的 x 坐标。
+- clientY ：触摸目标在视口中的 y 坐标。
+- identifier ：标识触摸的唯一 ID。
+- pageX ：触摸目标在页面中的 x 坐标。
+- pageY ：触摸目标在页面中的 y 坐标。
+- screenX ：触摸目标在屏幕中的 x 坐标。
+- screenY ：触摸目标在屏幕中的 y 坐标。
+- target ：触摸的 DOM 节点目标。
+
+**2.手势事件**
+
+- gesturestart: 当一个手指已经按在屏幕上而另一个手指又触摸屏幕时触发。
+- gesturechange: 当触摸屏幕的任何一个手指的位置发生变化时触发。
+- gestureend: 当任何一个手指从屏幕上面移开时触发。
+
+只有两个手指都触摸到事件的接收容器时才会触发这些事件。在一个元素上设置事件处理程序，意味着两个手指必须同时位于该元素的范围之内，才能触发手势事件（这个元素就是目标）。由于这些事件冒泡，所以将事件处理程序放在文档上也可以处理所有手势事件。此时，事件的目标就是两个手指都位于其范围内的那个元素
+
+触摸事件和手势事件之间存在某种关系。当一个手指放在屏幕上时，会触发 touchstart 事件。如
+果另一个手指又放在了屏幕上，则会先触发 gesturestart 事件，随后触发基于该手指的 touchstart
+事件。如果一个或两个手指在屏幕上滑动，将会触发 gesturechange 事件。但只要有一个手指移开，
+就会触发 gestureend 事件，紧接着又会触发基于该手指的 touchend 事件。
+
+与触摸事件一样，每个手势事件的 event 对象都包含着标准的鼠标事件属性： bubbles 、
+cancelable 、 view 、 clientX 、 clientY 、 screenX 、 screenY 、 detail 、 altKey 、 shiftKey 、
+ctrlKey 和 metaKey 。此外，还包含两个额外的属性： rotation 和 scale 。其中， rotation 属性表
+示手指变化引起的旋转角度，负值表示逆时针旋转，正值表示顺时针旋转（该值从 0 开始）。而 scale
+属性表示两个手指间距离的变化情况（例如向内收缩会缩短距离）；这个值从 1 开始，并随距离拉大而
+增长，随距离缩短而减小。
+
+## 内存和性能
+
+### 事件委托
+
+利用事件委托，在DOM树中尽量高的层次上添加一个事件处理程序，通过监听（addEventListener）该元素，实现对子DOM元素的事件目标（event.target）进行相关操作。
+
+为document对象添加一个事件处理程序的优点：
+- document 对象很快就可以访问，而且可以在页面生命周期的任何时点上为它添加事件处理程序（无需等待 DOMContentLoaded 或 load 事件）。换句话说，只要可单击的元素呈现在页面上，就可以立即具备适当的功能。
+- 在页面中设置事件处理程序所需的时间更少。只添加一个事件处理程序所需的 DOM引用更少，所花的时间也更少。
+- 整个页面占用的内存空间更少，能够提升整体性能。
+
+> 最适合采用事件委托技术的事件包括 click 、 mousedown 、 mouseup 、 keydown 、 keyup 和 keypress 。
+  虽然 mouseover 和 mouseout 事件也冒泡，但要适当处理它们并不容易，而且经常需要计算元素的位置。
+  （因为当鼠标从一个元素移到其子节点时，或者当鼠标移出该元素时，都会触发 mouseout 事件。）
+
+### 移除事件处理程序
+
+- 显式的将事件处理程序 = null
+- 通过 onunload 事件处理程序移除所有事件处理程序
+
+## 模拟事件
+
+### DOM中的事件模拟
+
+- 可以在document 对象上使用 createEvent() 方法创建 event 对象。该方法接收一个参数，即表示要创建的事件类型的字符串。在DOM2中，所有这些字符串都使用英文复数形势。而在DOM3中，都变成了单数。
+    - UIEvents: 一般化的UI事件，鼠标事件和键盘事件都继承自UI事件。DOM3级中是UIEvent.
+    - MouseEvents ：一般化的鼠标事件。DOM3 级中是 MouseEvent 。
+    - MutationEvents: 一般化的DOM变动事件。DOM3级中是MutationEvent。
+    - HTMLEvents ：一般化的 HTML 事件。没有对应的 DOM3 级事件
+
+- 模拟事件的最后一步就是触发事件。这一步需要使用dispatchEvent()方法。需要传入一个参数，即表示要触发事件的 event 对象。
+
+**1.模拟鼠标事件**
+
+创建鼠标事件对象的方法是为 createEvent() 传如字符串 "MouseEvents"。返回对象有一个名为initMouseEvent()方法，用于指定与该鼠标事件相关的信息。接收15个参数。
+- type （字符串）：表示要触发的事件类型，例如 "click" 。
+- bubbles （布尔值）：表示事件是否应该冒泡。为精确地模拟鼠标事件，应该把这个参数设置为 true 。
+- cancelable （布尔值）：表示事件是否可以取消。为精确地模拟鼠标事件，应该把这个参数设置为 true 。
+- view （AbstractView）：与事件关联的视图。这个参数几乎总是要设置为 document.defaultView 
+- detail （整数）：与事件有关的详细信息。这个值一般只有事件处理程序使用，但通常都设置为 0 
+- screenX （整数）：事件相对于屏幕的 X 坐标。
+- screenY （整数）：事件相对于屏幕的 Y 坐标。
+- clientX （整数）：事件相对于视口的 X 坐标。
+- clientY （整数）：事件想对于视口的 Y 坐标。
+- ctrlKey （布尔值）：表示是否按下了 Ctrl 键。默认值为 false 。
+- altKey （布尔值）：表示是否按下了 Alt 键。默认值为 false 。
+- shiftKey （布尔值）：表示是否按下了 Shift 键。默认值为 false 。
+- metaKey （布尔值）：表示是否按下了 Meta 键。默认值为 false 。
+- button （整数）：表示按下了哪一个鼠标键。默认值为 0 。
+- relatedTarget （对象）：表示与事件相关的对象。这个参数只在模拟 mouseover 或 mouseout 时使用。
+
+```
+let btn = document.getElementById('myBtn')
+// 创建事件对象
+let event = document.createEvent('MouseEvents');
+// 初始化事件对象
+event.initMouseEvent('click', true, true, document.defaultView, 0, 0, 0, 0,0,false,false,false,false,0, null);
+// 触发事件
+btn.dispatchEvent(event); 
+```
 
 
 

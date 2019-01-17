@@ -1125,23 +1125,141 @@ window.addEventListener('scroll', (e) => {
     }
     alert('keys: ' + keys.join(','))
 })*/
+// let textbox = document.getElementById('myText')
+// textbox.addEventListener('textInput', function (e) {
+//     console.log(e.data);
+// })
+/*let isSupported = document.implementation.hasFeature('MutationEvents', '2.0')
+console.log(isSupported);*/
+/*window.addEventListener('load', function (e) {
+    let ul = document.getElementById('myList')
 
-document.addEventListener('keypress', (e) => {
-    console.log(e.keyCode);
-})
+    document.addEventListener('DOMSubtreeModified', function (e) {
+        console.log(e.type);
+        console.log(e.target);
+    });
+    document.addEventListener('DOMNodeRemoved', function (e) {
+        console.log(e.type);
+        console.log(e.target);
+        console.log(e.relatedNode);
+    })
+    ul.firstChild.addEventListener('DOMNodeRemovedFromDocument', function (e) {
+        console.log(e.type);
+        console.log(e.target);
+    })
+    ul.parentNode.removeChild(ul);
+})*/
+/*window.addEventListener('load', function (e) {
+    let list = document.getElementById('myList')
+    let item = document.createElement('li')
+    item.appendChild(document.createTextNode('Item 4'))
+
+    document.addEventListener('DOMSubtreeModified', function (e) {
+        console.log(e.type);
+        console.log(e.target);
+    })
+    document.addEventListener('DOMNodeInserted', function (e) {
+        console.log(e.type);
+        console.log(e.target);
+        console.log(e.relatedNode);
+    });
+    item.addEventListener('DOMNodeInsertedIntoDocument', function (e) {
+        console.log(e.type);
+        console.log(e.target);
+    })
+    list.appendChild(item);
+})*/
+/*window.addEventListener('load', function (e) {
+    let div = document.getElementById('myDiv')
+    div.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+        let menu = document.getElementById('myMenu')
+        menu.style.left = e.clientX + 'px';
+        menu.style.top = e.clientY + 'px'
+        menu.style.visibility = 'visible';
+    })
+    document.addEventListener('click', function (e) {
+        document.getElementById('myMenu').style.visibility = 'hidden';
+    })
+})*/
+/*window.addEventListener('beforeunload', function (e) {
+    let mes = 'i am really going to miss you if you go.'
+    e.returnValue = mes;
+    return confirm('确定退出吗？');
+})*/
+/*document.addEventListener('readystatechange', function (e) {
+    if (document.readyState === 'complete') {
+        console.log('1');
+    }
+})*/
+/*(function () {
+    let showCount = 0;
+    // window.addEventListener('load', function () {
+    //     alert('load fired')
+    // })
+    window.addEventListener('pagehide', function (e) {
+        showCount++;
+        alert('Show has been fired ' + showCount + ' times.'  + e.persisted)
+    })
+})();*/
+/*window.addEventListener('hashchange', function (e) {
+    console.log('old URL' + e.oldURL + '\nNew URL: ' + e.newURL);
+})*/
+/*window.addEventListener('load', function (e) {
+    let div = document.getElementById('myDiv');
+    div.innerHTML = 'Current orientation is ' + window.orientation;
+    window.addEventListener('MozOrientation', function (e) {
+        div.innerHTML = `X=${e.x},Y=${e.y},Z=${e.z}`;
+    })
+})*/
+/*window.addEventListener('deviceorientation', function (e) {
+    let output = document.getElementById('myDiv');
+    output.innerHTML = `Alpah=${e.alpha}, Beta=${e.beta}, Gamma=${e.gamma}`
+})*/
+/*function handleTouchEvent(e) {
+    if (e.touches.length === 1) {
+        let output = document.getElementById('myDiv');
+        switch (e.type) {
+            case 'touchstart':
+                output.innerHTML = `Touch started ${parseInt(e.touches[0].clientX)}, ${parseInt(e.touches[0].clientY) }`;
+                break;
+            case 'touchend':
+                output.innerHTML += `<br>Touch ended ${parseInt(e.changedTouches[0].clientX)}, ${parseInt(e.changedTouches[0].clientY)}`;
+                break;
+            case 'touchmove':
+                e.preventDefault();
+                output.innerHTML += `<br>Touch moved ${parseInt(e.changedTouches[0].clientX)}, ${parseInt(e.changedTouches[0].clientY)}`;
+                break;
+        }
+    }
+}*/
+
+/*function handleGestureEvent(e) {
+    let output = document.getElementById('myDiv')
+    switch (e.type) {
+        case 'gesturestart':
+            output.innerHTML = `Gseture started (rotation=${e.rotation}, scale=${e.scale})`;
+            break;
+        case 'gestureend':
+            output.innerHTML = `<br>Gseture ended (rotation=${e.rotation}, scale=${e.scale})`;
+            break;
+        case 'gesturechange':
+            output.innerHTML = `<br>Gseture changed (rotation=${e.rotation}, scale=${e.scale})`;
+            break;
+    }
+}
+document.addEventListener('gesturestart', handleGestureEvent)
+document.addEventListener('gestureend', handleGestureEvent)
+document.addEventListener('gesturechange', handleGestureEvent)*/
 
 
-
-
-
-
-
-
-
-
-
-
-
+let btn = document.getElementById('myBtn')
+// 创建事件对象
+let event = document.createEvent('MouseEvents');
+// 初始化事件对象
+event.initMouseEvent('click', true, true, document.defaultView, 0, 0, 0, 0,0,false,false,false,false,0, null);
+// 触发事件
+btn.dispatchEvent(event);
 
 
 

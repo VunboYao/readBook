@@ -3,65 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-   <!-- <style>
-        .loading {
-            margin: 0 auto;
-            width: 100%;
-            height: 150px;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    <!-- <style>
+         .loading {
+             margin: 0 auto;
+             width: 100%;
+             height: 150px;
+             text-align: center;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+         }
 
-        .loading > div {
-            width: 60px;
-            height: 60px;
-            background-color: #67CF22;
-            border-radius: 100%;
-            display: inline-block;
-            -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
-            animation: bouncedelay 1.4s infinite ease-in-out;
-            /* Prevent first frame from flickering when animation starts */
-            -webkit-animation-fill-mode: both;
-            animation-fill-mode: both;
-        }
+         .loading > div {
+             width: 60px;
+             height: 60px;
+             background-color: #67CF22;
+             border-radius: 100%;
+             display: inline-block;
+             -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+             animation: bouncedelay 1.4s infinite ease-in-out;
+             /* Prevent first frame from flickering when animation starts */
+             -webkit-animation-fill-mode: both;
+             animation-fill-mode: both;
+         }
 
-        .spinner .bounce1 {
-            -webkit-animation-delay: -0.32s;
-            animation-delay: -0.32s;
-        }
+         .spinner .bounce1 {
+             -webkit-animation-delay: -0.32s;
+             animation-delay: -0.32s;
+         }
 
-        .spinner .bounce2 {
-            -webkit-animation-delay: -0.16s;
-            animation-delay: -0.16s;
-        }
+         .spinner .bounce2 {
+             -webkit-animation-delay: -0.16s;
+             animation-delay: -0.16s;
+         }
 
-        @-webkit-keyframes bouncedelay {
-            0%, 80%, 100% { -webkit-transform: scale(0.0) }
-            40% { -webkit-transform: scale(1.0) }
-        }
+         @-webkit-keyframes bouncedelay {
+             0%, 80%, 100% { -webkit-transform: scale(0.0) }
+             40% { -webkit-transform: scale(1.0) }
+         }
 
-        @keyframes bouncedelay {
-            0%, 80%, 100% {
-                transform: scale(0.0);
-                -webkit-transform: scale(0.0);
-            } 40% {
-                  transform: scale(1.0);
-                  -webkit-transform: scale(1.0);
-              }
-        }
-    </style>-->
+         @keyframes bouncedelay {
+             0%, 80%, 100% {
+                 transform: scale(0.0);
+                 -webkit-transform: scale(0.0);
+             } 40% {
+                   transform: scale(1.0);
+                   -webkit-transform: scale(1.0);
+               }
+         }
+     </style>-->
     <style>
-        #ul {
-            width: 100px;
-            height: 100px;
-            background: red;
+        html {
+            font-size: 20px;
+        }
+
+        div {
+            font-size: 2rem;
         }
     </style>
 </head>
 <body>
-<div id="ul"></div>
+<div id="myDiv">Right click or Ctrl+click me to get a custom context menu.
+    Click anywhere else to get the default context menu.
+</div>
+<button id="myBtn">Click</button>
+<!--<ul id="myLinks">
+    <li id="goSomewhere">Go somewhere</li>
+    <li id="doSomething">Do something</li>
+    <li id="sayHi">Say hi</li>
+</ul>-->
+<!--<ul id="myMenu" style="position:absolute;visibility:hidden;background-color:
+silver">
+    <li><a href="http://www.nczonline.net">Nicholas’ site</a></li>
+    <li><a href="http://www.wrox.com">Wrox site</a></li>
+    <li><a href="http://www.yahoo.com">Yahoo!</a></li>
+</ul>-->
+<!--<div id="ul"></div>-->
 <!--<ul id="ul">
     <li>1</li>
     <li>2</li>
