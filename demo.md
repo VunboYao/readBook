@@ -814,6 +814,15 @@ console.log(data[0].name); // Zachary
     var obj = new Number(value); //构造函数
     alert(typeof obj); //"object" 
     ```
+- 为了解决可能会忘记使用 new 关键字的风险，我们可以通过判断 this 的值创建使用范围更高的构造器。
+    ```
+    function Book(name) {
+        if (!(this instanceof Book)) {
+            // the constructor was called without 'new'
+            return new Book(name);
+        }
+    } 
+    ```    
 
 ### Number类型
 - toFixed()，按照指定的小数位返回数值的字符串表示

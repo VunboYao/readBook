@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>modal模态框</title>
+    <style>
+        .modal-overlay {
+            position: fixed;
+            will-change: transform;
+            z-index: 9999;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+
+            opacity: 0;
+            background-color: rgba(0, 0, 0, .65);
+            transition: 1ms opacity ease;
+        }
+        .modal-overlay.modal-open {
+            opacity: 1;
+        }
+        .modal {
+            position: absolute;
+            z-index: 10000;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            max-width: 80vw;
+            padding: 30px 20px;
+
+            transition: 1ms opacity ease;
+            opacity: 0;
+
+            border-radius: 4px;
+            background-color: #fff;
+        }
+        .modal.modal-anchored {
+            top: 2vh;
+            transform: translate(-50%, 0);
+        }
+        .modal.open {
+            opacity: 1;
+        }
+
+        .modal-close {
+            font-family: Helvetica,Arial,sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 12px;
+
+            position: absolute;
+            top: 5px;
+            right: 5px;
+
+            padding: 5px 7px 7px;
+            cursor: pointer;
+            color: #fff;
+            outline: none;
+            background: #e74c3c;
+        }
+        .modal-close:hover {
+            background: #c0392b;
+        }
+        .modal-overlay.fade-and-drop {
+            display: block;
+            opacity: 0;
+            transition: 500ms opacity 500ms ease;
+        }
+        .modal-overlay.fade-and-drop.model-open {
+            top: 0;
+            transition: 500ms opacity ease;
+            opacity: 1;
+        }
+        .modal.fade-and-drop {
+            top: -300vh;
+            opacity: 1;
+            display: block;
+            transition: 500ms top ease;
+        }
+        .modal.fade-and-drop.model-open {
+            top: 50%;
+            transition: 500ms top 500ms ease;
+        }
+        .modal.fade-and-drop.model-open.modal-anchored {
+            transition: 500ms top 500ms ease;
+        }
+    </style>
+</head>
+<body>
+</body>
+<script src="Modal.js"></script>
+</html>
