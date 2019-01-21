@@ -1,0 +1,246 @@
+primitive		原始的
+convert 	兑换/变换
+requirements 要求
+file 文件
+alternatively 或者
+calling 调用
+calculate 计算
+markup 标记
+hex-encoded 十六进制编码
+agent 代理人
+flexible 灵活
+subset 子集
+inconsistencies 不一致性
+consistent 一致
+cruft 繁琐/残骸
+revealing  揭示
+gorgeous 华丽
+manipulating 操纵
+efficient 高效
+Preliminary 初步测试
+benchmarks 基准
+Incredibly 令人难以置信的是
+Sponsors 赞助商
+maintainers 维护者
+extra 额外
+modify 修改
+Shortcuts 快捷键
+Closure 闭包
+Mutation 突变
+centralized  集中
+snapshot  快照
+populate 填充
+discover 发现
+
+12-25
+pipeline 管道
+prospect 前景
+compiled 编辑
+intended 意/打算
+discouraged 泄气
+discourage 阻碍
+beginners 初学者
+industry 行业
+intense 激烈
+volatile 挥发/波动
+overwhelming 压倒/巨大的/势不可挡的
+desirable 合意/满意
+lifestyle 生活方式
+comfortable 自在
+uncomfortable 不安的
+accompanies 伴随
+keep in mind 记住/牢记
+plethora  过多
+prefer 比较
+interact 互动
+niche 合适的位置
+hone in 磨练
+granted 理所当然
+glance 一瞥
+foundations 基础
+candidate 候选人
+vanilla 引申义原本的/香草
+route 路线
+coveted 令人垂涎的
+utterly 完全
+overwhelmed 不堪重负
+decipher 解码/解读
+truly 真正地
+effectively 有效
+nuances 细微之处/意义
+delineate 描述
+improvements 改进
+analyze 解析
+determine 确定 
+review 复习
+effort 努力
+retain  保留
+tutorials 教程
+gaps 空白
+guided 引导
+involved  参与
+disadvantage 缺点/不利/劣势
+struggled  斗争
+motivated 动力
+invested 投资
+relationship 关系
+intimate 亲密的
+Balance 平衡
+theory 理论
+practicality 实际性
+programmer 程序员
+certain 某些/一定
+paradigms  范式
+extent 程度
+nested 嵌套
+performant 性能
+scope 范围
+within 在
+notation 表示法
+degree 学位
+That being said 话虽如此
+concepts 概念
+extremely  非常
+algorithms 算法
+solution 解决方案
+exact 精确/准确
+unique 独一无二的
+tailored 量身定制
+expected 预期
+regard 留意/问候/看待
+mentioned 提到
+as such 因此
+rates 速率
+thriving 兴盛的
+boost  促进
+check out 查看
+founded  建立/成立
+eye-opening experience.令人大开眼界的经历
+feel free 随意
+constantly 时刻
+intimidating 令人生畏/吓人的
+provide 提供
+opportunities 机会
+tackle tasks 解决任务
+scare  吓 
+volunteering 自愿
+challenging 具有挑战性的
+Eventually 终于
+hit 碰到
+viable 可行的
+reach out 伸出/寻求
+struggle with 与之斗争
+figure out 解决/找出
+variable 变量
+cut out 取代
+Thus 因此/从而
+self-esteem 自尊
+Multitasking 多任务处理
+ensure 确保
+mediocrity 平庸
+juggle 失去平衡/处理
+throughout 自始自终
+extremely 极其
+confusing 混乱的
+diagrams 图标
+complex 复杂
+task 任务/负责
+domain 域
+scale 规模/扩展
+use-cases 用例
+shortage 短缺
+available  可用的
+off the top of 脱颖而出
+research 研究/确定
+maintain 维护/保持
+integrating 整合
+implications 意义/含义/影响
+negative 负
+performance 性能
+suffer 遭受
+consequences  后果
+burnout 精疲力尽
+resent  怨恨
+user-facing 面向用户
+Sketch 草图
+positively 积极/明确地/肯定地
+impact 影响
+assume 假设/假定
+assumptions 臆测
+reasoning 原因
+principles 原则
+contain 包含
+pixels 像素
+shine 闪耀
+mentor 导师
+invaluable  无价
+practices 做法/练习/实践
+admire 钦佩
+re-evaluate 重新评估
+beneficial 有利
+mentorship 导师关系
+resume 简历
+impression  印象
+employer 雇主
+interview 采访/面试
+portfolio 投资组合/代表作品集
+kick-ass 很棒/很厉害
+imperative 命令的/必要的
+grammatical 语法的
+formatted 格式化的
+consistently 一贯地
+appropriately 适当的
+awesome 令人惊叹的
+subjective 主观的
+Failure 失败的
+vast 巨大的
+amounts 数量
+recognized 辨识/承认
+underlying 底层
+impostor syndrome 冒充者综合症
+enlightening 启发
+
+12-26
+Consortium 联盟
+dynamic 动态
+cascading 级联
+Traversal 遍历
+Range 范围
+
+12-27
+condition 条件
+occasionally 有时
+
+12-28
+subscription 订阅
+license 许可证/执照
+
+2019-1-4
+passion 热情
+
+2019-1-21
+immediately-invoked-function-expressions IIFE  立即调用函数表达式
+execution context 执行上下文（执行环境）
+scope chain 作用域链
+activation object 活动对象
+mark-and-sweep 标记清除
+reference counting 引用计数
+statement context 语句上下文
+LIFO（后进先出） Last-In-First-Out  栈
+FIFO（先进先出） First-In-First-Out 队
+UTC（Coordinated Universal Time，国际协调时间）
+GMT Greenwich Mean Time 格林威治时间
+PST Pacific Standard Time 太平洋标准时间
+case-insensitive 不区分大小写
+function declaration hoisting 函数声明提升
+parasitic 寄生
+retrieve 取会
+quirks detection 怪癖检测
+Closures 闭包
+literals 字面量
+hint 示意
+optimization 优化
+potentially  可能
+
+
+
