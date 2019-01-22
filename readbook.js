@@ -1233,7 +1233,6 @@ console.log(isSupported);*/
         }
     }
 }*/
-
 /*function handleGestureEvent(e) {
     let output = document.getElementById('myDiv')
     switch (e.type) {
@@ -1251,17 +1250,14 @@ console.log(isSupported);*/
 document.addEventListener('gesturestart', handleGestureEvent)
 document.addEventListener('gestureend', handleGestureEvent)
 document.addEventListener('gesturechange', handleGestureEvent)*/
-
-
-let btn = document.getElementById('myBtn')
+/*let btn = document.getElementById('myBtn')
 // 创建事件对象
 let event = document.createEvent('MouseEvents');
 // 初始化事件对象
 event.initMouseEvent('click', true, true, document.defaultView, 0, 0, 0, 0,0,false,false,false,false,0, null);
 // 触发事件
-btn.dispatchEvent(event);
+btn.dispatchEvent(event);*/
 
-
-
-
-
+let text = '中英文自建需要 english 增加空格'
+let pat = /(\w+)/ig;
+console.log(text.replace(pat, ' $1 ').replace(/\s{2,}/ig,' '))
