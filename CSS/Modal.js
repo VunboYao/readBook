@@ -17,7 +17,8 @@
             content: '',
             maxWidth: 600,
             minWidth: 280,
-            overlay: true
+            overlay: true,
+            autoOpen: false
         }
         // 通过扩展arguments中传递的缺省值来创建选项
         if (arguments[0] && typeof arguments[0] === 'object') {
@@ -143,11 +144,12 @@
             if (el.style.WebkitTransition) {
                 return 'webkitTransitionEnd'
             }
-            return 'transitionEnd'
+            return 'transitionend'
         }
     }
 })();
 let myModal = new Modal({
+    className: 'custom-animation',
     content: `<p>I am Modal</p>`,
     maxWidth: 610,
 });

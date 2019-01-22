@@ -40,7 +40,7 @@
             top: 2vh;
             transform: translate(-50%, 0);
         }
-        .modal.open {
+        .modal.modal-open {
             opacity: 1;
         }
 
@@ -68,7 +68,7 @@
             opacity: 0;
             transition: 500ms opacity 500ms ease;
         }
-        .modal-overlay.fade-and-drop.model-open {
+        .modal-overlay.fade-and-drop.modal-open {
             top: 0;
             transition: 500ms opacity ease;
             opacity: 1;
@@ -79,12 +79,19 @@
             display: block;
             transition: 500ms top ease;
         }
-        .modal.fade-and-drop.model-open {
+        .modal.fade-and-drop.modal-open {
             top: 50%;
             transition: 500ms top 500ms ease;
         }
-        .modal.fade-and-drop.model-open.modal-anchored {
+        .modal.fade-and-drop.modal-open.modal-anchored {
             transition: 500ms top 500ms ease;
+        }
+        .modal.custom-animation {
+            transition: 500ms transform ease;
+            transform: translate(-50%, -50%) scale(0);
+        }
+        .modal.custom-animation.modal-open {
+            transform: translate(-50%, -50%) scale(1);
         }
     </style>
 </head>
