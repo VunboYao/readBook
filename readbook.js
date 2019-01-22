@@ -1068,8 +1068,8 @@ for (let i = 0; i < 100; i++) {
     fragment.appendChild(p);
 }
 */
-/*// 无限加载
-let loading = document.querySelector('.loading');
+// 无限加载
+/*let loading = document.querySelector('.loading');
 let flag = true;
 window.addEventListener('scroll', (e) => {
     let top = document.documentElement.scrollTop; // 获取页面滚动的高度
@@ -1078,29 +1078,28 @@ window.addEventListener('scroll', (e) => {
     console.log("当前滚动高度" + top);
     console.log("总的高度" + allH);
     // 300的误差即继续加载
-    if (top > (allH - crH - 500)) { // 加载区间判定
+    if (top > (allH - crH - 600)) { // 加载区间判定
         if (flag) {
             // 中间件判定正在加载
             flag = false;
             loading.style.display = 'block'; // 显示loading
-            async function f() { // 异步判定
-                let b = await setTimeout(() => {
-                    let fragment = document.createDocumentFragment();
-                    for (let i = 0; i < 50; i++) {
-                        let p = document.createElement('li');
-                        p.textContent = i;
-                        fragment.appendChild(p);
-                    }
-                    document.getElementById('ul').appendChild(fragment);
-                    flag = true; // 加载结束
-                    loading.style.display = 'none'; // 关闭loading
-                }, 1000);
-            }
             f();
         }
     }
-})*/
-
+})
+async function f() { // 异步判定
+    let b = await setTimeout(() => {
+        let fragment = document.createDocumentFragment();
+        for (let i = 0; i < 100; i++) {
+            let p = document.createElement('li');
+            p.textContent = i;
+            fragment.appendChild(p);
+        }
+        document.getElementById('ul').appendChild(fragment);
+        flag = true; // 加载结束
+        loading.style.display = 'none'; // 关闭loading
+    }, 500);
+}*/
 /*window.addEventListener('click', function (e) {
     console.log(e.clientX);
     console.log(e.clientY);
@@ -1257,7 +1256,90 @@ let event = document.createEvent('MouseEvents');
 event.initMouseEvent('click', true, true, document.defaultView, 0, 0, 0, 0,0,false,false,false,false,0, null);
 // 触发事件
 btn.dispatchEvent(event);*/
-
-let text = '中英文自建需要 english 增加空格'
+/*let text = '中英文自建需要 english 增加空格'
 let pat = /(\w+)/ig;
-console.log(text.replace(pat, ' $1 ').replace(/\s{2,}/ig,' '))
+console.log(text.replace(pat, ' $1 ').replace(/\s{2,}/ig,' '))*/
+/*
+document.documentElement.addEventListener('mousewheel', function (e) {
+    console.log(e.wheelDelta);
+})*/
+/*
+var textbox = document.getElementById('myTextbox');
+var event;
+if (document.implementation.hasFeature('KeyboardEvents', '3.0')) {
+    event = document.createEvent('KeyboardEvent');
+    event.initKeyboardEvent('keydown', true, true, window, 'a', 0, 'Shift', 0);
+}
+textbox.dispatchEvent(event)
+*/
+/*var textbox = document.getElementById('myTextbox');
+var event = document.createEvent('Events');
+event.initEvent('keypress', true, true);
+event.view = document.defaultView;
+event.altKey = false;
+event.keyCode = 65;
+event.charCode = 65;
+textbox.dispatchEvent(event);*/
+/*let li = document.createElement('li');
+
+var event = document.createEvent('MutationEvents')
+event.initMutationEvent('DOMNodeInserted', true, false, li, '', '','', 0);
+document.documentElement.dispatchEvent(event);*/
+
+
+let form = document.forms[0];
+let sub = form.elements[1];
+form.addEventListener('submit', function (e) {
+    sub.disabled = true;
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

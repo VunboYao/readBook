@@ -242,5 +242,7 @@ hint 示意
 optimization 优化
 potentially  可能
 
-
-
+2019-1-23
+Definitive 决定性的、最后的
+acceleration 促进
+Gravity 重力

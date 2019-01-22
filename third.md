@@ -135,29 +135,29 @@ window.addEventListener('scroll', (e) => {
     let crH = document.documentElement.clientHeight;// 视图区高度
     console.log("当前滚动高度" + top);
     console.log("总的高度" + allH);
-    // 300的误差即继续加载
+    // 500的误差即继续加载
     if (top > (allH - crH - 500)) { // 加载区间判定
         if (flag) {
             // 中间件判定正在加载
             flag = false;
             loading.style.display = 'block'; // 显示loading
-            async function f() { // 异步判定
-                let b = await setTimeout(() => {
-                    let fragment = document.createDocumentFragment();
-                    for (let i = 0; i < 50; i++) {
-                        let p = document.createElement('li');
-                        p.textContent = i;
-                        fragment.appendChild(p);
-                    }
-                    document.getElementById('ul').appendChild(fragment);
-                    flag = true; // 加载结束
-                    loading.style.display = 'none'; // 关闭loading
-                }, 1000);
-            }
             f();
         }
     }
-}) 
+})
+async function f() { // 异步判定
+    let b = await setTimeout(() => {
+        let fragment = document.createDocumentFragment();
+        for (let i = 0; i < 50; i++) {
+            let p = document.createElement('li');
+            p.textContent = i;
+            fragment.appendChild(p);
+        }
+        document.getElementById('ul').appendChild(fragment);
+        flag = true; // 加载结束
+        loading.style.display = 'none'; // 关闭loading
+    }, 1000);
+}
 ```
 
 ### 焦点事件
@@ -207,7 +207,7 @@ window.addEventListener('scroll', (e) => {
 6. click
 7. dblclick
 
-> 使用以下代码可以检测浏览器是否支持以上 DOM2 级事件（除 dbclick 、 mouseenter 和mouseleave 之外）：`var isSupported = document.implementation.hasFeature("MouseEvents", "2.0");`
+> 使用以下代码可以检测浏览器是否支持以上 DOM2 级事件（除 dbclick 、 mouseenter 和 mouseleave 之外）：`var isSupported = document.implementation.hasFeature("MouseEvents", "2.0");`
 
 **1.客户区坐标位置**
 
@@ -272,6 +272,16 @@ document.addEventListener('click', function (e) {
 
 - mousewheel 鼠标滚轮事件。包含一个特殊的wheelDelta 属性，当用户向前滚动时，wheelDelta 是120的倍数；当用户向后滚动鼠标滚轮时，wheelDelta 是 -120 的倍数。
 - Firefox 中是DOMMouseScroll事件，滚动信息则保存在detail属性中了.当向前滚动鼠标滚轮时，这个属性的值是 -3 的倍数，当向后滚动鼠标滚轮时，这个属性的值是 3 的倍数
+
+```
+getWheelDelta: function (e) {
+        if (e.wheelDelta) {
+            return (client.engine.opera && client.engine.opera < 9.5 ? -event.wheelDelta : event.wheelDelta);
+        } else {
+            return -event.detail * 40;
+        }
+    }, 
+```
 
 **9. 触摸设备**
 - 不支持dblclick 事件
@@ -652,6 +662,86 @@ event.initMouseEvent('click', true, true, document.defaultView, 0, 0, 0, 0,0,fal
 // 触发事件
 btn.dispatchEvent(event); 
 ```
+
+**2.模拟键盘事件**
+
+DOM3级规定，调用 createEvent() 并传入 ‘KeyboardEvent' 就可以创建一个键盘事件。返回的事件对象会包含一个initKeyEvent()方法，这个方法接收下列参数。
+- type(字符串)：表示要触发的事件类型，如"keydown".
+- bubbles(布尔值)：表示事件是否应该冒泡。为精确模拟鼠标事件，应该设置为true.
+- cancelable（布尔值）：表示事件是否可以取消。为精确模拟鼠标事件，应该设置为true.
+- view(AbstractView): 与事件关联的视图。这个参数几乎总是要设置为 document.defaultView.
+- key(布尔值)：表示按下的键盘。
+- location(整数)：表示按下了哪里的键。0 表示默认的主键盘，1表示左，2表示右，3表示数字键盘，4表示移动设备（即虚拟键盘）,5表示手柄。
+- modifiers(字符串)：空格分隔的修改键列表，如‘shift'.
+- repeat(整数)： 在一行中按了这个键多次。
+
+# 第14章：表单脚本
+
+HTMLFormElement 类型表示表单 <form\>
+- acceptCharset: 服务器能够处理的字符集；等价于 HTML 中的 accept-charset 特性。
+- action: 接受请求的 URL；等价于 HTML 中的 action 特性。
+- elements: 表单中所有控件的集合（HTMLCollection）
+- enctype: 请求的编码类型；等价于 HTML 中的 enctype 特性
+- length: 表单中控件的数量
+- method: 要发送的 HTTP 请求类型，通常是 'get'或'post';等价于 HTML 的 method 特性
+- name: 表单的名称；等价于 HTML 的 name 特性
+- reset(): 将所有表单域重置为默认值
+- submit(): 提交表单。
+- target: 用于发送请求和接收响应的窗口名称；等价于 HTML 的 target 特性。
+
+取得<form\>元素引用的方式
+- 通过ID获取
+- 通过 document.forms 可以取得页面中所有的表单。通过数值索引或 name 值来获取特定的表单。
+
+### 提交表单
+
+用户单击按钮或图像按钮时，就会提交表单。使用<input\>或<button\>都可以定义提交按钮。将其type特性设置为‘submit'即可。图像按钮则是<input\>的特性设置为'image'来定义。
+- 只要表单中有提交按钮，就可以通过回车键提交表单。
+- 通过 preventDefault() 方法可以阻止事件的默认行为，取消表单提交。
+- 编程方式提交表单：form.submit()。**不会触发 submit 事件，调用之前先验证表单数据**
+- 提交表单的问题: **重复提交表单**,因此，在第一次提交表单后，就禁用提交按钮，或利用 onsubmit 事件处理程序取消后续的表单提交操作。
+
+### 重置表单
+
+- type特性值为 'reset'的 input 或 button 都可以创建重置按钮。
+- 可以通过 preventDefault() 来阻止重置表单。
+- 编程方式重置表单：form.reset().**与调用 submit() 方法不同，调用 reset() 方法会像单击重置按钮一样触发 reset 事件**
+- 少用
+
+### 表单字段
+
+- 每个表单都有 elements 属性，该属性是表单中所有表单元素（字段）的集合。elements 集合是一个有序列表，可以通过位置和 name 特性来访问。
+- 如果有多个表单控件都在使用同一个 name(如单选按钮)，那么就会返回以该 name 命名的一个 NodeList.
+- 如果通过 elements[0] 访问相同 name 的控件，则只返回第一个。
+
+**1. 共有的表单字段属性**
+- disabled: 布尔值，表示当前字段是否被禁用
+- form： 指向当前字段所属表单的指针；只读。
+- name: 当前字段的名称。
+- readOnly: 布尔值，表示当前字段是否只读。
+- tabIndex: 表示当前字段的切换(tab)序号
+- type: 当前字段的类型，如'checkbox', 'radio'，and so on.
+- value: 当前字段将被提交给服务器的值。对文件字段来说，只读。包含着文件在计算机中的路径
+- 防止重复提交：监听提交事件后，设置 disabled = true; 不能通过 onclick 事件处理程序来实现这个功能，原因是不同浏览器之间存在‘时差’.
+
+说明|HTML示例|type属性的值
+---|---|---
+单选列表|<select\>...</select\>|'select-one'
+多选列表|<select multiple\>...</select\>|'select-multiple'
+自定义按钮|<button\>...</button\>|'submit'
+自定义非提交按钮|<button type='button'\>...</button\>|'button'
+自定义重置按钮|<button type='reset'\>...</button\>|'reset'
+自定义提交按钮|<button type='submit'\>...</button\>|'submit'
+
+> input 和 button 元素的 type 属性是可以动态修改的，而 select 元素的type属性是只读的。
+
+
+
+
+
+
+
+
 
 
 
