@@ -81,5 +81,16 @@ let EventUtil = {
         } else {
             return e.keyCode;
         }
+    },
+    getClipboardText: function (e) {
+        let clipboardData = e.clipboardData || window.clipboardData;
+        return clipboardData.getData('text');
+    },
+    setClipboardText: function (e, value) {
+        if (e.clipboardData) {
+            return e.clipboardData.setData('text/plain', value);
+        } else if (window.clipboardData) {
+            return window.clipboardData.setData('text', value);
+        }
     }
 }

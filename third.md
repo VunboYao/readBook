@@ -735,20 +735,146 @@ HTMLFormElement 类型表示表单 <form\>
 
 > input 和 button 元素的 type 属性是可以动态修改的，而 select 元素的type属性是只读的。
 
+**2.共有的表单字段方法**
+- focus() 和 blur() 方法。
+- autofocus 属性能自动把焦点移动到相应字段。布尔值。
+- 默认情况下，只有表单字段可以获得焦点。对于其他元素，如果先将其**tabIndex**属性设置为-1，然后再调用 focus() 方法，可以让这些元素获得焦点。
 
+**3.共有的表单字段事件**
+- blur:当前字段失去焦点时触发。
+- change: 对于 input 和 textarea 元素，在它们失去焦点且 value 值改变时触发；对于 select 元素，在其选项改变时触发。
+- focus: 当前字段获得焦点时触发。
 
+## 文本框脚本
 
+- input 元素，单行文本框，type 特性设置为 'text'，通过 size 特性，指定文本框中显式的字符数。通过 value 设置本文的初始值，而 maxlength 特性则可以指定文本框接受的最大字符数。
+- textarea元素；多行文本框；rows 和 cols 特性，rows 指定文本框的字符行数， cols指定文本框的字符列数。初始值放在 <textarea\>和<\/textarea\>之间。**不能指定最大字符数**
+- 无论这两种文本框在标记中有什么区别，但它们都会将用户输入的内存保存在 value 属性中。可通过这个属性读取和设置文本框的值。
+- 建议使用 value 属性读取或设置文本框的值，不建议使用标准的DOM方法。即 setAttribute() 设置 <input\>元素的value特性，也不要去修改<textarea\>元素的第一个子节点。原因很简单：对value属性所作的修改，不一定会反映在DOM中。
 
+### 选择文本
 
+- input 和 textarea 都支持 select()方法，这个方法用于选择文本框中的所有文本。获得焦点并选择所有文本。**大幅度提升表单的易用性**
 
+**1.选择(select)事件**
+- 与select()方法对应的，是一个select事件。在选择了文本框中的文本（而且要释放鼠标）时，就会触发事件。IE8中，选择后就会触发，不必释放鼠标。
 
+**2.取得选择文本**
+- selectionStart 和 selectionEnd。保存基于0的数值，表示所选择文本的范围。
+    ```
+    textbox.addEventListener('select', function (e) {
+        console.log(getSelectedText(this));
+    })
+    
+    function getSelectedText(text) {
+        return text.value.substring(text.selectionStart, text.selectionEnd);
+    } 
+    ```
 
+**3.选择部分文本**
+- setSelectionRange()方法。接收2个参数：要选择的第一个字符的索引和要选择的最后一个字符之后的索引（类似substring()方法的两个参数）。
+    ```
+    textbox.value = 'Hello World';
+    textbox.focus();
+    console.log(textbox.setSelectionRange(0, 3));
+    // 要看到选择的文本，必须在调用 setSelectionRange()之前或之后立即将焦点设置到文本框. 
+    ```
 
+### 过滤输入
 
+**1.屏蔽字符**
+- 屏蔽所有输入，文本框只读。
+    ```
+    textbox.addEventListener('keypress', function(e){
+        e.preventDefault();
+    }) 
+    ```
+- 只允许输入数字
+    ```
+    textbox.addEventListener('keypress', function(e){
+        let charCode = e.charCode;
+        if (!/\d/.test(String.fromCharCode(charCode))) {
+            e.preventDefault();
+        }
+    }) 
+    // 当复制时会输入字符串
+    ```
 
+**2.操作剪贴板**
+- beforecopy: 在发生复制操作前触发
+- copy: 在发生复制操作时触发。
+- beforecut:在发生剪切操作前触发
+- cut: 在发生剪切操作时触发
+- beforepaste: 在发生粘贴操作前触发
+- paste: 在发生粘贴操作时触发
 
+**访问剪贴板中的数据，使用 clipboardData 对象：**
+- IE中，这个对象是在 window 对象中的属性；
+- 其他是在 event 对象的属性中。
+- 其他只在发生剪贴板事件期间使用该对象。IE中随时可以使用。
+- 防止对剪贴板未授权使用。最后在事件期间使用。
 
+**clipboardData 对象的方法**
+- getData(),获取剪贴板数据。IE中两种数据格式：'text'和‘URL’，其他是一种MIME类型；可用‘text'代表 ‘text/plain'。
+- setData(),设置数据。第一个参数也是数据类型，第二个参数是要放在剪贴板中的文本。第一个参数，IE支持 ‘text’和 'URL'，其他支持MIME类型。但不能识别‘text'，支持 'text/plain'。
+- clearData(),清除剪贴板数据。
 
+```
+    // 兼容模式
+    getClipboardText: function (e) {
+        let clipboardData = e.clipboardData || window.clipboardData;
+        return clipboardData.getData('text');
+    },
+    setClipboardText: function (e, value) {
+        if (e.clipboardData) {
+            return e.clipboardData.setData('text/plain', value);
+        } else if (window.clipboardData) {
+            return window.clipboardData.setData('text', value);
+        }
+    } 
+```
+
+```
+textbox.addEventListener('paste', function (e) {
+    let text = e.clipboardData.getData('text'); // 获取剪贴板数据
+    // 如果是非数字，禁止粘贴
+    if (!/^\d*$/.test(text)) {
+        e.preventDefault();
+    }
+}) 
+```
+
+```
+// 复制版权后缀
+document.body.addEventListener('copy', function (e) {
+    // 禁止默认的复制事件
+    e.preventDefault();
+
+    // 新的剪切板数据
+    let newText = null;
+
+    // 获取复制的文本
+    let copyText = window.getSelection().toString();
+
+    // 如果超出10字符，则添加版权
+    if (copyText.length >= 10) {
+        newText = copyText + `\n${'作者：YYB'}\n${'链接：http://www.vunbo.com/'}\n${'著作版权归作者所有，未经转载，请勿转载！'}`;
+    } else {
+        newText = copyText;
+    }
+    
+    // 兼容模式
+    if (e.clipboardData) {
+        return e.clipboardData.setData('text/plain', newText);
+    } else {
+        // IE模式下
+        return window.clipboardData.setData('text/plain', newText);
+    }
+}); 
+```
+
+> 禁止复制、剪切、右键等。事件 return false 或者 e.preventDefault()阻止默认事件。
+> CSS 中 user-select: none; 禁止文本选择
 
 
 

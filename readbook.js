@@ -1285,40 +1285,100 @@ textbox.dispatchEvent(event);*/
 var event = document.createEvent('MutationEvents')
 event.initMutationEvent('DOMNodeInserted', true, false, li, '', '','', 0);
 document.documentElement.dispatchEvent(event);*/
-
-
-let form = document.forms[0];
+/*let form = document.forms[0];
 let sub = form.elements[1];
 form.addEventListener('submit', function (e) {
     sub.disabled = true;
+})*/
+/*
+let div = document.getElementById('myDiv');
+div.tabIndex = -1;
+div.focus();*/
+/*let textbox = document.forms[0].elements[1];
+textbox.addEventListener('focus', function (e) {
+    if (e.target.style.backgroundColor !== 'red') {
+        e.target.style.backgroundColor = 'yellow';
+    }
+})
+textbox.addEventListener('blur', function (e) {
+    if (/[^\d]/.test(e.target.value)) {
+        e.target.style.backgroundColor = 'red';
+    } else {
+        e.target.value.backgroundColor = '';
+    }
+})
+textbox.addEventListener('change', function (e) {
+    let target = e.target;
+    // alert(target.value);
+})*/
+
+let textbox = document.forms[0].elements[1];
+/*textbox.addEventListener('select', function (e) {
+    console.log(getSelectedText(this));
 })
 
+function getSelectedText(text) {
+    return text.value.substring(text.selectionStart, text.selectionEnd);
+}*/
+/*
+textbox.value = 'Hello World';
+textbox.focus();
+console.log(textbox.setSelectionRange(0, 3));
+*/
+/*textbox.addEventListener('keypress', function (e) {
+    let target = e.target;
+    let charcode = e.charCode;
+    if (!/\d/.test(String.fromCharCode(charcode))) {
+        e.preventDefault();
+    }
+})*/
+/*textbox.addEventListener('copy', function (e) {
+    e.preventDefault(); // 取消默认的复制事件
+    let text = window.getSelection().toString(); // 获取复制的内容
+    if (text.length >= 10) {
+        text += '\n'
+            + '作者：YYB\n'
+            + '链接：https://www.baidu.com/\n'
+            + '来源：666\n'
+            + '著作版权归作者所有。请勿转载!'
+        return e.clipboardData.setData('text', text); // 返回新的剪切板数据
+    } else {
+        return e.clipboardData.setData('text', text); // 返回原来的数据
+    }
+})*/
+/*textbox.addEventListener('paste', function (e) {
+    let text = e.clipboardData.getData('text'); // 获取剪贴板数据
+    // 如果是非数字，禁止粘贴
+    if (!/^\d*$/.test(text)) {
+        e.preventDefault();
+    }
+})*/
+// 复制版权后缀
+/*document.body.addEventListener('copy', function (e) {
+    // 禁止默认的复制事件
+    e.preventDefault();
 
+    // 新的剪切板数据
+    let newText = null;
 
+    // 获取复制的文本
+    let copyText = window.getSelection().toString();
 
+    // 如果超出10字符，则添加版权
+    if (copyText.length >= 10) {
+        newText = copyText + `\n${'作者：YYB'}\n${'链接：http://www.vunbo.com/'}\n${'著作版权归作者所有，未经转载，请勿转载！'}`;
+    } else {
+        newText = copyText;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // 兼容模式
+    if (e.clipboardData) {
+        return e.clipboardData.setData('text/plain', newText);
+    } else {
+        // IE模式下
+        return window.clipboardData.setData('text/plain', newText);
+    }
+});*/
 
 
 

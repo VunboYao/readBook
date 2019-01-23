@@ -93,7 +93,7 @@ certain 某些/一定
 paradigms  范式
 extent 程度
 nested 嵌套
-performant 性能
+performance 性能
 scope 范围
 within 在
 notation 表示法
@@ -246,3 +246,4 @@ potentially  可能
 Definitive 决定性的、最后的
 acceleration 促进
 Gravity 重力
+guidelines 指针
