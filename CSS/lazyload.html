@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        img {
+            display: block;
+            width: 100%;
+            height: 600px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<img data-src="./../img/bg.jpg" alt="">
+<img data-src="./../img/e.png" alt="">
+<img data-src="./../img/f.jpg" alt="">
+<img data-src="./../img/g.jpg" alt="">
+<img data-src="./../img/i.jpg" alt="">
+<img data-src="./../img/jinyong.jpg" alt="">
+<img data-src="./../img/bg.jpg" alt="">
+<img data-src="./../img/e.png" alt="">
+<img data-src="./../img/f.jpg" alt="">
+<img data-src="./../img/g.jpg" alt="">
+<img data-src="./../img/i.jpg" alt="">
+<img data-src="./../img/jinyong.jpg" alt="">
+</body>
+<!--<script>
+    let imgs = document.querySelectorAll('img');
+    function getTop(e) {
+        let T = e.offsetTop;
+        console.log(T);
+        while(e = e.offsetParent) {
+            T += e.offsetTop;
+        }
+        return T;
+    }
+    function lazyLoad(imgs) {
+        let h = document.documentElement.clientHeight;
+        let s = document.documentElement.scrollTop || document.body.scrollTop;
+        for (let i = 0; i < imgs.length; i++) {
+            if (h + s > getTop(imgs[i])) {
+                imgs[i].src = imgs[i].getAttribute('data-src');
+            }
+        }
+    }
+    window.onload = window.onscroll = function () {
+        lazyLoad(imgs);
+    }
+</script>-->
+<script>
+    let img = document.querySelectorAll('img'); // 获取所有的图片
+
+    function isIn(el) {
+        // 获取元素相对client 的坐标。
+        let bound = el.getBoundingClientRect();
+        // 获取客户端高度
+        let clientHeight = window.innerHeight;
+        console.log(bound.top);
+        // 返回布尔值。如果顶部小于等于客户端高度。则进入client可视区
+        return bound.top <= clientHeight;
+    }
+
+    function check() {
+        // 遍历，如果进入可视区，则加载
+        Array.from(img).forEach(el => {
+            if (isIn(el)) {
+                loadImg(el);
+            }
+        })
+    }
+
+    function loadImg(el) {
+        // 如果没有src,则获取资源。
+        if (!el.src) {
+            let newSrc = el.dataset.src;
+            el.src = newSrc;
+        }
+    }
+
+    // 初始加载，滚动加载
+    window.onload = window.onscroll = function () {
+        check();
+    }
+</script>
+</html>
