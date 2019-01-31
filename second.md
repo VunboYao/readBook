@@ -1122,7 +1122,16 @@ LI
 - 但在使用 TreeWalker 对象时， NodeFilter.FILTER_SKIP 会跳过相应节点继续前进到子树中的下一个节点，而 **NodeFilter.FILTER_REJECT 则会跳过相应节点及该节点的整个子树**。
 - TreeWalker 类型还有一个属性，名叫 currentNode ，表示任何遍历方法在上一次遍历中返回的节点。通过设置这个属性也可以修改遍历继续进行的起点
 
-## 范围 ？
+## 范围
+
+### DOM中的范围
+
+DOM2 级在 Document 类型中定义了 createRange() 方法。使用 hasFeature() 或直接检测该方法，都可以确定浏览器是否支持范围。兼容浏览器中，这个方法属于 document 对象。
+```
+let supportsRange = document.implementation.hasFeature('Range', '2.0');
+let alsoSupportsRange = (typeof document.createRange === 'function');
+console.log(supportsRange, alsoSupportsRange); 
+```
 
 
 

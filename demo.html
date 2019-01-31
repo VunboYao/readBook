@@ -278,21 +278,43 @@ silver">
     <div class="bounce3"></div>
 </div>-->
 <!--<input type="text" id="myTextbox">-->
-<form action="">
+<!--<form action="">
     <fieldset>
         <legend>44444444</legend>
-        <textarea name="textarea" id="" cols="30" rows="10">一段文字</textarea>
-        <select name="" id="">
+        <textarea name="textarea" id="1" cols="30" rows="10">一段文字</textarea>
+        <select name="" id="2">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
         </select>
     <input type="text" value="Submit Form">
-    <input type="image" src="img/bg.jpg" width="200">
     </fieldset>
 </form>
-<div>These are some test word about the clipboardData.Includ copy cut paste and so on.</div>
+<div>These are some test word about the clipboardData.Includ copy cut paste and so on.</div>-->
+<form action="" novalidate>
+    <input type='text' pattern='\d+' name='count' value="5">
+    <input type="number" min="5" value="10">
+    <select name="location" id="selLocation1" multiple>
+        <option value="Sunnyvale, CA">Sunnyvale</option>
+        <option value="Los Angeles, CA">Los Angeles</option>
+        <option value="Mountain View, CA" selected>Mountain View</option>
+        <option value="" selected>China</option>
+        <option selected>Australia</option>
+    </select>
+    <select name="location" id="selLocation2" multiple>
+        <option value="Sunnyvale, CA">Sunnyvale</option>
+        <option value="Los Angeles, CA">Los Angeles</option>
+        <option value="Mountain View, CA" selected>Mountain View</option>
+        <option value="" selected>China</option>
+        <option selected>Australia</option>
+    </select>
+    <input type="submit" value="提交" formnovalidate>
+    <div class="editable" id="richedit" contenteditable="true">1221</div>
+</form>
+<iframe name="richedit" src="iframe.html" frameborder="1" style="height: 100px;width: 100px;"></iframe>
+<button id="btn">Btn</button>
+
 <script src="handle.js"></script>
 <script src="readbook.js"></script>
 </body>

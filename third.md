@@ -727,7 +727,7 @@ HTMLFormElement 类型表示表单 <form\>
 说明|HTML示例|type属性的值
 ---|---|---
 单选列表|<select\>...</select\>|'select-one'
-多选列表|<select multiple\>...</select\>|'select-multiple'
+多选列表|<select&nbsp;multiple\>...</select\>|'select-multiple'
 自定义按钮|<button\>...</button\>|'submit'
 自定义非提交按钮|<button type='button'\>...</button\>|'button'
 自定义重置按钮|<button type='reset'\>...</button\>|'reset'
@@ -868,7 +868,7 @@ document.body.addEventListener('copy', function (e) {
         return e.clipboardData.setData('text/plain', newText);
     } else {
         // IE模式下
-        return window.clipboardData.setData('text/plain', newText);
+        return window.clipboardData.setData('text', newText);
     }
 }); 
 ```
@@ -876,16 +876,334 @@ document.body.addEventListener('copy', function (e) {
 > 禁止复制、剪切、右键等。事件 return false 或者 e.preventDefault()阻止默认事件。
 > CSS 中 user-select: none; 禁止文本选择
 
+### 自动切换焦点
+
+```
+<form action="">
+    <input type="text" name="tel1" id="texTel1" maxlength="3">
+    <input type="text" name="tel1" id="texTel2" maxlength="3">
+    <input type="text" name="tel1" id="texTel3" maxlength="4">
+</form> 
+;(function () { // 立即执行函数
+   function tabForward(e) {
+       let target = e.target; // 获取target
+       // 判断当前输入的值长度
+       if (target.value.length === target.maxLength) {
+           // 获取父级表单
+           let form = target.form;
+           for (let i = 0; i < form.elements.length; i++) {
+               // 判断当前input
+               if (form.elements[i] === target) {
+                   // 如果存在下一个则跳转并自动focus
+                   if (form.elements[i+1]) {
+                       form.elements[i+1].focus();
+                   }
+                   return;
+               }
+           }
+       }
+   }
+   let textbox1 = document.getElementById('texTel1');
+   let textbox2 = document.getElementById('texTel2');
+   let textbox3 = document.getElementById('texTel3');
+    textbox1.addEventListener('keyup', tabForward)
+    textbox2.addEventListener('keyup', tabForward)
+    textbox3.addEventListener('keyup', tabForward)
+})()
+```
+
+### HTML5约束验证API
+
+**1.必填字段**
+- require属性。适用于 input, textarea, select
+- 通过该属性可以检测某个字段是否为必填字段
+    `let isUsernameRequired = document.forms[0].elements['username'].required`
+- 使用下面的代码可以测试浏览器是否支持required属性。
+    `let isRequiredSupported = 'required' in document.createElement('input')`
+
+**2.其他输入类型**
+- email, 电子邮件格式
+- url, URL模式。
+
+**3.数值范围**
+- number
+- range
+- datetime-local
+- date
+- month
+- week
+- time
+- step属性（从min到max的两个刻度间的差值）
+- stepUp()和stepDown()，接受一个可选参数：要在当前值基础上加上或减去的数值。（默认加或减1）
+
+**4.输入模式**
+- HTML5新增pattern属性。该属性的值是一个正则表达式，用于匹配文本框中的值。
+- `<input type='text' pattern='\d+' name='count'>`
+- 注意，模式的开头和末尾不用加^和$符号。与其他输入类型相似，指定的pattern也不能阻止用户输入无效的文本。这个模式应用给值，浏览器来判断值是否有效，还是无效。在JavaScript中可以通过pattern 属性访问模式。
+
+**5.检测有效性**
+- 使用checkValidity()方法可以检测表单中的某个字段是否有效。所有表单字段都有个方法，如果字段的值有效，这个方法返回 true, 否则返回 false。
+- 要检测整个表单是否有效，可以在表单自身调用 checkValidity() 方法。如果所有表单字段都有效，这个方法返回 true;如果一个字段无效，则返回 false
+    ```
+    if (document.forms[0].checkValidity()) {
+        // 表单有效，继续
+    } else {
+        // 表单无效
+    } 
+    ```
+- validity 属性详细描述字段为什么有效/无效。这个对象中包含一系列属性，每个属性会返回一个布尔值。
+    - customError: 如果设置了 setCustomValidity()，则为true, 否则返回 false
+    - patternMismatch: 如果值与指定的pattern属性不匹配，返回true
+    - rangeOverflow: 如果值比max值大，返回true
+    - rangeUnderflow: 如果值比min值小，返回true
+    - stepMisMatch: 如果min和max之间的步长值不合理，返回true
+    - tooLong: 如果值的长度超过了maxlength属性的长度。返回true
+    - typeMisMatch: 如果值不是‘mail' 或 'url'要求的格式，返回true
+    - valid: 如果这里的其他属性都是false, 返回true.
+    - valueMissing: 如果标注为 required 的字段中没有值，返回true
+    ```
+    if (input.validity && !input.validity.valid) {
+        if (input.validity.valueMissing) {
+            alert('Please specify a value')
+        } else if (input.validity.typeMismatch) {
+            alert('Please enter an email address')
+        } else {
+            alert('Value is invalid')
+        }
+    } 
+    ```
+
+**6.禁用验证**
+- 通过给 form 设置 novalidate 属性，可以告诉表单不进行验证
+- 在 JavaScript 中使用 noValidate 属性可以取得或设置这个属性的值，如果存在，值为true,如果不存在，值为 false  `<form action="" novalidate>`
+- 如果一个表单中有多个提交按钮，为了指定点击某个提交按钮不必验证表单，可以在相应的按钮上添加 formnovalidate 属性。  `<input type="submit" value="提交" formnovalidate>`  
+- 通过 JavaScript 设置这个属性。`document.forms[0].elements["btnNoValidate"].formNoValidate = true; // 禁用验证`    
+    
+## 选择框脚本
+
+选择框是通过 select 和 option 元素创建的。提供了下列属性和方法
+- add(newOption, relOption): 向控件中插入新的 option 元素，其位置在相关项(relOption)之前。
+- multiple: 布尔值，表示是否允许多项选择；等价于HTML中的multiple 特性。
+- options: 控件中所有 option 元素的 HTMLCollection
+- remove(index): 移除给定位置的选项
+- selectedIndex: 基于0的选中项的索引，如果没有选中项，则值为-1。对于支持多选的控件，只保存选中项中第一项的索引。
+- size: 选中框中可见的行数；等价于HTML中的size特性
+
+选择框的 type 属性不是 'select-one',就是‘select-multiple'，取决于 HTML 代码中有没有 multiple 特性。选择框的 value 属性由当前选中项决定。
+- 如果没有选中的项，则选择框的 value 属性保存空字符串
+- 如果有一个选中项，而且该项的value特性已经在HTML中指定，则选择框的 value 属性等于选中项的 value 特性。即使 value 特性的值是空字符串，也同样遵循此规则
+- 如果有一个选中项，但该项的 value 特性在HTML中未指定，则选择框的value属性等于该项的文本
+- 如果有多个选中项，则选择框的value属性将依据前两条规则取得第一个选中项的值。    
+    
+在DOM中，每个 option 元素都有一个 HTMLOptionElement 对象表示。具有下列属性：
+- index: 当前选项在 options 集合中的索引。
+- label: 当前选项的标签；等价于HTML中的label特性
+- selected: 布尔值。表示当前是否被选中。
+- text: 选项的文本
+- value: 选项的值
+
+> 在操作选项时，我们建议最好是使用特定于选项的属性，因为所有浏览器都支持这些属性。在将表单控件作为 DOM 节点的情况下，实际的交互方式则会因浏览器而异。我们不推荐使用标准 DOM 技术修改 <option> 元素的文本或者值。    
+> 选择框的 change 事件与其他表单字段的 change 事件触发的条件不一样。其他表单字段的 change 事件是在值被修改且焦点离开当前字段时触发，而选择框的change 事件只要选中了选项就会触发。    
+    
+### 选择选项
+
+对于只允许选择一项的选择框，访问选中项的最简单的方式，就是使用选择框的 selectedIndex 属性。
+`var selectedOption = selectbox.options[selectbox.selectedIndex]`
+```
+// 循环遍历选项集合，测试每个选项的 selected 属性。
+function getSelectedOptions(selectbox) {
+    let result = []
+    let option = null;
+    // 遍历option,如果被选中，则添加到数组中。
+    for (let i = 0; i < selectbox.options.length; i++) {
+        option = selectbox.options[i];
+        if (option.selected) {
+            result.push(option)
+        }
+    }
+    return result;
+} 
+``` 
+    
+### 添加选项
+    
+三种添加选项方式：
+```
+let newOption = document.createElement('option')
+newOption.appendChild(document.createTextNode('Option text'))
+newOption.setAttribute('value', 'Option value')
+let selectbox = document.forms[0].elements['location'];
+selectbox.appendChild(newOption)
+
+// 通过 Option 构造函数创建新选项，接受两个参数：文本(text)和值(value).
+let otherOption = new Option('OtherOption text', 'Option value');
+selectbox.appendChild(otherOption)
+
+// add() 方法：要添加的新选项和将位于新选项之后的选项。如果想在列表的最后添加一个选项，应该将第二个参数设置为null. 在IE中，第二个参数是可选的。
+let thirdOption = new Option('third Option text', 'Option value')
+selectbox.add(thirdOption, undefined); // 最佳方案 
+```    
+    
+### 移除选项
+
+- removeChild()方法
+- remove()方法。接受一个参数，即要移除选项的索引
+- 将相应选项的索引设置为 null
+
+### 移动和重排选项
+    
+- appendChild() 方法，可以将第一个选择框中的选项直接移动到第二个选择框中。 
+- insertBefore() 移动选项和移除选项有一个共同之处，即会重置每一个选项的 index 属性   
+    ```
+    // 将选择框中的第二个选项移动到第一个
+    let optionToMove = selectbox1.options[1];
+    selectbox1.insertBefore(optionToMove, selectbox1.options[optionToMove.index - 1]) 
+    ```    
+ ## 表单序列化
+    
+在 JavaScript 中，利用表单字段的 type 属性, 连同 name 和 value 属性一起实现对表单的序列化。在编写代码之前，必须搞清楚在表单提交期间，浏览器是怎样将数据发送给服务器的。
+- 对表单字段的名称和值进行 URL 编码，使用和好（&）分隔
+- 不发送禁用的表单字段
+- 只发送勾选的复选框和单选按钮
+- 不发送 type 为 ‘reset'和‘button’的按钮
+- 多选选择框中的每个选中的值单独一个条目
+- 在单击提交按钮提交表单的情况下，也会发送提交按钮；否则，不发送提交按钮。包括 type 为 image 的 <input\>元素
+- <select\> 元素的值，就是选中的<option\>元素的 value 特性的值。如果<option\>元素没有 value 特性，则是<option\>元素的文本值。    
+    
+```
+function serialize(form) {
+    let parts = [],
+        field = null,
+        i,
+        len,
+        j,
+        optLen,
+        option,
+        optValue;
+    // 遍历所有的元素
+    for (i = 0; i < form.elements.length; i++) {
+        field = form.elements[i];
+        // 判断类型
+        switch (field.type) {
+            // 单选与多选
+            case 'select-one':
+            case 'select-multiple':
+                if (field.name.length) {
+                    for (j = 0; j < field.options.length; j++) {
+                        option = field.options[j];
+                        // 如果元素被选中
+                        if (option.selected) {
+                            optValue = '';
+                            // 兼容性判断
+                            if (option.hasAttribute) {
+                                optValue = (option.hasAttribute('value') ? option.value : option.text);
+                            } else {
+                                optValue = (option.attributes['value'].specified ? option.value : option.text);
+                            }
+                            parts.push(encodeURIComponent(field.name) + '=' + encodeURIComponent(optValue));
+                        }
+                    }
+                }
+                break;
+            case undefined:
+            case 'file':
+            case 'submit':
+            case 'reset':
+            case 'button':
+                break;
+            case 'radio':
+            case 'checkbox':
+                if (!field.checked) {
+                    break;
+                }
+            default:
+                if (field.name.length) {
+                    parts.push(encodeURIComponent(field.name) + '=' + encodeURIComponent(field.value));
+                }
+        }
+    }
+    return parts.join('&');
+} 
+```    
+    
+## 富文本编辑
+
+富文本编辑器，又称为WYSIWYG（What You See Is What You Get, 所见即所得）。
+- 页面中嵌入一个包含空HTML页面的iframe。通过设置designMode属性，这个空白的HTML页面可以编辑，编辑对象则是该页面<body\>元素的HTML代码。designMode 属性有两个可能的值：‘off’和‘on’。on 时整个文档可以编辑。    
+
+```
+// html
+ <iframe name="richedit" src="iframe.html" frameborder="1" style="height: 100px;width: 100px;"></iframe>
+ 
+ // JS
+ window.addEventListener('load', function () {
+     frames['richedit'].document.designMode = 'on';
+ }) 
+```
+    
+### 使用contenteditable属性
+
+通过使用名为 contenteditable 的特殊属性，可以立即编辑该元素。
+- 该元素有三个可能的值：‘true’表示打开、‘false’表示关闭、‘inherit’表示从父元素那里继承（因为可以在 contenteditable 元素中创建或删除元素）
+```
+     <div class="editable" id="richedit" contenteditable="true"></div>
+```    
+    
+### 操作富文本
+
+与富文本编辑器交互的主要方式，就是使用 document.execCommand()。这个方法可以对文档执行预定义的命令。
+- 可以为 document.execCommand() 方法传递3个参数：要执行的命令名称、表示浏览器是否应该为当前命令提供用户界面的一个布尔值和执行命令必须的一个值（如果不需要值，则传递null）。
+- 确保跨浏览器的兼容性，第二个参数应该设置为 false
+
+命令|值(第三个参数)|说明
+---|---|---
+backcolor|颜色字符串|设置文档的背景颜色
+bold|null|将选择的文本转化为粗体
+copy|null|将选择的文本复制到剪贴板
+createlink|URL字符串|将选择的文本转换成一个链接，指向指定的URL
+cut|null|将选择的文本剪切到剪贴板
+delete|null|删除选择的文本
+fontname|字体名称|将选择的文本修改为指定字体
+fontsize|1～7|将选择的文本修改为指定字体大小
+forecolor|颜色字符串|将选择的文本修改为指定的颜色
+formatblock|要包围当前文本块的HTML标签；如<h1\>|使用指定的HTML标签来格式化选择的文本块
+indent|null|缩进文本 
+inserthorizontalrule|null|在插入字符处插入一个 <hr\> 元素
+insertimage|图像的URL|在插入字符处插入一个图像
+insertorderedlist|null|在插入字符处插入一个 <ol\> 元素
+insertunorderedlist|null|在插入字符处插入一个 <ul\> 元素
+insertparagraph|null|在插入字符处插入一个 <p\> 元素
+italic|null|将选择的文本转换成斜体
+justifycenter|null|将插入光标所在文本块居中对齐
+justifyleft|null|将插入光标所在文本块左对齐
+outdent|null|凸排文本（减少缩进）
+paste|null|将剪贴板中的文本粘贴到选择的文本
+removeformat|null|移除插入光标所在文本块的块级格式。这是撤销 formatblock 命令的操作
+selectall|null|选择文档中的所有文本
+underline|null|为选择的文本添加下划线
+unlink|null|移除文本的链接。这是撤销 createlink 命令的操作
+
+相关命令方法：
+- queryCommandEnabled()：检测是否可以针对当前选择的文本，或者当前插入字符所在位置执行某个命令。接收一个参数，即要检测的命令。返回布尔值。`var result = frames["richedit"].document.queryCommandEnabled("bold");`
+- queryCommandState() 方法用于确定是否已将指定命令应用到了选择的文本。`var isBold = frames["richedit"].document.queryCommandState("bold");`
+- queryCommandValue() ，用于取得执行命令时传入的值（即前面例子中传给 document.execCommand() 的第三个参数）。`var fontSize = frames["richedit"].document.queryCommandValue("fontsize");`
+
+### 富文本选区
 
 
 
 
-
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 

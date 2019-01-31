@@ -1311,8 +1311,7 @@ textbox.addEventListener('change', function (e) {
     let target = e.target;
     // alert(target.value);
 })*/
-
-let textbox = document.forms[0].elements[1];
+// let textBox = document.forms[0].elements[1];
 /*textbox.addEventListener('select', function (e) {
     console.log(getSelectedText(this));
 })
@@ -1379,27 +1378,188 @@ console.log(textbox.setSelectionRange(0, 3));
         return window.clipboardData.setData('text/plain', newText);
     }
 });*/
+/*textbox.addEventListener('select', function (e) {
+    console.log(this.value.substring(this.selectionStart, this.selectionEnd));
+})*/
+/*textbox.value = 'hello world';
+textbox.focus();
+textbox.setSelectionRange(0,3);*/
+/*textBox.addEventListener('keypress', function (e) {
+    let charCode = e.charCode;
+    if (!/\d/.test(String.fromCharCode(charCode))) {
+        e.preventDefault()
+    }
+})*/
+/*textBox.addEventListener('paste', function(e) {
+    let text = e.clipboardData.getData('text');
+    if (!/^\d*$/.test(text)) {
+        e.preventDefault();
+    }
+})*/
+/*document.body.addEventListener('copy', function (e) {
+    e.preventDefault();
+    let newText;
+    let copyText = window.getSelection().toString()
+    if (copyText.length > 10) {
+        newText = copyText + `\n${'作者：YYB'}\n${'链接https://www.baidu.com'}\n${'版权所有，禁止转载'}\n${'来源：www.internet.com'}`
+    } else {
+        newText = copyText;
+    }
+    if (e.clipboardData) {
+        return e.clipboardData.setData('text/plain', newText);
+    } else {
+        return window.clipboardData.setData('text', newText)
+    }
+})*/
+/*;(function () { // 立即执行函数
+   function tabForward(e) {
+       let target = e.target; // 获取target
+       // 判断当前输入的值长度
+       if (target.value.length === target.maxLength) {
+           // 获取父级表单
+           let form = target.form;
+           for (let i = 0; i < form.elements.length; i++) {
+               // 判断当前input
+               if (form.elements[i] === target) {
+                   // 如果存在下一个则跳转并自动focus
+                   if (form.elements[i+1]) {
+                       form.elements[i+1].focus();
+                   }
+                   return;
+               }
+           }
+       }
+   }
+   let textbox1 = document.getElementById('texTel1');
+   let textbox2 = document.getElementById('texTel2');
+   let textbox3 = document.getElementById('texTel3');
+    textbox1.addEventListener('keyup', tabForward)
+    textbox2.addEventListener('keyup', tabForward)
+    textbox3.addEventListener('keyup', tabForward)
+})()*/
+// let input = document.forms[0].elements[0];
+/*if (input.validity && !input.validity.valid) {
+    if (input.validity.valueMissing) {
+        alert('Please specify a value')
+    } else if (input.validity.typeMismatch) {
+        alert('Please enter an email address')
+    } else {
+        alert('Value is invalid')
+    }
+}*/
+/*if (document.forms[0].checkValidity()) {
+    // 表单有效，继续
+} else {
+    // 表单无效
+}*/
+/*let select = document.forms[0].elements['location'];
 
+let selectedIndex = select.selectedIndex;
+let selectOption = select.options[selectedIndex];
+alert('Selected index: ' + selectedIndex + '\nSelected text: ' + selectOption.text + '\nSelected value: ' + selectOption.value);
 
+function getSelectedOptions(selectbox) {
+    let result = []
+    let option = null;
+    for (let i = 0; i < selectbox.options.length; i++) {
+        option = selectbox.options[i];
+        if (option.selected) {
+            result.push(option)
+        }
+    }
+    return result;
+}*/
+/*let newOption = document.createElement('option')
+newOption.appendChild(document.createTextNode('Option text'))
+newOption.setAttribute('value', 'Option value')
+let selectbox = document.forms[0].elements['location'];
+selectbox.appendChild(newOption)
 
+// 通过 Option 构造函数创建新选项，接受两个参数：文本(text)和值(value).
+let otherOption = new Option('OtherOption text', 'Option value');
+selectbox.appendChild(otherOption)
 
+// add() 方法：要添加的新选项和将位于新选项之后的选项。如果想在列表的最后添加一个选项，应该将第二个参数设置为null. 在IE中，第二个参数是可选的。
+let thirdOption = new Option('third Option text', 'Option value')
+selectbox.add(thirdOption, undefined); // 最佳方案*/
+/*let selectbox1 = document.getElementById('selLocation1')
+let selectbox2 = document.getElementById('selLocation2')
 
+selectbox2.appendChild(selectbox1.options[0])
 
+let optionToMove = selectbox1.options[1];
+selectbox1.insertBefore(optionToMove, selectbox1.options[optionToMove.index - 1])*/
+/*function serialize(form) {
+    let parts = [],
+        field = null,
+        i,
+        len,
+        j,
+        optLen,
+        option,
+        optValue;
+    // 遍历所有的元素
+    for (i = 0; i < form.elements.length; i++) {
+        field = form.elements[i];
+        // 判断类型
+        switch (field.type) {
+            // 单选与多选
+            case 'select-one':
+            case 'select-multiple':
+                if (field.name.length) {
+                    for (j = 0; j < field.options.length; j++) {
+                        option = field.options[j];
+                        // 如果元素被选中
+                        if (option.selected) {
+                            optValue = '';
+                            // 兼容性判断
+                            if (option.hasAttribute) {
+                                optValue = (option.hasAttribute('value') ? option.value : option.text);
+                            } else {
+                                optValue = (option.attributes['value'].specified ? option.value : option.text);
+                            }
+                            parts.push(encodeURIComponent(field.name) + '=' + encodeURIComponent(optValue));
+                        }
+                    }
+                }
+                break;
+            case undefined:
+            case 'file':
+            case 'submit':
+            case 'reset':
+            case 'button':
+                break;
+            case 'radio':
+            case 'checkbox':
+                if (!field.checked) {
+                    break;
+                }
+            default:
+                if (field.name.length) {
+                    parts.push(encodeURIComponent(field.name) + '=' + encodeURIComponent(field.value));
+                }
+        }
+    }
+    return parts.join('&');
+}*/
+/*window.addEventListener('load', function () {
+    frames['richedit'].document.designMode = 'on'
+    frames['richedit'].document.execCommand('fontsize', false, 1);
+    let result = frames['richedit'].document.queryCommandEnabled('blod');
+    console.log(result);
+    let isBold = frames['richedit'].document.queryCommandState('bold');
+    console.log(isBold);
+    let fontSize = frames['richedit'].document.queryCommandValue('bold');
+    console.log(fontSize);
+})*/
+/*let selection = frames['richedit'].getSelection();
+let selectedText = selection.toString();
+let range = selection.getRangeAt(0);
+let span = frames['richedit'].document.createElement('span')
+span.style.backgroundColor = 'yellow';
+range.surroundContents(span);*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+let range = document.createRange();
 
 
 
