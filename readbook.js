@@ -1558,8 +1558,24 @@ let range = selection.getRangeAt(0);
 let span = frames['richedit'].document.createElement('span')
 span.style.backgroundColor = 'yellow';
 range.surroundContents(span);*/
-
-let range = document.createRange();
-
-
-
+// let range = document.createRange();
+/*let day = new Date()
+console.log(day.valueOf());
+console.log(day.getFullYear());
+console.log(day.getMonth());
+console.log(day.getDate());
+console.log(day.getDay());
+console.log(day.getHours());
+console.log(day.getMinutes());
+console.log(day.getSeconds());
+console.log(day.getMilliseconds());*/
+/*let text = 'this has been a short number'
+let pattern = /(..)or(.)/g;
+if (pattern.test(text)) {
+    console.log(RegExp.$1);
+}
+let pat = /^[2-9]\d{3}[/-](0?[1-9]|1[0-2])[/-]((0?[1-9])|([1|2][0-9])|30|31)$/;
+console.log(pat.test('2218-12-31'));*/
+console.log(Math.max(1, 2, 3));
+let a = [1,2,31,1]
+console.log(Math.max.apply(this, a));
