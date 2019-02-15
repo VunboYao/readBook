@@ -1576,6 +1576,134 @@ if (pattern.test(text)) {
 }
 let pat = /^[2-9]\d{3}[/-](0?[1-9]|1[0-2])[/-]((0?[1-9])|([1|2][0-9])|30|31)$/;
 console.log(pat.test('2218-12-31'));*/
-console.log(Math.max(1, 2, 3));
+/*console.log(Math.max(1, 2, 3));
 let a = [1,2,31,1]
-console.log(Math.max.apply(this, a));
+console.log(Math.max.apply(this, a));*/
+/*let book = {
+    _year: 2004,
+    edition: 1
+}
+Object.defineProperty(book, 'year', {
+    get() {
+        return this._year;
+    },
+    set(newValue) {
+        if (newValue > 2004) {
+            this._year = newValue;
+            this.edition += newValue - 2004;
+        }
+    }
+})
+book.year = 2008;
+console.log(book.edition);
+let one = Object.getOwnPropertyDescriptor(book, 'year');
+console.log(one);
+console.log(typeof one.get);*/
+/*function object(o) {
+    function F(){}
+    F.prototype = o;
+    return new F();
+}
+
+function inheritPrototype(subType, superType) {
+    let prototype = object(superType.prototype);
+    prototype.constructor = subType;
+    subType.prototype = prototype;
+}
+function SuperType(name) {
+    this.name = name;
+    this.colors = ['red', 'blue', 'green']
+}
+SuperType.prototype.sayName = function () {
+    console.log(this.name);
+}
+function SubType(name, age) {
+    SuperType.call(this, name);
+    this.age = age;
+}
+inheritPrototype(SubType, SuperType)
+SubType.prototype.sayAge = function () {
+    console.log(this.age);
+}*/
+
+/*function Person(name) {
+    this.getName = function () {
+        return name;
+    }
+    this.setName = function (value) {
+        name = value;
+    }
+}
+let person = new Person('Nicholas');
+console.log(person.getName()); // Nicholas
+person.setName('Greg')
+console.log(person.getName()); // Greg*/
+/*(function () {
+    // 私有变量和私有函数
+   let privateVariable = 10;
+   function privateFunction() {
+       return false;
+   }
+
+   // 构造函数
+   MyObject = function () {}
+   // 共有/提权方法
+   MyObject.prototype.publicMethod = function () {
+       privateVariable++;
+       return privateFunction();
+   }
+})()*/
+/*(function () {
+    let name = ''
+
+    Person = function (value) {
+        name = value;
+    };
+
+    Person.prototype.getName = function () {
+        return name;
+    };
+
+    Person.prototype.setName = function (value) {
+        name = value;
+    }
+})()
+
+let p1 = new Person('Nicholas')
+console.log(p1.getName()); // Nicholas
+p1.setName('Greg');
+console.log(p1.getName()); // Greg
+
+let p2 = new Person('Michael');
+console.log(p1.getName()); // Michael
+console.log(p2.getName()); // Michael*/
+
+let singleton = function () {
+    // 私有变量和私有函数
+    let privateVariable = 10;
+    function privateFunction() {
+        return false;
+    }
+
+    let object = new CustomType();
+    // 添加特权/公有方法和属性
+    object.publicProperty = true;
+    object.publicMethod = function () {
+        privateVariable++;
+        return privateFunction();
+    };
+    return object;
+}();
+
+
+
+
+
+
+
+
+
+
+
+
+
