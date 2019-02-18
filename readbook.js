@@ -1625,7 +1625,6 @@ inheritPrototype(SubType, SuperType)
 SubType.prototype.sayAge = function () {
     console.log(this.age);
 }*/
-
 /*function Person(name) {
     this.getName = function () {
         return name;
@@ -1677,33 +1676,50 @@ console.log(p1.getName()); // Greg
 let p2 = new Person('Michael');
 console.log(p1.getName()); // Michael
 console.log(p2.getName()); // Michael*/
-
-let singleton = function () {
-    // 私有变量和私有函数
-    let privateVariable = 10;
-    function privateFunction() {
-        return false;
+/*function getQueryStringArgs() {
+    let qs = (location.search.search.length > 0 ? location.search.substring(1) : ''),
+        args = {},
+        items = qs.length ? qs.split('&') : [],
+        item = null,
+        name = null,
+        value = null;
+    for (let i = 0; i < items.length; i++) {
+        item = items[i].split('=');
+        name = decodeURIComponent(item[0]);
+        value = decodeURIComponent(item[1]);
+        if (name.length) {
+            args[name] = value;
+        }
     }
+    return args;
+}*/
+/*
+let form = document.forms[0];
+console.log(form);
 
-    let object = new CustomType();
-    // 添加特权/公有方法和属性
-    object.publicProperty = true;
-    object.publicMethod = function () {
-        privateVariable++;
-        return privateFunction();
-    };
-    return object;
-}();
+console.log(document.defaultView.getComputedStyle(form).width);
+console.log(form.getBoundingClientRect());*/
+/*var range1 = document.createRange();
+var range2 = document.createRange();
+var p1 = document.getElementById('p1');
+var p1Index = -1;
+var i, len;
+for (i = 0, len = p1.parentNode.childNodes.length; i < len; i++) {
+    if (p1.parentNode.childNodes[i] === p1) {
+        p1Index = i;
+        break;
+    }
+}
+range1.setStart(p1.parentNode, p1Index);
+range1.setEnd(p1.parentNode, p1Index + 1);
+range2.setStart(p1, 0);
+range2.setEnd(p1, p1.childNodes.length);*/
 
-
-
-
-
-
-
-
-
-
-
-
-
+var range1 = document.createRange()
+var range2 = document.createRange()
+var p1 = document.getElementById('p1')
+range1.selectNodeContents(p1);
+range2.selectNodeContents(p1)
+range2.setEndBefore(p1.lastChild);
+console.log(range1.compareBoundaryPoints(Range.START_TO_START, range2));// 0
+console.log(range1.compareBoundaryPoints(Range.END_TO_END, range2)); // 1

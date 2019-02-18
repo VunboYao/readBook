@@ -2139,7 +2139,7 @@ console.log(person.getName()); // Greg
    
    // 构造函数
    MyObject = function () {}
-   // 共有/提权方法
+   // 共有/特权方法
    MyObject.prototype.publicMethod = function () {
        privateVariable++;
        return privateFunction();
