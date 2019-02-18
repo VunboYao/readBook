@@ -1714,12 +1714,34 @@ range1.setStart(p1.parentNode, p1Index);
 range1.setEnd(p1.parentNode, p1Index + 1);
 range2.setStart(p1, 0);
 range2.setEnd(p1, p1.childNodes.length);*/
-
-var range1 = document.createRange()
+/*var range1 = document.createRange()
 var range2 = document.createRange()
 var p1 = document.getElementById('p1')
 range1.selectNodeContents(p1);
 range2.selectNodeContents(p1)
 range2.setEndBefore(p1.lastChild);
 console.log(range1.compareBoundaryPoints(Range.START_TO_START, range2));// 0
-console.log(range1.compareBoundaryPoints(Range.END_TO_END, range2)); // 1
+console.log(range1.compareBoundaryPoints(Range.END_TO_END, range2)); // 1*/
+//格式化为 1 级标题
+/*
+frames["richedit"].document.execCommand("formatblock", false, "<h1>");
+var result = frames["richedit"].document.queryCommandEnabled("bold");
+console.log(result);
+*/
+let a = document.forms[0].elements[0].select();
+document.addEventListener('select', function () {
+    document.execCommand('bold')
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
