@@ -1722,26 +1722,141 @@ range2.selectNodeContents(p1)
 range2.setEndBefore(p1.lastChild);
 console.log(range1.compareBoundaryPoints(Range.START_TO_START, range2));// 0
 console.log(range1.compareBoundaryPoints(Range.END_TO_END, range2)); // 1*/
-//格式化为 1 级标题
-/*
-frames["richedit"].document.execCommand("formatblock", false, "<h1>");
-var result = frames["richedit"].document.queryCommandEnabled("bold");
-console.log(result);
-*/
-let a = document.forms[0].elements[0].select();
-document.addEventListener('select', function () {
-    document.execCommand('bold')
-})
+// window.addEventListener('load', function () {
+//     frames['richedit'].document.designMode = 'on';
+// })
+// iframe框架中富文本编辑
+/*window.onload = function () {
+    var editor, bugGroup, doc, box;
+    // 获取iframe window
+    editor = document.getElementById('HtmlEdit').contentWindow;
+    // 获取iframe document
+    doc = document.getElementById('HtmlEdit').contentDocument;
+    bugGroup = document.getElementById('butGroup')
+    bugGroup.addEventListener('click', function (e) {
+        switch(e.target.id) {
+            case 'bold': addBold(); break;
+            case 'copy': copy(); break;
+            case 'big': big(); break;
+            case 'italic': italic(); break;
+            case 'underline': insertorderedlist(); break;
+            case 'backColor': createlink(); break;
+            case 'p':insertparagraph();break;
+        }
+    })
+    editor.document.designMode = 'on'
+    function addBold() {
+        editor.document.execCommand('Bold', false, null);
+        document.execCommand('Bold', false, null)
+    }
+    function copy() {
+        editor.document.execCommand('copy', false, null);
+    }
+    function big() {
+        editor.document.execCommand('fontsize', false, '3');
+        console.log(doc.body.innerHTML);
+    }
+    function italic() {
+        editor.document.execCommand('italic', false, null);
+    }
+    function insertorderedlist() {
+        editor.document.execCommand('insertorderedlist', false, null);
+        console.log(doc.body.innerHTML);
+    }
+    function createlink() {
+        editor.document.execCommand('createlink', false, 'https://www.baidu.com/')
+    }
+    function insertparagraph() {
+        editor.document.execCommand('insertparagraph', false, null);
+        console.log(doc.body.innerHTML);
+    }
+}*/
+// 富文本编辑器
+/*function exec(command, value){
+    document.execCommand(command, false, value);
+}
+document.getElementById('buttonGroup').addEventListener('click', function (e) {
+    switch (e.target.id) {
+        case 'italic':
+            exec('italic',null)
+            break;
+        case 'justifycenter':
+            exec('justifycenter', null);
+            break;
+        case 'outdent':
+            exec('outdent', null);
+            break;
+        case 'paste':
+            exec('paste', null);
+            break;
+        case 'bold':
+            exec('bold',null );
+            break;
+        case 'underline':
+            exec('underline', null);
+            break;
+        case 'copy':
+            exec('copy', null);
+            break;
+        case 'inserthorizontalrule':
+            exec('inserthorizontalrule', null);
+            break;
+    }
+})*/
+// 高亮选择的文本
+/*document.getElementById('bold').addEventListener('click', function (e) {
+    let selection = frames['richedit'].getSelection(); // 获取选择的文本
+    let selectedText = selection.toString(); // 取得选择的文本
+    let range = selection.getRangeAt(0); // 取得代表选区的范围
+    let span = frames['richedit'].document.createElement('span'); // 突出显示选择的文本
+    span.style.backgroundColor = 'yellow';
+    range.surroundContents(span); // 将选区添加到了带有黄色背景的 <span> 元素中
+})*/
 
+let drawing = document.getElementById('drawing');
+if (drawing.getContext) {
+    let ctx = drawing.getContext('2d');
+    /*ctx.fillStyle = '#00f';
+    ctx.fillRect(10,10, 50, 50);
+    ctx.fillStyle = 'rgba(240,100,100,.5)';
+    ctx.fillRect(30,30,50,50);*/
+    // 绘制红色描边矩形
+  /*  ctx.strokeStyle = 'red';
+    ctx.strokeRect(10,10,50,50);
+    // 绘制半透明的蓝色描边矩形
+    ctx.strokeStyle = 'rgba(0,0,255,.5)';
+    ctx.strokeRect(30,30,50,50);*/
+    // ctx.clearRect(40,40,10,10);
 
+    ctx.beginPath();
+    ctx.strokeStyle = 'red';
+    /*// 开始路径
+    ctx.beginPath();
 
+    // 绘制外圆
+    ctx.arc(100, 100, 99, 0, 2 * Math.PI, false);
 
+    // 绘制内圆
+    ctx.moveTo(194, 100);
+    ctx.arc(100,100,94, 0, 2 * Math.PI, false);
 
+    // 绘制分针
+    ctx.moveTo(100, 100);
+    ctx.lineTo(100, 15);
 
+    // 绘制时针
+    ctx.moveTo(100, 100);
+    ctx.lineTo(35, 100);
 
-
-
-
-
-
+    // 描边路径
+    ctx.stroke();*/
+    ctx.moveTo(20,20);
+    ctx.lineTo(100,40);
+    ctx.quadraticCurveTo(20,20,200,200);
+    ctx.stroke();
+    let imgUrl = drawing.toDataURL('image/png');
+    let image = document.createElement('img')
+    image.src = imgUrl;
+    document.body.appendChild(image);
+}
 

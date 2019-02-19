@@ -658,7 +658,7 @@ DOM 由各种节点构成，简要总结如下。
 - Element 节点表示文档中的所有 HTML 或 XML 元素，可以用来操作这些元素的内容和特性。
 - DOM 操作往往是 JavaScript程序中开销最大的部分，而因访问 NodeList导致的问题为最多。 NodeList 对象都是“动态的”，这就意味着每次访问NodeList对象，都会运行一次查询。有鉴于此，最好的办法就是尽量减少 DOM 操作
 
-# DOM扩展
+# 第11章：DOM扩展
 
 ## 选择符API
 
@@ -878,7 +878,7 @@ function getInnerText(element) {
 - scrollByLines(lineCount) ：将元素的内容滚动指定的行高， lineCount 值可以是正值，也可以是负值。
 - scrollByPages(pageCount) ：将元素的内容滚动指定的页面高度，具体高度由元素的高度决定。
 
-# DOM2 和 DOM3
+# 第12章：DOM2 和 DOM3
 
 ## DOM 变化
 
@@ -932,6 +932,12 @@ alert(div1.isSameNode(div2)); //false
   点。在删除节点时，源节点是 null ；除在复制节点时，目标节点均为 null 。在函数内部，你可以决定
   如何存储数据。
 
+- 框架和内嵌框架分别用HTMLFrameElement 和 HTMLIFrameElement 表示，在DOM2级中多有一个新属性，叫 contentDocument。该属性包含一个指针，指向表示框架内容的文档对象。contentWindow,指向window对象
+    ```
+     var iframe = document.getElementById("myIframe");
+     var iframeDoc = iframe.contentDocument; //在 IE8 
+    ```
+        
 ## 样式
 
 **定义样式的方式有3种**

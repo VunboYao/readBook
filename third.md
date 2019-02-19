@@ -1072,6 +1072,7 @@ selectbox.add(thirdOption, undefined); // 最佳方案
     
 ```
 function serialize(form) {
+function serialize(form) {
     let parts = [],
         field = null,
         i,
@@ -1129,7 +1130,8 @@ function serialize(form) {
 ## 富文本编辑
 
 富文本编辑器，又称为WYSIWYG（What You See Is What You Get, 所见即所得）。
-- 页面中嵌入一个包含空HTML页面的iframe。通过设置designMode属性，这个空白的HTML页面可以编辑，编辑对象则是该页面<body\>元素的HTML代码。designMode 属性有两个可能的值：‘off’和‘on’。on 时整个文档可以编辑。    
+- 页面中嵌入一个包含空HTML页面的iframe。通过设置designMode属性，这个空白的HTML页面可以编辑，编辑对象则是该页面<body\>元素的HTML代码。designMode 属性有两个可能的值：‘off’和‘on’。on 时整个文档可以编辑。
+- 要让它可以编辑，必须要将 designMode 设置为 "on" ，但只有在页面完全加载之后才能设置这个属性。因此，在包含页面中，需要使用 onload 事件处理程序来在恰当的时刻设置 designMode    
 
 ```
 // html
@@ -1183,27 +1185,254 @@ selectall|null|选择文档中的所有文本
 underline|null|为选择的文本添加下划线
 unlink|null|移除文本的链接。这是撤销 createlink 命令的操作
 
+> Opera 根本没有实现任何剪贴板命令，而Firefox 在默认情况下会禁用它们（必须修改用户的首选项来启用它们）。Safari 和 Chrome实现了 cut 和copy ，但没有实现 paste 。
+  
 相关命令方法：
 - queryCommandEnabled()：检测是否可以针对当前选择的文本，或者当前插入字符所在位置执行某个命令。接收一个参数，即要检测的命令。返回布尔值。`var result = frames["richedit"].document.queryCommandEnabled("bold");`
 - queryCommandState() 方法用于确定是否已将指定命令应用到了选择的文本。`var isBold = frames["richedit"].document.queryCommandState("bold");`
 - queryCommandValue() ，用于取得执行命令时传入的值（即前面例子中传给 document.execCommand() 的第三个参数）。`var fontSize = frames["richedit"].document.queryCommandValue("fontsize");`
 
+```
+// iframe中编辑
+ <iframe src="iframe.html" id='HtmlEdit' style="width:400px; height: 300px" marginWidth='2px' marginHeight='2px'></iframe>
+ <div id="butGroup">
+     <button id="bold">bold</button>
+     <button id="copy">copy</button>
+     <button id="big">big</button>
+     <button id="italic">italic</button>
+     <button id="underline">underline</button>
+     <button id="backColor">backColor</button>
+     <button id="p">p</button>
+ </div>
+ 
+ window.onload = function () {
+     var editor, bugGroup, doc, box;
+     // 获取iframe window
+     editor = document.getElementById('HtmlEdit').contentWindow;
+     // 获取iframe document
+     doc = document.getElementById('HtmlEdit').contentDocument;
+     bugGroup = document.getElementById('butGroup')
+     bugGroup.addEventListener('click', function (e) {
+         switch(e.target.id) {
+             case 'bold': addBold(); break;
+             case 'copy': copy(); break;
+             case 'big': big(); break;
+             case 'italic': italic(); break;
+             case 'underline': insertorderedlist(); break;
+             case 'backColor': createlink(); break;
+             case 'p':insertparagraph();break;
+         }
+     })
+     editor.document.designMode = 'on'
+     function addBold() {
+         editor.document.execCommand('Bold', false, null);
+         document.execCommand('Bold', false, null)
+     }
+     function copy() {
+         editor.document.execCommand('copy', false, null);
+     }
+     function big() {
+         editor.document.execCommand('fontsize', false, '3');
+         console.log(doc.body.innerHTML);
+     }
+     function italic() {
+         editor.document.execCommand('italic', false, null);
+     }
+     function insertorderedlist() {
+         editor.document.execCommand('insertorderedlist', false, null);
+         console.log(doc.body.innerHTML);
+     }
+     function createlink() {
+         editor.document.execCommand('createlink', false, 'https://www.baidu.com/')
+     }
+     function insertparagraph() {
+         editor.document.execCommand('insertparagraph', false, null);
+         console.log(doc.body.innerHTML);
+     }
+ }
+```
+
 ### 富文本选区
 
+**使用框架的getSelection()方法，可以确定实际选择的文本。这个方式是window对象和document对象的属性，调用它会返回一个表示当前选择文本的 Selection 对象**，每个Selection对象都有下列属性。
+- anchorNode:选区起点所在的节点。
+- anchorOffset: 在到达选区起点位置之前跳过的 anchorNode 中的字符数量
+- focusNode: 选区终点所在的节点
+- focusOffset: focusNode中包含在选区之内的字符数量
+- isCollapsed: 布尔值，表示选区的起点和终点是否重合
+- rangeCount: 选区中包含的DOM范围的数量
+
+更多信息：
+
+- addRange(range) ：将指定的 DOM 范围添加到选区中。
+- collapse(node, offset) ：将选区折叠到指定节点中的相应的文本偏移位置
+- collapseToEnd() ：将选区折叠到终点位置。
+- collapseToStart() ：将选区折叠到起点位置。
+- containsNode(node) ：确定指定的节点是否包含在选区中。
+- deleteFromDocument() ：从文档中删除选区中的文本，与 document.execCommand("delete",false, null) 命令的结果相同。
+- extend(node, offset) ：通过将 focusNode 和 focusOffset 移动到指定的值来扩展选区。
+- getRangeAt(index) ：返回索引对应的选区中的 DOM 范围。
+- removeAllRanges() ：从选区中移除所有 DOM 范围。实际上，这样会移除选区，因为选区中至少要有一个范围
+- removeRange(range) ：从选区中移除指定的 DOM 范围。
+- selectAllChildren(node) ：清除选区并选择指定节点的所有子节点。
+- toString() ：返回选区所包含的文本内容。
+    ```
+    // 高亮选择的文本
+    document.getElementById('bold').addEventListener('click', function (e) {
+        let selection = frames['richedit'].getSelection(); // 获取选择的文本
+        let selectedText = selection.toString(); // 取得选择的文本
+        let range = selection.getRangeAt(0); // 取得代表选区的范围
+        let span = frames['richedit'].document.createElement('span'); // 突出显示选择的文本
+        span.style.backgroundColor = 'yellow';
+        range.surroundContents(span); // 将选区添加到了带有黄色背景的 <span> 元素中
+    }) 
+    ```
+    
+### 表单与富文本
+
+手工提取富文本编辑器中的HTML
+
+```
+ EventUtil.addHandler(form, "submit", function(event){
+    event = EventUtil.getEvent(event);
+    var target = EventUtil.getTarget(event);
+    target.elements["comments"].value = frames["richedit"].document.body.innerHTML;
+ });
+```    
+```
+// contenteditable元素
+ EventUtil.addHandler(form, "submit", function(event){
+    event = EventUtil.getEvent(event);
+    var target = EventUtil.getTarget(event);
+    target.elements["comments"].value = document.getElementById("richedit").innerHTML;
+ });
+```
+    
+## 小结
+
+- Firefox、Safari 和 Chrome 只允许在 paste 事件发生时读取剪贴板数据，而 IE没有这个限制。    
+- Firefox、Safari 和 Chrome 只允许在发生剪贴板事件时访问与剪贴板相关的信息，而 IE 允许在任何时候访问相关信息
+- 在文本框内容必须限制为某些特定字符的情况下，就可以利用剪贴板事件来屏蔽通过粘贴向文本框中插入内容的操作。
+- 选择框也是经常要通过 JavaScript 来控制的一个表单字段。由于有了 DOM，对选择框的操作比以前
+  要方便多了。添加选项、移除选项、将选项从一个选择框移动到另一个选择框，甚至对选项进行排序等
+  操作，都可以使用标准的 DOM技术来实现    
+    
+富文本编辑功能是通过一个包含空 HTML 文档的 iframe 元素来实现的。通过将空文档的
+designMode 属性设置为 "on" ，就可以将该页面转换为可编辑状态，此时其表现如同字处理软件。另外，
+也可以将某个元素设置为 contenteditable 。在默认情况下，可以将字体加粗或者将文本转换为斜体，
+还可以使用剪贴板。JavaScript 通过使用 execCommand() 方法也可以实现相同的一些功能。另外，使用
+queryCommandEnabled() 、 queryCommandState() 和 queryCommandValue() 方法则可以取得有关
+文本选区的信息。由于以这种方式构建的富文本编辑器并不是一个表单字段，因此在将其内容提交给
+服务器之前，必须将 iframe 或 contenteditable 元素中的 HTML 复制到一个表单字段中    
+    
+    
+    
+    
+    
+
+# 第15章：使用Canvas绘图
+
+## 基本用法
+
+- `<canvas id="drawing" width=" 200" height="200">A drawing of something.</canvas>`
+- 取得上下文的引用：需要调用getContext() 方法并传入上下文的名字。传入 "2d" ，就可以取得 2D 上下文对象。
+- 在使用 <canvas\> 元素之前，首先要检测 getContext() 方法是否存在，这一步非常重要
+- 使用 toDataURL() 方法，可以导出在 <canvas\> 元素上绘制的图像。这个方法接受一个参数，即图像的 MIME 类型格式，而且适合用于创建图像的任何上下文。
+    ```
+    // 导出canvas，转换为图片
+    let drawing = document.getElementById('drawing');
+    if (drawing.getContext) {
+        // let ctx = drawing.getContext('2d');
+        let imgUrl = drawing.toDataURL('image/png');
+        let image = document.createElement('img')
+        image.src = imgUrl;
+        document.body.appendChild(image);
+    } 
+    ```
+
+> 如果绘制到画布上的图像源自不同的域， toDataURL() 方法会抛出错误。本章后面还将介绍更多相关内容。
+
+## 2D上下文
+
+### 填充和描边
+
+- fillStyle 填充
+- strokeStyle 描边
+
+### 绘制矩形
+
+- fillRect(),strokeRect()和clearRect()。这三个方法都接收4个参数： 矩形的x坐标，矩形的y坐标，矩形宽度和矩形高度。这些单位都是像素
+- fillRect()方法在画布上绘制的矩形会填充制定的颜色
+    ```
+    let ctx = drawing.getContext('2d');
+        // 绘制蓝色矩形
+        ctx.fillStyle = '#00f';
+        ctx.fillRect(10,10, 50, 50);
+        // 绘制半透明的粉色矩形
+        ctx.fillStyle = 'rgba(240,100,100,.5)';
+        ctx.fillRect(30,30,50,50); 
+    ```
+
+- strokeRect()方法在画布上绘制的矩形会使用指定的颜色描边，描边颜色通过strokeStyle 属性制定
+    ```
+        // 绘制红色描边矩形
+        ctx.strokeStyle = 'red';
+        ctx.strokeRect(10,10,50,50);
+        // 绘制半透明的蓝色描边矩形
+        ctx.strokeStyle = 'rgba(0,0,255,.5)';
+        ctx.strokeRect(30,30,50,50); 
+    ```
+    - 描边线条的宽度由lineWidth 属性控制，该属性的值可以是任意整数。在描边之前设定
+    - lineCap 属性可以控制线条末端的形状是平头、圆头还是方头（ "butt" 、"round" 或 "square" ）
+    - lineJoin 属性可以控制线条相交的方式是圆交、斜交还是斜接（ "round" 、 "bevel" 或 "miter" ）
+- clearRect(),通过绘制形状，然后清楚制定区域。
+
+### 绘制路径
+
+**要绘制路径，必须先调用 beginPath() 方法，表示开始绘制新路径.**然后，通过下列方法来实际地绘制路径
+- arc(x, y, radius, startAngle, endAngle, counterclockwise):以（x，y)为圆心绘制一条弧线，弧线半径为radius，起始和结束角度（弧度表示）分别为 startAngle 和 endAngle。最后一个参数表示 startAngle 和 endAngle 是否按逆时针方向计算，值为 false表示按顺时针方向计算。
+- arcTo(x1, y1, x2, y2, radius) ：从上一点开始绘制一条弧线，到 (x2,y2) 为止，并且以给定的半径 radius 穿过 (x1,y1) 。
+- bezierCurveTo(c1x, c1y, c2x, c2y, x, y) ：从上一点开始绘制一条曲线，到 (x,y) 为止，并且以 (c1x,c1y) 和 (c2x,c2y) 为控制点。
+- lineTo(x, y) ：从上一点开始绘制一条直线，到 (x,y) 为止。
+- moveTo(x, y) ：将绘图游标移动到 (x,y) ，不画线。
+- quadraticCurveTo(cx, cy, x, y) ：从上一点开始绘制一条二次曲线，到 (x,y) 为止，并
+  且以 (cx,cy) 作为控制点。
+- rect(x, y, width, height) ：从点 (x,y) 开始绘制一个矩形，宽度和高度分别由 width 和 height 指定。这个方法绘制的是矩形路径，而不是 strokeRect() 和 fillRect() 所绘制的独立的形状。
+
+> 如果想绘制一条连接到路径起点的线条，可以调用closePath() 。如果路径已经完成，你想用 fillStyle 填充它，可以调用 fill() 方法。另外，还可以调用 stroke()方法对路径描边，描边使用的是 strokeStyle 。最后还可以调用 clip() ，这个方法可以在路径上创建一个剪切区域。
 
 
+```
+// 绘制不带数字的始终表盘
+// 开始路径
+    ctx.beginPath();
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    // 绘制外圆
+    ctx.arc(100, 100, 99, 0, 2 * Math.PI, false);
 
+    // 绘制内圆
+    ctx.moveTo(194, 100);
+    ctx.arc(100,100,94, 0, 2 * Math.PI, false);
 
+    // 绘制分针
+    ctx.moveTo(100, 100);
+    ctx.lineTo(100, 15);
+
+    // 绘制时针
+    ctx.moveTo(100, 100);
+    ctx.lineTo(35, 100);
+
+    // 描边路径
+    ctx.stroke(); 
+```
+
+在 2D 绘图上下文中，路径是一种主要的绘图方式，因为路径能为要绘制的图形提供更多控制。由
+于路径的使用很频繁，所以就有了一个名为 isPointInPath() 的方法。这个方法接收 x 和 y 坐标作为参数，用于在路径被关闭之前确定画布上的某一点是否位于路径上
+
+```
+ if (context.isPointInPath(100, 100)){
+    alert("Point (100, 100) is in the path.");
+ }
+```
+
+### 绘制文本
