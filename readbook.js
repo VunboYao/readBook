@@ -1812,25 +1812,23 @@ document.getElementById('buttonGroup').addEventListener('click', function (e) {
     span.style.backgroundColor = 'yellow';
     range.surroundContents(span); // 将选区添加到了带有黄色背景的 <span> 元素中
 })*/
-
-let drawing = document.getElementById('drawing');
+/*let drawing = document.getElementById('drawing')
 if (drawing.getContext) {
-    let ctx = drawing.getContext('2d');
-    /*ctx.fillStyle = '#00f';
+    let ctx = drawing.getContext('2d')
+    /!*ctx.fillStyle = '#00f';
     ctx.fillRect(10,10, 50, 50);
     ctx.fillStyle = 'rgba(240,100,100,.5)';
-    ctx.fillRect(30,30,50,50);*/
+    ctx.fillRect(30,30,50,50);*!/
     // 绘制红色描边矩形
-  /*  ctx.strokeStyle = 'red';
-    ctx.strokeRect(10,10,50,50);
-    // 绘制半透明的蓝色描边矩形
-    ctx.strokeStyle = 'rgba(0,0,255,.5)';
-    ctx.strokeRect(30,30,50,50);*/
+    /!*  ctx.strokeStyle = 'red';
+      ctx.strokeRect(10,10,50,50);
+      // 绘制半透明的蓝色描边矩形
+      ctx.strokeStyle = 'rgba(0,0,255,.5)';
+      ctx.strokeRect(30,30,50,50);*!/
     // ctx.clearRect(40,40,10,10);
-
-    ctx.beginPath();
+    /!*ctx.beginPath();
     ctx.strokeStyle = 'red';
-    /*// 开始路径
+    // 开始路径
     ctx.beginPath();
 
     // 绘制外圆
@@ -1842,21 +1840,216 @@ if (drawing.getContext) {
 
     // 绘制分针
     ctx.moveTo(100, 100);
-    ctx.lineTo(100, 15);
+    ctx.lineTo(100, 20);
 
     // 绘制时针
     ctx.moveTo(100, 100);
     ctx.lineTo(35, 100);
 
     // 描边路径
-    ctx.stroke();*/
-    ctx.moveTo(20,20);
-    ctx.lineTo(100,40);
-    ctx.quadraticCurveTo(20,20,200,200);
     ctx.stroke();
-    let imgUrl = drawing.toDataURL('image/png');
-    let image = document.createElement('img')
-    image.src = imgUrl;
-    document.body.appendChild(image);
+    ctx.font = 'bold 14px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('12', 100, 20);*!/
+    /!*  ctx.moveTo(20,20);
+      ctx.lineTo(100,40);
+      ctx.quadraticCurveTo(20,20,200,200);
+      ctx.stroke();*!/
+    /!* ctx.textBaseline = 'middle';
+     var fontSize = 100;
+     ctx.font = fontSize + 'px Arial';
+     while(ctx.measureText('Hello world!').width > 130) {
+         fontSize--;
+         ctx.font = fontSize + 'px Arial';
+     }
+     ctx.fillText('Hello world!',10, 10);
+     ctx.fillText('Font size is ' + fontSize + 'px', 10, 50);
+
+     let imgUrl = drawing.toDataURL('image/png');
+     let image = document.createElement('img')
+     image.src = imgUrl;
+     document.body.appendChild(image);*!/
+    /!*!// 开始路径
+     ctx.beginPath();
+     // 绘制外圆
+     ctx.arc(100,100,99,0,2*Math.PI, false)
+     // 绘制内圆
+     ctx.moveTo(194,100)
+     ctx.arc(100,100,94,0, 2*Math.PI, false)
+
+     // 变换原点
+     ctx.translate(100,100)
+     ctx.rotate(1);
+     // 绘制分针
+     ctx.moveTo(0,0)
+     ctx.lineTo(0,-85)
+     // 绘制时针
+     ctx.moveTo(0,0)
+     ctx.lineTo(-65, 0);
+     // 描边路径
+     ctx.stroke()*!/
+    /!*ctx.fillStyle = '#f00'
+    ctx.save();
+    ctx.fillStyle = '#0f0'
+    ctx.translate(100,100)
+    ctx.save();
+
+    ctx.fillStyle = '#00f'
+    ctx.fillRect(0,0,100,200); //  从点（100，100）开始绘制蓝色矩形
+
+    ctx.restore();
+    ctx.fillRect(10,10,100,200); // 从点（110，110）开始绘制绿色矩形
+
+    ctx.restore();
+    ctx.fillRect(0,0,100,200); // 从点（0，0）开始绘制红色矩形*!/
+    /!* let image = document.images[0];
+     // ctx.drawImage(image, 10, 10, 400,399);
+     ctx.drawImage(image, 200, 100, 200,200,0,100,200,200);*!/
+
+    /!* ctx.shadowOffsetX = 5;
+     ctx.shadowOffsetY = 5;
+     ctx.shadowBlur = 4;
+     ctx.shadowColor = 'rgba(0,0,0,0.5)'
+
+     ctx.fillStyle = '#f00'
+     ctx.fillRect(10,10,50,50)
+     ctx.fillStyle = 'rgba(0,0,255,1)';
+     ctx.fillRect(30,30,50,50);*!/
+
+    // 渐变
+    /!* var gradient = createRectLinearGradient(ctx,30,30,70,70)
+     gradient.addColorStop(0, 'white');
+     gradient.addColorStop(1, 'black');
+
+     // 绘制红色矩形
+     ctx.fillStyle = '#f00'
+     ctx.fillRect(10,10, 50,50);
+
+     // 绘制渐变矩形
+     ctx.fillStyle = gradient;
+     ctx.fillRect(30,30,70,70);
+ *!/
+
+    /!*!// 径向渐变
+     var gradient1 = ctx.createRadialGradient(55,55,10,55,55,30)
+     gradient1.addColorStop(0, 'white');
+     gradient1.addColorStop(1, 'black')
+
+     ctx.fillStyle = '#f00'
+     ctx.fillRect(10,10,50,50)
+
+     ctx.fillStyle = gradient1;
+     ctx.fillRect(30,30,50,50);
+ *!/
+
+    /!*var image = document.images[0]
+    var pattern = ctx.createPattern(image, 'repeat')
+    ctx.fillStyle = pattern
+    ctx.fillRect(10,10,600,600);*!/
+    /!*var imageData = ctx.getImageData(10,5,50,50);
+    var data = imageData.data,
+        red = data[0],
+        green = data[1],
+        blue = data[2],
+        alpha = data[3];*!/
+
 }
+function createRectLinearGradient(ctx, x, y, width, height) {
+    return ctx.createLinearGradient(x, y, x + width, y + height)
+}*/
+/*let drawing = document.getElementById('drawing');
+if (drawing.getContext) {
+    let ctx = drawing.getContext('2d'),
+        image = document.images[0],
+        imageData, data,
+        i, len, average,
+        red, green, blue, alpha;
+
+    // 绘制原始图像
+    ctx.drawImage(image, 0, 0);
+
+    // 取得图像数据
+    imageData = ctx.getImageData(0,0,image.width, image.height);
+    data = imageData.data;
+
+    for (i = 0, len = data.length; i < len; i+=4) {
+        red = data[i];
+        green = data[i + 1];
+        blue = data[i + 2];
+        alpha = data[i + 3];
+
+        average = Math.floor((red + green + blue) / 3);
+        data[i] = average;
+        data[i + 1] = average;
+        data[i + 2] = average;
+    }
+    // 回写图像数据并显示结果
+    imageData.data = data;
+    ctx.putImageData(imageData, 0, 0);
+
+    // 绘制红色矩形
+    ctx.fillStyle = '#f00'
+    ctx.fillRect(10,10,50,50)
+
+    // 修改全局透明度
+    ctx.globalAlpha = 0.5;
+
+    // 绘制蓝色矩形
+    ctx.fillStyle = 'rgba(0,0,255,1)'
+    ctx.fillRect(30,30,50,50)
+
+    // 重置全局透明度
+    ctx.globalAlpha = 0;
+}*/
+/*
+let drawing = document.getElementById('drawing');
+
+let ctx = drawing.getContext('2d')
+ctx.fillStyle = '#f00'
+ctx.fillRect(10,10,50,50)
+
+ctx.globalCompositeOperation = 'destination-over'
+ctx.fillStyle = 'rgba(0,0,255,1)'
+ctx.fillRect(30,30,50,50)*/
+/*var buffer = new ArrayBuffer(20)
+// var bytes = buffer.byteLength;
+var view = new DataView(buffer);
+
+var view = new DataView(buffer, 9)
+
+var view = new DataView(buffer, 9 , 10)*/
+/*var iframeWindow = document.getElementById('myframe').contentWindow;
+iframeWindow.postMessage('A secret', 'http://localhost:63342');
+
+window.addEventListener('message', function (e) {
+    if (e.origin === 'http://localhost:63342') {
+        // processMessage(e.data);
+        e.source.postMessage("Received!", "http://localhost:63342");
+    }
+})*/
+document.getElementById('myframe').addEventListener('dragover', function (e) {
+    e.preventDefault();
+})
+document.getElementById('myframe').addEventListener('dragenter', function (e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+})
+
+document.getElementsByTagName('p')[0].addEventListener('dragstart', function (e) {
+    e.dataTransfer.effectAllowed = 'move';
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
 

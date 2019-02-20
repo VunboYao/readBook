@@ -1362,7 +1362,7 @@ queryCommandEnabled() 、 queryCommandState() 和 queryCommandValue() 方法则�
 ### 绘制矩形
 
 - fillRect(),strokeRect()和clearRect()。这三个方法都接收4个参数： 矩形的x坐标，矩形的y坐标，矩形宽度和矩形高度。这些单位都是像素
-- fillRect()方法在画布上绘制的矩形会填充制定的颜色
+- fillRect()方法在画布上绘制的矩形会填充指定的颜色
     ```
     let ctx = drawing.getContext('2d');
         // 绘制蓝色矩形
@@ -1436,3 +1436,337 @@ queryCommandEnabled() 、 queryCommandState() 和 queryCommandValue() 方法则�
 ```
 
 ### 绘制文本
+
+- 绘制文本主要有两个方法：fillText()和strokeText().这两个方法都接收4个参数：要绘制的文本字符串、x坐标、y坐标和可选的最大像素宽度。都以下列3个属性为基础。
+    - font: 表示文本的样式、大小及字体，用CSS中指定字体的格式来制定，例如：‘10px Arial’
+    - textAlign: 表示文本对齐方式。可能的值有‘start’、‘end’、‘left’、‘right’和‘center'。建议使用‘start'和‘end’，不要使用‘left’和‘right’。
+    - textBaseline: 表示文本的基线。可能的值有‘top’、‘hanging’、‘middle'、‘alphabetic'、ideographic和bottom.
+    - 这几个属性都有默认值，没有必要每次使用都重新设置一遍。
+    - fillText()方法使用fillStyle属性绘制文本，而strokeText()方法使用strokeStyle属性为文本描边。
+- measureText().这个方法接受一个参数，即要绘制的文本；返回一个TextMetrics对象。返回的对象目前只有一个width属性。measureText() 方法利用 font 、 textAlign 和 textBaseline 的当前值计算指定文本的大小
+    ```
+    // 比如，假设你想在一个 140 像素宽的矩形区域中绘制文本 Hello world!，下面的代码从 100 像素的字体大小开始递减，最终会找到合适的字体大小
+     var fontSize = 100;
+         ctx.font = fontSize + 'px Arial';
+         while(ctx.measureText('Hello world!').width > 130) {
+             fontSize--;
+             ctx.font = fontSize + 'px Arial';
+         }
+         ctx.fillText('Hello world!',10, 10);
+         ctx.fillText('Font size is ' + fontSize + 'px', 10, 50);
+    ```
+-  fillText 和 strokeText() 方法都可以接收第四个参数，也就是文本的最大像素宽度.提供这个参数后，调用 fillText() 或时如果传入的字符串大于最大宽度，则绘制的文本字符的高度正确，但宽度会收缩以适应最大宽度。
+
+### 变换
+
+通过如下方法来修改变换矩阵
+- rotate(angle) ：围绕原点旋转图像 angle 弧度
+- scale(scaleX, scaleY) ：缩放图像，在 x 方向乘以 scaleX ，在 y 方向乘以 scaleY 。scaleX和 scaleY 的默认值都是 1.0
+- translate(x, y) ：将坐标原点移动到 (x,y) 。执行这个变换之后，坐标(0,0)会变成之前由 (x,y)表示的点。
+- transform(m1_1, m1_2, m2_1, m2_2, dx, dy) ：直接修改变换矩阵，方式是乘以如下矩阵。
+    ```
+      m1_1 m1_2 dx
+      m2_1 m2_2 dy
+      0 0 1 
+    ```
+- setTransform(m1_1, m1_2, m2_1, m2_2, dx, dy) ：将变换矩阵重置为默认状态，然后再调用 transform() 。
+
+```
+比如，就拿前面例子中绘制表针来说，
+如果把原点变换到表盘的中心，然后再绘制表针就容易多了。请看下面的例子。
+// 开始路径
+    ctx.beginPath();
+    // 绘制外圆
+    ctx.arc(100,100,99,0,2*Math.PI, false)
+    // 绘制内圆
+    ctx.moveTo(194,100)
+    ctx.arc(100,100,94,0, 2*Math.PI, false)
+
+    // 变换原点
+    ctx.translate(100,100)
+    
+    // 旋转表针
+    ctx.rotate(1);
+    // 绘制分针
+    ctx.moveTo(0,0)
+    ctx.lineTo(0,-85)
+    // 绘制时针
+    ctx.moveTo(0,0)
+    ctx.lineTo(-65, 0);
+    // 描边路径
+    ctx.stroke() 
+```
+
+无论是刚才执行的变换，还是 **fillStyle 、 strokeStyle 等属性**，都会在当前上下文中一直有效，
+除非再对上下文进行什么修改。虽然没有什么办法把上下文中的一切都重置回默认值，但有两个方法可
+以跟踪上下文的状态变化。
+
+> 如果你知道将来还要返回某组属性与变换的组合，可以调用 save() 方法。
+  调用这个方法后，当时的所有设置都会进入一个栈结构，得以妥善保管。然后可以对上下文进行其他修
+  改。等想要回到之前保存的设置时，可以调用 restore() 方法，在保存设置的栈结构中向前返回一级，
+  恢复之前的状态。连续调用 save() 可以把更多设置保存到栈结构中，之后再连续调用 restore() 则可
+  以一级一级返回。
+
+```
+ctx.fillStyle = '#f00'
+    ctx.save();
+    ctx.fillStyle = '#0f0'
+    ctx.translate(100,100)
+    ctx.save();
+
+    ctx.fillStyle = '#00f'
+    ctx.fillRect(0,0,100,200); //  从点（100，100）开始绘制蓝色矩形
+
+    ctx.restore();
+    ctx.fillRect(10,10,100,200); // 从点（110，110）开始绘制绿色矩形
+
+    ctx.restore();
+    ctx.fillRect(0,0,100,200); // 从点（0，0）开始绘制红色矩形 
+    首先：将 fillStyle 设置为红色，并调用 save() 保存上下文状态
+    其次：把 fillStyle 修改为绿色，把坐标原点变换到(100,100)，再调用 save() 保存上下文状态。
+    然后：把 fillStyle 修改为蓝色并绘制蓝色的矩形。因为此时的坐标原点已经变了，所以矩形的左上角
+          坐标实际上是(100,100)。
+    
+    然后调用 restore() ，之后 fillStyle 变回了绿色，因而第二个矩形就是绿色。之所以第二个矩形的起点坐标
+            是(110,110)，是因为坐标位置的变换仍然起作用。
+    再调用一次restore() ，变换就被取消了，而fillStyle 也返回了红色。
+    所以最后一个矩形是红色的，而且绘制的起点是(0,0)
+```
+**需要注意的是， save() 方法保存的只是对绘图上下文的设置和变换，不会保存绘图上下文的内容。**
+
+### 绘制图像
+
+2D 绘图上下文内置了对图像的支持。如果你想把一幅图像绘制到画布上，可以使用 drawImage()方法。调用这个方法时，可以使用三种不同的参数组合。
+- 最简单的调用方式是传入一个 HTML <img\> 元素，以及绘制该图像的起点的 x 和 y 坐标。
+    ```
+    var image = document.images[0];
+    context.drawImage(image, 10, 10); 
+    ```
+- 如果你想改变绘制后图像的大小，可以再多传入两个参数，分别表示目标宽度和目标高度。
+    ```
+    context.drawImage(image, 50, 10, 20, 30); 
+    // 执行代码后，绘制出来的图像大小会变成 20×30 像素
+    ```
+- 还可以选择把图像中的某个区域绘制到上下文中。 drawImage() 方法的这种调用方式总共需要传入 9 个参数：要绘制的图像、源图像的 x 坐标、源图像的 y 坐标、源图像的宽度、源图像的高度、目标图像的 x 坐标、目标图像的 y 坐标、目标图像的宽度、目标图像的高度。
+    ```
+    context.drawImage(image, 0, 10, 50, 50, 0, 100, 40, 60); 
+    // 这行代码只会把原始图像的一部分绘制到画布上。原始图像的这一部分的起点为(0,10)，宽和高都
+       是 50 像素。最终绘制到上下文中的图像的起点是(0,100)，而大小变成了 40×60 像素。
+    ```
+- 除了给 drawImage() 方法传入 HTML <img\> 元素外，还可以传入另一个 <canvas\> 元素作为其第一个参数。这样，就可以把另一个画布内容绘制到当前画布上。
+- **操作的结果可以通过 toDataURL() 方法获得**,不过，有一个例外，即图像不能来自其他域。如果图像来自其他域，调用toDataURL() 会抛出一个错误.**但 toDataURL()是 Canvas 对象的方法，不是上下文对象的方法。**
+
+### 阴影
+
+2D 上下文会根据以下几个属性的值，自动为形状或路径绘制出阴影。
+- shadowColor ：用 CSS 颜色格式表示的阴影颜色，默认为黑色。
+- shadowOffsetX ：形状或路径 x 轴方向的阴影偏移量，默认为 0
+- shadowOffsetY ：形状或路径 y 轴方向的阴影偏移量，默认为 0
+- shadowBlur ：模糊的像素数，默认 0，即不模糊
+
+### 渐变
+
+渐变由 CanvasGradient 实例表示，很容易通过 2D 上下文来创建和修改。
+- 要创建一个新的**线性渐变**，可以调用 createLinearGradient() 方法。这个方法接收 4 个参数：起点的 x 坐标、起点的 y 坐标、终点的 x 坐标、终点的 y 坐标。调用这个方法后，它就会创建一个指定大小的渐变，并返回CanvasGradient 对象的实例
+- 创建了渐变对象后，下一步就是使用 addColorStop() 方法来指定色标。这个方法接收两个参数：色标位置和 CSS 颜色值。色标位置是一个 0（开始的颜色）到 1（结束的颜色）之间的数字
+    ```
+        var gradient = createRectLinearGradient(ctx,30,30,70,70)
+        gradient.addColorStop(0, 'white');
+        gradient.addColorStop(1, 'black'); 
+         // gradient 对象表示的是一个从画布上点(30,30)到点(70,70)的渐变。起点的色标是白色，终
+         点的色标是黑色。然后就可以把 fillStyle 或 strokeStyle 设置为这个对象，从而使用渐变来绘制
+         形状或描边
+    ```
+    ```
+        // 绘制红色矩形
+        ctx.fillStyle = '#f00'
+        ctx.fillRect(10,10, 50,50);
+    
+        // 绘制渐变矩形
+        ctx.fillStyle = gradient;
+        ctx.fillRect(30,30,70,70); 
+    ```
+- 如果没有把矩形绘制到恰当的位置，那可能就只会显示部分渐变效果.确保渐变与形状对齐非常重要，有时候可以考虑使用函数来确保坐标合适。
+    ```
+     function createRectLinearGradient(ctx, x, y, width, height) {
+         return ctx.createLinearGradient(x, y, x + width, y + height)
+     }
+     var gradient = createRectLinearGradient(ctx,30,30,70,70)
+     gradient.addColorStop(0, 'white');
+     gradient.addColorStop(1, 'black');
+ 
+     // 绘制红色矩形
+     ctx.fillStyle = '#f00'
+     ctx.fillRect(10,10, 50,50);
+ 
+     // 绘制渐变矩形
+     ctx.fillStyle = gradient;
+     ctx.fillRect(30,30,70,70);
+    ```
+- 创建**径向渐变**使用 createRadialGradient() 方法。接受6个参数。对应着两个圆的圆心和半径
+    ```
+    var gradient1 = ctx.createRadialGradient(55,55,10,55,55,30)
+        gradient1.addColorStop(0, 'white');
+        gradient1.addColorStop(1, 'black')
+    
+        ctx.fillStyle = '#f00'
+        ctx.fillRect(10,10,50,50)
+    
+        ctx.fillStyle = gradient1;
+        ctx.fillRect(30,30,50,50); 
+    ```
+
+### 模式
+
+模式其实就是重复的图像，可以用来填充或描边图形。要创建一个新模式，可以调用 createPattern() 方法并传入两个参数：一个 HTML <img> 元素和一个表示如何重复图像的字符串。第二个参数的值与 CSS 的 background-repeat 属性值相同，包括 "repeat" 、 "repeat-x" 、"repeat-y" 和 "no-repeat" 。
+
+```
+    var image = document.images[0]
+    var pattern = ctx.createPattern(image, 'repeat');
+    
+    // 绘制矩形
+    ctx.fillStyle = pattern
+    ctx.fillRect(10,10,600,600); 
+```
+- createPattern() 方法的第一个参数也可以是一个 <video> 元素，或者另一个 <canvas> 元素。
+
+### 使用图像数据
+
+2D 上下文的一个明显的长处就是，可以通过 getImageData() 取得原始图像数据。这个方法接收 4 个参数：要取得其数据的画面区域的 x 和 y 坐标以及该区域的像素宽度和高度。
+
+```
+    // 例如，要取得左上角坐标为(10,5)、大小为 50×50 像素的区域的图像数据，可以使用以下代码：
+    var imageData = ctx.getImageData(10,5,50,50);
+    
+    // 这里返回的对象是 ImageData 的实例。每个 ImageData 对象都有三个属性： width 、 height 和
+       data 。其中 data 属性是一个数组，保存着图像中每一个像素的数据。在 data 数组中，每一个像素用
+       4 个元素来保存，分别表示红、绿、蓝和透明度值。因此，第一个像素的数据就保存在数组的第 0 到第
+       3 个元素中
+    var data = imageData.data,
+        red = data[0],
+        green = data[1],
+        blue = data[2],
+        alpha = data[3];
+```
+```
+// 例如，通过修改图像数据，可以像下面这样创建一个简单的灰阶过滤器。
+let drawing = document.getElementById('drawing');
+if (drawing.getContext) {
+    let ctx = drawing.getContext('2d'),
+        image = document.images[0],
+        imageData, data,
+        i, len, average,
+        red, green, blue, alpha;
+
+    // 绘制原始图像
+    ctx.drawImage(image, 0, 0);
+
+    // 取得图像数据
+    imageData = ctx.getImageData(0,0,image.width, image.height);
+    data = imageData.data;
+
+    for (i = 0, len = data.length; i < len; i+=4) {
+        red = data[i];
+        green = data[i + 1];
+        blue = data[i + 2];
+        alpha = data[i + 3];
+
+        average = Math.floor((red + green + blue) / 3);
+        data[i] = average;
+        data[i + 1] = average;
+        data[i + 2] = average;
+    }
+    // 回写图像数据并显示结果
+    imageData.data = data;
+    ctx.putImageData(imageData, 0, 0);
+} 
+// 这个例子首先在画面上绘制了一幅图像，然后取得了原始图像数据。其中的 for 循环遍历了图像数
+   据中的每一个像素。这里要注意的是，每次循环控制变量 i 都递增 4。在取得每个像素的红、绿、蓝颜
+   色值后，计算出它们的平均值。再把这个平均值设置为每个颜色的值，结果就是去掉了每个像素的颜色，
+   只保留了亮度接近的灰度值（即彩色变黑白）。在把 data 数组回写到 imageData 对象后，调用
+   putImageData() 方法把图像数据绘制到画布上。最终得到了图像的黑白版。
+```
+
+### 合成
+
+- globalAlpha 是一个介于0和1之间的值（包括0和1），用于指定所有绘制的透明度。默认为0.如果后续所有操作都要基于相同的透明度，就可以先把globalAlpha设置为恰当的值，然后绘制，最后再把它设置回默认值0.
+    ```
+    // 绘制红色矩形
+        ctx.fillStyle = '#f00'
+        ctx.fillRect(10,10,50,50)
+    
+        // 修改全局透明度
+        ctx.globalAlpha = 0.5;
+    
+        // 绘制蓝色矩形
+        ctx.fillStyle = 'rgba(0,0,255,1)'
+        ctx.fillRect(30,30,50,50)
+        
+        // 重置全局透明度
+        ctx.globalAlpha = 0; 
+    ```
+- globalCompositionOperation 表示后绘制的图形怎样与先绘制的图形结合。这个属性的值是字符串，可能的值如下：
+    - source-over （默认值）：后绘制的图形位于先绘制的图形上方。
+    - source-in ：后绘制的图形与先绘制的图形重叠的部分可见，两者其他部分完全透明
+    - source-out ：后绘制的图形与先绘制的图形不重叠的部分可见，先绘制的图形完全透明
+    - source-atop ：后绘制的图形与先绘制的图形重叠的部分可见，先绘制图形不受影响。
+    - destination-over ：后绘制的图形位于先绘制的图形下方，只有之前透明像素下的部分才可见。
+    - destination-in ：后绘制的图形位于先绘制的图形下方，两者不重叠的部分完全透明
+    - destination-out ：后绘制的图形擦除与先绘制的图形重叠的部分
+    - destination-atop ：后绘制的图形位于先绘制的图形下方，在两者不重叠的地方，先绘制的图形会变透明
+    - lighter ：后绘制的图形与先绘制的图形重叠部分的值相加，使该部分变亮
+    - copy ：后绘制的图形完全替代与之重叠的先绘制图形
+    - xor ：后绘制的图形与先绘制的图形重叠的部分执行“异或”操作。
+    ```
+    ctx.fillStyle = '#f00'
+    ctx.fillRect(10,10,50,50)
+    
+    ctx.globalCompositeOperation = 'destination-over'
+    ctx.fillStyle = 'rgba(0,0,255,1)'
+    ctx.fillRect(30,30,50,50) 
+    如果不修改 globalCompositionOperation ，那么蓝色矩形应该位于红色矩形之上。但把
+    globalCompositionOperation 设置为 "destination-over" 之后，红色矩形跑到了蓝色矩形上面。
+    ```
+
+## WebGL
+
+### 类型化数组
+
+WebGL 涉及的复杂计算需要提前知道数值的精度，而标准的 JavaScript 数值无法满足需要。因此，WebGL引入了一个概念，叫类型化数组。类型化数组也是数组，只不过其元素被设置为特定类型的值。
+
+> 类型化数组的核心就是一个名为 ArrayBuffer 的类型。每个 ArrayBuffer 对象表示的只是内存
+  中指定的字节数，但不会指定这些字节用于保存什么类型的数据。通过 ArrayBuffer 所能做的，就是
+  为了将来使用而分配一定数量的字节。例如，下面这行代码会在内存中分配 20B
+  ```
+  var buffer = new ArrayBuffer(20) 
+  
+  // 创建了 ArrayBuffer 对象后，能够通过该对象获得的信息只有它包含的字节数，方法是访问其
+     byteLength 属性
+     var bytes = buffer.byteLength;
+  ```
+
+**1.视图**
+
+- 使用 ArrayBuffer （数组缓冲器类型）的一种特别的方式就是用它来创建数组缓冲器视图.其中，最常见的视图是 DataView ，通过它可以选择 ArrayBuffer 中一小段字节。为此，可以在创建 DataView 实例的时候传入一个 ArrayBuffer 、一个可选的字节偏移量（从该字节开始选择）和一个可选的要选择的字节数
+    ```
+    // 基于整个缓冲器创建一个新视图
+    var view = new DataView(buffer);
+    // 创建一个开始于字节 9 的新视图
+    var view = new DataView(buffer, 9)
+    // 创建一个从字节 9 开始到字节 18 的新视图
+    var view = new DataView(buffer, 9 , 10);
+    
+    // 实例化之后， DataView 对象会把字节偏移量以及字节长度信息分别保存在 byteOffset 和
+       byteLength 属性中。 
+    ```
+
+
+
+
+
+
+
+
+
+
+
