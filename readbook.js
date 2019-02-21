@@ -2028,18 +2028,24 @@ window.addEventListener('message', function (e) {
         e.source.postMessage("Received!", "http://localhost:63342");
     }
 })*/
-document.getElementById('myframe').addEventListener('dragover', function (e) {
+/*document.getElementById('myframe').addEventListener('dragover', function (e) {
     e.preventDefault();
+})
+
+document.getElementsByTagName('p')[0].addEventListener('dragstart', function (e) {
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('pId',this.id);
 })
 document.getElementById('myframe').addEventListener('dragenter', function (e) {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
 })
-
-document.getElementsByTagName('p')[0].addEventListener('dragstart', function (e) {
-    e.dataTransfer.effectAllowed = 'move';
-})
-
+document.getElementById('myframe').addEventListener('drop', function (e) {
+    let id = e.dataTransfer.getData('pId');
+    let p = document.getElementById(id);
+    p.parentNode.removeChild(p);
+    this.appendChild(p);
+})*/
 
 
 

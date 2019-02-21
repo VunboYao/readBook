@@ -92,8 +92,9 @@ dataTransfer 对象中。类似地，在拖放链接或图像时，会调用 set
 在这些元素被拖放到放置目标时，就可以通过 getData() 读到这些数据。当然，作为开发人员，你也
 可以在 dragstart 事件处理程序中调用 setData() ，手工保存自己要传输的数据，以便将来使用。
 
-    将数据保存为文本和保存为 URL 是有区别的。如果将数据保存为文本格式，那么数据不会得到任
-何特殊处理。而如果将数据保存为 URL，浏览器会将其当成网页中的链接。换句话说，如果你把它放置
+作为开发人员，你也可以在 dragstart 事件处理程序中调用 setData() ，手工保存自己要传输的数据，以便将来使用。
+
+将数据保存为文本和保存为 URL 是有区别的。如果将数据保存为文本格式，那么数据不会得到任何特殊处理。而如果将数据保存为 URL，浏览器会将其当成网页中的链接。换句话说，如果你把它放置
 到另一个浏览器窗口中，浏览器就会打开该 URL。
 
 ### dropEffect 与 effectAllowed
@@ -132,5 +133,100 @@ HTML5 规范规定 dataTransfer 对象还应该包含下列方法和属性。
 - clearData(format) ：清除以特定格式保存的数据。
 - setDragImage(element, x, y) ：指定一幅图像，当拖动发生时，显示在光标下方。这个方法接收的三个参数分别是：HTML元素和光标在图像中的x,y坐标。其中，HTML元素可以是一副图像，也可以是其他元素。
 - types: 当前保存的数据类型。这是一个类似数组的集合，以 "text" 这样的字符串形式保存着数据类型。
+
+## 媒体元素
+
+* 视频标签video
+* 音频标签audio
+
+```
+<video src="./assets/mp4.mp4" id="myVideo" controls poster="images/timg.jpg">Video player not available.</video> 
+// 默认状态下，不添加controls属性，音频标签隐藏不显示
+<audio src="./assets/next.mp3" id="myAudio" controls>Audio player not available.</audio>
+```
+其他属性：
+- 可以设置 width 和 height 属性以指定视频播放器的大小，为**poster**属性指定图像的 URI 可以在加载视频内容期间显示一幅图像
+- 位于开始和结束标签之间的任何内容都将作为后备内容，在浏览器不支持这两个媒体元素的情况下显示
+
+因为并非所有浏览器都支持所有媒体格式，所以可以指定多个不同的媒体来源。为此，不用在标签
+中指定 src 属性，而是要像下面这样使用一或多个 <source> 元素。
+
+```
+<!-- 嵌入视频 -->
+<video id="myVideo">
+    <source src="conference.webm" type="video/webm; codecs='vp8, vorbis'">
+    <source src="conference.ogv" type="video/ogg; codecs='theora, vorbis'">
+    <source src="conference.mpg">
+    Video player not available.
+</video>
+<!-- 嵌入音频 -->
+<audio id="myAudio">
+    <source src="song.ogg" type="audio/ogg">
+    <source src="song.mp3" type="audio/mpeg">
+    Audio player not available.
+</audio> 
+```
+
+### H5相关属性：
+
+- autoplay，自动播放。当不能播放时，浏览器屏蔽。添加muted可播放。
+- controls，出现该属性，则向用户显示控件，比如播放按钮。
+- height，设置视频播放器的高度。**video没有该属性**
+- loop，循环播放
+- muted，静音播放
+- poster, 海报，播放前显示图片。**video没有该属性**
+- preload，如果出现该属性，则视频在页面加载时进行加载，并预备播放。如果使用 "autoplay"，则忽略该属性。
+- src，url,播放视频的url
+- width,设置视频播放器的宽度。**video没有该属性**
+
+### 属性
+
+<video\> 和 <audio\> 元素都提供了完善的 JavaScript 接口
+
+属性|数据类型|说明
+---|---|---
+autoplay|布尔值|取得或设置autoplay标志
+buffered|事件范围|表示已下载的缓冲的事件范围的对象
+bufferedBytes|字节范围|表示已下载的缓冲的字节范围的对象
+bufferingRate|整数|下载过程中每秒钟平均接受到的位数
+bufferingThrottled|布尔值|表示浏览器是否对缓冲进行了节流
+controls|布尔值|取得或设置controls属性，用于显示或隐藏浏览器内置的控件
+currentLoop|整数|媒体已经循环的次数
+currentSrc|字符串|当前播放的媒体文件的URL
+currentTime|浮点数|已经播放的秒数
+defaultPlaybackRate|浮点数|取得或设置默认的播放速度。默认值为1.0秒
+duration|浮点数|媒体的总播放时间（秒数）
+ended|布尔值|表示媒体文件是否播放完成
+loop|布尔值|取得或设置媒体文件在播放完成后是否再从头开始播放
+muted|布尔值|取得或设置媒体文件是否静音
+networkState|整数|表示当前媒体的网络链接状态：0表示空，1正在加载，2正在加载元数据，3已经加载了第一帧，4加载完成
+paused|布尔值|表示播放器是否暂停
+playbackRate|浮点数|取得或设置当前的播放速度。用户可以改变这个值，让媒体速度变快或者变慢，这与defaultPlaybackRate只能由开发人员修改的defaultPlaybackRate不同
+played|时间范围|到目前为止已经播放的时间范围
+readyState|整数|表示媒体是否已经就绪（可以播放了）。0数据不可用，1可以显示当前帧，2可以开始播放，3媒体可以从头到尾播放
+seekable|时间范围|可以搜索的时间范围
+seeking|布尔值|表示播放器是否正移动到媒体文件中新位置
+src|字符串|每天文件的来源。任何时候都可以重写这个属性。
+start|浮点数|取得或设置媒体文件中开始播放位置，以秒表示
+totalBytes|整数|当前资源所需的总字节数
+videoHeight|整数|返回视频（不一定是元素）的高度。只适用于video
+videoWidth|整数|返回视频（不一定是元素）的宽度。只适用于video
+volume|浮点数|取得或设置当前音量，值为0.0到1.0
+
+> 很多属性也可以直接在 <audio> 和 <video> 元素中设置。
+
+### 事件
+
+事件|触发时机
+---|---
+abort|下载中断
+canplay|可以播放时；readyState值为2
+canplaythrough|播放可继续，而且应该不会终端；readyState值为3
+canshowcurrentframe|当前帧已经下载完成；readyState值为1
+dataunavailable|因为没有数据而不能播放；readyState值为0
+durationchange|duration属性的值改变
+emptied|网络连接关闭
+empty|发生错误阻止了媒体下载
+ended|媒体已播放到末尾，播放停止
 
 

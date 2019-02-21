@@ -267,6 +267,8 @@ document.addEventListener('click', function (e) {
 - “DOM2 级事件”规范在 event 对象中还提供了 detail 属性，用于给出有关事件的更多信息
 - 对于鼠标事件来说，detail中包含了一个数值，表示在给定的位置上发生了多少次单击。
 - 在同一个元素上相继地发生一次mousedown和mouseup事件算作一次单击。
+- offsetX ：光标相对于目标元素边界的 x 坐标。（事件目标上的坐标）
+- offsetY ：光标相对于目标元素边界的 y 坐标。
 
 **8.鼠标滚轮事件**
 
