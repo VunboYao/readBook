@@ -2046,16 +2046,99 @@ document.getElementById('myframe').addEventListener('drop', function (e) {
     p.parentNode.removeChild(p);
     this.appendChild(p);
 })*/
+/*window.onload = function () {
+    let player = document.getElementById('player'),
+        btn = document.getElementById('video-btn'),
+        curtime = document.getElementById('curtime'),
+        rate2 = document.getElementById('rate2'),
+        rate3 = document.getElementById('rate3'),
+        fullScreen = document.getElementById('fullScreen'),
+        setInterval1,
+        duration = document.getElementById('duration');
 
+    btn.addEventListener('click', function (e) {
+        if (player.paused) {
+            player.play();
+            btn.value = 'Pause';
+        } else {
+            player.pause();
+            btn.value = 'Play';
+            // 暂停时清楚获取播放时间的定时器
+            clearInterval(setInterval1);
+        }
+    })
 
+    // 2倍速率
+    rate2.addEventListener('click', function () {
+        player.playbackRate = 2;
+    })
 
+    // 3倍速率
+    rate3.addEventListener('click', function () {
+        player.playbackRate = 3;
+    })
 
+    // 全屏
+    fullScreen.addEventListener('click', function () {
+        player.requestFullscreen();
+    })
 
+    // 初始化时显示当前播放时间00：00
+    curtime.innerHTML = formatTime(player.currentTime);
 
+    /!* 初始化时，定时器获取总播放时间 *!/
+    setTimeout(function () {
+        duration.innerHTML = formatTime(player.duration);
+    },100);
 
+    // 监听播放时，获取当前播放时间。
+    player.addEventListener('playing', function (e) {
+        setInterval1 = setInterval(function () {
+            curtime.innerHTML = formatTime(player.currentTime);
+        },250);
+    })
+}
+/!*播放时间格式化*!/
+function formatTime(time) {
+    // 设定初始时间
+    let minute = 0,
+        seconds = 0;
+    minute = parseInt(time / 60); // 求余获取分数整数
+    seconds = parseInt(time % 60); // 秒数
 
-
-
+    // 时间格式补全--00：00
+    // 转换成字符串再使用ES6语法补全
+    let strMinute = minute.toString().padStart(2, '0');
+    let strSec = seconds.toString().padStart(2, '0');
+    return `${strMinute}:${strSec}`;
+}*/
+/*var audio = new Audio('./assets/kiro.mp3')
+audio.addEventListener('canplaythrough', function (e) {
+    audio.play();
+})*/
+/*history.pushState({name: 'Nicholas'}, '1111','drag.html')
+// history.replaceState({name:"Greg"}, "Greg's page");
+window.addEventListener('popstate', function (e) {
+    let state = e.state;
+    if (state) {
+        console.log(state);
+    }
+})*/
+/*function CustomError(message) {
+    this.name = 'CustomError'
+    this.message = message;
+}
+CustomError.prototype = new Error();
+throw new CustomError('My message');*/
+/*function process(values) {
+    values.sort();
+    for (let i = 0; i < values.length; i++) {
+        if (values[i] > 100) {
+            return values[i];
+        }
+    }
+    return -1;
+}*/
 
 
 

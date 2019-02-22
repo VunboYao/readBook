@@ -516,8 +516,7 @@ window.addEventListener('load', function (e) {
 > 指定了 onunload 事件处理程序的页面会被自动排除在 bfcache 之外，即使事件处理程序是空的。原因在于， onunload 最常用于撤销在 onload 中所执行的操作，而跳过 onload 后再次显示页面很可能就会导致页面不正常。
 
 **6.haschange事件**
-- HTML5 新增了 hashchange 事件，以便在 URL 的参数列表（及 URL 中“#”号后面的所有字符串）
-  发生变化时通知开发人员。
+- HTML5 新增了 hashchange 事件，以便在 URL 的参数列表（及 URL 中“#”号后面的所有字符串）发生变化时通知开发人员。
 - 必须要把 hashchange 事件处理程序添加给 window 对象，然后 URL 参数列表只要变化就会调用它。此时的 event 对象应该额外包含两个属性： oldURL 和 newURL 。这两个属性分别保存着参数列表变化前后的完整 URL。
 - 最好使用location对象来确定当前的参数列表。`location.hash`
 - var isSupported = ("onhashchange" in window); //这里有 bug
