@@ -114,7 +114,7 @@ location 是最有用的 BOM对象之一，它提供了与当前窗口中加载�
 hash|"#contents"|返回URL中的hash（#号后跟零或多个字符），如果URL中不包含散列，则返回空字符串
 host|"www.wrox.com:80"|返回服务器名称和端口号（如果有）
 hostname|"www.wrox.com"|返回不带端口号的服务器名称
-href|"http:/www.wrox.com"|返回当前加载页面的完整URL。而location对象的toString()方法也返回这个值
+href|"http://www.wrox.com"|返回当前加载页面的完整URL。而location对象的toString()方法也返回这个值
 pathname|"/WileyCDA/"|返回URL中的目录和（或）文件名
 port|"8080"|返回URL中指定的端口号。如果URL中不包含端口号，则这个属性返回空字符串
 protocol|"http:"|返回页面使用的协议。通常是http:或https:
@@ -201,15 +201,9 @@ function getQueryStringArgs() {
     //检测 QuickTime
     alert(hasPlugin("QuickTime")); 
     ```
-> 每个插件对象本身也是一个 MimeType 对象的数组，这些对象可以通过方括号语
-  法来访问。每个 MimeType 对象有 4 个属性：包含 MIME 类型描述的 description 、
-  回指插件对象的 enabledPlugin 、表示与 MIME 类型对应的文件扩展名的字符串
-  suffixes （以逗号分隔）和表示完整 MIME 类型字符串的 type 。    
+> 每个插件对象本身也是一个 MimeType 对象的数组，这些对象可以通过方括号语法来访问。每个 MimeType 对象有 4 个属性：包含 MIME 类型描述的 description 、回指插件对象的 enabledPlugin 、表示与 MIME 类型对应的文件扩展名的字符串suffixes （以逗号分隔）和表示完整 MIME 类型字符串的 type 。    
 
-> plugins 集合有一个名叫 refresh() 的方法，用于刷新 plugins 以反映最新安
-  装的插件。这个方法接收一个参数：表示是否应该重新加载页面的一个布尔值。如果
-  将这个值设置为 true ，则会重新加载包含插件的所有页面；否则，只更新 plugins
-  集合，不重新加载页面。
+> plugins 集合有一个名叫 refresh() 的方法，用于刷新 plugins 以反映最新安装的插件。这个方法接收一个参数：表示是否应该重新加载页面的一个布尔值。如果将这个值设置为 true ，则会重新加载包含插件的所有页面；否则，只更新 plugins集合，不重新加载页面。
 
 ## history 对象
 
