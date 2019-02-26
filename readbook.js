@@ -2205,4 +2205,91 @@ console.log(foo.b); // undefined
 
 console.log(F.a); // value a
 console.log(F.b); // undefined*/
+/*
+* 1,
+* undefined,
+* 2,
+* 3
+*
+* 'a'
+* not a function
+* 'a' ????
+* 'b'
+*
+* Person.prototype
+* Function.prototype ?
+*
+* 'value a'
+* 'undefined'
+* 'value a'
+* 'value b'
+* */
+/*console.log(Object.__proto__ === Function.prototype);
+function Person() {}
+
+console.dir(Person.__proto__);
+console.log(Number.__proto__ === Function.prototype);*/
+/*function ClassMachine() {
+    console.log('类型创造机器');
+}
+let thingOne = {}
+thingOne.__proto__ = ClassMachine.prototype;
+console.dir(thingOne);
+ClassMachine.call(thingOne)
+ClassMachine.prototype.action = function () {
+    console.log('动作制造机');
+}
+thingOne.action();*/
+/*function fn1() {
+    console.log(1);
+    this.num = 111;
+    this.sayHey = function() {
+        console.log("say hey.");
+    }
+}
+function fn2() {
+    console.log(2);
+    this.num = 222;
+    this.sayHello = function() {
+        console.log("say hello.");
+    }
+}
+fn1.call(fn2); // 1
+console.log(fn1.num); // undefined
+// fn1.sayHey(); // fn1.sayHey is not a function
+fn2(); // 2
+console.log(fn2.num); // 111
+// fn2.sayHello(); // fn2.sayHello is not a function
+fn2.sayHey(); //say hey*/
+
+function add(a, b){
+    this.demo = 2;
+    return a + b;
+}
+function sub(a, b){
+    this.demo = 3;
+    return a - b;
+}
+
+// apply() 的用法
+var a1 = add.apply(sub, [4, 2]); // sub 调用 add 的方法
+var a2 = sub.apply(add, [4, 2]);
+
+console.log(add.demo);
+
+console.log(a1) // 6
+console.log(a2) // 2
+
+
+
+
+
+
+
+
+
+
+
+
+
 
