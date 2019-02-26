@@ -1,0 +1,19 @@
+{
+  "name": "yyb-readbook",
+  "version": "1.0.0",
+  "description": "some note about study",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VunboYao/readBook.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VunboYao/readBook/issues"
+  },
+  "homepage": "https://github.com/VunboYao/readBook#readme"
+}

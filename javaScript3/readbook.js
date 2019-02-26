@@ -2139,5 +2139,156 @@ throw new CustomError('My message');*/
     }
     return -1;
 }*/
+/*
+function getQueryStringArgs() {
+    let qs = (location.search.length > 0 ? location.search.substring(1) : ''),
+        args = {},
+        items = qs.length ? qs.split('&') : [],
+        item = null,
+        name = null,
+        value = null;
+    for (let i = 0; i < items.length; i++) {
+        item = items[i].split('=');
+        name = decodeURIComponent(item[0]);
+        value = decodeURIComponent(item[1]);
+        if (name.length) {
+            args[name] = value;
+        }
+    }
+    return args;
+}
+
+console.log(getQueryStringArgs());
+*/
+/*var A = function () {}
+A.prototype.n = 1;
+var b = new A();
+A.prototype = {
+    n: 2,
+    m: 3
+}
+var c = new A()
+console.log(b.n);// 1
+console.log(b.m);// undefined
+console.log(c.n);// 2
+console.log(c.m);// 3*/
+/*var F = function () {}
+Object.prototype.a = function () {
+    console.log('a');
+}
+Function.prototype.b = function () {
+    console.log('b');
+}
+
+var f = new F();
+f.a(); // 'a'
+// f.b(); //  Not a function
+F.a(); // 'a'
+console.dir(f)
+console.dir(F)
+F.b(); // b
+
+function Person(name) {
+    this.name = name;
+}
+let p = new Person('Tom');
+console.log(p.__proto__); // Person.prototype
+console.log(Person.__proto__); // object.prototype
+
+var foo = {},
+    F = function () { }
+Object.prototype.a = 'value a';
+Function.prototype.b = 'value b';
+
+console.log(foo.a);// value a
+console.log(foo.b); // undefined
+
+console.log(F.a); // value a
+console.log(F.b); // undefined*/
+/*
+* 1,
+* undefined,
+* 2,
+* 3
+*
+* 'a'
+* not a function
+* 'a' ????
+* 'b'
+*
+* Person.prototype
+* Function.prototype ?
+*
+* 'value a'
+* 'undefined'
+* 'value a'
+* 'value b'
+* */
+/*console.log(Object.__proto__ === Function.prototype);
+function Person() {}
+
+console.dir(Person.__proto__);
+console.log(Number.__proto__ === Function.prototype);*/
+/*function ClassMachine() {
+    console.log('类型创造机器');
+}
+let thingOne = {}
+thingOne.__proto__ = ClassMachine.prototype;
+console.dir(thingOne);
+ClassMachine.call(thingOne)
+ClassMachine.prototype.action = function () {
+    console.log('动作制造机');
+}
+thingOne.action();*/
+/*function fn1() {
+    console.log(1);
+    this.num = 111;
+    this.sayHey = function() {
+        console.log("say hey.");
+    }
+}
+function fn2() {
+    console.log(2);
+    this.num = 222;
+    this.sayHello = function() {
+        console.log("say hello.");
+    }
+}
+fn1.call(fn2); // 1
+console.log(fn1.num); // undefined
+// fn1.sayHey(); // fn1.sayHey is not a function
+fn2(); // 2
+console.log(fn2.num); // 111
+// fn2.sayHello(); // fn2.sayHello is not a function
+fn2.sayHey(); //say hey*/
+
+function add(a, b){
+    this.demo = 2;
+    return a + b;
+}
+function sub(a, b){
+    this.demo = 3;
+    return a - b;
+}
+
+// apply() 的用法
+var a1 = add.apply(sub, [4, 2]); // sub 调用 add 的方法
+var a2 = sub.apply(add, [4, 2]);
+
+console.log(add.demo);
+
+console.log(a1) // 6
+console.log(a2) // 2
+
+
+
+
+
+
+
+
+
+
+
 
 
