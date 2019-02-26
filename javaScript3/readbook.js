@@ -2261,7 +2261,7 @@ fn2(); // 2
 console.log(fn2.num); // 111
 // fn2.sayHello(); // fn2.sayHello is not a function
 fn2.sayHey(); //say hey*/
-
+/*
 function add(a, b){
     this.demo = 2;
     return a + b;
@@ -2278,7 +2278,7 @@ var a2 = sub.apply(add, [4, 2]);
 console.log(add.demo);
 
 console.log(a1) // 6
-console.log(a2) // 2
+console.log(a2) // 2*/
 
 
 
