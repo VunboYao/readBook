@@ -2280,9 +2280,17 @@ console.log(add.demo);
 console.log(a1) // 6
 console.log(a2) // 2*/
 
-
-
-
+window.onerror = function(message, url, line) {
+    alert(message);
+}
+let image = new Image();
+image.onload = function () {
+    console.log('Image loaded');
+}
+image.addEventListener('error', function(e) {
+    console.log('Image not loaded');
+})
+image.src = 'xx.gif'; // 指定不存在的文件
 
 
 
