@@ -8,7 +8,7 @@
 - @mixin 混入缺点：生成冗余带码块。不能智能将相同的样式代码块合并在一起
 - %占位符，如果不被@extend调用，不会产生代码。编译出来的代码会将相同的代码合并在一起
 
-# 1.安装
+# 安装
 
 1. ruby安装
 2. gem install sass
@@ -16,11 +16,11 @@
 4. gem update sass   更新sass
 5. gem uninstall sass 卸载
 
-# 2.编译
+# 编译
 
 - sass --watch sass/xx.scss:css/xx.css
 
-# 3.编译方式 （GUI图形界面化工具Koala）
+# 编译方式 （GUI图形界面化工具Koala）
 
 1. 嵌套输出
     - sass --watch sass/xx.scss:css/xx.css --style nested	(默认格式)
@@ -31,7 +31,7 @@
 4. 压缩输出方式
     - sass --watch sass/xx.scss:css/xx.css --style compressed
 
-# 4.核心语法
+# 核心语法
 
 - 变量声明-------------------------------变量可以分为全局与局部变量定义并使用
 
@@ -175,7 +175,7 @@ nav {
     - @extend className(已经存在的样式组合)
         eg.@extend .error(直接跟选择器)
     - 比较
-        - 跟混合器（@mixin）相比，继承生成的css代码相对更少。因为继承仅仅是组合选择器，而不会重复属性，所以使用继承往往比混合气生成的css体积小。速度第一。
+        - 跟混合器（@mixin）相比，继承生成的css代码相对更少。因为继承仅仅是组合选择器，而不会重复属性，所以使用继承往往比混合器生成的css体积小。速度第一。
         - 继承遵从css层叠的规则。当两个不同的css规则应用到同一个html元素上时，并且这两个不同的css规则对同一属性的修饰存在不同的值，css层叠规则会决定用哪个样式。相当直观：通常权重更高得选择器胜出，如果权重相同，定义在后边的规则胜出。
 
 - 占位符 %
@@ -363,14 +363,58 @@ nav {
 - max($numbers...): 找出几个数值之间的最大值
 - random(): 获取随机数
 - length()函数。返回一个列表中有几个值。列表参数之间使用空格隔开，不能使用逗号。
+- nth($list, $n)函数。指定列表中某个位置的值。$n指列表中的标签值的位置。$n必须是大于0的整数。
+    ```
+    div {
+      border-bottom: nth(1px solid #ccc, 2);
+    }
+    // 编译后
+    div {
+      border-bottom: solid;
+    } 
+    ```
+- join()函数是将两个列表连接合并成一个列表。只能将**两个列表**连接成一个列表。
+- append()函数是用来将某个值插入到列表中，并且处于最末位。
+- zip()函数将多个列表值转成一个多维的列表
+- index() 函数类似于索引一样，主要让你找到某个值在列表中所处的位置。在 Sass 中，第一个值就是1，第二个值就是 2，依此类推
+- Introspection 函数包括了几个判断型函数
+    - type-of($value)：返回一个值的类型
+    - unit($number)：返回一个值的单位
+    - unitless($number)：判断一个值是否带有单位。如果不带单位，返回true.
+    - comparable($number-1, $number-2)：判断两个值是否可以做加、减和合并
+- Miscellaneous 函数称为三元条件函数，主要因为他和 JavaScript 中的三元判断非常的相似。他有两个值，当条件成立返回一种值，当条件不成立时返回另一种值
+    ```
+     if($condition,$if-true,$if-false);
+     
+     div {
+       width: if(true,400px,200px);
+     }
+    ```
 
+# Sass@规则
 
-
-
-
-
-
-
-
-
-
+- @import 引入 scss 文件。根据文件名引入。默认情况下，会寻找 scss 文件并直接引入。如果希望引入的文件不被编译成 css 文件。在文件名前面加一个下划线。同一个目录下不能同时存在带下划线和不带下划线的同名文件。
+- @media 指令和CSS的使用规则一样，但可以嵌套在CSS规则中，如果在样式中使用@media指令，将冒泡到外面。
+- @extend 扩展选择器或占位符。
+- @at-root 跳出根元素
+- @debug，调试，当编译出错时，在命令终端会输出提示。
+- @warn
+- @error
+    ```
+    @mixin cols-sm($width: 50%) {
+      //判断类型
+      @if type_of($width) != number {
+        // 错误
+        @error '$width必须是一个数值类型，你输入的数值是:#{$width}.';
+      }
+      // 判断不带单位为true, not取反（带单位）
+      @if not unitless($width) {
+        @if unit($width) != "%" {
+          @error "$width应该是一个百分值，你输入的width是：#{$width}";
+        } @else {
+          @warn '$width应该是一个百分比值，你输入的值width是：#{$width}';
+          $width: (percentage($width) / 100);
+        }
+      }
+    } 
+    ```
