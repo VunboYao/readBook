@@ -4,31 +4,28 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        .demo {
-            width: 200px;
-            word-wrap: break-spaces;
+        .banner {
+            position: relative;
+
+            width: 500px;
+            height: 400px;
+
+            background: #00B83F;
+        }
+        .banner a {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .right {
+            right: 0;
         }
     </style>
 </head>
 <body>
-<section>
-    <cite><a href="https://www.baidu.com" style='text-decoration: none'>百度</a></cite>
-    <h3>测试</h3>
-    <p>文章内容</p>
+<section class="banner">
+    <a href="#" id="left" class="left">&lt;</a>
+    <a href="#" id="right" class="right">&gt;</a>
 </section>
-<progress value="33" max="100"></progress>
-<meter value="0.6">60%</meter>
-<time>900</time>
-<embed src="http://ww1.sinaimg.cn/mw690/9bd522c1gw1f68n7cejisg206d08pb2b.gif" type="">
-<ruby>这是一段文字<rt>texdsfsdfasdfdst<rp>oo</rp></rt></ruby>
-<details>
-    <summary>标题</summary>
-    <p>内容。。。。。。。。。。。。。。。。。。。。。。。。。。。。</p>
-</details>
-<div style="width: 100px; height: 200px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden">我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字</div>
-<div class="demo">
-   you are  a  big normalnormalnormalnormalnormalnormalnormalnormalnormalnormalnormaln
-    ormalnormalnormalnormalnormalnormalnormalnormal
-</div>
 </body>
 </html>
