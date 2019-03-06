@@ -1558,8 +1558,22 @@ let range = selection.getRangeAt(0);
 let span = frames['richedit'].document.createElement('span')
 span.style.backgroundColor = 'yellow';
 range.surroundContents(span);*/
+/*let num = 0;
+for (let i = 1; i < 10; i++) {
+    if (i % 5 === 0) {
+        continue;
+    }
+    num ++;
+}
+console.log(num);*/
+// 找到所有的匹配的字符串
+/*let stringValue = "Lorem ipsum dolor sit amet, consectetur adipisicing elit";
+let positions = new Array();
+let pos = stringValue.indexOf("e");
+while(pos > -1){
+    positions.push(pos);
+    pos = stringValue.indexOf("e", pos + 1);
+}
+console.log(positions); //"3,24,32,35,52"*/
 
-let range = document.createRange();
-
-
-
+console.log(Date.parse('2/12/2019'));
