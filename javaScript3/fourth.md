@@ -607,202 +607,108 @@ image.src = 'xx.gif'; // 指定不存在的文件
 
 ### 常见的错误类型
 
+1. **类型转换错误**，常发生在使用某个操作符，或者使用其他可能会自动转换值的数据类型的语言结构时。使用相等(==)和不相等（!=)操作符，或者在if、for、while等流控制语句中使用布尔值时，最常发生类型转换错误。
+    ```
+    function concat(str1, str2, str3) {
+        let result = str1 + str2;
+        if (str3) { // 绝对不要这样
+            result += str3;
+        }
+        return result;
+    }
+    function concat(str1, str2, str3) {
+        let result = str1 + str2;
+        if (typeof str3 == 'string') {
+            result += str3;
+        }
+        return result;
+    } 
+    ```
+2. **数据类型错误**，合理的检查数据的类型。基本类型的值应该使用 typeof 来检测，而对象的值则应该使用 instanceof 来检测。面向公众的API必须无条件地执行类型检查。
+3. **通信错误**，常见的问题在将数据发送给服务器之前，没有使用 encodeURIComponent() 对数据进行编码。
+    ```
+    function addQueryStringArg(url, name, value) {
+        if (url.indexOf('?') === -1) {
+            url += '?';
+        } else {
+            url += '&';
+        }
+        url += decodeURIComponent(name) + '=' + encodeURIComponent(value);
+        return url;
+    }
+    这个函数接收三个参数： 要追加查询字符串的URL，参数名和参数值。如果传入的URL不包含问号，还要给它添加问号；否则，就要添加一个和号，因为有问号就意味着有其他的查询字符串。然后，再将经过编码的查询字符串的名和值添加到URL后面。 
+    ```
+    
+### 区分致命错误和非致命错误
+   
+- 非致命错误：
+    - 不影响用户的主要任务
+    - 只影响页面的一部分；
+    - 可以恢复；
+    - 重复相同操作可以消除错误；
+- 致命错误
+    - 应用程序根本无法继续执行
+    - 错误明显影响到了用户的主要操作
+    - 会导致其他连带错误。    
+
+### 把错误记录到服务器
+
+> 要建立这样一种 JavaScript 错误记录系统，首先需要在服务器上创建一个页面（或者一个服务器入口点），用于处理错误数据。这个页面的作用无非就是从查询字符串中取得数据，然后再将数据写入错误日志中。这个页面可能会使用如下所示的函数：
+
+```
+ function logError(sev, msg) {
+     let img = new Image();
+     img.src = 'log.php?sec=' + encodeURIComponent(sev) + '&msg=' + encodeURIComponent(msg);
+ }
+```
+ - 这个logError()函数接收两个参数：表示严重程度的数值或字符串及错误消息。其中，使用了Image对象来发送请求，这样做非常灵活。
+    - 所有浏览器都支持Image对象，包括那些不支持 XMLHttpRequest 对象的浏览器
+    - 可以避免跨域限制。通常都是一台服务器要负责处理多台服务器的错误，这种情况下使用XMLHttpRequest是不行的
+    - 记录错误的过程中出现问题的概率比较低。
+
+## 调试技术
+
+### 将消息记录到控制台
+
+- console对象，具有下列方法
+    - error(message): 将错误消息记录到控制台
+    - info(message): 将信息性消息记录到控制台。
+    - log(message): 将一般消息记录到控制台。
+    - warn(message): 将警告消息记录到控制台。
+
+> 记录消息要比使用 alert() 函数更可取，因为警告框会阻断程序的执行，而在测定异步处理对时间的影响时，使用警告框会影响结果
+
+### 抛出错误
+
+```
+function divide(num1, num2) {
+    return num1 / num2;
+}
+//这个简单的函数计算两个数的除法，但如果有一个参数不是数值，它会返回 NaN。类似这样简单的
+  计算如果返回 NaN ，就会在 Web 应用程序中导致问题。对此，可以在计算之前，先检测每个参数是否都
+  是数值。例如：
+function divide1(num1, num2) {
+    if (typeof num1 !== 'number' || typeof num2 !== 'number') {
+        throw new Error('divide(): Both arguments must be numbers.')
+    }
+    return num1 / num2;
+} 
+```
+- 对于大型应用程序来说，自定义的错误通常都使用 assert() 函数抛出。这个函数接受两个参数， 一个是求值结果应该为 true 的条件，另一个是条件为 false 时要抛出的错误。
+    ```
+    function assert(condition, message) {
+        if (!condition) {
+            throw new Error(message);
+        }
+    } 
+    // 可以用这个 assert() 函数代替某些函数中需要调试的 if 语句，以便输出错误消息
+    function divide(num1, num2) {
+        assert(typeof num1 === 'number' && typeof num2 === 'number', "divide(): Both arguments must be numbers.")；
+        return num1 / num2;
+    }
+    ```
+
+## 小结
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- 在可能发生错误的地方使用 try-catch 语句，这样你还有机会以适当的方式对错误给出响应，而不必沿用浏览器处理错误的机制。
+- 使用 window.onerror 事件处理程序，这种方式可以接受 try-catch 不能处理的所有错误（仅限于 IE、Firefox 和 Chrome）。

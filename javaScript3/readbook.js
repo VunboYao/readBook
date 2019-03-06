@@ -1558,7 +1558,6 @@ let range = selection.getRangeAt(0);
 let span = frames['richedit'].document.createElement('span')
 span.style.backgroundColor = 'yellow';
 range.surroundContents(span);*/
-<<<<<<< HEAD:readbook.js
 /*let num = 0;
 for (let i = 1; i < 10; i++) {
     if (i % 5 === 0) {
@@ -1577,8 +1576,6 @@ while(pos > -1){
 }
 console.log(positions); //"3,24,32,35,52"*/
 
-console.log(Date.parse('2/12/2019'));
-=======
 // let range = document.createRange();
 /*let day = new Date()
 console.log(day.valueOf());
@@ -2300,8 +2297,7 @@ console.log(add.demo);
 
 console.log(a1) // 6
 console.log(a2) // 2*/
-
-window.onerror = function(message, url, line) {
+/*window.onerror = function(message, url, line) {
     alert(message);
 }
 let image = new Image();
@@ -2311,14 +2307,81 @@ image.onload = function () {
 image.addEventListener('error', function(e) {
     console.log('Image not loaded');
 })
-image.src = 'xx.gif'; // 指定不存在的文件
+image.src = 'xx.gif'; // 指定不存在的文件*/
+/*function concat(str1, str2, str3) {
+    let result = str1 + str2;
+    if (str3) { // 绝对不要这样
+        result += str3;
+    }
+    return result;
+}
+function concat(str1, str2, str3) {
+    let result = str1 + str2;
+    if (typeof str3 == 'string') {
+        result += str3;
+    }
+    return result;
+}*/
+/*function addQueryStringArg(url, name, value) {
+    if (url.indexOf('?') === -1) {
+        url += '?';
+    } else {
+        url += '&';
+    }
+    url += decodeURIComponent(name) + '=' + encodeURIComponent(value);
+    return url;
+}*/
+/*function logError(sev, msg) {
+    let img = new Image();
+    img.src = 'log.php?sec=' + encodeURIComponent(sev) + '&msg=' + encodeURIComponent(msg);
+}*/
+/*function divide(num1, num2) {
+    return num1 / num2;
+}
+
+function divide1(num1, num2) {
+    if (typeof num1 !== 'number' || typeof num2 !== 'number') {
+        throw new Error('divide(): Both arguments must be numbers.')
+    }
+    return num1 / num2;
+}*/
+/*function assert(condition, message) {
+    if (!condition) {
+        throw new Error(message);
+    }
+}
+
+function divide(num1, num2) {
+    assert(typeof num1 === 'number' && typeof num2 === 'number', "divide(): Both arguments must be numbers.")；
+    return num1 / num2;
+}*/
+
+let book = {
+    title: 'Professional JavaScript',
+    authors: [
+        'Nicholas C. Za'
+    ],
+    edition: 3,
+    year: 2011,
+    toJSON: function () {
+        return this.title;
+    }
+};
+
+let jsonText = JSON.stringify(book,function (key, value) {
+  switch (key) {
+      case 'authors':
+          return value.join(',')
+      case 'year':
+          return 5000
+      case 'edition':
+          return undefined;
+      default:
+          return value;
+  }
+})
+
+let json = JSON.stringify(book);
+console.log(json);
 
 
-
-
-
-
-
-
-
->>>>>>> 7d5960ba1916493a02999bb23d08972fd807ab45:javaScript3/readbook.js
