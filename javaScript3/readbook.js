@@ -1558,6 +1558,7 @@ let range = selection.getRangeAt(0);
 let span = frames['richedit'].document.createElement('span')
 span.style.backgroundColor = 'yellow';
 range.surroundContents(span);*/
+<<<<<<< HEAD:readbook.js
 /*let num = 0;
 for (let i = 1; i < 10; i++) {
     if (i % 5 === 0) {
@@ -1577,3 +1578,747 @@ while(pos > -1){
 console.log(positions); //"3,24,32,35,52"*/
 
 console.log(Date.parse('2/12/2019'));
+=======
+// let range = document.createRange();
+/*let day = new Date()
+console.log(day.valueOf());
+console.log(day.getFullYear());
+console.log(day.getMonth());
+console.log(day.getDate());
+console.log(day.getDay());
+console.log(day.getHours());
+console.log(day.getMinutes());
+console.log(day.getSeconds());
+console.log(day.getMilliseconds());*/
+/*let text = 'this has been a short number'
+let pattern = /(..)or(.)/g;
+if (pattern.test(text)) {
+    console.log(RegExp.$1);
+}
+let pat = /^[2-9]\d{3}[/-](0?[1-9]|1[0-2])[/-]((0?[1-9])|([1|2][0-9])|30|31)$/;
+console.log(pat.test('2218-12-31'));*/
+/*console.log(Math.max(1, 2, 3));
+let a = [1,2,31,1]
+console.log(Math.max.apply(this, a));*/
+/*let book = {
+    _year: 2004,
+    edition: 1
+}
+Object.defineProperty(book, 'year', {
+    get() {
+        return this._year;
+    },
+    set(newValue) {
+        if (newValue > 2004) {
+            this._year = newValue;
+            this.edition += newValue - 2004;
+        }
+    }
+})
+book.year = 2008;
+console.log(book.edition);
+let one = Object.getOwnPropertyDescriptor(book, 'year');
+console.log(one);
+console.log(typeof one.get);*/
+/*function object(o) {
+    function F(){}
+    F.prototype = o;
+    return new F();
+}
+
+function inheritPrototype(subType, superType) {
+    let prototype = object(superType.prototype);
+    prototype.constructor = subType;
+    subType.prototype = prototype;
+}
+function SuperType(name) {
+    this.name = name;
+    this.colors = ['red', 'blue', 'green']
+}
+SuperType.prototype.sayName = function () {
+    console.log(this.name);
+}
+function SubType(name, age) {
+    SuperType.call(this, name);
+    this.age = age;
+}
+inheritPrototype(SubType, SuperType)
+SubType.prototype.sayAge = function () {
+    console.log(this.age);
+}*/
+/*function Person(name) {
+    this.getName = function () {
+        return name;
+    }
+    this.setName = function (value) {
+        name = value;
+    }
+}
+let person = new Person('Nicholas');
+console.log(person.getName()); // Nicholas
+person.setName('Greg')
+console.log(person.getName()); // Greg*/
+/*(function () {
+    // 私有变量和私有函数
+   let privateVariable = 10;
+   function privateFunction() {
+       return false;
+   }
+
+   // 构造函数
+   MyObject = function () {}
+   // 共有/提权方法
+   MyObject.prototype.publicMethod = function () {
+       privateVariable++;
+       return privateFunction();
+   }
+})()*/
+/*(function () {
+    let name = ''
+
+    Person = function (value) {
+        name = value;
+    };
+
+    Person.prototype.getName = function () {
+        return name;
+    };
+
+    Person.prototype.setName = function (value) {
+        name = value;
+    }
+})()
+
+let p1 = new Person('Nicholas')
+console.log(p1.getName()); // Nicholas
+p1.setName('Greg');
+console.log(p1.getName()); // Greg
+
+let p2 = new Person('Michael');
+console.log(p1.getName()); // Michael
+console.log(p2.getName()); // Michael*/
+/*function getQueryStringArgs() {
+    let qs = (location.search.search.length > 0 ? location.search.substring(1) : ''),
+        args = {},
+        items = qs.length ? qs.split('&') : [],
+        item = null,
+        name = null,
+        value = null;
+    for (let i = 0; i < items.length; i++) {
+        item = items[i].split('=');
+        name = decodeURIComponent(item[0]);
+        value = decodeURIComponent(item[1]);
+        if (name.length) {
+            args[name] = value;
+        }
+    }
+    return args;
+}*/
+/*
+let form = document.forms[0];
+console.log(form);
+
+console.log(document.defaultView.getComputedStyle(form).width);
+console.log(form.getBoundingClientRect());*/
+/*var range1 = document.createRange();
+var range2 = document.createRange();
+var p1 = document.getElementById('p1');
+var p1Index = -1;
+var i, len;
+for (i = 0, len = p1.parentNode.childNodes.length; i < len; i++) {
+    if (p1.parentNode.childNodes[i] === p1) {
+        p1Index = i;
+        break;
+    }
+}
+range1.setStart(p1.parentNode, p1Index);
+range1.setEnd(p1.parentNode, p1Index + 1);
+range2.setStart(p1, 0);
+range2.setEnd(p1, p1.childNodes.length);*/
+/*var range1 = document.createRange()
+var range2 = document.createRange()
+var p1 = document.getElementById('p1')
+range1.selectNodeContents(p1);
+range2.selectNodeContents(p1)
+range2.setEndBefore(p1.lastChild);
+console.log(range1.compareBoundaryPoints(Range.START_TO_START, range2));// 0
+console.log(range1.compareBoundaryPoints(Range.END_TO_END, range2)); // 1*/
+// window.addEventListener('load', function () {
+//     frames['richedit'].document.designMode = 'on';
+// })
+// iframe框架中富文本编辑
+/*window.onload = function () {
+    var editor, bugGroup, doc, box;
+    // 获取iframe window
+    editor = document.getElementById('HtmlEdit').contentWindow;
+    // 获取iframe document
+    doc = document.getElementById('HtmlEdit').contentDocument;
+    bugGroup = document.getElementById('butGroup')
+    bugGroup.addEventListener('click', function (e) {
+        switch(e.target.id) {
+            case 'bold': addBold(); break;
+            case 'copy': copy(); break;
+            case 'big': big(); break;
+            case 'italic': italic(); break;
+            case 'underline': insertorderedlist(); break;
+            case 'backColor': createlink(); break;
+            case 'p':insertparagraph();break;
+        }
+    })
+    editor.document.designMode = 'on'
+    function addBold() {
+        editor.document.execCommand('Bold', false, null);
+        document.execCommand('Bold', false, null)
+    }
+    function copy() {
+        editor.document.execCommand('copy', false, null);
+    }
+    function big() {
+        editor.document.execCommand('fontsize', false, '3');
+        console.log(doc.body.innerHTML);
+    }
+    function italic() {
+        editor.document.execCommand('italic', false, null);
+    }
+    function insertorderedlist() {
+        editor.document.execCommand('insertorderedlist', false, null);
+        console.log(doc.body.innerHTML);
+    }
+    function createlink() {
+        editor.document.execCommand('createlink', false, 'https://www.baidu.com/')
+    }
+    function insertparagraph() {
+        editor.document.execCommand('insertparagraph', false, null);
+        console.log(doc.body.innerHTML);
+    }
+}*/
+// 富文本编辑器
+/*function exec(command, value){
+    document.execCommand(command, false, value);
+}
+document.getElementById('buttonGroup').addEventListener('click', function (e) {
+    switch (e.target.id) {
+        case 'italic':
+            exec('italic',null)
+            break;
+        case 'justifycenter':
+            exec('justifycenter', null);
+            break;
+        case 'outdent':
+            exec('outdent', null);
+            break;
+        case 'paste':
+            exec('paste', null);
+            break;
+        case 'bold':
+            exec('bold',null );
+            break;
+        case 'underline':
+            exec('underline', null);
+            break;
+        case 'copy':
+            exec('copy', null);
+            break;
+        case 'inserthorizontalrule':
+            exec('inserthorizontalrule', null);
+            break;
+    }
+})*/
+// 高亮选择的文本
+/*document.getElementById('bold').addEventListener('click', function (e) {
+    let selection = frames['richedit'].getSelection(); // 获取选择的文本
+    let selectedText = selection.toString(); // 取得选择的文本
+    let range = selection.getRangeAt(0); // 取得代表选区的范围
+    let span = frames['richedit'].document.createElement('span'); // 突出显示选择的文本
+    span.style.backgroundColor = 'yellow';
+    range.surroundContents(span); // 将选区添加到了带有黄色背景的 <span> 元素中
+})*/
+/*let drawing = document.getElementById('drawing')
+if (drawing.getContext) {
+    let ctx = drawing.getContext('2d')
+    /!*ctx.fillStyle = '#00f';
+    ctx.fillRect(10,10, 50, 50);
+    ctx.fillStyle = 'rgba(240,100,100,.5)';
+    ctx.fillRect(30,30,50,50);*!/
+    // 绘制红色描边矩形
+    /!*  ctx.strokeStyle = 'red';
+      ctx.strokeRect(10,10,50,50);
+      // 绘制半透明的蓝色描边矩形
+      ctx.strokeStyle = 'rgba(0,0,255,.5)';
+      ctx.strokeRect(30,30,50,50);*!/
+    // ctx.clearRect(40,40,10,10);
+    /!*ctx.beginPath();
+    ctx.strokeStyle = 'red';
+    // 开始路径
+    ctx.beginPath();
+
+    // 绘制外圆
+    ctx.arc(100, 100, 99, 0, 2 * Math.PI, false);
+
+    // 绘制内圆
+    ctx.moveTo(194, 100);
+    ctx.arc(100,100,94, 0, 2 * Math.PI, false);
+
+    // 绘制分针
+    ctx.moveTo(100, 100);
+    ctx.lineTo(100, 20);
+
+    // 绘制时针
+    ctx.moveTo(100, 100);
+    ctx.lineTo(35, 100);
+
+    // 描边路径
+    ctx.stroke();
+    ctx.font = 'bold 14px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('12', 100, 20);*!/
+    /!*  ctx.moveTo(20,20);
+      ctx.lineTo(100,40);
+      ctx.quadraticCurveTo(20,20,200,200);
+      ctx.stroke();*!/
+    /!* ctx.textBaseline = 'middle';
+     var fontSize = 100;
+     ctx.font = fontSize + 'px Arial';
+     while(ctx.measureText('Hello world!').width > 130) {
+         fontSize--;
+         ctx.font = fontSize + 'px Arial';
+     }
+     ctx.fillText('Hello world!',10, 10);
+     ctx.fillText('Font size is ' + fontSize + 'px', 10, 50);
+
+     let imgUrl = drawing.toDataURL('image/png');
+     let image = document.createElement('img')
+     image.src = imgUrl;
+     document.body.appendChild(image);*!/
+    /!*!// 开始路径
+     ctx.beginPath();
+     // 绘制外圆
+     ctx.arc(100,100,99,0,2*Math.PI, false)
+     // 绘制内圆
+     ctx.moveTo(194,100)
+     ctx.arc(100,100,94,0, 2*Math.PI, false)
+
+     // 变换原点
+     ctx.translate(100,100)
+     ctx.rotate(1);
+     // 绘制分针
+     ctx.moveTo(0,0)
+     ctx.lineTo(0,-85)
+     // 绘制时针
+     ctx.moveTo(0,0)
+     ctx.lineTo(-65, 0);
+     // 描边路径
+     ctx.stroke()*!/
+    /!*ctx.fillStyle = '#f00'
+    ctx.save();
+    ctx.fillStyle = '#0f0'
+    ctx.translate(100,100)
+    ctx.save();
+
+    ctx.fillStyle = '#00f'
+    ctx.fillRect(0,0,100,200); //  从点（100，100）开始绘制蓝色矩形
+
+    ctx.restore();
+    ctx.fillRect(10,10,100,200); // 从点（110，110）开始绘制绿色矩形
+
+    ctx.restore();
+    ctx.fillRect(0,0,100,200); // 从点（0，0）开始绘制红色矩形*!/
+    /!* let image = document.images[0];
+     // ctx.drawImage(image, 10, 10, 400,399);
+     ctx.drawImage(image, 200, 100, 200,200,0,100,200,200);*!/
+
+    /!* ctx.shadowOffsetX = 5;
+     ctx.shadowOffsetY = 5;
+     ctx.shadowBlur = 4;
+     ctx.shadowColor = 'rgba(0,0,0,0.5)'
+
+     ctx.fillStyle = '#f00'
+     ctx.fillRect(10,10,50,50)
+     ctx.fillStyle = 'rgba(0,0,255,1)';
+     ctx.fillRect(30,30,50,50);*!/
+
+    // 渐变
+    /!* var gradient = createRectLinearGradient(ctx,30,30,70,70)
+     gradient.addColorStop(0, 'white');
+     gradient.addColorStop(1, 'black');
+
+     // 绘制红色矩形
+     ctx.fillStyle = '#f00'
+     ctx.fillRect(10,10, 50,50);
+
+     // 绘制渐变矩形
+     ctx.fillStyle = gradient;
+     ctx.fillRect(30,30,70,70);
+ *!/
+
+    /!*!// 径向渐变
+     var gradient1 = ctx.createRadialGradient(55,55,10,55,55,30)
+     gradient1.addColorStop(0, 'white');
+     gradient1.addColorStop(1, 'black')
+
+     ctx.fillStyle = '#f00'
+     ctx.fillRect(10,10,50,50)
+
+     ctx.fillStyle = gradient1;
+     ctx.fillRect(30,30,50,50);
+ *!/
+
+    /!*var image = document.images[0]
+    var pattern = ctx.createPattern(image, 'repeat')
+    ctx.fillStyle = pattern
+    ctx.fillRect(10,10,600,600);*!/
+    /!*var imageData = ctx.getImageData(10,5,50,50);
+    var data = imageData.data,
+        red = data[0],
+        green = data[1],
+        blue = data[2],
+        alpha = data[3];*!/
+
+}
+function createRectLinearGradient(ctx, x, y, width, height) {
+    return ctx.createLinearGradient(x, y, x + width, y + height)
+}*/
+/*let drawing = document.getElementById('drawing');
+if (drawing.getContext) {
+    let ctx = drawing.getContext('2d'),
+        image = document.images[0],
+        imageData, data,
+        i, len, average,
+        red, green, blue, alpha;
+
+    // 绘制原始图像
+    ctx.drawImage(image, 0, 0);
+
+    // 取得图像数据
+    imageData = ctx.getImageData(0,0,image.width, image.height);
+    data = imageData.data;
+
+    for (i = 0, len = data.length; i < len; i+=4) {
+        red = data[i];
+        green = data[i + 1];
+        blue = data[i + 2];
+        alpha = data[i + 3];
+
+        average = Math.floor((red + green + blue) / 3);
+        data[i] = average;
+        data[i + 1] = average;
+        data[i + 2] = average;
+    }
+    // 回写图像数据并显示结果
+    imageData.data = data;
+    ctx.putImageData(imageData, 0, 0);
+
+    // 绘制红色矩形
+    ctx.fillStyle = '#f00'
+    ctx.fillRect(10,10,50,50)
+
+    // 修改全局透明度
+    ctx.globalAlpha = 0.5;
+
+    // 绘制蓝色矩形
+    ctx.fillStyle = 'rgba(0,0,255,1)'
+    ctx.fillRect(30,30,50,50)
+
+    // 重置全局透明度
+    ctx.globalAlpha = 0;
+}*/
+/*
+let drawing = document.getElementById('drawing');
+
+let ctx = drawing.getContext('2d')
+ctx.fillStyle = '#f00'
+ctx.fillRect(10,10,50,50)
+
+ctx.globalCompositeOperation = 'destination-over'
+ctx.fillStyle = 'rgba(0,0,255,1)'
+ctx.fillRect(30,30,50,50)*/
+/*var buffer = new ArrayBuffer(20)
+// var bytes = buffer.byteLength;
+var view = new DataView(buffer);
+
+var view = new DataView(buffer, 9)
+
+var view = new DataView(buffer, 9 , 10)*/
+/*var iframeWindow = document.getElementById('myframe').contentWindow;
+iframeWindow.postMessage('A secret', 'http://localhost:63342');
+
+window.addEventListener('message', function (e) {
+    if (e.origin === 'http://localhost:63342') {
+        // processMessage(e.data);
+        e.source.postMessage("Received!", "http://localhost:63342");
+    }
+})*/
+/*document.getElementById('myframe').addEventListener('dragover', function (e) {
+    e.preventDefault();
+})
+
+document.getElementsByTagName('p')[0].addEventListener('dragstart', function (e) {
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('pId',this.id);
+})
+document.getElementById('myframe').addEventListener('dragenter', function (e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+})
+document.getElementById('myframe').addEventListener('drop', function (e) {
+    let id = e.dataTransfer.getData('pId');
+    let p = document.getElementById(id);
+    p.parentNode.removeChild(p);
+    this.appendChild(p);
+})*/
+/*window.onload = function () {
+    let player = document.getElementById('player'),
+        btn = document.getElementById('video-btn'),
+        curtime = document.getElementById('curtime'),
+        rate2 = document.getElementById('rate2'),
+        rate3 = document.getElementById('rate3'),
+        fullScreen = document.getElementById('fullScreen'),
+        setInterval1,
+        duration = document.getElementById('duration');
+
+    btn.addEventListener('click', function (e) {
+        if (player.paused) {
+            player.play();
+            btn.value = 'Pause';
+        } else {
+            player.pause();
+            btn.value = 'Play';
+            // 暂停时清楚获取播放时间的定时器
+            clearInterval(setInterval1);
+        }
+    })
+
+    // 2倍速率
+    rate2.addEventListener('click', function () {
+        player.playbackRate = 2;
+    })
+
+    // 3倍速率
+    rate3.addEventListener('click', function () {
+        player.playbackRate = 3;
+    })
+
+    // 全屏
+    fullScreen.addEventListener('click', function () {
+        player.requestFullscreen();
+    })
+
+    // 初始化时显示当前播放时间00：00
+    curtime.innerHTML = formatTime(player.currentTime);
+
+    /!* 初始化时，定时器获取总播放时间 *!/
+    setTimeout(function () {
+        duration.innerHTML = formatTime(player.duration);
+    },100);
+
+    // 监听播放时，获取当前播放时间。
+    player.addEventListener('playing', function (e) {
+        setInterval1 = setInterval(function () {
+            curtime.innerHTML = formatTime(player.currentTime);
+        },250);
+    })
+}
+/!*播放时间格式化*!/
+function formatTime(time) {
+    // 设定初始时间
+    let minute = 0,
+        seconds = 0;
+    minute = parseInt(time / 60); // 求余获取分数整数
+    seconds = parseInt(time % 60); // 秒数
+
+    // 时间格式补全--00：00
+    // 转换成字符串再使用ES6语法补全
+    let strMinute = minute.toString().padStart(2, '0');
+    let strSec = seconds.toString().padStart(2, '0');
+    return `${strMinute}:${strSec}`;
+}*/
+/*var audio = new Audio('./assets/kiro.mp3')
+audio.addEventListener('canplaythrough', function (e) {
+    audio.play();
+})*/
+/*history.pushState({name: 'Nicholas'}, '1111','drag.html')
+// history.replaceState({name:"Greg"}, "Greg's page");
+window.addEventListener('popstate', function (e) {
+    let state = e.state;
+    if (state) {
+        console.log(state);
+    }
+})*/
+/*function CustomError(message) {
+    this.name = 'CustomError'
+    this.message = message;
+}
+CustomError.prototype = new Error();
+throw new CustomError('My message');*/
+/*function process(values) {
+    values.sort();
+    for (let i = 0; i < values.length; i++) {
+        if (values[i] > 100) {
+            return values[i];
+        }
+    }
+    return -1;
+}*/
+/*
+function getQueryStringArgs() {
+    let qs = (location.search.length > 0 ? location.search.substring(1) : ''),
+        args = {},
+        items = qs.length ? qs.split('&') : [],
+        item = null,
+        name = null,
+        value = null;
+    for (let i = 0; i < items.length; i++) {
+        item = items[i].split('=');
+        name = decodeURIComponent(item[0]);
+        value = decodeURIComponent(item[1]);
+        if (name.length) {
+            args[name] = value;
+        }
+    }
+    return args;
+}
+
+console.log(getQueryStringArgs());
+*/
+/*var A = function () {}
+A.prototype.n = 1;
+var b = new A();
+A.prototype = {
+    n: 2,
+    m: 3
+}
+var c = new A()
+console.log(b.n);// 1
+console.log(b.m);// undefined
+console.log(c.n);// 2
+console.log(c.m);// 3*/
+/*var F = function () {}
+Object.prototype.a = function () {
+    console.log('a');
+}
+Function.prototype.b = function () {
+    console.log('b');
+}
+
+var f = new F();
+f.a(); // 'a'
+// f.b(); //  Not a function
+F.a(); // 'a'
+console.dir(f)
+console.dir(F)
+F.b(); // b
+
+function Person(name) {
+    this.name = name;
+}
+let p = new Person('Tom');
+console.log(p.__proto__); // Person.prototype
+console.log(Person.__proto__); // object.prototype
+
+var foo = {},
+    F = function () { }
+Object.prototype.a = 'value a';
+Function.prototype.b = 'value b';
+
+console.log(foo.a);// value a
+console.log(foo.b); // undefined
+
+console.log(F.a); // value a
+console.log(F.b); // undefined*/
+/*
+* 1,
+* undefined,
+* 2,
+* 3
+*
+* 'a'
+* not a function
+* 'a' ????
+* 'b'
+*
+* Person.prototype
+* Function.prototype ?
+*
+* 'value a'
+* 'undefined'
+* 'value a'
+* 'value b'
+* */
+/*console.log(Object.__proto__ === Function.prototype);
+function Person() {}
+
+console.dir(Person.__proto__);
+console.log(Number.__proto__ === Function.prototype);*/
+/*function ClassMachine() {
+    console.log('类型创造机器');
+}
+let thingOne = {}
+thingOne.__proto__ = ClassMachine.prototype;
+console.dir(thingOne);
+ClassMachine.call(thingOne)
+ClassMachine.prototype.action = function () {
+    console.log('动作制造机');
+}
+thingOne.action();*/
+/*function fn1() {
+    console.log(1);
+    this.num = 111;
+    this.sayHey = function() {
+        console.log("say hey.");
+    }
+}
+function fn2() {
+    console.log(2);
+    this.num = 222;
+    this.sayHello = function() {
+        console.log("say hello.");
+    }
+}
+fn1.call(fn2); // 1
+console.log(fn1.num); // undefined
+// fn1.sayHey(); // fn1.sayHey is not a function
+fn2(); // 2
+console.log(fn2.num); // 111
+// fn2.sayHello(); // fn2.sayHello is not a function
+fn2.sayHey(); //say hey*/
+/*
+function add(a, b){
+    this.demo = 2;
+    return a + b;
+}
+function sub(a, b){
+    this.demo = 3;
+    return a - b;
+}
+
+// apply() 的用法
+var a1 = add.apply(sub, [4, 2]); // sub 调用 add 的方法
+var a2 = sub.apply(add, [4, 2]);
+
+console.log(add.demo);
+
+console.log(a1) // 6
+console.log(a2) // 2*/
+
+window.onerror = function(message, url, line) {
+    alert(message);
+}
+let image = new Image();
+image.onload = function () {
+    console.log('Image loaded');
+}
+image.addEventListener('error', function(e) {
+    console.log('Image not loaded');
+})
+image.src = 'xx.gif'; // 指定不存在的文件
+
+
+
+
+
+
+
+
+
+>>>>>>> 7d5960ba1916493a02999bb23d08972fd807ab45:javaScript3/readbook.js

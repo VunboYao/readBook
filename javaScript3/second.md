@@ -95,7 +95,7 @@ top|数值|表示新窗口的上坐标。不能是负值
     ```
     let a = confirm('Are you sure?');
     if (a) {
-        alert('I am so glad you re sure！ ')
+        alert('I am so glad you are sure！ ')
     } else {
         alert('I am sorry to hear you are not sure!')
     } 
@@ -114,7 +114,7 @@ location 是最有用的 BOM对象之一，它提供了与当前窗口中加载�
 hash|"#contents"|返回URL中的hash（#号后跟零或多个字符），如果URL中不包含散列，则返回空字符串
 host|"www.wrox.com:80"|返回服务器名称和端口号（如果有）
 hostname|"www.wrox.com"|返回不带端口号的服务器名称
-href|"http:/www.wrox.com"|返回当前加载页面的完整URL。而location对象的toString()方法也返回这个值
+href|"http://www.wrox.com"|返回当前加载页面的完整URL。而location对象的toString()方法也返回这个值
 pathname|"/WileyCDA/"|返回URL中的目录和（或）文件名
 port|"8080"|返回URL中指定的端口号。如果URL中不包含端口号，则这个属性返回空字符串
 protocol|"http:"|返回页面使用的协议。通常是http:或https:
@@ -201,15 +201,9 @@ function getQueryStringArgs() {
     //检测 QuickTime
     alert(hasPlugin("QuickTime")); 
     ```
-> 每个插件对象本身也是一个 MimeType 对象的数组，这些对象可以通过方括号语
-  法来访问。每个 MimeType 对象有 4 个属性：包含 MIME 类型描述的 description 、
-  回指插件对象的 enabledPlugin 、表示与 MIME 类型对应的文件扩展名的字符串
-  suffixes （以逗号分隔）和表示完整 MIME 类型字符串的 type 。    
+> 每个插件对象本身也是一个 MimeType 对象的数组，这些对象可以通过方括号语法来访问。每个 MimeType 对象有 4 个属性：包含 MIME 类型描述的 description 、回指插件对象的 enabledPlugin 、表示与 MIME 类型对应的文件扩展名的字符串suffixes （以逗号分隔）和表示完整 MIME 类型字符串的 type 。    
 
-> plugins 集合有一个名叫 refresh() 的方法，用于刷新 plugins 以反映最新安
-  装的插件。这个方法接收一个参数：表示是否应该重新加载页面的一个布尔值。如果
-  将这个值设置为 true ，则会重新加载包含插件的所有页面；否则，只更新 plugins
-  集合，不重新加载页面。
+> plugins 集合有一个名叫 refresh() 的方法，用于刷新 plugins 以反映最新安装的插件。这个方法接收一个参数：表示是否应该重新加载页面的一个布尔值。如果将这个值设置为 true ，则会重新加载包含插件的所有页面；否则，只更新 plugins集合，不重新加载页面。
 
 ## history 对象
 
@@ -658,7 +652,7 @@ DOM 由各种节点构成，简要总结如下。
 - Element 节点表示文档中的所有 HTML 或 XML 元素，可以用来操作这些元素的内容和特性。
 - DOM 操作往往是 JavaScript程序中开销最大的部分，而因访问 NodeList导致的问题为最多。 NodeList 对象都是“动态的”，这就意味着每次访问NodeList对象，都会运行一次查询。有鉴于此，最好的办法就是尽量减少 DOM 操作
 
-# DOM扩展
+# 第11章：DOM扩展
 
 ## 选择符API
 
@@ -878,7 +872,7 @@ function getInnerText(element) {
 - scrollByLines(lineCount) ：将元素的内容滚动指定的行高， lineCount 值可以是正值，也可以是负值。
 - scrollByPages(pageCount) ：将元素的内容滚动指定的页面高度，具体高度由元素的高度决定。
 
-# DOM2 和 DOM3
+# 第12章：DOM2 和 DOM3
 
 ## DOM 变化
 
@@ -932,6 +926,12 @@ alert(div1.isSameNode(div2)); //false
   点。在删除节点时，源节点是 null ；除在复制节点时，目标节点均为 null 。在函数内部，你可以决定
   如何存储数据。
 
+- 框架和内嵌框架分别用HTMLFrameElement 和 HTMLIFrameElement 表示，在DOM2级中多有一个新属性，叫 contentDocument。该属性包含一个指针，指向表示框架内容的文档对象。contentWindow,指向window对象
+    ```
+     var iframe = document.getElementById("myIframe");
+     var iframeDoc = iframe.contentDocument; //在 IE8 
+    ```
+        
 ## 样式
 
 **定义样式的方式有3种**
@@ -1133,64 +1133,261 @@ let alsoSupportsRange = (typeof document.createRange === 'function');
 console.log(supportsRange, alsoSupportsRange); 
 ```
 
+如果浏览器支持范围，就可以使用 createRange() 来创建 DOM 范围
 
+```
+let range = document.createRange(); 
+```
 
+> 与节点类似，新创建的范围也直接与创建它的文档关联在一起，不能用于其他文档。创建了范围之后，接下来就可以使用它在后台选择文档中的特定部分。而创建范围并设置了其位置之后，还可以针对范围的内容执行很多的操作，从而实现对底层 DOM 树的更精细的控制。
 
+每个范围由一个 Range 类型的实例表示，这个实例拥有很多属性和方法。
+- startContainer: 包含范围起点的节点（即选区中第一个节点的父节点）
+- startOffset ：范围在 startContainer 中起点的偏移量。如果 startContainer是文本节点、注释节点或 CDATA 节点，那么 startOffset 就是范围起点之前跳过的字符数量。否则，startOffset 就是范围中第一个子节点的索引。
+- endContainer ：包含范围终点的节点（即选区中最后一个节点的父节点）。
+- endOffset ：范围在 endContainer 中终点的偏移量（与 startOffset遵循相同的取值规则）
+- commonAncestorContainer ： startContainer 和 endContainer共同的祖先节点在文档树中位置最深的那个
 
+**1.用 DOM 范围实现简单选择**
 
+```
+ <!DOCTYPE html>
+ <html>
+     <body>
+        <p id="p1"><b>Hello</b> world!</p>
+     </body>
+ </html>
+ 
+ var range1 = document.createRange();
+ range2 = document.createRange();
+ p1 = document.getElementById("p1");
+ range1.selectNode(p1);
+ range2.selectNodeContents(p1);
+```
+![范围](https://files.jb51.net/file_images/article/201702/201721385722305.png?201711385736)
 
+要使用范围来选择文档中的一部分，最简的方式就是使用 selectNode()或selectNodeContents().这两个方法都接受一个参数，即一个DOM节点，然后使用该节点中的信息来填充范围。其中，selectNode()方法选择整个节点，包括其子节点；而 selectNodeContents()方法则只选择节点的子节点。
 
+> 在调用 selectNode() 时， startContainer 、 endContainer 和 commonAncestorContainer都等于传入节点的父节点，也就是这个例子中的 document.body 。而 startOffset 属性等于给定节点在其父节点的 childNodes 集合中的索引（在这个例子中是 1——因为兼容 DOM 的浏览器将空格算作一个文本节点）， endOffset 等于 startOffset 加 1（因为只选择了一个节点）。
+> 在调用 selectNodeContents() 时， startContainer 、 endContainer 和 commonAncestorContainer 等于传入的节点，即这个例子中的 <p> 元素。而 startOffset 属性始终等于 0，因为范围从给定节点的第一个子节点开始。最后， endOffset 等于子节点的数量（ node.childNodes.length ），在这个例子中是 2。
 
+**为了更精细地控制将哪些节点包含在范围中，还可以使用下列方法**
+- setStartBefore(refNode) ：将范围的起点设置在 refNode 之前，因此 refNode 也就是范围选区中的第一个子节点。同时会将 startContainer 属性设置为 refNode.parentNode ，将startOffset 属性设置为 refNode 在其父节点的 childNodes 集合中的索引
+- setStartAfter(refNode) ：将范围的起点设置在 refNode 之后，因此 refNode 也就不在范围之内了，其下一个同辈节点才是范围选区中的第一个子节点。同时会将 startContainer 属性设置为 refNode.parentNode ，将 startOffset 属性设置为 refNode 在其父节点的childNodes 集合中的索引加 1。
+- setEndBefore(refNode) ：将范围的终点设置在 refNode 之前，因此 refNode 也就不在范围之内了，其上一个同辈节点才是范围选区中的最后一个子节点。同时会将 endContainer 属性设置为 refNode.parentNode ，将 endOffset 属性设置为 refNode 在其父节点的 childNodes集合中的索引。
+- setEndAfter(refNode) ：将范围的终点设置在 refNode 之后，因此 refNode 也就是范围选区中的最后一个子节点。同时会将 endContainer 属性设置为 refNode.parentNode ，将endOffset 属性设置为 refNode 在其父节点的 childNodes 集合中的索引加 1。
 
+**2. 用DOM范围实现复杂选择**
 
+- setStart()和 setEnd()方法。都接受两个参数： 一个参照节点和一个偏移量。对 setStart() 来说，参照节点会变成 startContainer ，而偏移量值会变成startOffset 。对于 setEnd() 来说，参照节点会变成 endContainer ，而偏移量值会变成 endOffset 。
 
+```
+var range1 = document.createRange();
+var range2 = document.createRange();
+var p1 = document.getElementById('p1');
+var p1Index = -1;
+var i, len;
+for (i = 0, len = p1.parentNode.childNodes.length; i < len; i++) {
+    if (p1.parentNode.childNodes[i] === p1) {
+        p1Index = i;
+        break;
+    }
+}
+range1.setStart(p1.parentNode, p1Index);
+range1.setEnd(p1.parentNode, p1Index + 1);
+range2.setStart(p1, 0);
+range2.setEnd(p1, p1.childNodes.length); 
+```
 
+**3.操作DOM范围中的内容**
 
+在创建范围时 ，内部会为这个范围创建一个文档片段，范围所属的全部节点都被添加到了这个文档片段中。为了创建这个文档片段，范围内容的格式必须正确有效。在前面的例子中，我们创建的选区分别开始和结束于两个文本节点的内部，因此不能算是格式良好的 DOM 结构，也就无法通过 DOM 来表示。但是，范围知道自身缺少哪些开标签和闭标签，它能够重新构建有效的 DOM 结构以便我们对其进行操作。
+对于前面的例子而言，范围经过计算知道选区中缺少一个开始的 <b> 标签，因此就会在后台动态加入一个该标签，同时还会在前面加入一个表示结束的 </b> 标签以结束 "He" 。于是，修改后的 DOM 就变成了如下所示。
+```
+ <p><b>He</b><b>llo</b> world!</p>
+```
+![如图](https://files.jb51.net/file_images/article/201702/201721390922635.png?20171139930)
 
+- deleteContents(),这个方法能够从文档中删除范围所包含的内容。
+    ```
+    let p1 = document.getElementById('p1'),
+        helloNode = p1.firstChild.firstChild,
+        worldNode = p1.lastChild,
+        range = document.createRange();
+    range.setStart(helloNode, 2);
+    range.setEnd(worldNode, 3);
+    range.deleteContents(); 
+    
+    执行以上代码后，页面中会显示如下 HTML 代码：
+    <p><b>He</b>rld!</p>
+    ```
+- 与 deleteContents() 方法相似， extractContents() 也会从文档中移除范围选区。但这两个方法的区别在于， extractContents() 会返回范围的文档片段。利用这个返回的值，可以将范围的内容插入到文档中的其他地方.
+    ```
+    let p1 = document.getElementById('p1'),
+        helloNode = p1.firstChild.firstChild,
+        worldNode = p1.lastChild,
+        range = document.createRange();
+    range.setStart(helloNode, 2);
+    range.setEnd(worldNode, 3);
+    
+    var fragment = range.extractContents()
+    p1.parentNode.appendChild(fragment) 
+    
+    在这个例子中，我们将提取出来的文档片段添加到了文档 <body> 元素的末尾。（记住，在将文档片
+    段传入 appendChild() 方法中时，添加到文档中的只是片段的子节点，而非片段本身。）结果得到如
+    下HTML 代码：
+    
+   <p><b>He</b>rld!</p>
+   <b>llo</b> wo
+  ```
 
+-  cloneContents() 创建范围对象的一个副本，然后在文档的其他地方插入该副本
+    ```
+    let p1 = document.getElementById('p1'),
+        helloNode = p1.firstChild.firstChild,
+        worldNode = p1.lastChild,
+        range = document.createRange();
+    range.setStart(helloNode, 2);
+    range.setEnd(worldNode, 3);
+    
+    var fragment = range.cloneContents()
+    p1.parentNode.appendChild(fragment) 
+    
+    这个方法与 extractContents() 非常类似，因为它们都返回文档片段。它们的主要区别在于，
+    cloneContents() 返回的文档片段包含的是范围中节点的副本，而不是实际的节点。执行上面的操作
+    后，页面中的 HTML 代码应该如下所示：
+    
+    <p><b>Hello</b> world!</p>
+    <b>llo</b> wo
+    ```
+- 调用上面介绍的方法之前，拆分的节点并不会产生格式良好的文档片段。换句话说，原始的 HTML 在 DOM 被修改之前会始终保持不变。
 
+**4.插入DOM范围中的内容**
 
+- insertNode()，可以向范围选区的开始处插入一个节点。
+    ```
+    let p1 = document.getElementById('p1'),
+        helloNode = p1.firstChild.firstChild,
+        worldNode = p1.lastChild,
+        range = document.createRange();
+    range.setStart(helloNode, 2);
+    range.setEnd(worldNode, 3);
+    
+    var span = document.createElement('span')
+    span.style.color = 'red'
+    span.appendChild(document.createTextNode('Inserted text'))
+    range.insertNode(span) 
+    ```
+-  surroundContents(),环绕范围插入内容。接受一个参数，即环绕范围内容的节点。在环绕范围插入内容时，后台会执行下列步骤。
+    - 提取出范围中的内容（类似执行 extractContent)
+    - 将给定节点插入到文档中原来范围所在的位置上。
+    - 将文档片段的内容添加到给定节点中。
+    ```
+    let p1 = document.getElementById('p1'),
+        helloNode = p1.firstChild.firstChild,
+        worldNode = p1.lastChild,
+        range = document.createRange();
+    
+    range.selectNode(helloNode)
+    var span = document.createElement('span')
+    span.style.color = 'red'
+    range.surroundContents(span); 
+    
+    会给范围选区加上一个黄色的背景。得到的 HTML 代码如下所示：
+    
+    <p><b><span style="background-color:yellow">Hello</span></b> world!</p>
+    
+    为了插入 <span> ，范围必须包含整个 DOM选区（不能仅仅包含选中的 DOM 节点）。
+    ```
+    
+**5.折叠DOM范围**
 
+所谓折叠范围，就是指范围中未选择文档的任何部分。可以用文本框来描述折叠范围的过程。假设
+文本框中有一行文本，你用鼠标选择了其中一个完整的单词。然后，你单击鼠标左键，选区消失，而光
+标则落在了其中两个字母之间。同样，在折叠范围时，其位置会落在文档中的两个部分之间，可能是范
+围选区的开始位置，也可能是结束位置。
 
+使用 collapse() 方法来折叠范围，这个方法接受一个参数，一个布尔值，表示要折叠到范围的哪
+一端。参数 true 表示折叠到范围的起点，参数 false 表示折叠到范围的终点。要确定范围已经折叠完
+毕，可以检查 collapsed 属性，如下所示：
 
+```
+range.collapse(true) // 折叠到起点
+alert(range.collapsed)  // 输出 true
+```
 
+![](https://files.jb51.net/file_images/article/201702/201721391601665.png?201711391612)
 
+检测某个范围是否处于折叠状态，可以帮我们确定范围中的两个节点是否紧密相邻。例如，对于下
+面的 HTML 代码：
+```
+ <p id="p1">Paragraph 1</p><p id="p2">Paragraph 2</p>
+ 
+ var p1 = document.getElementById("p1"),
+     p2 = document.getElementById("p2"),
+     range = document.createRange();
+ range.setStartAfter(p1);
+ range.setStartBefore(p2);
+ alert(range.collapsed); //输出 true
+ 在这个例子中，新创建的范围是折叠的，因为 p1 的后面和 p2 的前面什么也没有。
+```
 
+**6.比较DOM范围**
 
+在多个范围的情况下，可以使用 compareBoundaryPoints() 方法来确定这些范围是否有公共的边界（起点或终点）.接受两个参数：表示比较方式的常量值和要比较的范围。比较方式的常量值如下：
+- Range.START_TO_START(0) ：比较第一个范围和第二个范围的起点；
+- Range.START_TO_END(1) ：比较第一个范围的起点和第二个范围的终点；
+- Range.END_TO_END(2) ：比较第一个范围和第二个范围的终点
+- Range.END_TO_START(3) ：比较第一个范围的终点和第一个范围的起点。
 
+compareBoundaryPoints() 方法可能的返回值如下：如果第一个范围中的点位于第二个范围中的
+点之前，返回 -1 ；如果两个点相等，返回 0 ；如果第一个范围中的点位于第二个范围中的点之后，返回
+1 。
 
+```
+var range1 = document.createRange()
+var range2 = document.createRange()
+var p1 = document.getElementById('p1')
+range1.selectNodeContents(p1);
+range2.selectNodeContents(p1)
+range2.setEndBefore(p1.lastChild);
+console.log(range1.compareBoundaryPoints(Range.START_TO_START, range2));// 0
+console.log(range1.compareBoundaryPoints(Range.END_TO_END, range2)); // 1 
 
+在这个例子中，两个范围的起点实际上是相同的，因为它们的起点都是由 selectNodeContents()
+方法设置的默认值来指定的。因此，第一次比较返回 0 。但是， range2 的终点由于调用 setEndBefore()
+已经改变了，结果是 range1 的终点位于 range2 的终点后面（见图 12-10），因此第二次比较返回 1 。
+```
+**7.复制DOM范围**
+```
+可以使用 cloneRange() 方法复制范围。这个方法会创建调用它的范围的一个副本。
+var newRange = range.cloneRange();
+新创建的范围与原来的范围包含相同的属性，而修改它的端点不会影响原来的范围。
+```
+**8.清理DOM范围**
 
+```
+在使用完范围之后，最好是调用 detach() 方法，以便从创建范围的文档中分离出该范围。调用
+detach() 之后，就可以放心地解除对范围的引用，从而让垃圾回收机制回收其内存了。来看下面的
+例子。
+range.detach(); //从文档中分离
+range = null; //解除引用
+在使用范围的最后再执行这两个步骤是我们推荐的方式。一旦分离范围，就不能再恢复使用了 
+```
 
+## 小结
 
+**"DOM2级样式" 模块主要针对操作元素的样式信息而开发**
+- 每个元素都有一个关联的 style 对象，可以用来确定和修改行内的样式。
+- 要确定某个元素的计算样式（包括应用给它的所有 CSS 规则），可以使用 getComputedStyle()方法。
+- IE不支持 getComputedStyle() 方法，但为所有元素都提供了能够返回相同信息 currentStyle属性。
+- 可以通过 document.styleSheets 集合访问样式表。
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**“DOM2 级遍历和范围”模块提供了与 DOM结构交互的不同方式**
+- 遍历即使用 NodeIterator 或 TreeWalker 对 DOM 执行深度优先的遍历。
+- NodeIterator 是一个简单的接口，只允许以一个节点的步幅前后移动。而 TreeWalker 在提供相同功能的同时，还支持在 DOM 结构的各个方向上移动，包括父节点、同辈节点和子节点等方向。
+- 范围是选择 DOM结构中特定部分，然后再执行相应操作的一种手段。
+- 使用范围选区可以在删除文档中某些部分的同时，保持文档结构的格式良好，或者复制文档中的相应部分。
 
 
 

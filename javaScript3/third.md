@@ -267,6 +267,8 @@ document.addEventListener('click', function (e) {
 - “DOM2 级事件”规范在 event 对象中还提供了 detail 属性，用于给出有关事件的更多信息
 - 对于鼠标事件来说，detail中包含了一个数值，表示在给定的位置上发生了多少次单击。
 - 在同一个元素上相继地发生一次mousedown和mouseup事件算作一次单击。
+- offsetX ：光标相对于目标元素边界的 x 坐标。（事件目标上的坐标）
+- offsetY ：光标相对于目标元素边界的 y 坐标。
 
 **8.鼠标滚轮事件**
 
@@ -514,8 +516,7 @@ window.addEventListener('load', function (e) {
 > 指定了 onunload 事件处理程序的页面会被自动排除在 bfcache 之外，即使事件处理程序是空的。原因在于， onunload 最常用于撤销在 onload 中所执行的操作，而跳过 onload 后再次显示页面很可能就会导致页面不正常。
 
 **6.haschange事件**
-- HTML5 新增了 hashchange 事件，以便在 URL 的参数列表（及 URL 中“#”号后面的所有字符串）
-  发生变化时通知开发人员。
+- HTML5 新增了 hashchange 事件，以便在 URL 的参数列表（及 URL 中“#”号后面的所有字符串）发生变化时通知开发人员。
 - 必须要把 hashchange 事件处理程序添加给 window 对象，然后 URL 参数列表只要变化就会调用它。此时的 event 对象应该额外包含两个属性： oldURL 和 newURL 。这两个属性分别保存着参数列表变化前后的完整 URL。
 - 最好使用location对象来确定当前的参数列表。`location.hash`
 - var isSupported = ("onhashchange" in window); //这里有 bug
@@ -1002,7 +1003,7 @@ document.body.addEventListener('copy', function (e) {
 - text: 选项的文本
 - value: 选项的值
 
-> 在操作选项时，我们建议最好是使用特定于选项的属性，因为所有浏览器都支持这些属性。在将表单控件作为 DOM 节点的情况下，实际的交互方式则会因浏览器而异。我们不推荐使用标准 DOM 技术修改 <option> 元素的文本或者值。    
+> 在操作选项时，我们建议最好是使用特定于选项的属性，因为所有浏览器都支持这些属性。在将表单控件作为 DOM 节点的情况下，实际的交互方式则会因浏览器而异。我们不推荐使用标准 DOM 技术修改 <option\> 元素的文本或者值。    
 > 选择框的 change 事件与其他表单字段的 change 事件触发的条件不一样。其他表单字段的 change 事件是在值被修改且焦点离开当前字段时触发，而选择框的change 事件只要选中了选项就会触发。    
     
 ### 选择选项
@@ -1072,6 +1073,7 @@ selectbox.add(thirdOption, undefined); // 最佳方案
     
 ```
 function serialize(form) {
+function serialize(form) {
     let parts = [],
         field = null,
         i,
@@ -1129,7 +1131,8 @@ function serialize(form) {
 ## 富文本编辑
 
 富文本编辑器，又称为WYSIWYG（What You See Is What You Get, 所见即所得）。
-- 页面中嵌入一个包含空HTML页面的iframe。通过设置designMode属性，这个空白的HTML页面可以编辑，编辑对象则是该页面<body\>元素的HTML代码。designMode 属性有两个可能的值：‘off’和‘on’。on 时整个文档可以编辑。    
+- 页面中嵌入一个包含空HTML页面的iframe。通过设置designMode属性，这个空白的HTML页面可以编辑，编辑对象则是该页面<body\>元素的HTML代码。designMode 属性有两个可能的值：‘off’和‘on’。on 时整个文档可以编辑。
+- 要让它可以编辑，必须要将 designMode 设置为 "on" ，但只有在页面完全加载之后才能设置这个属性。因此，在包含页面中，需要使用 onload 事件处理程序来在恰当的时刻设置 designMode    
 
 ```
 // html
@@ -1183,27 +1186,588 @@ selectall|null|选择文档中的所有文本
 underline|null|为选择的文本添加下划线
 unlink|null|移除文本的链接。这是撤销 createlink 命令的操作
 
+> Opera 根本没有实现任何剪贴板命令，而Firefox 在默认情况下会禁用它们（必须修改用户的首选项来启用它们）。Safari 和 Chrome实现了 cut 和copy ，但没有实现 paste 。
+  
 相关命令方法：
 - queryCommandEnabled()：检测是否可以针对当前选择的文本，或者当前插入字符所在位置执行某个命令。接收一个参数，即要检测的命令。返回布尔值。`var result = frames["richedit"].document.queryCommandEnabled("bold");`
 - queryCommandState() 方法用于确定是否已将指定命令应用到了选择的文本。`var isBold = frames["richedit"].document.queryCommandState("bold");`
 - queryCommandValue() ，用于取得执行命令时传入的值（即前面例子中传给 document.execCommand() 的第三个参数）。`var fontSize = frames["richedit"].document.queryCommandValue("fontsize");`
 
+```
+// iframe中编辑
+ <iframe src="iframe.html" id='HtmlEdit' style="width:400px; height: 300px" marginWidth='2px' marginHeight='2px'></iframe>
+ <div id="butGroup">
+     <button id="bold">bold</button>
+     <button id="copy">copy</button>
+     <button id="big">big</button>
+     <button id="italic">italic</button>
+     <button id="underline">underline</button>
+     <button id="backColor">backColor</button>
+     <button id="p">p</button>
+ </div>
+ 
+ window.onload = function () {
+     var editor, bugGroup, doc, box;
+     // 获取iframe window
+     editor = document.getElementById('HtmlEdit').contentWindow;
+     // 获取iframe document
+     doc = document.getElementById('HtmlEdit').contentDocument;
+     bugGroup = document.getElementById('butGroup')
+     bugGroup.addEventListener('click', function (e) {
+         switch(e.target.id) {
+             case 'bold': addBold(); break;
+             case 'copy': copy(); break;
+             case 'big': big(); break;
+             case 'italic': italic(); break;
+             case 'underline': insertorderedlist(); break;
+             case 'backColor': createlink(); break;
+             case 'p':insertparagraph();break;
+         }
+     })
+     editor.document.designMode = 'on'
+     function addBold() {
+         editor.document.execCommand('Bold', false, null);
+         document.execCommand('Bold', false, null)
+     }
+     function copy() {
+         editor.document.execCommand('copy', false, null);
+     }
+     function big() {
+         editor.document.execCommand('fontsize', false, '3');
+         console.log(doc.body.innerHTML);
+     }
+     function italic() {
+         editor.document.execCommand('italic', false, null);
+     }
+     function insertorderedlist() {
+         editor.document.execCommand('insertorderedlist', false, null);
+         console.log(doc.body.innerHTML);
+     }
+     function createlink() {
+         editor.document.execCommand('createlink', false, 'https://www.baidu.com/')
+     }
+     function insertparagraph() {
+         editor.document.execCommand('insertparagraph', false, null);
+         console.log(doc.body.innerHTML);
+     }
+ }
+```
+
 ### 富文本选区
 
+**使用框架的getSelection()方法，可以确定实际选择的文本。这个方式是window对象和document对象的属性，调用它会返回一个表示当前选择文本的 Selection 对象**，每个Selection对象都有下列属性。
+- anchorNode:选区起点所在的节点。
+- anchorOffset: 在到达选区起点位置之前跳过的 anchorNode 中的字符数量
+- focusNode: 选区终点所在的节点
+- focusOffset: focusNode中包含在选区之内的字符数量
+- isCollapsed: 布尔值，表示选区的起点和终点是否重合
+- rangeCount: 选区中包含的DOM范围的数量
+
+更多信息：
+
+- addRange(range) ：将指定的 DOM 范围添加到选区中。
+- collapse(node, offset) ：将选区折叠到指定节点中的相应的文本偏移位置
+- collapseToEnd() ：将选区折叠到终点位置。
+- collapseToStart() ：将选区折叠到起点位置。
+- containsNode(node) ：确定指定的节点是否包含在选区中。
+- deleteFromDocument() ：从文档中删除选区中的文本，与 document.execCommand("delete",false, null) 命令的结果相同。
+- extend(node, offset) ：通过将 focusNode 和 focusOffset 移动到指定的值来扩展选区。
+- getRangeAt(index) ：返回索引对应的选区中的 DOM 范围。
+- removeAllRanges() ：从选区中移除所有 DOM 范围。实际上，这样会移除选区，因为选区中至少要有一个范围
+- removeRange(range) ：从选区中移除指定的 DOM 范围。
+- selectAllChildren(node) ：清除选区并选择指定节点的所有子节点。
+- toString() ：返回选区所包含的文本内容。
+    ```
+    // 高亮选择的文本
+    document.getElementById('bold').addEventListener('click', function (e) {
+        let selection = frames['richedit'].getSelection(); // 获取选择的文本
+        let selectedText = selection.toString(); // 取得选择的文本
+        let range = selection.getRangeAt(0); // 取得代表选区的范围
+        let span = frames['richedit'].document.createElement('span'); // 突出显示选择的文本
+        span.style.backgroundColor = 'yellow';
+        range.surroundContents(span); // 将选区添加到了带有黄色背景的 <span> 元素中
+    }) 
+    ```
+    
+### 表单与富文本
+
+手工提取富文本编辑器中的HTML
+
+```
+ EventUtil.addHandler(form, "submit", function(event){
+    event = EventUtil.getEvent(event);
+    var target = EventUtil.getTarget(event);
+    target.elements["comments"].value = frames["richedit"].document.body.innerHTML;
+ });
+```    
+```
+// contenteditable元素
+ EventUtil.addHandler(form, "submit", function(event){
+    event = EventUtil.getEvent(event);
+    var target = EventUtil.getTarget(event);
+    target.elements["comments"].value = document.getElementById("richedit").innerHTML;
+ });
+```
+    
+## 小结
+
+- Firefox、Safari 和 Chrome 只允许在 paste 事件发生时读取剪贴板数据，而 IE没有这个限制。    
+- Firefox、Safari 和 Chrome 只允许在发生剪贴板事件时访问与剪贴板相关的信息，而 IE 允许在任何时候访问相关信息
+- 在文本框内容必须限制为某些特定字符的情况下，就可以利用剪贴板事件来屏蔽通过粘贴向文本框中插入内容的操作。
+- 选择框也是经常要通过 JavaScript 来控制的一个表单字段。由于有了 DOM，对选择框的操作比以前
+  要方便多了。添加选项、移除选项、将选项从一个选择框移动到另一个选择框，甚至对选项进行排序等
+  操作，都可以使用标准的 DOM技术来实现    
+    
+富文本编辑功能是通过一个包含空 HTML 文档的 iframe 元素来实现的。通过将空文档的
+designMode 属性设置为 "on" ，就可以将该页面转换为可编辑状态，此时其表现如同字处理软件。另外，
+也可以将某个元素设置为 contenteditable 。在默认情况下，可以将字体加粗或者将文本转换为斜体，
+还可以使用剪贴板。JavaScript 通过使用 execCommand() 方法也可以实现相同的一些功能。另外，使用
+queryCommandEnabled() 、 queryCommandState() 和 queryCommandValue() 方法则可以取得有关
+文本选区的信息。由于以这种方式构建的富文本编辑器并不是一个表单字段，因此在将其内容提交给
+服务器之前，必须将 iframe 或 contenteditable 元素中的 HTML 复制到一个表单字段中    
+    
+    
+    
+    
+    
+
+# 第15章：使用Canvas绘图
+
+## 基本用法
+
+- `<canvas id="drawing" width=" 200" height="200">A drawing of something.</canvas>`
+- 取得上下文的引用：需要调用getContext() 方法并传入上下文的名字。传入 "2d" ，就可以取得 2D 上下文对象。
+- 在使用 <canvas\> 元素之前，首先要检测 getContext() 方法是否存在，这一步非常重要
+- 使用 toDataURL() 方法，可以导出在 <canvas\> 元素上绘制的图像。这个方法接受一个参数，即图像的 MIME 类型格式，而且适合用于创建图像的任何上下文。
+    ```
+    // 导出canvas，转换为图片
+    let drawing = document.getElementById('drawing');
+    if (drawing.getContext) {
+        // let ctx = drawing.getContext('2d');
+        let imgUrl = drawing.toDataURL('image/png');
+        let image = document.createElement('img')
+        image.src = imgUrl;
+        document.body.appendChild(image);
+    } 
+    ```
+
+> 如果绘制到画布上的图像源自不同的域， toDataURL() 方法会抛出错误。本章后面还将介绍更多相关内容。
+
+## 2D上下文
+
+### 填充和描边
+
+- fillStyle 填充
+- strokeStyle 描边
+
+### 绘制矩形
+
+- fillRect(),strokeRect()和clearRect()。这三个方法都接收4个参数： 矩形的x坐标，矩形的y坐标，矩形宽度和矩形高度。这些单位都是像素
+- fillRect()方法在画布上绘制的矩形会填充指定的颜色
+    ```
+    let ctx = drawing.getContext('2d');
+        // 绘制蓝色矩形
+        ctx.fillStyle = '#00f';
+        ctx.fillRect(10,10, 50, 50);
+        // 绘制半透明的粉色矩形
+        ctx.fillStyle = 'rgba(240,100,100,.5)';
+        ctx.fillRect(30,30,50,50); 
+    ```
+
+- strokeRect()方法在画布上绘制的矩形会使用指定的颜色描边，描边颜色通过strokeStyle 属性制定
+    ```
+        // 绘制红色描边矩形
+        ctx.strokeStyle = 'red';
+        ctx.strokeRect(10,10,50,50);
+        // 绘制半透明的蓝色描边矩形
+        ctx.strokeStyle = 'rgba(0,0,255,.5)';
+        ctx.strokeRect(30,30,50,50); 
+    ```
+    - 描边线条的宽度由lineWidth 属性控制，该属性的值可以是任意整数。在描边之前设定
+    - lineCap 属性可以控制线条末端的形状是平头、圆头还是方头（ "butt" 、"round" 或 "square" ）
+    - lineJoin 属性可以控制线条相交的方式是圆交、斜交还是斜接（ "round" 、 "bevel" 或 "miter" ）
+- clearRect(),通过绘制形状，然后清楚制定区域。
+
+### 绘制路径
+
+**要绘制路径，必须先调用 beginPath() 方法，表示开始绘制新路径.**然后，通过下列方法来实际地绘制路径
+- arc(x, y, radius, startAngle, endAngle, counterclockwise):以（x，y)为圆心绘制一条弧线，弧线半径为radius，起始和结束角度（弧度表示）分别为 startAngle 和 endAngle。最后一个参数表示 startAngle 和 endAngle 是否按逆时针方向计算，值为 false表示按顺时针方向计算。
+- arcTo(x1, y1, x2, y2, radius) ：从上一点开始绘制一条弧线，到 (x2,y2) 为止，并且以给定的半径 radius 穿过 (x1,y1) 。
+- bezierCurveTo(c1x, c1y, c2x, c2y, x, y) ：从上一点开始绘制一条曲线，到 (x,y) 为止，并且以 (c1x,c1y) 和 (c2x,c2y) 为控制点。
+- lineTo(x, y) ：从上一点开始绘制一条直线，到 (x,y) 为止。
+- moveTo(x, y) ：将绘图游标移动到 (x,y) ，不画线。
+- quadraticCurveTo(cx, cy, x, y) ：从上一点开始绘制一条二次曲线，到 (x,y) 为止，并
+  且以 (cx,cy) 作为控制点。
+- rect(x, y, width, height) ：从点 (x,y) 开始绘制一个矩形，宽度和高度分别由 width 和 height 指定。这个方法绘制的是矩形路径，而不是 strokeRect() 和 fillRect() 所绘制的独立的形状。
+
+> 如果想绘制一条连接到路径起点的线条，可以调用closePath() 。如果路径已经完成，你想用 fillStyle 填充它，可以调用 fill() 方法。另外，还可以调用 stroke()方法对路径描边，描边使用的是 strokeStyle 。最后还可以调用 clip() ，这个方法可以在路径上创建一个剪切区域。
+
+
+```
+// 绘制不带数字的始终表盘
+// 开始路径
+    ctx.beginPath();
+
+    // 绘制外圆
+    ctx.arc(100, 100, 99, 0, 2 * Math.PI, false);
+
+    // 绘制内圆
+    ctx.moveTo(194, 100);
+    ctx.arc(100,100,94, 0, 2 * Math.PI, false);
+
+    // 绘制分针
+    ctx.moveTo(100, 100);
+    ctx.lineTo(100, 15);
+
+    // 绘制时针
+    ctx.moveTo(100, 100);
+    ctx.lineTo(35, 100);
+
+    // 描边路径
+    ctx.stroke(); 
+```
+
+在 2D 绘图上下文中，路径是一种主要的绘图方式，因为路径能为要绘制的图形提供更多控制。由
+于路径的使用很频繁，所以就有了一个名为 isPointInPath() 的方法。这个方法接收 x 和 y 坐标作为参数，用于在路径被关闭之前确定画布上的某一点是否位于路径上
+
+```
+ if (context.isPointInPath(100, 100)){
+    alert("Point (100, 100) is in the path.");
+ }
+```
+
+### 绘制文本
+
+- 绘制文本主要有两个方法：fillText()和strokeText().这两个方法都接收4个参数：要绘制的文本字符串、x坐标、y坐标和可选的最大像素宽度。都以下列3个属性为基础。
+    - font: 表示文本的样式、大小及字体，用CSS中指定字体的格式来制定，例如：‘10px Arial’
+    - textAlign: 表示文本对齐方式。可能的值有‘start’、‘end’、‘left’、‘right’和‘center'。建议使用‘start'和‘end’，不要使用‘left’和‘right’。
+    - textBaseline: 表示文本的基线。可能的值有‘top’、‘hanging’、‘middle'、‘alphabetic'、ideographic和bottom.
+    - 这几个属性都有默认值，没有必要每次使用都重新设置一遍。
+    - fillText()方法使用fillStyle属性绘制文本，而strokeText()方法使用strokeStyle属性为文本描边。
+- measureText().这个方法接受一个参数，即要绘制的文本；返回一个TextMetrics对象。返回的对象目前只有一个width属性。measureText() 方法利用 font 、 textAlign 和 textBaseline 的当前值计算指定文本的大小
+    ```
+    // 比如，假设你想在一个 140 像素宽的矩形区域中绘制文本 Hello world!，下面的代码从 100 像素的字体大小开始递减，最终会找到合适的字体大小
+     var fontSize = 100;
+         ctx.font = fontSize + 'px Arial';
+         while(ctx.measureText('Hello world!').width > 130) {
+             fontSize--;
+             ctx.font = fontSize + 'px Arial';
+         }
+         ctx.fillText('Hello world!',10, 10);
+         ctx.fillText('Font size is ' + fontSize + 'px', 10, 50);
+    ```
+-  fillText 和 strokeText() 方法都可以接收第四个参数，也就是文本的最大像素宽度.提供这个参数后，调用 fillText() 或时如果传入的字符串大于最大宽度，则绘制的文本字符的高度正确，但宽度会收缩以适应最大宽度。
+
+### 变换
+
+通过如下方法来修改变换矩阵
+- rotate(angle) ：围绕原点旋转图像 angle 弧度
+- scale(scaleX, scaleY) ：缩放图像，在 x 方向乘以 scaleX ，在 y 方向乘以 scaleY 。scaleX和 scaleY 的默认值都是 1.0
+- translate(x, y) ：将坐标原点移动到 (x,y) 。执行这个变换之后，坐标(0,0)会变成之前由 (x,y)表示的点。
+- transform(m1_1, m1_2, m2_1, m2_2, dx, dy) ：直接修改变换矩阵，方式是乘以如下矩阵。
+    ```
+      m1_1 m1_2 dx
+      m2_1 m2_2 dy
+      0 0 1 
+    ```
+- setTransform(m1_1, m1_2, m2_1, m2_2, dx, dy) ：将变换矩阵重置为默认状态，然后再调用 transform() 。
+
+```
+比如，就拿前面例子中绘制表针来说，
+如果把原点变换到表盘的中心，然后再绘制表针就容易多了。请看下面的例子。
+// 开始路径
+    ctx.beginPath();
+    // 绘制外圆
+    ctx.arc(100,100,99,0,2*Math.PI, false)
+    // 绘制内圆
+    ctx.moveTo(194,100)
+    ctx.arc(100,100,94,0, 2*Math.PI, false)
+
+    // 变换原点
+    ctx.translate(100,100)
+    
+    // 旋转表针
+    ctx.rotate(1);
+    // 绘制分针
+    ctx.moveTo(0,0)
+    ctx.lineTo(0,-85)
+    // 绘制时针
+    ctx.moveTo(0,0)
+    ctx.lineTo(-65, 0);
+    // 描边路径
+    ctx.stroke() 
+```
+
+无论是刚才执行的变换，还是 **fillStyle 、 strokeStyle 等属性**，都会在当前上下文中一直有效，
+除非再对上下文进行什么修改。虽然没有什么办法把上下文中的一切都重置回默认值，但有两个方法可
+以跟踪上下文的状态变化。
+
+> 如果你知道将来还要返回某组属性与变换的组合，可以调用 save() 方法。
+  调用这个方法后，当时的所有设置都会进入一个栈结构，得以妥善保管。然后可以对上下文进行其他修
+  改。等想要回到之前保存的设置时，可以调用 restore() 方法，在保存设置的栈结构中向前返回一级，
+  恢复之前的状态。连续调用 save() 可以把更多设置保存到栈结构中，之后再连续调用 restore() 则可
+  以一级一级返回。
+
+```
+ctx.fillStyle = '#f00'
+    ctx.save();
+    ctx.fillStyle = '#0f0'
+    ctx.translate(100,100)
+    ctx.save();
+
+    ctx.fillStyle = '#00f'
+    ctx.fillRect(0,0,100,200); //  从点（100，100）开始绘制蓝色矩形
+
+    ctx.restore();
+    ctx.fillRect(10,10,100,200); // 从点（110，110）开始绘制绿色矩形
+
+    ctx.restore();
+    ctx.fillRect(0,0,100,200); // 从点（0，0）开始绘制红色矩形 
+    首先：将 fillStyle 设置为红色，并调用 save() 保存上下文状态
+    其次：把 fillStyle 修改为绿色，把坐标原点变换到(100,100)，再调用 save() 保存上下文状态。
+    然后：把 fillStyle 修改为蓝色并绘制蓝色的矩形。因为此时的坐标原点已经变了，所以矩形的左上角
+          坐标实际上是(100,100)。
+    
+    然后调用 restore() ，之后 fillStyle 变回了绿色，因而第二个矩形就是绿色。之所以第二个矩形的起点坐标
+            是(110,110)，是因为坐标位置的变换仍然起作用。
+    再调用一次restore() ，变换就被取消了，而fillStyle 也返回了红色。
+    所以最后一个矩形是红色的，而且绘制的起点是(0,0)
+```
+**需要注意的是， save() 方法保存的只是对绘图上下文的设置和变换，不会保存绘图上下文的内容。**
+
+### 绘制图像
+
+2D 绘图上下文内置了对图像的支持。如果你想把一幅图像绘制到画布上，可以使用 drawImage()方法。调用这个方法时，可以使用三种不同的参数组合。
+- 最简单的调用方式是传入一个 HTML <img\> 元素，以及绘制该图像的起点的 x 和 y 坐标。
+    ```
+    var image = document.images[0];
+    context.drawImage(image, 10, 10); 
+    ```
+- 如果你想改变绘制后图像的大小，可以再多传入两个参数，分别表示目标宽度和目标高度。
+    ```
+    context.drawImage(image, 50, 10, 20, 30); 
+    // 执行代码后，绘制出来的图像大小会变成 20×30 像素
+    ```
+- 还可以选择把图像中的某个区域绘制到上下文中。 drawImage() 方法的这种调用方式总共需要传入 9 个参数：要绘制的图像、源图像的 x 坐标、源图像的 y 坐标、源图像的宽度、源图像的高度、目标图像的 x 坐标、目标图像的 y 坐标、目标图像的宽度、目标图像的高度。
+    ```
+    context.drawImage(image, 0, 10, 50, 50, 0, 100, 40, 60); 
+    // 这行代码只会把原始图像的一部分绘制到画布上。原始图像的这一部分的起点为(0,10)，宽和高都
+       是 50 像素。最终绘制到上下文中的图像的起点是(0,100)，而大小变成了 40×60 像素。
+    ```
+- 除了给 drawImage() 方法传入 HTML <img\> 元素外，还可以传入另一个 <canvas\> 元素作为其第一个参数。这样，就可以把另一个画布内容绘制到当前画布上。
+- **操作的结果可以通过 toDataURL() 方法获得**,不过，有一个例外，即图像不能来自其他域。如果图像来自其他域，调用toDataURL() 会抛出一个错误.**但 toDataURL()是 Canvas 对象的方法，不是上下文对象的方法。**
+
+### 阴影
+
+2D 上下文会根据以下几个属性的值，自动为形状或路径绘制出阴影。
+- shadowColor ：用 CSS 颜色格式表示的阴影颜色，默认为黑色。
+- shadowOffsetX ：形状或路径 x 轴方向的阴影偏移量，默认为 0
+- shadowOffsetY ：形状或路径 y 轴方向的阴影偏移量，默认为 0
+- shadowBlur ：模糊的像素数，默认 0，即不模糊
+
+### 渐变
+
+渐变由 CanvasGradient 实例表示，很容易通过 2D 上下文来创建和修改。
+- 要创建一个新的**线性渐变**，可以调用 createLinearGradient() 方法。这个方法接收 4 个参数：起点的 x 坐标、起点的 y 坐标、终点的 x 坐标、终点的 y 坐标。调用这个方法后，它就会创建一个指定大小的渐变，并返回CanvasGradient 对象的实例
+- 创建了渐变对象后，下一步就是使用 addColorStop() 方法来指定色标。这个方法接收两个参数：色标位置和 CSS 颜色值。色标位置是一个 0（开始的颜色）到 1（结束的颜色）之间的数字
+    ```
+        var gradient = createRectLinearGradient(ctx,30,30,70,70)
+        gradient.addColorStop(0, 'white');
+        gradient.addColorStop(1, 'black'); 
+         // gradient 对象表示的是一个从画布上点(30,30)到点(70,70)的渐变。起点的色标是白色，终
+         点的色标是黑色。然后就可以把 fillStyle 或 strokeStyle 设置为这个对象，从而使用渐变来绘制
+         形状或描边
+    ```
+    ```
+        // 绘制红色矩形
+        ctx.fillStyle = '#f00'
+        ctx.fillRect(10,10, 50,50);
+    
+        // 绘制渐变矩形
+        ctx.fillStyle = gradient;
+        ctx.fillRect(30,30,70,70); 
+    ```
+- 如果没有把矩形绘制到恰当的位置，那可能就只会显示部分渐变效果.确保渐变与形状对齐非常重要，有时候可以考虑使用函数来确保坐标合适。
+    ```
+     function createRectLinearGradient(ctx, x, y, width, height) {
+         return ctx.createLinearGradient(x, y, x + width, y + height)
+     }
+     var gradient = createRectLinearGradient(ctx,30,30,70,70)
+     gradient.addColorStop(0, 'white');
+     gradient.addColorStop(1, 'black');
+ 
+     // 绘制红色矩形
+     ctx.fillStyle = '#f00'
+     ctx.fillRect(10,10, 50,50);
+ 
+     // 绘制渐变矩形
+     ctx.fillStyle = gradient;
+     ctx.fillRect(30,30,70,70);
+    ```
+- 创建**径向渐变**使用 createRadialGradient() 方法。接受6个参数。对应着两个圆的圆心和半径
+    ```
+    var gradient1 = ctx.createRadialGradient(55,55,10,55,55,30)
+        gradient1.addColorStop(0, 'white');
+        gradient1.addColorStop(1, 'black')
+    
+        ctx.fillStyle = '#f00'
+        ctx.fillRect(10,10,50,50)
+    
+        ctx.fillStyle = gradient1;
+        ctx.fillRect(30,30,50,50); 
+    ```
+
+### 模式
+
+模式其实就是重复的图像，可以用来填充或描边图形。要创建一个新模式，可以调用 createPattern() 方法并传入两个参数：一个 HTML <img> 元素和一个表示如何重复图像的字符串。第二个参数的值与 CSS 的 background-repeat 属性值相同，包括 "repeat" 、 "repeat-x" 、"repeat-y" 和 "no-repeat" 。
+
+```
+    var image = document.images[0]
+    var pattern = ctx.createPattern(image, 'repeat');
+    
+    // 绘制矩形
+    ctx.fillStyle = pattern
+    ctx.fillRect(10,10,600,600); 
+```
+- createPattern() 方法的第一个参数也可以是一个 <video> 元素，或者另一个 <canvas> 元素。
+
+### 使用图像数据
+
+2D 上下文的一个明显的长处就是，可以通过 getImageData() 取得原始图像数据。这个方法接收 4 个参数：要取得其数据的画面区域的 x 和 y 坐标以及该区域的像素宽度和高度。
+
+```
+    // 例如，要取得左上角坐标为(10,5)、大小为 50×50 像素的区域的图像数据，可以使用以下代码：
+    var imageData = ctx.getImageData(10,5,50,50);
+    
+    // 这里返回的对象是 ImageData 的实例。每个 ImageData 对象都有三个属性： width 、 height 和
+       data 。其中 data 属性是一个数组，保存着图像中每一个像素的数据。在 data 数组中，每一个像素用
+       4 个元素来保存，分别表示红、绿、蓝和透明度值。因此，第一个像素的数据就保存在数组的第 0 到第
+       3 个元素中
+    var data = imageData.data,
+        red = data[0],
+        green = data[1],
+        blue = data[2],
+        alpha = data[3];
+```
+```
+// 例如，通过修改图像数据，可以像下面这样创建一个简单的灰阶过滤器。
+let drawing = document.getElementById('drawing');
+if (drawing.getContext) {
+    let ctx = drawing.getContext('2d'),
+        image = document.images[0],
+        imageData, data,
+        i, len, average,
+        red, green, blue, alpha;
+
+    // 绘制原始图像
+    ctx.drawImage(image, 0, 0);
+
+    // 取得图像数据
+    imageData = ctx.getImageData(0,0,image.width, image.height);
+    data = imageData.data;
+
+    for (i = 0, len = data.length; i < len; i+=4) {
+        red = data[i];
+        green = data[i + 1];
+        blue = data[i + 2];
+        alpha = data[i + 3];
+
+        average = Math.floor((red + green + blue) / 3);
+        data[i] = average;
+        data[i + 1] = average;
+        data[i + 2] = average;
+    }
+    // 回写图像数据并显示结果
+    imageData.data = data;
+    ctx.putImageData(imageData, 0, 0);
+} 
+// 这个例子首先在画面上绘制了一幅图像，然后取得了原始图像数据。其中的 for 循环遍历了图像数
+   据中的每一个像素。这里要注意的是，每次循环控制变量 i 都递增 4。在取得每个像素的红、绿、蓝颜
+   色值后，计算出它们的平均值。再把这个平均值设置为每个颜色的值，结果就是去掉了每个像素的颜色，
+   只保留了亮度接近的灰度值（即彩色变黑白）。在把 data 数组回写到 imageData 对象后，调用
+   putImageData() 方法把图像数据绘制到画布上。最终得到了图像的黑白版。
+```
+
+### 合成
+
+- globalAlpha 是一个介于0和1之间的值（包括0和1），用于指定所有绘制的透明度。默认为0.如果后续所有操作都要基于相同的透明度，就可以先把globalAlpha设置为恰当的值，然后绘制，最后再把它设置回默认值0.
+    ```
+    // 绘制红色矩形
+        ctx.fillStyle = '#f00'
+        ctx.fillRect(10,10,50,50)
+    
+        // 修改全局透明度
+        ctx.globalAlpha = 0.5;
+    
+        // 绘制蓝色矩形
+        ctx.fillStyle = 'rgba(0,0,255,1)'
+        ctx.fillRect(30,30,50,50)
+        
+        // 重置全局透明度
+        ctx.globalAlpha = 0; 
+    ```
+- globalCompositionOperation 表示后绘制的图形怎样与先绘制的图形结合。这个属性的值是字符串，可能的值如下：
+    - source-over （默认值）：后绘制的图形位于先绘制的图形上方。
+    - source-in ：后绘制的图形与先绘制的图形重叠的部分可见，两者其他部分完全透明
+    - source-out ：后绘制的图形与先绘制的图形不重叠的部分可见，先绘制的图形完全透明
+    - source-atop ：后绘制的图形与先绘制的图形重叠的部分可见，先绘制图形不受影响。
+    - destination-over ：后绘制的图形位于先绘制的图形下方，只有之前透明像素下的部分才可见。
+    - destination-in ：后绘制的图形位于先绘制的图形下方，两者不重叠的部分完全透明
+    - destination-out ：后绘制的图形擦除与先绘制的图形重叠的部分
+    - destination-atop ：后绘制的图形位于先绘制的图形下方，在两者不重叠的地方，先绘制的图形会变透明
+    - lighter ：后绘制的图形与先绘制的图形重叠部分的值相加，使该部分变亮
+    - copy ：后绘制的图形完全替代与之重叠的先绘制图形
+    - xor ：后绘制的图形与先绘制的图形重叠的部分执行“异或”操作。
+    ```
+    ctx.fillStyle = '#f00'
+    ctx.fillRect(10,10,50,50)
+    
+    ctx.globalCompositeOperation = 'destination-over'
+    ctx.fillStyle = 'rgba(0,0,255,1)'
+    ctx.fillRect(30,30,50,50) 
+    如果不修改 globalCompositionOperation ，那么蓝色矩形应该位于红色矩形之上。但把
+    globalCompositionOperation 设置为 "destination-over" 之后，红色矩形跑到了蓝色矩形上面。
+    ```
+
+## WebGL
+
+### 类型化数组
+
+WebGL 涉及的复杂计算需要提前知道数值的精度，而标准的 JavaScript 数值无法满足需要。因此，WebGL引入了一个概念，叫类型化数组。类型化数组也是数组，只不过其元素被设置为特定类型的值。
+
+> 类型化数组的核心就是一个名为 ArrayBuffer 的类型。每个 ArrayBuffer 对象表示的只是内存
+  中指定的字节数，但不会指定这些字节用于保存什么类型的数据。通过 ArrayBuffer 所能做的，就是
+  为了将来使用而分配一定数量的字节。例如，下面这行代码会在内存中分配 20B
+  ```
+  var buffer = new ArrayBuffer(20) 
+  
+  // 创建了 ArrayBuffer 对象后，能够通过该对象获得的信息只有它包含的字节数，方法是访问其
+     byteLength 属性
+     var bytes = buffer.byteLength;
+  ```
+
+**1.视图**
+
+- 使用 ArrayBuffer （数组缓冲器类型）的一种特别的方式就是用它来创建数组缓冲器视图.其中，最常见的视图是 DataView ，通过它可以选择 ArrayBuffer 中一小段字节。为此，可以在创建 DataView 实例的时候传入一个 ArrayBuffer 、一个可选的字节偏移量（从该字节开始选择）和一个可选的要选择的字节数
+    ```
+    // 基于整个缓冲器创建一个新视图
+    var view = new DataView(buffer);
+    // 创建一个开始于字节 9 的新视图
+    var view = new DataView(buffer, 9)
+    // 创建一个从字节 9 开始到字节 18 的新视图
+    var view = new DataView(buffer, 9 , 10);
+    
+    // 实例化之后， DataView 对象会把字节偏移量以及字节长度信息分别保存在 byteOffset 和
+       byteLength 属性中。 
+    ```
 
 
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
 
 
