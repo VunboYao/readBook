@@ -2355,20 +2355,25 @@ function divide(num1, num2) {
     assert(typeof num1 === 'number' && typeof num2 === 'number', "divide(): Both arguments must be numbers.")；
     return num1 / num2;
 }*/
-
-let book = {
+/*let book = {
     title: 'Professional JavaScript',
     authors: [
         'Nicholas C. Za'
     ],
     edition: 3,
     year: 2011,
-    toJSON: function () {
-        return this.title;
-    }
+    releaseDate: new Date(2011,11,1)
 };
-
-let jsonText = JSON.stringify(book,function (key, value) {
+let jsonText = JSON.stringify(book);
+let bookCopy = JSON.parse(jsonText, function(key, value) {
+    if (key === 'releaseDate') {
+        return new Date(value);
+    } else {
+        return value;
+    }
+});
+console.log(bookCopy.releaseDate.getFullYear()); // 2011*/
+/*let jsonText = JSON.stringify(book,function (key, value) {
   switch (key) {
       case 'authors':
           return value.join(',')
@@ -2379,9 +2384,56 @@ let jsonText = JSON.stringify(book,function (key, value) {
       default:
           return value;
   }
-})
+})*/
 
-let json = JSON.stringify(book);
-console.log(json);
+// 1.创建一个异步对象
+let xhr = new XMLHttpRequest();
+
+// 2.设置请求方式与地址
+/*
+* method: 请求的类型： GET 或 POST
+* url: 文件在服务器上的位置
+* async: true(异步) 或 false(同步)
+* */
+/*
+* 在IE浏览器中，缓存问题，当修改内容后，仍然是第一次的内容。
+* */
+xhr.open('get', 'example.php', false);
+// 3.发送请求
+/*这里的 send() 方法接收一个参数，即要作为请求主体发送的数据。如果不需要通过请求主体发送数据，则必须传入 null ，因为这个参数对有些浏览器来说是必需的。调用 send() 之后，请求就会被分派到服务器。*/
+xhr.send(null);
+
+// 4.监听状态的变化
+xhr.onreadystatechange = function() {
+    /*
+    * 0：未初始化。尚未调用open(方法）
+    * 1：启动。已经调用 open() 方法，但尚未调用 send() 方法。
+    * 2：发送。已经调用send()方法，但尚未接收到响应
+    * 3：接收。已经接收到部分响应数据
+    * 4：完成。已经接收到全部响应数据，而且已经可以在客户端使用了。
+    * */
+    if (xhr.readyState === 4) {
+        // 判断是否请求成功
+        if ((xhr.status >= 200 && xhr.status < 300) ||  xhr.status === 304) {
+            // 5.处理结果
+            console.log(xhr.responseText);
+            console.log(xhr.status);
+            console.log(xhr.statusText);
+        } else {
+            alert('Request was unsuccessful: ' + xhr.status);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
