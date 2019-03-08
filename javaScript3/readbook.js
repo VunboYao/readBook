@@ -2385,45 +2385,111 @@ console.log(bookCopy.releaseDate.getFullYear()); // 2011*/
           return value;
   }
 })*/
-
-// 1.创建一个异步对象
+/*// 1.创建一个异步对象
 let xhr = new XMLHttpRequest();
 
 // 2.设置请求方式与地址
-/*
+/!*
 * method: 请求的类型： GET 或 POST
 * url: 文件在服务器上的位置
 * async: true(异步) 或 false(同步)
-* */
-/*
+* *!/
+/!*
 * 在IE浏览器中，缓存问题，当修改内容后，仍然是第一次的内容。
-* */
+* *!/
 xhr.open('get', 'example.php', false);
 // 3.发送请求
-/*这里的 send() 方法接收一个参数，即要作为请求主体发送的数据。如果不需要通过请求主体发送数据，则必须传入 null ，因为这个参数对有些浏览器来说是必需的。调用 send() 之后，请求就会被分派到服务器。*/
+/!*这里的 send() 方法接收一个参数，即要作为请求主体发送的数据。如果不需要通过请求主体发送数据，则必须传入 null ，因为这个参数对有些浏览器来说是必需的。调用 send() 之后，请求就会被分派到服务器。*!/
 xhr.send(null);
 
 // 4.监听状态的变化
 xhr.onreadystatechange = function() {
-    /*
+    /!*
     * 0：未初始化。尚未调用open(方法）
     * 1：启动。已经调用 open() 方法，但尚未调用 send() 方法。
     * 2：发送。已经调用send()方法，但尚未接收到响应
     * 3：接收。已经接收到部分响应数据
     * 4：完成。已经接收到全部响应数据，而且已经可以在客户端使用了。
-    * */
+    * *!/
+    // if (xhr.readyState === 4) {
+    //     // 判断是否请求成功
+    //     if ((xhr.status >= 200 && xhr.status < 300) ||  xhr.status === 304) {
+    //         // 5.处理结果
+    //         console.log(xhr.responseText);
+    //         console.log(xhr.status);
+    //         console.log(xhr.statusText);
+    //     } else {
+    //         alert('Request was unsuccessful: ' + xhr.status);
+    //     }
+    // }
+}*/
+/*let xhr = new XMLHttpRequest()
+xhr.open('post', 'example.php', true)
+xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+xhr.send()
+xhr.onreadystatechange = function() {
     if (xhr.readyState === 4) {
-        // 判断是否请求成功
-        if ((xhr.status >= 200 && xhr.status < 300) ||  xhr.status === 304) {
-            // 5.处理结果
+        if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
             console.log(xhr.responseText);
-            console.log(xhr.status);
-            console.log(xhr.statusText);
-        } else {
-            alert('Request was unsuccessful: ' + xhr.status);
         }
     }
+}*/
+/*function obj2str(data){
+    data.t = new Date().getTime();
+    let res = []
+    for (let key in data) {
+        res.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+    }
+    return res.join('&');
 }
+function ajax(option) {
+    let str = obj2str(option.data);
+    let xhr, timer;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest()
+    } else {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+    if (option.type.toLocaleUpperCase() === 'GET') {
+        xhr.open(option.type, option.url + '?' + str, true);
+        xhr.send(null);
+    } else {
+        xhr.open(option.type, option.url, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(option.str);
+    }
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            clearTimeout(timer);
+            if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
+                option.success(xhr);
+            } else {
+                option.error(xhr);
+            }
+        }
+    }
+    if (option.timeout) {
+        timer = setInterval(function () {
+            console.log('请求中断');
+            xhr.abort();
+            clearInterval(timer);
+        },option.timeout)
+    }
+}*/
+/*
+xhr.upload.onprogress = function (e) {
+    console.log(e.loaded / e.total);
+}
+*/
+
+
+/*
+https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=a&cb=show*/
+
+
+
+
+
 
 
 

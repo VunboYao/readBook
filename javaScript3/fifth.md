@@ -304,8 +304,8 @@ function ajax(option) {
     }
     // 4. 监听状态变化
     xhr.onreadystatechange = function () {
-        clearInterval(timer); // 清除定时器
         if (xhr.readyState === 4) {
+            clearInterval(timer); // 清除定时器
             if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
                 option.success(xhr);
             } else {
@@ -326,6 +326,118 @@ function ajax(option) {
 ```
 
 ## XMLHttpRequest2级
+
+### FormData
+
+FormData 为序列化表单以及创建与表单格式相同的数据(用于通过XHR传输)提供了便利。
+```
+let data = new FormData();
+data.append("name","Nicholas"); 
+```
+这个 append() 方法接收两个参数：键和值，分别对应表单字段的名字和字段中包含的值。可以像这样添加任意多个键值对儿。而通过向 FormData 构造函数中传入表单元素，也可以用表单元素的数据预先向其中填入键值对儿。
+```
+let data = new FormData(document.forms[0]); 
+```
+创建了 FormData 的实例后，可以将它直接传给 XHR 的 send() 方法。使用 FormData 的方便之处体现在不必明确地在 XHR 对象上设置请求头部。XHR 对象能够识别传入的数据类型是 FormData 的实例，并配置适当的头部信息
+
+### 超时设定
+
+在给 timeout 设置一个数值后，如果在规定的时间内浏览器还没有接收到响应，那么就会触发 timeout 事件，进而会调用 ontimeout 事件处理程序.
+
+### overrideMimeType() 方法
+
+该方法重写XHR响应的MIME类型。必须在 send() 方法之前，才能保证重写响应的 MIME 类型。
+
+## 进度事件
+
+- loadstart: 在接收到响应数据的第一个字节时触发。
+- progress: 在接收到响应期间持续不断地触发。
+- error: 在请求发生错误时触发
+- abort: 在因为调用 abort() 方法而终止连接时触发。
+- load: 在接收到完整的响应数据时触发。
+- loadend: 在通信完成或者触发 error、abort 或 load 事件后触发。
+
+每个请求都从触发 loadstart 事件开始，接下来是一或多个 progress 事件，然后触发 error 、abort 或 load 事件中的一个，最后以触发 loadend 事件结束。
+
+### load事件
+
+只要浏览器接收到服务器的响应，不管其状态如何，都会触发 load 事件。而这意味着你必须要检查 status 属性，才能确定数据是否真的已经可用了
+
+```
+var xhr = new XMLHttpRequest();
+xhr.onload = function(){
+    if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304){
+        alert(xhr.responseText);
+    } else {
+        alert("Request was unsuccessful: " + xhr.status);
+    }
+};
+xhr.open("get", "altevents.php", true);
+xhr.send(null); 
+```
+### progress事件
+
+upload属性，定义了 progress 事件，这个事件会在浏览器接收新数据期间周期性地触发。而 onprogress 事件处理程序会接收到一个 event 对象，其 target 属性是 XHR 对象，包含着三个额外的属性： lengthComputable、loaded 和 total。
+ - lengthComputable表示进度信息是否可用的布尔值
+ - loaded，表示已经接收的字节数。
+ - total, 表示根据 Content-Length 响应头部确定的预期字节数
+
+```
+xhr.upload.onprogress = function (e) {
+    console.log(e.loaded / e.total);
+} 
+```
+
+## 跨越资源共享
+
+CORS (Cross-Origin Resource Sharing，跨越资源共享)基本思想，使用自定义的 HTTP 头部让浏览器与服务器进行沟通，从而决定请求或响应是否应该成功or失败。
+
+> 比如一个简单的使用 GET 或 POST 发送的请求，它没有自定义的头部，而主体内容是 text/plain。在发送该请求时，需要给它附加一个额外的 Origin 头部，其中包含请求页面的源信息（协议、域名和端口），以便服务器根据这个头部信息来决定是否给予响应。下面是 Origin 头部的一个示例：
+  ```
+   Origin: http://www.nczonline.net
+  ```
+> 如果服务器认为这个请求可以接受，就在 Access-Control-Allow-Origin 头部中回发相同的源信息（如果是公共资源，可以回发 "*" ）。例如：
+```
+Access-Control-Allow-Origin: http://www.nczonline.net 
+```
+
+### 同源策略
+
+协议 域名 端口 同域
+
+### 为什么不支持跨域
+
+- cookie LocalStorage
+- DOM元素也有同源策略 iframe
+- ajax
+
+### 实现跨越
+
+- jsonp, 只能发送get请求，不支持post, put, delete。不安全，xss攻击，不采用
+- cors，服务器设置相应的头
+- postMessage.——XDM
+- document.domain
+- window.name.——转换,a与b同源，c不同源。a引用c,c把值放到window.name.a把引用转换为b。a再去b拿window.name
+- location.hash
+- http-proxy
+- nginx
+- websocket
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
