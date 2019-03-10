@@ -416,12 +416,12 @@ Access-Control-Allow-Origin: http://www.nczonline.net
 - jsonp, 只能发送get请求，不支持post, put, delete。不安全，xss攻击，不采用
 - cors，服务器设置相应的头
 - postMessage.——XDM
-- document.domain
+- document.domain——**一级域名和二级域名使用**
 - window.name.——转换,a与b同源，c不同源。a引用c,c把值放到window.name.a把引用转换为b。a再去b拿window.name
-- location.hash
+- location.hash——a通过iframe将hash传给c,c把hash传给b,b再传给a
 - http-proxy
-- nginx
-- websocket
+- nginx—— 配置请求头信息
+- websocket。高级API
 
 
 

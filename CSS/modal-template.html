@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+</head>
+<style>
+    html {
+        font-size: 45px;
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #eee;
+        user-select: none;
+    }
+
+    /* 蒙版层 */
+    .y-modal-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, .4);
+        opacity: 0;
+        visibility: hidden;
+        transition-duration: 400ms;
+    }
+
+    .y-modal-overlay-visible {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* 模态框 */
+    .y-modal {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        font-size: .8em;
+        text-align: center;
+        background: #e8e8e8;
+        border-radius: 5px;
+        transform: translate(-50%, -50%) scale(1.185);
+        transition-duration: 400ms;
+        opacity: 0;
+    }
+
+    .y-modal-in {
+        width: 84%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .y-modal-out {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.7);
+    }
+
+    /* 模板内容 */
+    .y-modal-inner {
+        padding: .3rem;
+        position: relative;
+        font-size: .45rem;
+        font-weight: 500;
+        color: #3d4145;
+    }
+
+    .y-modal-inner::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: block;
+        height: 1px;
+        width: 100%;
+        background: #b5b5b5;
+    }
+
+    /* 模板控制栏 */
+    .y-modal-buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 1.2rem;
+        font-size: .45rem;
+        color: #0894ec;
+    }
+
+    .btn-cancel:active,
+    .btn-confirm:active {
+        background: #d4d4d4;
+    }
+
+    .btn-cancel {
+        position: relative;
+        flex: 1;
+        height: 1.2rem;
+        line-height: 1.2rem;
+        box-sizing: border-box;
+    }
+
+    .btn-cancel::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 1px;
+        height: 1.2rem;
+        display: block;
+        background: #b5b5b5;
+    }
+
+    .btn-confirm {
+        flex: 1;
+        height: 1.2rem;
+        line-height: 1.2rem;
+    }
+</style>
+<body>
+<button id="btn">Alert With Text</button>
+<div class="container">
+    <div class="y-modal-overlay"></div>
+</div>
+<script>
+    (function f(option) {
+        /* 创建弹出窗口 */
+        function createModal(innerText) {
+            let newDiv = document.createElement('div') // 创建div
+            newDiv.setAttribute('class', 'y-modal y-modal-in') // 添加类
+            newDiv.innerHTML = `<div class="y-modal-inner">${innerText}</div>
+        <div class="y-modal-buttons">
+            <span class="btn-cancel">取消</span>
+            <span class="btn-confirm">确定</span>
+        </div>`
+            return newDiv // 返回该节点
+        }
+
+        let oContainer = document.querySelector('.container') // 获取外层父级节点
+        let oDivModal = document.querySelector('.y-modal-overlay') // 获取背景层
+
+        /* 显示蒙版与提示框 */
+        function showModal(text) {
+            oDivModal.className = 'y-modal-overlay y-modal-overlay-visible'
+            oContainer.appendChild(createModal(text))
+        }
+
+        /* 监听点击事件 */
+        oContainer.addEventListener('click', function (e) {
+            let that = this
+            if (e.target.innerText === '取消') {
+                document.querySelector('.y-modal').setAttribute('class', 'y-modal y-modal-out') // 设置关闭类，关闭弹出窗口
+                oDivModal.className = 'y-modal-overlay' // 设置类关闭背景层
+                setTimeout(function () {
+                    that.removeChild(that.lastChild) // 定时器移除最后一个节点
+                }, 400)
+                option.cancel && option.cancel() // 执行回调
+            }
+            if (e.target.innerText === '确定') {
+                document.querySelector('.y-modal').setAttribute('class', 'y-modal y-modal-out') // 设置关闭类，关闭弹出窗口
+                oDivModal.className = 'y-modal-overlay' // 设置类关闭背景层
+                setTimeout(function () {
+                    that.removeChild(that.lastChild)
+                    option.confirm() // 回调
+                }, 400)
+            }
+        })
+        window.showModal = showModal // 添加该方法至全局
+    })({
+        confirm: function () {
+            window.location = 'http://www.vunbo.com'
+        }
+    })
+    document.getElementById('btn').onclick = function () {
+        showModal('yes! it is me!!!',)
+    }
+</script>
+</body>
+</html>

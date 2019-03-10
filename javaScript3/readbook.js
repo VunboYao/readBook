@@ -2481,14 +2481,63 @@ xhr.upload.onprogress = function (e) {
     console.log(e.loaded / e.total);
 }
 */
-
-
-/*
-https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=a&cb=show*/
-
-
-
-
+/*let xhr;
+if (window.XMLHttpRequest) {
+    xhr = new XMLHttpRequest();
+} else {
+    xhr = new ActiveXObject('Microsoft.XMLHTTP')
+}
+xhr.open('POST','example.php', true);
+xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+xhr.send("name=yyb&age=23");
+xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+        if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+            console.log(xhr.responseText);
+        }
+    }
+}*/
+/*function obj2str(data) {
+    data.t = new Date().getTime();
+    let res = []
+    for (let key in data) {
+        res.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+    }
+    return res.join('&');
+}
+function ajax(option) {
+    let str = obj2str(option.data);
+    let xhr, timer;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+    } else {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+    if (option.type.toLocaleLowerCase() === 'get') {
+        xhr.open(option.type, option.url + "?" + str, true);
+        xhr.send(null);
+    } else {
+        xhr.open(option.type, option.url, true);
+        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        xhr.send(option.str);
+    }
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            clearInterval(timer);
+            if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+                option.success(xhr)
+            } else {
+                option.error(xhr);
+            }
+        }
+    }
+    if (option.timeout) {
+        timer = setInterval(() => {
+            xhr.abort()
+            clearInterval(timer);
+        },option.timeout)
+    }
+}*/
 
 
 

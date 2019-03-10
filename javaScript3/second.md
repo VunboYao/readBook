@@ -1164,8 +1164,6 @@ let range = document.createRange();
  range1.selectNode(p1);
  range2.selectNodeContents(p1);
 ```
-![范围](https://files.jb51.net/file_images/article/201702/201721385722305.png?201711385736)
-
 要使用范围来选择文档中的一部分，最简的方式就是使用 selectNode()或selectNodeContents().这两个方法都接受一个参数，即一个DOM节点，然后使用该节点中的信息来填充范围。其中，selectNode()方法选择整个节点，包括其子节点；而 selectNodeContents()方法则只选择节点的子节点。
 
 > 在调用 selectNode() 时， startContainer 、 endContainer 和 commonAncestorContainer都等于传入节点的父节点，也就是这个例子中的 document.body 。而 startOffset 属性等于给定节点在其父节点的 childNodes 集合中的索引（在这个例子中是 1——因为兼容 DOM 的浏览器将空格算作一个文本节点）， endOffset 等于 startOffset 加 1（因为只选择了一个节点）。
