@@ -2557,8 +2557,7 @@ xhr.onreadystatechange = function() {
 let script = document.createElement('script')
 script.src = "http://freegeoip.net/json/?callback=handleResponse";
 document.body.insertBefore(script, document.body.firstChild);*/
-
-let socket = new WebSocket('ws://localhost:3000');
+/*let socket = new WebSocket('ws://localhost:3000');
 socket.onopen = function () {
     socket.send('Hello world!');
 }
@@ -2569,9 +2568,50 @@ socket.onclose = function () {
     console.log("Was clean? " + event.wasClean + " Code=" + event.code + " Reason="
         + event.reason);
 }
-
 btn.onclick = function () {
     socket.close();
+}*/
+/*console.log(Object.prototype.toString.call([]))
+console.log(Object.prototype.toString.call(window.Array))
+console.log(Object.prototype.toString.call(Object))
+console.log(Object.prototype.toString.call(window))
+console.log(Object.prototype.toString.call(/^\d/))
+console.log(Object.prototype.toString.call(new Object()))
+function isArray(value) {
+    return Object.prototype.toString.call(value) === '[object Array]'
 }
-
+function isFunction(value) {
+    return Object.prototype.toString.call(value) === '[object Function]'
+}
+function isRegExp(value) {
+    return Object.prototype.toString.call(value) === '[object RegExp]'
+}*/
+/*
+let a = 3;
+function addTwo(x) {
+    let ret = x + 2;
+    return ret
+}
+let b = addTwo(a)
+console.log(b);
+let val1 = 2;
+function multiplyThis(n) {
+    let ret = n * val1;
+    return ret
+}
+let multiplied = multiplyThis(6)
+console.log(multiplied);
+*/
+/*function oo() {
+    var i = 1;
+    return function () {
+        i++;
+        console.log(i);
+    }
+}
+var a = oo(),b=oo();
+console.log(a === b);
+a();
+a();
+b();*/
 
