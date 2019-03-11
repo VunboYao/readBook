@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input id="btn" type="button" value="跨域请求">
+<div id="result"></div>
+<script>
+    let add = (function(){
+        let counter = 0;
+        return function () {
+            return ++counter;
+        }
+    })();
+    document.getElementById('btn').onclick = function () {
+        let sum = add();
+        let result = document.getElementById('result');
+        let img = result.getElementsByTagName('img')[0];
+        if (!img) {
+            img = new Image();
+        }
+        img.height = 100;
+        img.onload = img.onerror = function () {
+            result.appendChild(img);
+            let oSpan = document.getElementById('sum');
+            if (!oSpan) {
+                oSpan = document.createElement('span');
+                oSpan.id = 'sum';
+            }
+            oSpan.innerHTML = '发送请求的次数：' + sum;
+            result.appendChild(oSpan);
+        }
+        if (sum % 2) {
+            img.src = 'https://timgsa.baidu.com/timg?sum='+sum;
+        } else {
+            img.src = 'https://timgsa.baidu.com/timg?sum='+sum;
+        }
+    }
+</script>
+</body>
+</html>

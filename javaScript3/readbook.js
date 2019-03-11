@@ -2538,17 +2538,40 @@ function ajax(option) {
         },option.timeout)
     }
 }*/
+/*
+let xhr = new XMLHttpRequest();
+xhr.open('post','http://127.0.0.1/example.php', true);
+xhr.setRequestHeader('Content-Type','Application/x-www-form-urlencoded');
+xhr.send(null)
+xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+        if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+            console.log(xhr.response);
+        }
+    }
+}*/
+/*function handleResponse(response) {
+    alert("'You' re at IP address " + response.ip + ", which is in " + response.city + ", " + response.region_name);
+}
 
+let script = document.createElement('script')
+script.src = "http://freegeoip.net/json/?callback=handleResponse";
+document.body.insertBefore(script, document.body.firstChild);*/
 
+let socket = new WebSocket('ws://localhost:3000');
+socket.onopen = function () {
+    socket.send('Hello world!');
+}
+socket.onmessage = function (ev) {
+    console.log(ev.data);
+}
+socket.onclose = function () {
+    console.log("Was clean? " + event.wasClean + " Code=" + event.code + " Reason="
+        + event.reason);
+}
 
-
-
-
-
-
-
-
-
-
+btn.onclick = function () {
+    socket.close();
+}
 
 
