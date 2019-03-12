@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" manifest="/offline.manifest">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -52,20 +52,70 @@
                }
          }
      </style>-->
+    <!--<style>
+        .div1 {
+            width: 400px;
+            height: 200px;
+            background: #523;
+            border-top-left-radius: 200px;
+            border-top-right-radius: 200px;
+        }
+        .son1 {
+            position: relative;
+            top: 100px;
+            left: 0;
+            width: 100px;
+            height: 100px;
+            border: 50px solid #000;
+            background: #523;
+            border-radius: 50%;
+        }
+        .div2 {
+            width: 400px;
+            height: 200px;
+            background: #000;
+            border-bottom-left-radius: 200px;
+            border-bottom-right-radius: 200px;
+        }
+        .son2 {
+            width: 100px;
+            height: 100px;
+            background: #000;
+            border: 50px solid #523;
+            border-radius: 50%;
+            position: relative;
+            top: -100px;
+            right: -200px;
+        }
+    </style>-->
     <style>
-        div {
-            width: 300px;
-            border: 10px solid #5ca941;
+       div.all {
+           position: relative;
+           width: 300px;
+           height: 300px;
+       }
+        div.left {
+            position: absolute;
+            left: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: pink;
         }
-        div img {
-            width: 100%;
-            height: 100%;
-            vertical-align: bottom;
-        }
+       div.right {
+           position: absolute;
+           top: 0;
+           right: 0;
+           width: 200px;
+           height: 200px;
+           border-radius: 50%;
+           background: pink;
+       }
     </style>
+
 </head>
 <body>
-<div><img src="./../img/jinyong.jpg" alt=""></div>
 <!--<img src="./images/timg.jpg" alt="">
 <input type="file" draggable="true">
 <p draggable="true" id="pp">this is some words about study</p>
@@ -340,8 +390,8 @@ silver">
 <!--<video src="./assets/mp4.mp4" id="myVideo" controls poster="images/timg.jpg">Video player not available.</video>
 <audio src="./assets/next.mp3" id="myAudio" controls>Audio player not available.</audio>-->
 <!--<video id="myVideo" poster="images/timg.jpg" muted controls autoplay>-->
-    <!--<source src="assets/mp4.ogv" type="video/ogv">-->
-    <!--<source src="assets/mp4.mp4">-->
+<!--<source src="assets/mp4.ogv" type="video/ogv">-->
+<!--<source src="assets/mp4.mp4">-->
 <!--</video>-->
 <!--<audio id="myAudio" controls autoplay>
     <source src="iframe.html">
@@ -360,6 +410,19 @@ silver">
     </div>
 </div>
 <audio src="./assets/kiro.mp3" autoplay loop controls id="audioPlayer"></audio>-->
+<!--<div class="father">
+    <div class="div1">
+        <div class="son1"></div>
+    </div>
+    <div class="div2">
+        <div class="son2"></div>
+    </div>
+</div>-->
+<div class="all">
+    <div class="left"></div>
+    <div class="right"></div>
+    <div class="bottom"></div>
+</div>
 <script src="handle.js"></script>
 <script src="readbook.js"></script>
 </body>

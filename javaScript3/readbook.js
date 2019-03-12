@@ -2752,9 +2752,8 @@ window.addEventListener('online', function () {
 window.addEventListener('offline', function () {
     alert('offline');
 })*/
-
-
-
+/*document.cookie = encodeURIComponent('name') + '=' + encodeURIComponent('Nicholas姚');
+console.log(decodeURIComponent(document.cookie));*/
 
 
 
