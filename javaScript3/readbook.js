@@ -2614,4 +2614,170 @@ console.log(a === b);
 a();
 a();
 b();*/
+/*function obj2str(data) {
+    data.t = new Date().getTime();
+    let res = []
+    for (let key in data) {
+        res.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+    }
+    return res.join('&');
+}
+function ajax(option) {
+    let str = obj2str(option.data);
+    let xhr, timer;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+    } else {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+    if (option.type.toLocaleUpperCase() === 'GET') {
+        xhr.open(option.type,option.url + '?' + str, true);
+        xhr.send(null);
+    } else {
+        xhr.open(option.type, option.url, true);
+        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        xhr.send(str);
+    }
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            clearInterval(timer);
+            if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+                option.success(xhr);
+            } else {
+                option.error(xhr);
+            }
+        }
+    }
+    if (option.timeout) {
+        timer = setInterval(function() {
+            xhr.abort();
+            console.log('timeout');
+            clearInterval(timer);
+        },option.timeout)
+    }
+}*/
+/*let handler = {
+    message: 'Event handled',
+    handleClick: function (e) {
+        console.log(this.message);
+    }
+}
+let btn = document.getElementById('id')
+btn.onclick = function () {
+    handler.handleClick()
+}*/
+/*function EventTarget() {
+    this.handlers = {}
+}
+EventTarget.prototype = {
+    constructor: EventTarget,
+    addHandler: function (type, handler) {
+        if (typeof this.handlers[type] === 'undefined') {
+            this.handlers[type] = []
+        }
+        this.handlers[type].push(handler);
+    },
+    fire: function (e) {
+        if(!e.target) {
+            e.target = this
+        }
+        if (this.handlers[e.type] instanceof Array) {
+            let handlers  = this.handlers[e.type];
+            for (let i = 0; i < handlers.length; i++) {
+                handlers[i](e);
+            }
+        }
+    },
+    removeHandler: function (type, handler) {
+        if (this.handlers[type] instanceof  Array) {
+            let handlers = this.handlers[type];
+            for (let i = 0; i < handlers.length; i++) {
+                if (handlers[i] === handler) {
+                    break;
+                }
+            }
+            handlers.splice(i, 1);
+        }
+    }
+}*/
+/*let myDiv = document.getElementById('myDiv')
+
+let DragDrop = function () {
+    let dragdrop = new EventTarget();
+    let dragging = null;
+    let diffX = 0,
+        diffY = 0;
+    function handleEvent(event) {
+        let target = event.target;
+
+        switch (event.type) {
+            case 'mousedown':
+                if (target.className.indexOf('draggable') > -1) {
+                    dragging = target;
+                    diffX = event.clientX - target.offsetLeft;
+                    diffY = event.clientY - target.offsetTop;
+                }
+                break;
+
+            case "mousemove":
+                if (dragging !== null) {
+                    dragging.style.left = event.clientX - diffX + 'px';
+                    dragging.style.top = event.clientY - diffY + 'px'
+                }
+                break;
+            case 'mouseup':
+                dragging = null;
+                break;
+        }
+    }
+    return {
+        enable: function () {
+            myDiv.addEventListener('mousedown', handleEvent)
+            myDiv.addEventListener('mousemove', handleEvent)
+            myDiv.addEventListener('mouseup', handleEvent)
+        },
+        disable: function () {
+            myDiv.removeEventListener('mousedown', handleEvent)
+            myDiv.removeEventListener('mousemove', handleEvent)
+            myDiv.removeEventListener('mouseup', handleEvent)
+        }
+    }
+}
+
+DragDrop().enable();*/
+/*alert(navigator.onLine);
+window.addEventListener('online', function () {
+    alert('online');
+})
+window.addEventListener('offline', function () {
+    alert('offline');
+})*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

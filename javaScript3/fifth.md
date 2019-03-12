@@ -734,24 +734,105 @@ Web Sockets是一种与服务器进行全双工、双向通信的信道。与其
     } 
     ```
 
+### 作用域安全的构造函数
 
+构造函数的注意点，首字母大写以及调用时注意 **new**
 
+### 惰性载入函数
 
+### 函数绑定
 
+### 函数柯里化
 
+## 防篡改对象
 
+### 不可扩展对象
 
+- 默认情况下，所有对象都是可以扩展的。任何时候都可以向对象中添加属性和方法。
+- Object.preventExtensions() 方法可以改变这个行为，让你不能再给对象添加属性和方法
+- 使用 Object.istExtensible() 方法还可以确定对象是否可以扩展。
 
+### 密封的对象
 
+- 密封对象不可扩展，而且已有成员的 **[Configurable]** 特性将被设置成 false.这就意味着不能删除属性和方法，因为不能使用 Object.defineProperty() 把数据属性修改为访问器属性，或者相反。属性值是可以修改的。
+- 要密封对象，可以使用 Object.seal() 方法。
+- 使用 Object.isSealed() 方法可以确定对象是否被密封了
+- 因为被密封的对象不可扩展，所以用 Object.isExtensible() 检测密封的对象也会返回 false 。
 
+### 冻结的对象
 
+最严格的防篡改级别是冻结对象（frozen object）。冻结的对象既不可扩展，又是密封的，而且对象数据属性的 [[Writable]] 特性会被设置为 false 。如果定义 [[Set]] 函数，访问器属性仍然是可写的。ECMAScript 5定义的 Object.freeze() 方法可以用来冻结对象。
 
+```
+var person = { name: "Nicholas" };
+Object.freeze(person);
 
+person.age = 29;
+alert(person.age); //undefined
 
+delete person.name;
+alert(person.name); //"Nicholas"
 
+person.name = "Greg";
+alert(person.name); //"Nicholas" 
+```
+-  Object.isFrozen() 方法用于检测冻结对象
+- 因为冻结对象既是密封的又是不可扩展的，所以用 Object.isExtensible() 和 Object.isSealed() 检测冻结对象将分别返回 false 和 true 。
 
+## 高级定时器
 
+- setTimeout() 和 setInterval()创建的定时器可以用于实现有趣且有用的功能。定时器对队列的工作方式是，当特定时间过去后将代码插入。注意，给队列添加代码并不意味着对它立刻执行，而只能表示它会尽快执行。
+- 设定一个 150ms 后执行的定时器不代表到了 150ms代码就立刻执行，它表示代码会在 150ms 后被加入到队列中。如果在这个时间点上，队列中没有其他东西，那么这段代码就会被执行，表面上看上去好像代码就在精确指定的时间点上执行了
 
+### 重复的定时器
+
+### Yielding Processes
+
+### 函数节流
+
+函数节流背后的基本思想是指，某些代码不可以在没有间断的情况连续重复执行。第一次调用函数，创建一个定时器，在指定的时间间隔之后运行代码。当第二次调用该函数时，它会清除前一次的定时器并设置另一个。如果前一个定时器已经执行过了，这个操作就没有任何意义。
+
+## 自定义事件
+
+## 拖放
+- e.clientX - target.offsetLeft = diffX;
+- div.style.left = e.clientX - diffX;
+
+## 小结
+
+JavaScript 中的函数非常强大，因为它们是第一类对象。使用闭包和函数环境切换，还可以有很多使用函数的强大方法。可以创建作用域安全的构造函数，确保在缺少 new 操作符时调用构造函数不会改变错误的环境对象。
+
+- 可以使用惰性载入函数，将任何代码分支推迟到第一次调用函数的时候。
+- 函数绑定可以让你创建始终在指定环境中运行的函数，同时函数柯里化可以让你创建已经填了某些参数的函数
+- 将绑定和柯里化组合起来，就能够给你一种在任意环境中以任意参数执行任意函数的方法。
+
+ECMAScript 5允许通过以下几种方式来创建防篡改对象。
+- 不可扩展的对象，不允许给对象添加新的属性或方法
+- 密封的对象，也是不可扩展的对象，不允许删除已有的属性和方法。
+- 冻结的对象，也是密封的对象，不允许重写对象的成员。
+
+# 第 23 章 离线应用与客户端存储
+
+## 离线检测
+
+- navigator.onLine, 这个属性值为 true 表示设备能上网，值为 false 设备离线。
+- 除了 navigator.onLine 属性之外，为了更好地确定网络是否可用，H5定义了两个事件： online 和 offline。当网络从离线变为在线或者从在线变为离线时，分别触发这两个事件。在 window 对象上触发。
+
+```
+alert(navigator.onLine);
+window.addEventListener('online', function () {
+    alert('online');
+})
+window.addEventListener('offline', function () {
+    alert('offline');
+}) 
+
+为了检测应用是否离线，在页面加载后，最好先通过 navigator.onLine 取得初始的状态。然后，
+就是通过上述两个事件来确定网络连接状态是否变化。当上述事件触发时， navigator.onLine 属性
+的值也会改变，不过必须要手工轮询这个属性才能检测到网络状态的变化
+```
+
+## 应用缓存
 
 
 

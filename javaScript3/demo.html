@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" manifest="/offline.manifest">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -52,8 +52,20 @@
                }
          }
      </style>-->
+    <style>
+        div {
+            width: 300px;
+            border: 10px solid #5ca941;
+        }
+        div img {
+            width: 100%;
+            height: 100%;
+            vertical-align: bottom;
+        }
+    </style>
 </head>
 <body>
+<div><img src="./../img/jinyong.jpg" alt=""></div>
 <!--<img src="./images/timg.jpg" alt="">
 <input type="file" draggable="true">
 <p draggable="true" id="pp">this is some words about study</p>
@@ -348,7 +360,6 @@ silver">
     </div>
 </div>
 <audio src="./assets/kiro.mp3" autoplay loop controls id="audioPlayer"></audio>-->
-<div></div>
 <script src="handle.js"></script>
 <script src="readbook.js"></script>
 </body>
