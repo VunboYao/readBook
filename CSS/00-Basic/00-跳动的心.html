@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div.all {
+            position: relative;
+            top: 100px;
+            left: 100px;
+            width: 350px;
+            height: 350px;
+            animation: scaleShadow 1000ms linear infinite normal;
+        }
+        div.left {
+            position: absolute;
+            left: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            transform: rotate(-70deg);
+            background: linear-gradient(-90deg, #F50A45 0%, #d5093c 40%);
+            box-shadow:0 0 40px #d5093c;
+            z-index: 5;
+        }
+        div.right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(-90deg, #F50A45 0%, #d5093c 40%);
+            box-shadow:0 0 40px #d5093c;
+        }
+        div.bottom {
+            position: absolute;
+            bottom: 76px;
+            right: 50%;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(-45deg, #B80734 0%, #d5093c 40%);
+            box-shadow:0 0 40px #d5093c;
+            transform: translateX(50%) rotateZ(45deg);
+        }
+        @keyframes scaleShadow {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="all">
+    <div class="left"></div>
+    <div class="bottom"></div>
+    <div class="right"></div>
+</div>
+</body>
+</html>
