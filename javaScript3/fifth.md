@@ -932,7 +932,49 @@ Other-header: other-header-value
     document.cookie = encodeURIComponent("name") + "=" + encodeURIComponent("Nicholas") + "; domain=.wrox.com; path=/"; 
     ```
 
+```
+let CookieUtil = {
+    get: function (name) {
+        let cookieName = encodeURIComponent(name) + '=',
+            cookieStart = document.cookie.indexOf(cookieName),
+            cookieValue = null;
+        if (cookieStart > -1) {
+            let cookieEnd = document.cookie.indexOf(';', cookieStart);
+            if (cookieEnd === -1) {
+                cookieEnd = document.cookie.length;
+            }
+            cookieValue = decodeURIComponent(document.cookie.substring(cookieStart + cookieName.length, cookieEnd))
+        }
+        return cookieValue;
+    },
+    set: function (name, value, expires, path, domain, secure) {
+        let cookieText = encodeURIComponent(name) + '=' + encodeURIComponent(value);
+        if (expires) {
+            cookieText += '; expires=' + expires.toUTCString()
+        }
+        if (path) {
+            cookieText += '; path=' + path;
+        }
+        if (domain) {
+            cookieText += '; domain=' + domain;
+        }
+        if (secure) {
+            cookieText += '; secure';
+        }
+        document.cookie = cookieText;
+    },
+    unset: function (name, path, domain, secure) {
+        this.set(name, '', new Date(0), path, domain, secure);
+    }
+}
+```
 
+**4.子 cookie**
+
+为了绕开浏览器的单域名下的 cookie 数限制，一些开发人员使用了一种称为子 cookie（subcookie）的概念。子 cookie 是存放在单个 cookie 中的更小段的数据。也就是使用 cookie 值来存储多个名称值对儿。子 cookie 最常见的的格式如下所示。
+```
+ name=name1=value1&name2=value2&name3=value3&name4=value4&name5=value5
+```
 
 
 
