@@ -2752,10 +2752,52 @@ window.addEventListener('online', function () {
 window.addEventListener('offline', function () {
     alert('offline');
 })*/
+
 /*document.cookie = encodeURIComponent('name') + '=' + encodeURIComponent('Nicholas姚');
 console.log(decodeURIComponent(document.cookie));*/
+/*function obj2str(data) {
+    data.t = new Date().getTime();
+    let res = [];
+    for (let key in data) {
+        res.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+    }
+    return res.join('&');
+}
 
+function ajax(option) {
+    let str = obj2str(option.data);
+    let xhr, timer;
 
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+    } else {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+    if (option.type.toLocaleUpperCase() === 'GET') {
+        xhr.open('GET', option.url + '?' + str, true);
+        xhr.send(null);
+    } else {
+        xhr.open('POST', option, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(str);
+    }
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            clearInterval(timer);
+            if (xhr.status >= 200 && xhr < 300 || xhr.status === 304) {
+                option.success(xhr);
+            } else {
+                option.error(xhr);
+            }
+        }
+    }
+    if (option.timeout) {
+        timer = setInterval(function () {
+            xhr.abort();
+            clearInterval(timer);
+        }, option.timeout)
+    }
+}*/
 
 
 
