@@ -2752,7 +2752,6 @@ window.addEventListener('online', function () {
 window.addEventListener('offline', function () {
     alert('offline');
 })*/
-
 /*document.cookie = encodeURIComponent('name') + '=' + encodeURIComponent('Nicholas姚');
 console.log(decodeURIComponent(document.cookie));*/
 /*function obj2str(data) {
@@ -2799,14 +2798,7 @@ function ajax(option) {
         }, option.timeout)
     }
 }*/
-
-
-
-
-
-
-=======
-let CookieUtil = {
+/*let CookieUtil = {
     get: function (name) {
         let cookieName = encodeURIComponent(name) + '=',
             cookieStart = document.cookie.indexOf(cookieName),
@@ -2839,26 +2831,226 @@ let CookieUtil = {
     unset: function (name, path, domain, secure) {
         this.set(name, '', new Date(0), path, domain, secure);
     }
-}
-
+}*/
 /*CookieUtil.set('name', 'Nicholas');
 CookieUtil.set('book', 'Professional JavaScript');
 alert(CookieUtil.get('name'))
 alert(CookieUtil.get('book'))
 CookieUtil.unset('name')
 CookieUtil.unset('book')*/
->>>>>>> e641f9ce1763d041d70fb47e6207cbe64db27f34
+/*
+function obj2str(data) {
+    data.t = new Date().getTime();
+    let res = []
+    for (let key in data) {
+        data.push(encodeURIComponent(key)+ "=" + encodeURIComponent(data[key]))
+    }
+    return res.join('&');
+}
+function ajax(option) {
+    let str = obj2str(option.data);
+    let xhr, timer;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+    } else {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+    if (option.type.toLocaleUpperCase() === 'GET') {
+        xhr.open(option.type, option.url + '?' + str, true);
+        xhr.send(null);
+    } else {
+        xhr.open(option.type, option.url, true)
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(str);
+    }
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            clearInterval(timer)
+            if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+                option.success(xhr)
+            } else {
+                option.error(xhr);
+            }
+        }
+    }
+    if (option.timeout) {
+        timer = setInterval(function () {
+            xhr.abort();
+            clearInterval(timer)
+        },option.timeout)
+    }
+}
+*/
+/*let SubCookieUtil = {
+    get: function (name, subName) {
+        let subCookies = this.getAll(name);
+        if (subCookies) {
+            return subCookies[subName]
+        } else {
+            return null;
+        }
+    },
+    getAll: function (name) {
+        let cookieName = encodeURIComponent(name) + '=',
+            cookieStart = document.cookie.indexOf(cookieName),
+            cookieValue = null,
+            cookieEnd,
+            subCookies,
+            i,
+            parts,
+            result = {};
+        if (cookieStart > -1) {
+            cookieEnd = document.cookie.indexOf(';', cookieStart);
+            if (cookieEnd === -1) {
+                cookieEnd = document.cookie.length;
+            }
+            cookieValue = document.cookie.substring(cookieStart + cookieName.length, cookieEnd);
+            if (cookieValue.length > 0) {
+                /!*
+                * name=name1=value1&name2=value2&name3=value3&name4=value4&name5=value5
+                *
+                * [name2=value,name3=value3,name4=value4]
+                * *!/
+                subCookies = cookieValue.split('&');
+                for (i = 0, len = subCookies.length; i < len; i++) {
+                    parts = subCookies[i].split('=');
+                    /!* ["name2", "value"] *!/
+                    result[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1]);
+                }
+                return result;
+            }
+        }
+        return null;
+    }
+}
 
+// eg.
+document.cookie ="data=name=Nicholas&book=Professional%20JavaScript"
 
+// getAll subCookie
+let data = SubCookieUtil.getAll('data')
+console.log(data.name); // "Nicholas"
+console.log(data.book); // Professional JavaScript
 
+// getCookie
+console.log(SubCookieUtil.get('data', 'name')); // Nicholas
+console.log(SubCookieUtil.get('data', 'book')); // Professional JavaScript*/
+/*let SubCookieUtil = {
+    set: function (name, subName, value, expires, path, domain, secure) {
+        let subCookies = this.setAll(name) || {};
+        subCookies[subName] = value;
+        this.setAll(name, subCookies, expires, path, domain, secure);
+    },
+    setAll: function (name, subCookies, expires, path, domain, secure) {
+        let cookieText = encodeURIComponent(name) + '=',
+            subCookieParts = new Array(),
+            subName;
+        for (subName in subCookies) {
+            if (subName.length > 0 && subCookies.hasOwnProperty(subName)) {
+                subCookieParts.push(encodeURIComponent(subName) + '=' + encodeURIComponent(subCookies[subName]));
+            }
+        }
+        if (subCookieParts.length > 0) {
+            cookieText += subCookieParts.join('&');
+            if (expires instanceof Date) {
+                cookieText += "; expires=" + expires.toUTCString();
+            }
+            if (path) {
+                cookieText += "; path=" + path;
+            }
+            if (domain) {
+                cookieText += "; domain=" + domain;
+            }
+            if (secure) {
+                cookieText += "; secure";
+            }
+        } else {
+            cookieText += "; expires=" + (new Date(0)).toUTCString();
+        }
+        document.cookie = cookieText;
+    }
+}
 
+// 设置全部子 cookie 和 失效日期
+SubCookieUtil.setAll("data", { name: "Nicholas", book: "Professional JavaScript" },
+    new Date("January 1, 2020"));
 
+// 修改名字的值，并修改cookie 失效的时间
+SubCookieUtil.set("data", "name", "Michael", new Date("February 1, 2020"));*/
+/*let CookieUtil = {
+    get: function (name) {
+        let cookieName = encodeURIComponent(name) + '=',
+            cookieStart = document.cookie.indexOf(cookieName),
+            cookieValue = null;
+        if (cookieStart > -1) {
+            let cookieEnd = document.cookie.indexOf(';', cookieStart);
+            if (cookieEnd === -1) {
+                cookieEnd = document.cookie.length;
+            }
+            cookieValue = decodeURIComponent(document.cookie.substring(cookieStart + cookieName.length, cookieEnd))
+        }
+        return cookieValue;
+    },
+    set: function (name, value, expires, path, domain, secure) {
+        let cookieText = encodeURIComponent(name) + '=' + encodeURIComponent(value);
+        if (expires instanceof Date) {
+            cookieText += "; expires=" + expires.toUTCString();
+        }
+        if (path) {
+            cookieText += '; path=' + path;
+        }
+        if (domain) {
+            cookieText += '; domain=' + domain;
+        }
+        if (secure) {
+            cookieText += '; secure';
+        }
+        document.cookie = cookieText;
+    },
+    unset: function (name, path, domain, secure) {
+        this.set(name, '', new Date(0), path, domain, secure);
+    }
+}
+CookieUtil.set("book", "Professional JavaScript");*/
+/*let SubCookieUtil = {
+    unset: function (name, subName, path, domain, secure) {
+        let subcookies = this.getAll(name)
+        if (subcookies) {
+            delete subcookies[subName];
+            this.setAll(name, subcookies, null, path, domain, secure);
+        }
+    },
+    unsetAll: function (name, path, domain, secure) {
+        this.setAll(name, null, new Date(0), path, domain, secure);
+    }
+}*/
+/*
 
+sessionStorage.setItem('name', 'yyb')
+sessionStorage.book = 'JavaScript'
+*/
+/*for (var i = 0, len = sessionStorage.length; i < len; i++) {
+    var key = sessionStorage.key(i);
+    var value = sessionStorage.getItem(key);
+    alert(key + "=" + value);
+}
+for (var key in sessionStorage){
+    var value = sessionStorage.getItem(key);
+    alert(key + "=" + value);
+}*/
+/*
+// 使用方法存储数据
+localStorage.setItem('name', 'YYB');
 
+// 使用属性存储数据
+localStorage.book = 'JavaScript';
 
+// 使用方法读取数据
+let name = localStorage.getItem('name')
 
-
-
+// 使用属性来读取数据
+let book = localStorage.book;
+*/
 
 
 

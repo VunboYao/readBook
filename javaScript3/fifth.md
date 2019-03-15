@@ -949,7 +949,7 @@ let CookieUtil = {
     },
     set: function (name, value, expires, path, domain, secure) {
         let cookieText = encodeURIComponent(name) + '=' + encodeURIComponent(value);
-        if (expires) {
+        if (expires instanceof Date) {
             cookieText += '; expires=' + expires.toUTCString()
         }
         if (path) {
@@ -975,6 +975,313 @@ let CookieUtil = {
 ```
  name=name1=value1&name2=value2&name3=value3&name4=value4&name5=value5
 ```
+
+- 获取子cookie
+
+```
+let SubCookieUtil = {
+    get: function (name, subName) {
+        let subCookies = this.getAll(name);
+        if (subCookies) {
+            return subCookies[subName]
+        } else {
+            return null;
+        }
+    },
+    getAll: function (name) {
+        let cookieName = encodeURIComponent(name) + '=',
+            cookieStart = document.cookie.indexOf(cookieName),
+            cookieValue = null,
+            cookieEnd,
+            subCookies,
+            i,
+            parts,
+            result = {};
+        if (cookieStart > -1) {
+            cookieEnd = document.cookie.indexOf(';', cookieStart);
+            if (cookieEnd === -1) {
+                cookieEnd = document.cookie.length;
+            }
+            cookieValue = document.cookie.substring(cookieStart + cookieName.length, cookieEnd);
+            if (cookieValue.length > 0) {
+                /*
+                * name=name1=value1&name2=value2&name3=value3&name4=value4&name5=value5
+                *
+                * [name2=value,name3=value3,name4=value4]
+                * */
+                subCookies = cookieValue.split('&');
+                for (i = 0, len = subCookies.length; i < len; i++) {
+                    parts = subCookies[i].split('=');
+                    /* ["name2", "value"] */
+                    result[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1]);
+                }
+                return result;
+            }
+        }
+        return null;
+    }
+}
+
+// eg.
+document.cookie ="data=name=Nicholas&book=Professional%20JavaScript"
+
+// getAll subCookie
+let data = SubCookieUtil.getAll('data')
+console.log(data.name); // "Nicholas"
+console.log(data.book); // Professional JavaScript
+
+// getCookie
+console.log(SubCookieUtil.get('data', 'name')); // Nicholas
+console.log(SubCookieUtil.get('data', 'book')); // Professional JavaScript 
+```
+
+- 设置子 cookie
+
+```
+let SubCookieUtil = {
+    set: function (name, subName, value, expires, path, domain, secure) {
+        let subCookies = this.getAll(name) || {};
+        subCookies[subName] = value;
+        this.setAll(name, subCookies, expires, path, domain, secure);
+    },
+    setAll: function (name, subCookies, expires, path, domain, secure) {
+        let cookieText = encodeURIComponent(name) + '=',
+            subCookieParts = new Array(),
+            subName;
+        for (subName in subCookies) {
+            if (subName.length > 0 && subCookies.hasOwnProperty(subName)) {
+                subCookieParts.push(encodeURIComponent(subName) + '=' + encodeURIComponent(subCookies[subName]));
+            }
+        }
+        if (subCookieParts.length > 0) {
+            cookieText += subCookieParts.join('&');
+            if (expires instanceof Date) {
+                cookieText += "; expires=" + expires.toUTCString();
+            }
+            if (path) {
+                cookieText += "; path=" + path;
+            }
+            if (domain) {
+                cookieText += "; domain=" + domain;
+            }
+            if (secure) {
+                cookieText += "; secure";
+            }
+        } else {
+            cookieText += "; expires=" + (new Date(0)).toUTCString();
+        }
+        document.cookie = cookieText;
+    }
+}
+
+// 设置全部子 cookie 和 失效日期
+SubCookieUtil.setAll("data", { name: "Nicholas", book: "Professional JavaScript" },
+    new Date("January 1, 2020"));
+
+// 修改名字的值，并修改cookie 失效的时间
+SubCookieUtil.set("data", "name", "Michael", new Date("February 1, 2020")); 
+```
+
+- 删除子 cookie
+
+> 子 cookie 的最后一组方法是用于删除子 cookie 的。普通 cookie 可以通过将失效时间设置为过去的时间的方法来删除，但是子 cookie 不能这样做。为了删除一个子 cookie，首先必须获取包含在某个 cookie中的所有子 cookie，然后仅删除需要删除的那个子 cookie，然后再将余下的子 cookie 的值保存为 cookie的值。
+
+```
+let SubCookieUtil = {
+    unset: function (name, subName, path, domain, secure) {
+        let subcookies = this.getAll(name)
+        if (subcookies) {
+            delete subcookies[subName];
+            this.setAll(name, subcookies, null, path, domain, secure);
+        }
+    },
+    unsetAll: function (name, path, domain, secure) {
+        this.setAll(name, null, new Date(0), path, domain, secure);
+    }
+} 
+```
+
+### Web存储机制
+
+- 提供一种在 cookie 之外存储会话数据的途径
+- 提供一种存储大量可以跨会话存在的数据的机制。
+
+**1.Storage 类型**
+
+- clear(): 删除所有值
+- getItem(name): 根据指定的名字 name 获取对应的值
+- key(index): 获得 index 位置处得值得名字
+- removeItem(name): 删除由name指定的名值对儿
+- setItem(name, value): 为指定的 name 设置一个对应的值。
+
+其中， getItem() 、 removeItem() 和 setItem() 方法可以直接调用，也可通过 Storage 对象间接调用。因为每个项目都是作为属性存储在该对象上的，所以可以通过点语法或者方括号语法访问属性来读取值，设置也一样，或者通过 delete 操作符进行删除。不过，我们还建议读者使用方法而不是属性来访问数据，以免某个键会意外重写该对象上已经存在的成员
+
+> Storage 类型只能存储字符串。非字符串的数据在存储之前会被转换成字符串
+
+**2.sessionStorage对象**
+
+sessionStorage 对象存储特定于某个会话的数据，也就是该数据只保持到浏览器关闭。这个对象就像会话 cookie，也会在浏览器关闭后消失。存储在 sessionStorage 中的数据可以跨越页面刷新而存在，同时如果浏览器支持，浏览器崩溃并重启之后依然可用（Firefox 和 WebKit 都支持，IE 则不行）。
+
+因为 seesionStorage 对象绑定于某个服务器会话，所以当文件在本地运行的时候是不可用的。存储在 sessionStorage 中的数据只能由最初给对象存储数据的页面访问到，所以对多页面应用有限制
+
+由于 sessionStorage 对象其实是 Storage 的一个实例，所以可以使用 setItem() 或者直接设置新的属性来存储数据。下面是这两种方法的例子。
+
+```
+// IE8见书P639
+sessionStorage.setItem('name','yyb')
+sessionStorage.book = 'JavaScript' 
+```
+sessionStorage 中有数据时，可以使用 getItem() 或者通过直接访问属性名来获取数据。两种方法的例子如下。
+
+```
+let name = sessionStorage.getItem('name')
+let book = sessionStorage.book;
+console.log(name, book);
+```
+
+迭代 sessionStorage 中的值
+
+```
+for (var i = 0, len = sessionStorage.length; i < len; i++) {
+    var key = sessionStorage.key(i);
+    var value = sessionStorage.getItem(key);
+    alert(key + "=" + value);
+}
+for (var key in sessionStorage){
+    var value = sessionStorage.getItem(key);
+    alert(key + "=" + value);
+}
+```
+
+删除 sessionStorage 中的数据
+
+```
+//使用 delete 删除一个值——在 WebKit 中无效
+delete sessionStorage.name;
+ 
+ // 使用方法删除一个值
+ sessionStorage.removeItem('book');
+```
+
+**3.globalStorage对象**
+
+FireFox 中实现 globalStorage 对象。要使用 globalStorage ，首先要指定哪些域可以访问该数据。可以通过方括号标记使用属性来实现，如以下例子所示
+
+```
+//保存数据
+globalStorage["wrox.com"].name = "Nicholas";
+//获取数据
+var name = globalStorage["wrox.com"].name;
+```
+
+这里所指定的存储空间只能由来自 www.wrox.com 的页面访问，其他子域名都不行。
+某些浏览器允许更加宽泛的访问限制，比如只根据顶级域名进行限制或者允许全局访问，如下面例
+子所示。
+
+```
+//存储数据，任何人都可以访问——不要这样做！
+globalStorage[""].name = "Nicholas";
+//存储数据，可以让任何以.net 结尾的域名访问——不要这样做！
+globalStorage["net"].name = "Nicholas"; 
+```
+
+对 globalStorage 空间的访问，是依据发起请求的页面的域名、协议和端口来限制的。例如，如果使用 HTTPS 协议在 wrox.com 中存储了数据，那么通过 HTTP 访问的 wrox.com 的页面就不能访问该数据。同样，通过 80 端口访问的页面则无法与同一个域同样协议但通过 8080 端口访问的页面共享数据。这类似于 Ajax 请求的同源策略。
+
+globalStorage 的每个属性都是 Storage 的实例。因此，可以像如下代码中这样使用
+
+```
+globalStorage["www.wrox.com"].name = "Nicholas";
+globalStorage["www.wrox.com"].book = "Professional JavaScript";
+globalStorage["www.wrox.com"].removeItem("name");
+var book = globalStorage["www.wrox.com"].getItem("book"); 
+```
+
+如果你事先不能确定域名，那么使用 location.host 作为属性名比较安全
+
+```
+globalStorage[location.host].name = "Nicholas";
+var book = globalStorage[location.host].getItem("book"); 
+```
+如果不使用 removeItem() 或者 delete 删除，或者用户未清除浏览器缓存，存储在 globalStorage 属性中的数据会一直保留在磁盘上。这让 globalStorage 非常适合在客户端存储文档或者长期保存用户偏好设置
+
+**4.localStorage对象**
+
+localStorage 对象在修订过的 HTML 5 规范中作为持久保存客户端数据的方案取代了globalStorage 。与 globalStorage 不同，不能给 localStorage 指定任何访问规则；规则事先就设定好了。要访问同一个 localStorage 对象，页面必须来自同一个域名（子域名无效），使用同一种协议，在同一个端口上。这相当于 globalStorage[location.host] 。
+
+由于 localStorage 是 Storage 的实例，所以可以像使用 sessionStorage 一样来使用它
+
+```
+// 使用方法存储数据
+localStorage.setItem('name', 'YYB');
+
+// 使用属性存储数据
+localStorage.book = 'JavaScript';
+
+// 使用方法读取数据
+let name = localStorage.getItem('name')
+
+// 使用属性来读取数据
+let book = localStorage.book; 
+```
+数据保存到通过JavaScript 删除或者是用户清除浏览器缓存。
+
+**5.storage 事件**
+
+对 Storage 对象进行任何修改，都会在文档上触发 storage 事件。当通过属性或 setItem() 方法保存数据，使用 delete 操作符或 removeItem() 删除数据，或者调用 clear() 方法时，都会发生该事件。这个事件的 event 对象有以下属性
+
+- domain：发生变化的存储空间的域名
+- key: 设置或删除的键名
+- newValue: 如果是设置值，则是新值。如果是删除值，则是null
+- oldValue: 键被更改之前的值。
+
+**6.限制**
+
+- 对于 localStorage 而言，大多数桌面浏览器会设置每个来源 5MB 的限制。Chrome 和 Safari 对每个来源的限制是 2.5MB。而 iOS 版 Safari 和 Android 版 WebKit 的限制也是 2.5MB。
+
+- 对 sessionStorage 的限制也是因浏览器而异。有的浏览器对 sessionStorage 的大小没有限制，但 Chrome、Safari、iOS 版 Safari 和 Android 版 WebKit 都有限制，也都是 2.5MB。IE8+和 Opera 对sessionStorage 的限制是 5MB
+
+### IndexedDB
+
+Indexed Database API，或者简称为 IndexedDB，是在浏览器中保存结构化数据的一种数据库.IndexedDB 的思想是创建一套 API，方便保存和读取 JavaScript 对象，同时还支持查询及搜索。
+
+IndexedDB设计的操作完全是异步进行的。因此，大多数操作会以请求方式进行，但这些操作会在
+后期执行，然后如果成功则返回结果，如果失败则返回错误。差不多每一次 IndexedDB 操作，都需要你
+注册 onerror 或 onsuccess 事件处理程序，以确保适当地处理结果。
+
+在得到完整支持的情况下， IndexedDB 将是一个作为 API 宿主的全局对象。由于 API 仍然可能有变化，浏览器也都使用提供商前缀，因此这个对象在 IE10 中叫 msIndexedDB ，在 Firefox 4 中叫mozIndexedDB ，在 Chrome 中叫 webkitIndexedDB 。为了清楚起见，本节示例中将使用 IndexedDB ，而实际上每个示例前面都应该加上下面这行代码：
+
+```
+var indexedDB = window.indexedDB || window.msIndexedDB || window.mozIndexedDB || window.webkitIndexedDB; 
+```
+
+**1.数据库**
+
+IndexedDB最大的特色是使用对象保存数据，而不是使用表来保存数据。一个 IndexedDB 数据库，就是一组位于相同命名空间下的对象的集合。
+
+使用 IndexedDB 的第一步是打开它，即把要打开的数据库名传给 indexDB.open() 。如果传入的数据库已经存在，就会发送一个打开它的请求；如果传入的数据库还不存在，就会发送一个创建并打开它的请求。总之，调用 indexDB.open() 会返回一个 IDBRequest 对象，在这个对象上可以添加 onerror和 onsuccess 事件处理程序。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
