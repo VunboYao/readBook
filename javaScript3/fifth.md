@@ -300,7 +300,7 @@ function ajax(option) {
         // Post 提交
         xhr.open(option.type, option.url, true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.send(option.str);
+        xhr.send(str);
     }
     // 4. 监听状态变化
     xhr.onreadystatechange = function () {
@@ -1242,37 +1242,51 @@ let book = localStorage.book;
 
 ### IndexedDB
 
-Indexed Database API，或者简称为 IndexedDB，是在浏览器中保存结构化数据的一种数据库.IndexedDB 的思想是创建一套 API，方便保存和读取 JavaScript 对象，同时还支持查询及搜索。
+[参考文章](https://wangdoc.com/javascript/bom/indexeddb.html#indexeddb-%E5%AF%B9%E8%B1%A1)
 
-IndexedDB设计的操作完全是异步进行的。因此，大多数操作会以请求方式进行，但这些操作会在
-后期执行，然后如果成功则返回结果，如果失败则返回错误。差不多每一次 IndexedDB 操作，都需要你
-注册 onerror 或 onsuccess 事件处理程序，以确保适当地处理结果。
+# 第24章 最佳实践
 
-在得到完整支持的情况下， IndexedDB 将是一个作为 API 宿主的全局对象。由于 API 仍然可能有变化，浏览器也都使用提供商前缀，因此这个对象在 IE10 中叫 msIndexedDB ，在 Firefox 4 中叫mozIndexedDB ，在 Chrome 中叫 webkitIndexedDB 。为了清楚起见，本节示例中将使用 IndexedDB ，而实际上每个示例前面都应该加上下面这行代码：
+## 可维护性
 
-```
-var indexedDB = window.indexedDB || window.msIndexedDB || window.mozIndexedDB || window.webkitIndexedDB; 
-```
+- 可理解性——其他人可以接手代码并理解它的意图和一般途径，而无需原开发人员的完整解释。
+- 直观性——代码中的东西一看就能明白，不管其操作过程多么复杂。
+- 可适应性——代码以一种数据上的变化不要求完全重写的方法撰写。
+- 可扩展性——在代码架构上已考虑到在未来允许对核心功能进行扩展。
+- 可调试性——当有地方出错时，代码可以给予你足够的信息来尽可能直接地确定问题所在。
 
-**1.数据库**
+## 代码约定
 
-IndexedDB最大的特色是使用对象保存数据，而不是使用表来保存数据。一个 IndexedDB 数据库，就是一组位于相同命名空间下的对象的集合。
+**1.可读性**
+- 函数和方法——每个函数或方法都应该包含一个注释，描述其目的和用于完成任务所可能使用的算法。陈述事先的假设也非常重要，如参数代表什么，函数是否有返回值（因为这不能从函数定义中推断出来）。
+- 大段代码——用于完成单个任务的多行代码应该在前面放一个描述任务的注释
+- 复杂的算法——如果使用了一种独特的方式解决某个问题，则要在注释中解释你是如何做的。这不仅仅可以帮助其他浏览你代码的人，也能在下次你自己查阅代码的时候帮助理解
+- Hack——因为存在浏览器差异，JavaScript 代码一般会包含一些 hack。不要假设其他人在看代码的时候能够理解 hack 所要应付的浏览器问题。如果因为某种浏览器无法使用普通的方法，所以你需要用一些不同的方法，那么请将这些信息放在注释中。这样可以减少出现这种情况的可能性：有人偶然看到你的 hack，然后“修正”了它，最后重新引入了你本来修正了的错误。缩进和注释可以带来更可读的代码，在未来则更容易维护。
 
-使用 IndexedDB 的第一步是打开它，即把要打开的数据库名传给 indexDB.open() 。如果传入的数据库已经存在，就会发送一个打开它的请求；如果传入的数据库还不存在，就会发送一个创建并打开它的请求。总之，调用 indexDB.open() 会返回一个 IDBRequest 对象，在这个对象上可以添加 onerror和 onsuccess 事件处理程序。
+**2.变量和函数命名**
 
+匈牙利标记法：
+- 'o' 代表对象
+- 's' 代表字符串
+- 'i' 代表整数
+- 'f' 代表浮点数
+- 'b' 代表布尔型
+- 'r' 代表正则
 
+## 松散耦合
 
+- 解耦HTML/JavaScript
+- 解耦 CSS/JavaScript
+- 解耦应用逻辑／事件处理程序 
 
+## 编程实践
 
-
-
-
-
-
-
-
-
-
+- 尊重对象所有权
+- 避免全局变量
+- 避免与 null 进行比较
+    - 如果看到了与 null 比较的代码，尝试使用以下技术替换：
+    - 如果值应为一个引用类型，使用 instanceof 操作符检查其构造函数；
+    - 如果值应为一个基本类型，使用 typeof 检查其类型
+    - 如果是希望对象包含某个特定的方法名，则使用 typeof 操作符确保指定名字的方法存在于对象上。
 
 
 

@@ -3051,9 +3051,118 @@ let name = localStorage.getItem('name')
 // 使用属性来读取数据
 let book = localStorage.book;
 */
+/*function obj2str(data) {
+    data.t = new Date().getTime();
+    let res = []
+    for (let key in data) {
+        res.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+    }
+    return res.join('&');
+}
+function ajax(option){
+    let str = obj2str(option.data);
+    let xhr, timer;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+    } else {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+    if (option.type.toLocaleUpperCase() === 'GET') {
+        xhr.open(option.type, option.url + '?' + str, true)
+        xhr.send(null)
+    } else {
+        xhr.open(option.type, option.url, true)
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(str);
+    }
+    xhr.onreadystatechange = function () {
+        if(xhr.readyState === 4) {
+            clearInterval(timer);
+            if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+                option.success(xhr)
+            } else {
+                option.error(xhr);
+            }
+        }
+    }
+    if(option.timeout) {
+        timer = setInterval(function () {
+            xhr.abort();
+            clearInterval(timer);
+        },option.timeout)
+    }
+}*/
+/*
+let book = {
+    title: 'Professional JavaScript',
+    authors: ['Nicholas C.Za'],
+    edition: 3,
+    year: 2011
+}
+let jsonText = JSON.stringify(book)
+console.log(jsonText);*/
+/*let add = function () {
+    let counter = 0;
+    return function () {
+        return ++counter;
+    }
+}
+document.getElementById('id').onclick = function () {
+    let sum = add();
+    let result = document.getElementById('result')
+    let img = result.getElementsByTagName('img')[0];
+    if (!img) {
+        img = new Image()
+    }
+    img.height = 100;
+    img.onload = img.onerror = function () {
+        result.appendChild(img);
+        let oSpan = document.getElementById('sum')
+        if (!oSpan) {
+            oSpan = document.createElement('span')
+            oSpan.id = 'sum'
+        }
+        oSpan.innerHTML = '发送请求次数' + sum;
+        result.appendChild(oSpan)
+    }
+    if (sum % 2) {
+        img.src = ''
+    } else {
+        img.src = ''
+    }
+}*/
+/*let request = window.indexedDB.open('admin', 2);
 
+request.onerror = function (ev) {
+    console.log('error');
+}
+let db;
+request.onsuccess = function (ev) {
+    db = request.result;
+    console.log('打开成功');
+}
+request.onupgradeneeded = function (ev) {
+    db = ev.target.result;
+    let objectStore;
+    if (!db.objectStoreNames.contains('person')) {
+        objectStore = db.createObjectStore('person',{keyPath: 'id'})
+        objectStore.createIndex('name', 'name',{unique: false});
+        objectStore.createIndex('email', 'email',{unique: true});
+    }
+}
 
+function add() {
+    let request = db.transaction(['person'], 'readwrite').objectStore('person').add({id: 1, name: '张三', age: 24, email: 'zhangsan@example.com'})
 
+    request.onsuccess = function (ev) {
+        console.log('success');
+    }
+    request.onerror = function (ev) {
+        console.log('error');
+    }
+}
+
+add();*/
 
 
 
