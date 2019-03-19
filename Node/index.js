@@ -6,13 +6,13 @@ fs.readFile('a.txt', (err, data) => {
         console.log(data.toString())
     }
 })
-fs.writeFile('b.txt', 'yyb', err => {
+fs.writeFile('./b.txt', 'yyb', err => {
     console.log(err);
 })
-/*http.createServer((req, res) => {
+http.createServer((req, res) => {
     // console.log(req.url);
     res.write('ok')
     res.end()
 }).listen(3000, (err) => {
     console.log('listening 3000')
-})*/
+})
