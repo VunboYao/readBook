@@ -87,8 +87,8 @@ let jsonText = JSON.stringify(book,function (key, value) {
           return value;
   }
 })
-console.log(jsonText); 
-// {"title":"Professional JavaScript","authors":"Nicholas C. Za","year":5000} 
+console.log(jsonText);
+// {"title":"Professional JavaScript","authors":"Nicholas C. Za","year":5000}
 ```
 
 2. **字符串缩进**
@@ -115,7 +115,7 @@ let book = {
     }
 };
 let json = JSON.stringify(book);
-console.log(json); // "Professional JavaScript" 
+console.log(json); // "Professional JavaScript"
 ```
 
 toJSON() 可以作为函数过滤器的补充，因此理解序列化的内部顺序十分重要。假设把一个对象传入 JSON.stringify() ，序列化该对象的顺序如下
@@ -149,7 +149,7 @@ let bookCopy = JSON.parse(jsonText, function(key, value) {
         return value;
     }
 });
-console.log(bookCopy.releaseDate.getFullYear()); // 2011 
+console.log(bookCopy.releaseDate.getFullYear()); // 2011
 ```
 
 # 第 21 章 Ajax 与 Comet
@@ -193,7 +193,7 @@ xhr.onreadystatechange = function() {
             alert('Request was unsuccessful: ' + xhr.status);
         }
     }
-} 
+}
 ```
 
 - send 请求发送并收到响应之后，响应的数据会自动填充XHR对象的属性。
@@ -211,12 +211,12 @@ xhr.onreadystatechange = function() {
         xhr = new XMLHttpRequest();
     } else {
         xhr = new ActiveXObject('Microsoft.XMLHTTP');
-    } 
+    }
     ```
 - 在IE浏览器中，缓存问题，当修改内容后，仍然是第一次的内容。所以需要保证每次请求的内容都不一样。
     ```
     xhr.open("GET","01.txt?t="+(new Date().getTime()),true);
-    // 或者 Math.random() 
+    // 或者 Math.random()
     ```
 
 ### HTTP头部信息
@@ -235,7 +235,7 @@ xhr.onreadystatechange = function() {
 **使用 setRequestHeader() 方法可以设置自定义的请求头部信息。这个方法接受两个参数：头部字段的名称和头部字段的值。要成功发送请求头部信息，必须在调用 open() 方法之后且调用 send() 方法之前调用 setRequestHeader()**
 
 ```
-xhr.setRequestHeader("MyHeader", "MyValue"); 
+xhr.setRequestHeader("MyHeader", "MyValue");
 ```
 - 调用 XHR 对象的 getResponseHeader() 方法并传入头部字段名称，可以取得相应的响应头部信息。
 - 调用 getAllResponseHeaders() 方法则可以取得一个包含所有头部信息的长字符串。
@@ -255,7 +255,7 @@ function addURLParam(url, name, value) {
     url += (url.indexOf("?") == -1 ? "?" : "&");
     url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
     return url;
-} 
+}
 
 //这个 addURLParam() 函数接受三个参数：要添加参数的 URL、参数的名称和参数的值。这个函数
 首先检查 URL 是否包含问号（以确定是否已经有参数存在）。如果没有，就添加一个问号；否则，就添
@@ -322,7 +322,7 @@ function ajax(option) {
             clearInterval(timer);
         }, option.timeout)
     }
-} 
+}
 ```
 
 ## XMLHttpRequest2级
@@ -332,11 +332,11 @@ function ajax(option) {
 FormData 为序列化表单以及创建与表单格式相同的数据(用于通过XHR传输)提供了便利。
 ```
 let data = new FormData();
-data.append("name","Nicholas"); 
+data.append("name","Nicholas");
 ```
 这个 append() 方法接收两个参数：键和值，分别对应表单字段的名字和字段中包含的值。可以像这样添加任意多个键值对儿。而通过向 FormData 构造函数中传入表单元素，也可以用表单元素的数据预先向其中填入键值对儿。
 ```
-let data = new FormData(document.forms[0]); 
+let data = new FormData(document.forms[0]);
 ```
 创建了 FormData 的实例后，可以将它直接传给 XHR 的 send() 方法。使用 FormData 的方便之处体现在不必明确地在 XHR 对象上设置请求头部。XHR 对象能够识别传入的数据类型是 FormData 的实例，并配置适当的头部信息
 
@@ -373,7 +373,7 @@ xhr.onload = function(){
     }
 };
 xhr.open("get", "altevents.php", true);
-xhr.send(null); 
+xhr.send(null);
 ```
 ### progress事件
 
@@ -385,7 +385,7 @@ upload属性，定义了 progress 事件，这个事件会在浏览器接收新�
 ```
 xhr.upload.onprogress = function (e) {
     console.log(e.loaded / e.total);
-} 
+}
 ```
 
 ## 跨越资源共享
@@ -398,7 +398,7 @@ CORS (Cross-Origin Resource Sharing，跨越资源共享)基本思想，使用�
   ```
 > 如果服务器认为这个请求可以接受，就在 Access-Control-Allow-Origin 头部中回发相同的源信息（如果是公共资源，可以回发 "*" ）。例如：
 ```
-Access-Control-Allow-Origin: http://www.nczonline.net 
+Access-Control-Allow-Origin: http://www.nczonline.net
 ```
 
 ### 同源策略
@@ -437,7 +437,7 @@ xhr.onreadystatechange = function() {
             console.log(xhr.response);
         }
     }
-} 
+}
 ```
 跨越XHR对象也有一些限制，但为了安全这些限制是必须的
 - 不能使用setRequestHeader()设置自定义头部
@@ -454,7 +454,7 @@ CORS 通过一种叫做 Preflighted Requests 的透明服务器验证机制支�
     ```
     Origin: http://www.nczonline.net
     Access-Control-Request-Method: POST
-    Access-Control-Request-Headers: NCZ 
+    Access-Control-Request-Headers: NCZ
     ```
 发送这个请求后，服务器可以决定是否允许这种类型的请求。服务器通过在响应中发送如下头部与浏览器进行沟通
 - Access-Control-Allow-Origin ：与简单的请求相同
@@ -465,7 +465,7 @@ CORS 通过一种叫做 Preflighted Requests 的透明服务器验证机制支�
     Access-Control-Allow-Origin: http://www.nczonline.net
     Access-Control-Allow-Methods: POST, GET
     Access-Control-Allow-Headers: NCZ
-    Access-Control-Max-Age: 1728000 
+    Access-Control-Max-Age: 1728000
     ```
 > Preflight 请求结束后，结果将按照响应中指定的时间缓存起来。而为此付出的代价只是第一次发送这种请求时会多一次 HTTP 请求。
 
@@ -474,7 +474,7 @@ CORS 通过一种叫做 Preflighted Requests 的透明服务器验证机制支�
 > 默认情况下，跨源请求不提供凭据（cookie、HTTP 认证及客户端 SSL 证明等）。通过将 withCredentials 属性设置为 true ，可以指定某个请求应该发送凭据。如果服务器接受带凭据的请求，会用下面的 HTTP 头部来响应。
 
     ```
-    Access-Control-Allow-Credentials: true 
+    Access-Control-Allow-Credentials: true
     ```
 > 如果发送的是带凭据的请求，但服务器的响应中没有包含这个头部，那么浏览器就不会把响应交给JavaScript（于是， responseText 中将是空字符串， status 的值为 0，而且会调用 onerror() 事件处理程序）。另外，服务器还可以在 Preflight 响应中发送这个 HTTP 头部，表示允许源发送带凭据的请求。
 
@@ -487,7 +487,7 @@ CORS 通过一种叫做 Preflighted Requests 的透明服务器验证机制支�
 能发送 GET 请求，二是无法访问服务器的响应文本。因此，图像 Ping 只能用于浏览器与服务器间的单
 向通信。
 
-```
+```javascript
 <input id="btn" type="button" value="跨域请求">
 <div id="result"></div>
 <script>
@@ -521,21 +521,21 @@ CORS 通过一种叫做 Preflighted Requests 的透明服务器验证机制支�
             img.src = 'https://timgsa.baidu.com/timg?sum='+sum;
         }
     }
-</script> 
+</script>
 ```
 
 ### JSONP
 
 JSONP 是 JSON with padding (填充式 JSON 或参数式 JSON) 的简写，是应用 JSON 的一种新方法，再后来的 Web 服务中非常流行。 JSONP 看起来与 JSON 差不多，只不过是被包含在函数调用中的 JSON。
     ```
-    callback({"name": "Nicholas" }); 
+    callback({"name": "Nicholas" });
     ```
 - JSONP 由两部分组成：回调函数和数据。回调函数是当响应到来时应该在页面中调用的函数。回调函数的名字一般是在请求中指定的。而数据就是传入回调函数中的JSON数据。下面是一个典型的JSONP请求。
-    ```
+    ```javascript
      function handleResponse(response) {
          alert("'You' re at IP address " + response.ip + ", which is in " + response.city + ", " + response.region_name);
      }
-     
+
      let script = document.createElement('script')
      script.src = "http://freegeoip.net/json/?callback=handleResponse";
      document.body.insertBefore(script, document.body.firstChild);
@@ -551,7 +551,7 @@ JSONP 是 JSON with padding (填充式 JSON 或参数式 JSON) 的简写，是�
 - Comet 能够让信息近乎实时地被推送到页面上，非常适合处理体育比赛的分数和股票报价。
 - 有两种实现 Comet 的方式： 长轮询和流。
     - 长轮询是传统轮询（也称为短轮询）的一个翻版，即浏览器定时向服务器发送请求，看有没有更新的数据
-![短轮询](http://www.vunbo.com/usr/uploads/2019/03/3861257271.png)        
+![短轮询](http://www.vunbo.com/usr/uploads/2019/03/3861257271.png)
     - 长轮询把短轮询颠倒了一下。页面发起一个到服务器的请求，然后服务器一直保持连接打开，直到有数据可发送。发送完数据之后，浏览器关闭连接，随即又发起一个到服务器的新请求。这一过程在页面打开期间一直持续不断。
 ![长轮询](http://www.vunbo.com/usr/uploads/2019/03/242969576.png)
 > 无论是短轮询还是长轮询，浏览器都要在接收数据之前，先发起对服务器的连接。两者最大的区别在于服务器如何发送数据。短轮询是服务器立即发送响应，无论数据是否有效，而长轮询是等待发送响应。轮询的优势是所有浏览器都支持，因为使用 XHR 对象和 setTimeout() 就能实现。而你要做的就是决定什么时候发送请求。
@@ -566,18 +566,18 @@ JSONP 是 JSON with padding (填充式 JSON 或参数式 JSON) 的简写，是�
 
 - SSE 的 JavaScript API 与其他传递消息的 JavaScript API 很相似。要预订新的事件流，首先要创建一个新的 EventSource 对象，并传进一个入口点：
     ```
-    var source = new EventSource("myevents.php"); 
+    var source = new EventSource("myevents.php");
     ```
 > 注意，传入的 URL 必须与创建对象的页面同源（相同的 URL 模式、域及端口）。 EventSource 的实例有一个 readyState 属性，值为 0 表示正连接到服务器，值为 1 表示打开了连接，值为 2 表示关闭了连接。
 
 另外，还有以下三个事件。
-- open ：在建立连接时触发。 
+- open ：在建立连接时触发。
 - message ：在从服务器接收到新事件时触发。
 - error ：在无法建立连接时触发。
 
 就一般的用法而言， onmessage 事件处理程序也没有什么特别的。
 
-```
+```javascript
 source.onmessage = function(event){
 var data = event.data;
 //处理数据
@@ -589,8 +589,8 @@ var data = event.data;
 就意味着 SSE 适合长轮询和 HTTP 流。如果想强制立即断开连接并且不再重新连接，可以调用 close()
 方法。
 
-```
-source.close(); 
+```javascript
+source.close();
 ```
 
 **2.事件流**
@@ -599,7 +599,7 @@ source.close();
 - data: foo
 - data: bar
 - data: foo
-- data: bar 
+- data: bar
 
 对以上响应而言，事件流中的第一个 message 事件返回的 event.data 值为 "foo" ，第二个
 message 事件返回的 event.data 值为 "bar" ，第三个 message 事件返回的 event.data 值为
@@ -626,7 +626,7 @@ message 事件返回的 event.data 值为 "bar" ，第三个 message 事件返�
 要创建 Web Socket，先实例一个 WebSocket 对象并传入要连接的 URL：
 
 ```
- let socket = new WebSocket("ws://www.example.com/server.php"); 
+ let socket = new WebSocket("ws://www.example.com/server.php");
 ```
 > 必须给 WebSocket 构造函数传入绝对URL。同源策略对 Web Socket 不适用，因此可以通过它打开到任何站点的连接。
 
@@ -653,7 +653,7 @@ message 事件返回的 event.data 值为 "bar" ，第三个 message 事件返�
     ```
     socket.onmessage = function (ev) {
         console.log(ev.data);
-    } 
+    }
     ```
 
 **3.其他事件**
@@ -674,7 +674,7 @@ socket.onmessage = function (ev) {
 }
 socket.onclose = function () {
     console.log('关闭服务');
-} 
+}
 ```
 
 在这三个事件中，只有 close 事件的event 对象有额外的信息。这个事件的事件对象有三个额外的属性：wasClean、code 和 reason。 其中，wasClean 是一个布尔值，表示连接是否已经明确关闭； code 是服务器返回的数值状态码； 而 reason 是一个字符串，包含服务器发回的信息。
@@ -682,7 +682,7 @@ socket.onclose = function () {
 ### SSE 与 Web Sockets
 
 > 面对某个具体的用例，在考虑是使用 SSE 还是使用 Web Sockets 时，可以考虑如下几个因素。首先，你是否有自由度建立和维护 Web Sockets服务器？因为 Web Socket 协议不同于 HTTP，所以现有服务器不能用于 Web Socket 通信。SSE 倒是通过常规 HTTP 通信，因此现有服务器就可以满足需求。
-  
+
 > 第二个要考虑的问题是到底需不需要双向通信。如果用例只需读取服务器数据（如比赛成绩），那么 SSE 比较容易实现。如果用例必须双向通信（如聊天室），那么 Web Sockets 显然更好。别忘了，在不能选择 Web Sockets 的情况下，组合 XHR 和 SSE 也是能实现双向通信的。
 
 ## 安全
@@ -722,7 +722,7 @@ Web Sockets是一种与服务器进行全双工、双向通信的信道。与其
     ```
     function isArray(value) {
         return Object.prototype.toString.call(value) === '[object Array]'
-    } 
+    }
     ```
 - 同样，也可以基于这一思路来测试某个值是不是原生函数或正则表达式：
     ```
@@ -731,7 +731,7 @@ Web Sockets是一种与服务器进行全双工、双向通信的信道。与其
     }
     function isRegExp(value) {
         return Object.prototype.toString.call(value) === '[object RegExp]'
-    } 
+    }
     ```
 
 ### 作用域安全的构造函数
@@ -774,7 +774,7 @@ delete person.name;
 alert(person.name); //"Nicholas"
 
 person.name = "Greg";
-alert(person.name); //"Nicholas" 
+alert(person.name); //"Nicholas"
 ```
 -  Object.isFrozen() 方法用于检测冻结对象
 - 因为冻结对象既是密封的又是不可扩展的，所以用 Object.isExtensible() 和 Object.isSealed() 检测冻结对象将分别返回 false 和 true 。
@@ -825,7 +825,7 @@ window.addEventListener('online', function () {
 })
 window.addEventListener('offline', function () {
     alert('offline');
-}) 
+})
 
 为了检测应用是否离线，在页面加载后，最好先通过 navigator.onLine 取得初始的状态。然后，
 就是通过上述两个事件来确定网络连接状态是否变化。当上述事件触发时， navigator.onLine 属性
@@ -874,7 +874,7 @@ HTTP Cookie, 通常叫做 cookie. 该标准要求服务器对任意 HTTP 请求�
 HTTP/1.1 200 OK
 Content-type: text/html
 Set-Cookie: nam=value
-Other-header: other-heaer-value 
+Other-header: other-heaer-value
 ```
 这个 HTTP 响应设置以 name 为名称、以 value 为值的一个 cookie，名称和值在传送时都必须是URL 编码的。浏览器会存储这样的会话信息，并在这之后，通过为每个请求添加 Cookie HTTP 头将信息发送回服务器
 
@@ -929,7 +929,7 @@ Other-header: other-header-value
     ```
 - 要给被创建的 cookie 指定额外的信息，只要将参数追加到该字符串，和 Set-Cookie 头中的格式一样
     ```
-    document.cookie = encodeURIComponent("name") + "=" + encodeURIComponent("Nicholas") + "; domain=.wrox.com; path=/"; 
+    document.cookie = encodeURIComponent("name") + "=" + encodeURIComponent("Nicholas") + "; domain=.wrox.com; path=/";
     ```
 
 ```
@@ -1032,7 +1032,7 @@ console.log(data.book); // Professional JavaScript
 
 // getCookie
 console.log(SubCookieUtil.get('data', 'name')); // Nicholas
-console.log(SubCookieUtil.get('data', 'book')); // Professional JavaScript 
+console.log(SubCookieUtil.get('data', 'book')); // Professional JavaScript
 ```
 
 - 设置子 cookie
@@ -1079,7 +1079,7 @@ SubCookieUtil.setAll("data", { name: "Nicholas", book: "Professional JavaScript"
     new Date("January 1, 2020"));
 
 // 修改名字的值，并修改cookie 失效的时间
-SubCookieUtil.set("data", "name", "Michael", new Date("February 1, 2020")); 
+SubCookieUtil.set("data", "name", "Michael", new Date("February 1, 2020"));
 ```
 
 - 删除子 cookie
@@ -1098,7 +1098,7 @@ let SubCookieUtil = {
     unsetAll: function (name, path, domain, secure) {
         this.setAll(name, null, new Date(0), path, domain, secure);
     }
-} 
+}
 ```
 
 ### Web存储机制
@@ -1129,7 +1129,7 @@ sessionStorage 对象存储特定于某个会话的数据，也就是该数据�
 ```
 // IE8见书P639
 sessionStorage.setItem('name','yyb')
-sessionStorage.book = 'JavaScript' 
+sessionStorage.book = 'JavaScript'
 ```
 sessionStorage 中有数据时，可以使用 getItem() 或者通过直接访问属性名来获取数据。两种方法的例子如下。
 
@@ -1158,7 +1158,7 @@ for (var key in sessionStorage){
 ```
 //使用 delete 删除一个值——在 WebKit 中无效
 delete sessionStorage.name;
- 
+
  // 使用方法删除一个值
  sessionStorage.removeItem('book');
 ```
@@ -1182,7 +1182,7 @@ var name = globalStorage["wrox.com"].name;
 //存储数据，任何人都可以访问——不要这样做！
 globalStorage[""].name = "Nicholas";
 //存储数据，可以让任何以.net 结尾的域名访问——不要这样做！
-globalStorage["net"].name = "Nicholas"; 
+globalStorage["net"].name = "Nicholas";
 ```
 
 对 globalStorage 空间的访问，是依据发起请求的页面的域名、协议和端口来限制的。例如，如果使用 HTTPS 协议在 wrox.com 中存储了数据，那么通过 HTTP 访问的 wrox.com 的页面就不能访问该数据。同样，通过 80 端口访问的页面则无法与同一个域同样协议但通过 8080 端口访问的页面共享数据。这类似于 Ajax 请求的同源策略。
@@ -1193,14 +1193,14 @@ globalStorage 的每个属性都是 Storage 的实例。因此，可以像如下
 globalStorage["www.wrox.com"].name = "Nicholas";
 globalStorage["www.wrox.com"].book = "Professional JavaScript";
 globalStorage["www.wrox.com"].removeItem("name");
-var book = globalStorage["www.wrox.com"].getItem("book"); 
+var book = globalStorage["www.wrox.com"].getItem("book");
 ```
 
 如果你事先不能确定域名，那么使用 location.host 作为属性名比较安全
 
 ```
 globalStorage[location.host].name = "Nicholas";
-var book = globalStorage[location.host].getItem("book"); 
+var book = globalStorage[location.host].getItem("book");
 ```
 如果不使用 removeItem() 或者 delete 删除，或者用户未清除浏览器缓存，存储在 globalStorage 属性中的数据会一直保留在磁盘上。这让 globalStorage 非常适合在客户端存储文档或者长期保存用户偏好设置
 
@@ -1221,7 +1221,7 @@ localStorage.book = 'JavaScript';
 let name = localStorage.getItem('name')
 
 // 使用属性来读取数据
-let book = localStorage.book; 
+let book = localStorage.book;
 ```
 数据保存到通过JavaScript 删除或者是用户清除浏览器缓存。
 
@@ -1276,7 +1276,7 @@ let book = localStorage.book;
 
 - 解耦HTML/JavaScript
 - 解耦 CSS/JavaScript
-- 解耦应用逻辑／事件处理程序 
+- 解耦应用逻辑／事件处理程序
 
 ## 编程实践
 
@@ -1287,6 +1287,7 @@ let book = localStorage.book;
     - 如果值应为一个引用类型，使用 instanceof 操作符检查其构造函数；
     - 如果值应为一个基本类型，使用 typeof 检查其类型
     - 如果是希望对象包含某个特定的方法名，则使用 typeof 操作符确保指定名字的方法存在于对象上。
+<<<<<<< HEAD
 - 使用常量
 
 ## 性能
@@ -1326,3 +1327,5 @@ let book = localStorage.book;
 
 
 
+=======
+>>>>>>> 4c47e0a3996591d171f227a6fb4043d04dd99421
