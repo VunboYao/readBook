@@ -1287,14 +1287,36 @@ let book = localStorage.book;
     - 如果值应为一个引用类型，使用 instanceof 操作符检查其构造函数；
     - 如果值应为一个基本类型，使用 typeof 检查其类型
     - 如果是希望对象包含某个特定的方法名，则使用 typeof 操作符确保指定名字的方法存在于对象上。
+- 使用常量
 
+## 性能
 
+- 避免全局查找（document 可存为本地 doc )
+- 避免 with 语句
+- 避免不必要的属性查找
+- 优化循环
+- 原生方法较快
+- Switch 语句较快
+- 单个 var/let 语句声明
+- 使用数组和对象字面量
+- 使用fragment来更伤心 DOM 结构
+- 使用 innerHTML
+- 使用事件代理
+- 注意 HTMLCollection （for循环中的长度移入初始化部分计算）
 
+# 第 25 章 新兴的API
 
-
-
-
-
+- requestAnimationFrame()，下次重绘
+- cancelAnimationFrame(), 取消之前的重绘
+- Page Visibility API
+    - document.hidden：表示页面是否隐藏的布尔值
+    - document.visibilityState:只读属性，返回 document 的可见性
+        - visible: 页面可见，未最小化
+        - hidden: 页面不可见，最小化状态。
+        - prerender: 页面此时正在渲染中
+        - unloaded: 页面从内存中卸载、清楚。
+    - visibilitychange 事件：当文档从可见变为不可见或从不可见变为可见时，触发该事件。
+- Geolocation API (地理定位)
 
 
 
