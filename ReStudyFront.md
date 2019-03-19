@@ -34,5 +34,3 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
 
 
 # JavaScript
-
-1123

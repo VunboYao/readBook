@@ -1287,7 +1287,6 @@ let book = localStorage.book;
     - 如果值应为一个引用类型，使用 instanceof 操作符检查其构造函数；
     - 如果值应为一个基本类型，使用 typeof 检查其类型
     - 如果是希望对象包含某个特定的方法名，则使用 typeof 操作符确保指定名字的方法存在于对象上。
-<<<<<<< HEAD
 - 使用常量
 
 ## 性能
@@ -1318,14 +1317,3 @@ let book = localStorage.book;
         - unloaded: 页面从内存中卸载、清楚。
     - visibilitychange 事件：当文档从可见变为不可见或从不可见变为可见时，触发该事件。
 - Geolocation API (地理定位)
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> 4c47e0a3996591d171f227a6fb4043d04dd99421
