@@ -2224,24 +2224,24 @@ console.log(foo.b); // undefined
 console.log(F.a); // value a
 console.log(F.b); // undefined*/
 /*
-* 1,
-* undefined,
-* 2,
-* 3
-*
-* 'a'
-* not a function
-* 'a' ????
-* 'b'
-*
-* Person.prototype
-* Function.prototype ?
-*
-* 'value a'
-* 'undefined'
-* 'value a'
-* 'value b'
-* */
+ * 1,
+ * undefined,
+ * 2,
+ * 3
+ *
+ * 'a'
+ * not a function
+ * 'a' ????
+ * 'b'
+ *
+ * Person.prototype
+ * Function.prototype ?
+ *
+ * 'value a'
+ * 'undefined'
+ * 'value a'
+ * 'value b'
+ * */
 /*console.log(Object.__proto__ === Function.prototype);
 function Person() {}
 
@@ -3163,6 +3163,156 @@ function add() {
 }
 
 add();*/
+/* function obj2str(data) {
+  data.t = new Date().getTime();
+  let res = [];
+  for (let key in data) {
+    res.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+  }
+  return res.join('&');
+}
+
+function ajax(option) {
+  let str = obj2str(option.data);
+  let xhr, timer;
+  if (window.XMLHttpRequest) {
+    xhr = new XMLHttpRequest();
+  } else {
+    xhr = new ActiveXObject('Microsoft.XMLHTTP');
+  }
+  if (option.type.toLocaleUpperCase() === 'GET') {
+    xhr.open(option.type, option.url + '?' + str, true);
+    xhr.send()
+  } else {
+    xhr.open(option.type, option.url, true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send(str);
+  }
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      clearInterval(timer);
+      if (xhr.status >= 200 && xhr.status < 300 || xhr === 304) {
+        option.success(xhr)
+      } else {
+        option.error(xhr);
+      }
+    }
+  }
+  if (xhr.timeout) {
+    timer = setInterval(() => {
+      xhr.abort();
+      clearInterval(timer);
+    }, xhr.timeout);
+  }
+} */
+/* navigator.geolocation.getCurrentPosition(function (position) {
+ console.log(position.coords.latitude, position.coords.longitude);
+}, function (error) {
+  console.log('Error code: ' + error.code);
+  console.log('Error message: ' + error.message);
+},{
+  enableHighAccuracy: false,
+  timeout: 5000,
+  maximumAge: 25000
+}); */
+/*let watchId = navigator.geolocation.watchPosition(function (position) {
+    console.log(position.coords.latitude, position.coords.longitude);
+}, function (error) {
+    console.log('Error code: ' + error.code);
+    console.log('Error message ' + error.message);
+})
+navigator.geolocation.clearWatch(watchId);*/
+/*fileList.addEventListener('change', function (e) {
+    console.log(fileList.files);
+    let files = e.target.files;
+    let i = 0,
+        len = files.length;
+    while (i < len) {
+        console.log(files[i].name + '(' + files[i].type + ', ' + files[i].size + ' bytes) ');
+        i++;
+    }
+})*/
+/*let fileList = document.getElementById('file');
+fileList.addEventListener('change', function (e) {
+    let info = '',
+        output = document.getElementById('output'),
+        progress = document.getElementById('progress'),
+        files = e.target.files,
+        type = 'default',
+        reader = new FileReader();
+    if (/image/.test(files[0].type)) {
+        reader.readAsDataURL(files[0]);
+        type = 'image';
+    } else {
+        reader.readAsText(files[0]);
+        type = 'text';
+    }
+    reader.onerror = function () {
+        output.innerHTML = 'Could not read file, error code is ' + reader.error.code;
+    }
+    reader.onprogress = function (ev) {
+        if (ev.lengthComputable) {
+            progress.innerHTML = ev.loaded + '/' + ev.total;
+        }
+    }
+    reader.onload = function () {
+        console.log(reader);
+        let html = ''
+        switch (type) {
+            case 'image':
+                html = `<img src="${reader.result}">`;
+                break;
+            case 'text':
+                html = reader.result;
+                break;
+        }
+        output.innerHTML = html;
+    }
+})*/
+/*let fileList = document.getElementById("file");
+fileList.addEventListener('change', function (ev) {
+  let file = ev.target.files[0];
+  let url = window.URL.createObjectURL(file);
+  document.getElementById('img').src = url;
+})
+
+window.URL.revokeObjectURL()*/
+/*let droptaret = document.getElementById('drop')
+function handleEvent(ev) {
+  let info = '',
+      output = document.getElementById('output'),
+      files, i, len, data, xhr;
+  ev.preventDefault();
+  if (ev.type === 'drop') {
+    data = new FormData(); // 仿表单方式提交数据
+    files = ev.dataTransfer.files;
+    i = 0;
+    len = files.length;
+
+    while(i < len) {
+      data.append('file' + i, files[i]); // 添加数据。每个文件对应的键分别是 file0 、 file1 、 file2 这样的格式。
+      i++;
+    }
+    xhr = new XMLHttpRequest();
+    xhr.open('post', 'demo.php', true)
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        console.log(xhr.responseText);
+      }
+    }
+    xhr.send(data);
+  }
+}
+droptaret.addEventListener('dragenter', handleEvent)
+droptaret.addEventListener('dragover', handleEvent)
+droptaret.addEventListener('drop', handleEvent)*/
+
+
+
+
+
+
+
 
 
 

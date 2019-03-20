@@ -268,7 +268,7 @@ function addURLParam(url, name, value) {
 
 ### 实现jQuery中的AJAX
 
-```
+```javascript
 function obj2str(data) {
     // 定义时间戳
     data.t = new Date().getTime();
@@ -487,7 +487,7 @@ CORS 通过一种叫做 Preflighted Requests 的透明服务器验证机制支�
 能发送 GET 请求，二是无法访问服务器的响应文本。因此，图像 Ping 只能用于浏览器与服务器间的单
 向通信。
 
-```javascript
+```
 <input id="btn" type="button" value="跨域请求">
 <div id="result"></div>
 <script>
@@ -1306,6 +1306,7 @@ let book = localStorage.book;
 
 # 第 25 章 新兴的API
 
+## 动画
 - requestAnimationFrame()，下次重绘
 - cancelAnimationFrame(), 取消之前的重绘
 - Page Visibility API
@@ -1316,4 +1317,229 @@ let book = localStorage.book;
         - prerender: 页面此时正在渲染中
         - unloaded: 页面从内存中卸载、清楚。
     - visibilitychange 事件：当文档从可见变为不可见或从不可见变为可见时，触发该事件。
-- Geolocation API (地理定位)
+
+## Geolocation API (地理定位)
+
+Geolocation API 在浏览器中的实现是 navigator.geolocation 对象，这个对象包含 3 个方法。
+
+**getCurrentPosition()**,调用这个方法就会触发请求用户共享地理定位信息的对话框。该方法接收3个参数：成功回调函数、可选的失败回调函数和可选的选项对象
+- 成功回调函数会接收到一个 Position 对象参数，该对象有两个属性： coords 和 timestamp.
+- coords 对象中将包含下列与位置相关的信息
+    - latitude ：以十进制度数表示的纬度。
+    - longitude ：以十进制度数表示的经度。
+    - accuracy ：经、纬度坐标的精度，以米为单位。
+-  getCurrentPosition() 的第二个参数，即失败回调函数，在被调用的时候也会接收到一个参数。这个参数是一个对象，包含两个属性： message 和 code 。其中， message属性中保存着给人看的文本消息，解释为什么会出错，而 code 属性中保存着一个数值，表示错误的类型：用户拒绝共享（1）、位置无效（2）或者超时（3）。
+- getCurrentPosition() 的第三个参数是一个选项对象，用于设定信息的类型。可以设置的选项有三个： enableHighAccuracy 是一个布尔值，表示必须尽可能使用最准确的位置信息； timeout 是以毫秒数表示的等待位置信息的最长时间； maximumAge 表示上一次取得的坐标信息的有效时间，以毫秒表示，如果时间到则重新取得新坐标信息。
+
+> 这三个选项都是可选的，可以单独设置，也可以与其他选项一起设置。除非确实需要非常精确的信息，否则建议保持 enableHighAccuracy 的 false 值（默认值）。将这个选项设置为 true 需要更长的时候，而且在移动设备上还会导致消耗更多电量。类似地，如果不需要频繁更新用户的位置信息，那么可以将 maximumAge 设置为 Infinity ，从而始终都使用上一次的坐标信息
+
+- 如果你希望跟踪用户的位置，那么可以使用另一个方法 watchPosition() 。调用 watchPosition() 会返回一个数值标识符，用于跟踪监控的操作。基于这个返回值可以取消监控操作，只要将其传递给 clearWatch() 方法即可
+
+## File API
+
+HTML5 在 DOM 中为文件输入元素添加了一个 files 集合。在通过文件输入字段选择了一或多个文件时， files 集合中将包含一组 File 对象，每个 File 对象对应着一个文件。每个 File 对象都有下列只读属性。
+- name: 本地文件系统中的文件名
+- size: 文件的字节大小。
+- type: 字符串，文件的 MIME 类型
+- lastModifiedDate: 字符串，文件上一次被修改的时间
+
+### FileReader 类型
+
+FileReader 类型实现的是一种异步文件读取机制。可以把 FileReader 想象成 XMLHttpRequest ，区别只是它读取的是文件系统，而不是远程服务器。为了读取文件中的数据， FileReader 提供了如下几个方法
+- readAsText(file,encoding) ：以纯文本形式读取文件，将读取到的文本保存在 result 属性中。第二个参数用于指定编码类型，是可选的
+- readAsDataURL(file) ：读取文件并将文件以数据 URI 的形式保存在 result 属性中
+- readAsBinaryString(file) ：读取文件并将一个字符串保存在 result 属性中，字符串中的每个字符表示一字节。
+- readAsArrayBuffer(file) ：读取文件并将一个包含文件内容的 ArrayBuffer 保存在result 属性中
+
+```javascript
+let fileList = document.getElementById('file');
+fileList.addEventListener('change', function (e) {
+    let info = '',
+        output = document.getElementById('output'),
+        progress = document.getElementById('progress'),
+        files = e.target.files,
+        type = 'default',
+        reader = new FileReader();
+    if (/image/.test(files[0].type)) {
+        reader.readAsDataURL(files[0]);
+        type = 'image';
+    } else {
+        reader.readAsText(files[0]);
+        type = 'text';
+    }
+    reader.onerror = function () {
+        output.innerHTML = 'Could not read file, error code is ' + reader.error.code;
+    }
+    reader.onprogress = function (ev) {
+        if (ev.lengthComputable) {
+            progress.innerHTML = ev.loaded + '/' + ev.total;
+        }
+    }
+    reader.onload = function () {
+        console.log(reader);
+        let html = ''
+        switch (type) {
+            case 'image':
+                html = `<img src="${reader.result}">`;
+                break;
+            case 'text':
+                html = reader.result;
+                break;
+        }
+        output.innerHTML = html;
+    }
+})
+```
+
+### 读取部分内容
+
+有时候，我们只想读取文件的一部分而不是全部内容。为此， File 对象还支持一个 slice() 方法。
+- slice() 方法接收两个参数：起始字节及要读取的字节数。这个方法返回一个 Blob 的实例， Blob 是 File 类型的父类型
+ - Blob 类型有一个 size 属性和一个 type 属性，而且它也支持 slice() 方法，以便进一步切割数
+   据。通过 FileReader 也可以从 Blob 中读取数据。
+
+```
+let fileList = document.getElementById('file');
+fileList.addEventListener('change', function (ev) {
+    let info = '',
+        output = document.getElementById('output'),
+        progress = document.getElementById('progress'),
+        files = ev.target.files,
+        reader = new FileReader(),
+        blob = files[0].slice(0, 30); // 读取部分内容
+    if (blob) {
+        reader.readAsText(blob);
+        reader.onerror = function () {
+            output.innerHTML = "Could not read file, error code is " +
+                reader.error.code;
+        };
+        reader.onload = function () {
+            output.innerHTML = reader.result;
+        };
+    } else {
+        alert("Your browser doesn' t support slice().");
+    }
+}) 
+```
+
+### 对象URL
+
+使用对象 URL 的好处是可以不必把文件内容读取到 JavaScript 中而直接使用文件内容。为此，只要在需要文件内容的地方提供对象 URL 即可。要创建对象 URL，可以使用 window.URL.createObjectURL() 方法，并传入File 或 Blob 对象。
+- window.URL.createObjectURL(url) 
+- 手工释放内存，window.URL.revokeObjectURL(url)
+
+```
+let fileList = document.getElementById("file");
+fileList.addEventListener('change', function (ev) {
+  let file = ev.target.files[0];
+  let url = window.URL.createObjectURL(file);
+  document.getElementById('img').src = url;
+}) 
+```
+
+## 读取拖放的文件
+
+ HTML5拖放 API和文件 API，能够创造出令人瞩目的用户界面：在页面上创建了自定义的放置目标之后，你可以从桌面上把文件拖放到该目标。与拖放一张图片或者一个链接类似，从桌面上把文件拖放到浏览器中也会触发 drop 事件。而且可以在 event.dataTransfer. files 中读取到被放置的文件，当然此时它是一个 File 对象，与通过文件输入字段取得的 File 对象一样。
+
+```javascript
+let droptaret = document.getElementById('drop')
+function handleEvent(ev) {
+  let info = '',
+      output = document.getElementById('output'),
+      files, i, len;
+  ev.preventDefault(); // 取消 dragenter 、 dragover 和 drop 的默认行为
+  if (ev.type === 'drop') {
+    files = ev.dataTransfer.files; // 读取文件信息
+    i = 0;
+    len = files.length;
+
+    while(i < len) {
+      info += files[i].name + ': ' +files[i].type + '-' + files[i].size;
+      i++;
+    }
+    output.innerHTML = info;
+  }
+}
+droptaret.addEventListener('dragenter', handleEvent)
+droptaret.addEventListener('dragover', handleEvent)
+droptaret.addEventListener('drop', handleEvent)
+```
+
+## 通过 XHR 上传文件
+
+通过 File API 能够访问到文件内容，利用这一点就可以通过 XHR 直接把文件上传到服务器。当然啦，把文件内容放到 send() 方法中，再通过 POST 请求，的确很容易就能实现上传。更好的做法是以表单提交的方式来上传文件。
+
+```javascript
+let droptaret = document.getElementById('drop')
+function handleEvent(ev) {
+  let info = '',
+      output = document.getElementById('output'),
+      files, i, len, data, xhr;
+  ev.preventDefault();
+  if (ev.type === 'drop') {
+    data = new FormData(); // 仿表单方式提交数据
+    files = ev.dataTransfer.files;
+    i = 0;
+    len = files.length;
+
+    while(i < len) {
+      data.append('file' + i, files[i]); // 添加数据。每个文件对应的键分别是 file0 、 file1 、 file2 这样的格式。
+      i++;
+    }
+    xhr = new XMLHttpRequest();
+    xhr.open('post', 'demo.php', true)
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        console.log(xhr.responseText);
+      }
+    }
+    xhr.send(data);
+  }
+}
+droptaret.addEventListener('dragenter', handleEvent)
+droptaret.addEventListener('dragover', handleEvent)
+droptaret.addEventListener('drop', handleEvent)
+```
+
+## Web 计时
+
+Web 计时机制的核心是 window.performance 对象
+
+- Performance.Navigation 对象提供了在指定的时间段里发生的操作相关信息，包括页面是加载还是刷新、发生了多少次重定向等等。
+- Performance.Timing 对象包含延迟相关的性能信息
+- Performance.timeOrigin 返回性能测量开始时的时间的高精度时间戳
+
+**performance.navigation 属性也是一个对象，包含着与页面导航有关的多个属性**
+- redirectCount ：页面加载前的重定向次数
+- type ：数值常量，表示刚刚发生的导航类型。
+    - performance.navigation.TYPE_NAVIGATE (0) ：页面第一次加载。
+    - performance.navigation.TYPE_RELOAD (1) ：页面重载过。
+    - performance.navigation.TYPE_BACK_FORWARD (2) ：页面是通过“后退”或“前进”按钮打开的。    
+**performance.timing 属性也是一个对象，但这个对象的属性都是时间戳**
+- navigationStart ：开始导航到当前页面的时间。
+- unloadEventStart ：前一个页面的 unload 事件开始的时间。但只有在前一个页面与当前页面来自同一个域时这个属性才会有值；否则，值为 0。
+- unloadEventEnd ：前一个页面的 unload 事件结束的时间。但只有在前一个页面与当前页面来自同一个域时这个属性才会有值；否则，值为 0。
+- redirectStart ：到当前页面的重定向开始的时间。但只有在重定向的页面来自同一个域时这个属性才会有值；否则，值为 0。
+- redirectEnd ：到当前页面的重定向结束的时间。但只有在重定向的页面来自同一个域时这个属性才会有值；否则，值为 0。
+- fetchStart ：开始通过 HTTP GET 取得页面的时间。
+- domainLookupStart ：开始查询当前页面 DNS 的时间。
+- domainLookupEnd ：查询当前页面 DNS 结束的时间。
+- connectStart ：浏览器尝试连接服务器的时间。
+- connectEnd ：浏览器成功连接到服务器的时间。
+- secureConnectionStart ：浏览器尝试以 SSL 方式连接服务器的时间。不使用 SSL 方式连接时，这个属性的值为 0。
+- requestStart ：浏览器开始请求页面的时间。
+- responseStart ：浏览器接收到页面第一字节的时间。
+- responseEnd ：浏览器接收到页面所有内容的时间。
+- domLoading ： document.readyState 变为 "loading" 的时间。
+- domInteractive ： document.readyState 变为 "interactive" 的时间。
+- domContentLoadedEventStart ：发生 DOMContentLoaded 事件的时间。
+- domContentLoadedEventEnd ： DOMContentLoaded 事件已经发生且执行完所有事件处理程序的时间。
+- domComplete ： document.readyState 变为 "complete" 的时间。
+- loadEventStart ：发生 load 事件的时间。
+- loadEventEnd ： load 事件已经发生且执行完所有事件处理程序的时间。
+
+## Web Workers
+
+
+
+
