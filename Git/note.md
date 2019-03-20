@@ -2,7 +2,7 @@
 - pwd 当前路径
 - clear 清理界面
 - ls -al 显示当前目录下的所有文件及文件夹包括隐藏的.和..等的详细信息
-- cp file1 file2 复制文件1到文件2中 #cp ../file1 . 
+- cp file1 file2 复制文件1到文件2中 #cp ../file1 .
 - cp -r 复制文件目录下所有文件 # git -r ../images/
 - vi 查看文件
 # 配置 user 信息
@@ -33,9 +33,17 @@
 3. global 和 local 参数同时存在时，local 优先级更高
 
 # 常用命令
-- git commit -a 
+- git commit -a
     - Tell the command to automatically stage files that have been modified and deleted, but new files you have not told Git about are not affected
-- git add 
+- git add
     - git add . 添加所有删除、添加、修改的文件
-    - git add -u 添加所有修改、删除的文件（跟踪操作过的文件）   
+    - git add -u 添加所有修改、删除的文件（跟踪操作过的文件）
     - git add -A(--all) 等价于 git add .
+- git mv 源文件名 新文件名 （git 文件重命名）
+- git log 查看版本演变历史
+  - git log --oneline 简洁版历史（单行历史）
+  - git log -n3 查看最近的3次历史（可以与--oneline结合使用）
+  - git log --all 查看全部分支的实力
+  - git log --all --graph 查看所有分支图像化的 log 历史
+  - git log --oneline --all -n4 --graph 查看所有分支最近4条单行的图形化历史
+- git help --web log 跳转到 git log 的帮助文档网页
