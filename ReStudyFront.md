@@ -32,5 +32,10 @@ cover|被替换的内容在保持其宽高比的同时填充元素的整个内�
 none|被替换的内容将保持其原有的尺寸。
 scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它们两个之间谁得到的对象尺寸会更小一些。
 
+## 核心内容居中
+- background-position: center 0;
+
+## 浮动元素字围现象
+- 浮动元素不会盖住未浮动元素中的文字。
 
 # JavaScript

@@ -6,24 +6,32 @@
   <title>Title</title>
   <style>
     div {
-      margin: 200px auto;
-      width: 300px;
-      height: 300px;
-      border: 1px solid #000000;
-      overflow: hidden;
-      font-size: 50px;
+      position: relative;
+      width: 200px;
+      height: 100px;
+      margin: 100px auto;
+      background: #ccc;
     }
-
-    img {
+    span {
+      position: absolute;
+      top: 0;
+      left: 0;
       display: block;
+      width: 0;
+      height: 100%;
+      transition: all 0.3s ease;
+    }
+    div:hover span {
       width: 100%;
-      object-fit: cover;
+      background: red;
     }
   </style>
 </head>
 
 <body>
-  <img src="../img/yao.png" alt="">
-</body>
 
+</body>
+<div>
+  <span></span>
+</div>
 </html>
