@@ -5,33 +5,62 @@
   <meta charset="UTF-8">
   <title>Title</title>
   <style>
-    div {
-      position: relative;
-      width: 200px;
-      height: 100px;
-      margin: 100px auto;
-      background: #ccc;
+    * {
+      margin: 0;
+      padding: 0;
     }
-    span {
+    div {
+      margin: 100px auto;
+      width: 400px;
+      height: 230px;
+      overflow: hidden;
+    }
+    ul {
+      position: relative;
+      width: 2000px;
+      height: 100%;
+    }
+    li {
       position: absolute;
       top: 0;
       left: 0;
-      display: block;
-      width: 0;
+      width: 400px;
       height: 100%;
-      transition: all 0.3s ease;
+      list-style: none;
     }
-    div:hover span {
+    li:nth-child(2) {
+      left: 4%;
+    }
+    li:nth-child(3) {
+      left: 8%;
+    }
+    li:nth-child(4) {
+      left: 12%;
+    }
+    li:nth-child(5) {
+      left: 16%;
+    }
+    li:hover {
+      left:
+    }
+    img {
       width: 100%;
-      background: red;
+      height: 100%;
+      display: block;
     }
   </style>
 </head>
 
 <body>
-
-</body>
 <div>
-  <span></span>
+  <ul>
+    <li><img src="../img/bg.jpg" alt=""></li>
+    <li><img src="../img/e.png" alt=""></li>
+    <li><img src="../img/f.jpg" alt=""></li>
+    <li><img src="../img/g.jpg" alt=""></li>
+    <li><img src="../img/i.jpg" alt=""></li>
+  </ul>
 </div>
+</body>
+
 </html>

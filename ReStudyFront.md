@@ -38,4 +38,179 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
 ## 浮动元素字围现象
 - 浮动元素不会盖住未浮动元素中的文字。
 
+## CSS查漏补缺
+1. resize: none|both|horizontal|vertical
+    - 制定一个div元素，允许用户调整大小。
+    - none：用户无法调整元素的尺寸
+    - both: 用户可以调整元素的高度和宽度
+    - horizontal： 用户可以调整元素的宽度
+    - vertical: 用户可以调整元素的高度		
+
+2. visibility: 规定元素是否可见
+    - 提示：即使不可见的元素也会占据页面上的空间。请使用 "display" 属性来创建不占据页面空间的不可见元素。
+    - visible: 默认值。元素是可见的
+    - hidden：元素是不可见的
+    - collapse: 当在表格中使用时，此值可以删除一行或一列，但是不会影响表格的布局。被行或列占据的空间会留给其他内容使用。如果此值被用在其他的元素上，会呈现为'hidden'
+    - inherit: 规定应该从父元素继承visibility属性的值
+    
+3. width新增属性
+    - max-content：最大内容宽度,一往无前不换行
+    - min-content: 以内部元素中，宽度最大的值为当前宽度。实现漏斗布局
+    - fit-content: 实现元素适应内容宽度。保持原本的block水平状态。
+    
+4. calc() 动态计算长度的值    
+    - 需要注意的是，运算符前后都需要保留一个空格，例如：width: calc(100% - 10px)
+    - 任何长度值都可以使用calc()函数进行计算
+    - calc()函数支持 "+", "-", "*", "/" 运算       
+    - calc()函数使用标准的数学运算优先级规则
+    - 适用场景：满幅背景，定宽内容居中
+        - padding: calc(50% - 200px); ****padding的使用****
+    
+5. 垂直居中最佳方案
+
+    ```
+    A. 父级定义position: relative， 子元素垂直居中
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    	
+    B. 更优方案：flexbox 布局
+        父级：{ display: flex; }
+        子级：{ margin: auto; }
+    
+    C. 内部容器垂直居中
+        div { 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        } 
+    ```        
+
+6. 紧贴脚步的页脚
+
+    ```
+        A. 灵活的felx布局
+            body {
+                display: flex;
+                flex-flow: column;
+                min-height: 100vh;
+            }
+            中间元素 { flex: 1; }  占满空间
+            底部元素永远在底部
+        
+        B. padding-bottom
+            HTML:
+                <div class='box'>
+                    <div class='main'></div>
+                    <div class='footer'></div>
+                </div>
+            
+            CSS:
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    height: 100%;
+                }
+                .box { 
+                    position: relative;
+                    min-height: 100%; 
+                }
+                .main {
+                    padding-bottom: 100px; // 此处值 >= footer的height   
+                }
+                .footer {
+                    position: absolute;
+                    bottom: 0;
+                    height: 100px;
+                }
+            
+        C. footer在外层，非定位
+            HTML：
+                <div id="container">
+                    <div id="page">Main Content</div>
+                </div>
+                <div id="footer">footer</div>
+            CSS:
+                html, body {
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                }
+                #container {
+                    min-height: 100%;
+                    height: auto !important;
+                }
+                #page {
+                    padding-bottom: 60px;
+                }
+                #footer {
+                    margin-top: -60px;
+                    height: 60px;
+                } 
+    ```    
+7. padding扩展注意点
+    - CSS padding 属性的百分比数值是相对于其父元素的 width 计算的，如果改变了父元素的 width，则它们也会改变
+    
+8. 隐藏滚动条
+
+    ```
+     CSS3 div::-webkit-scrollbar 
+            display: none   
+    ```
+    
+9. box-shadow 详解
+    - box-shadow: x, y, 模糊半径, 扩张半径, 颜色, inset(内置)
+    - 实际阴影约为模糊半径2倍
+    - 扩张半径为负值可抵消模糊===无阴影
+    - 扩张半径为模糊半径一半时,可以实现微型半径-----box-shadow: 3px 3px 6px -3px black;
+    - 单侧实现阴影,x,y中某个值为0,-扩展半径=模糊半径.
+    
+10. 清除浮动
+    
+    ```
+        .clearfix::after {
+            content: '';
+            height: 0;
+            display: block;
+            visibility: hidden;
+            clear: both;
+        }
+        .clearfix {
+            *zoom: 1;
+        }
+        
+        overflow: hidden; 清除浮动。margin-top顶部解决办法
+        		
+        // 更简洁的方式
+        .clearfix:before,
+        .clearfix:after {
+            content:"";
+            display:table;
+        }
+       .clearfix:after {
+            clear:both;
+            overflow:hidden;
+        }
+        
+        .clearfix {
+            zoom:1; /* IE < 8 */
+        }
+        // 常用省略
+        .clearfix:after {
+            content:"";
+            display:table;
+            clear: both;
+        }
+        
+        // 最新技术
+        element {
+            display: flow-root;
+        } 
+    ```
+
+## 定位注意点
+- 如果一个绝对定位的元素是以body作为参考点，那么其实是以网页首屏的宽度和高度作为参考点，而不是以整个网页的宽度和高度作为参考点。
+- 绝对定位的元素会忽略祖先元素的padding
+
 # JavaScript
