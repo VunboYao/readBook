@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div {
+            margin: 300px auto;
+            width: 600px;
+            font-size: 40px;
+            line-height: 40px;
+            border: 1px solid #ccc;
+            color: transparent;
+            background: #f00;
+            -webkit-background-clip: text;
+            background-image: url("../img/yao.png");
+            background-size: 600px 40px;
+            background-repeat: no-repeat;
+            background-position: -600px 0;
+            animation: loop 5s linear 0s infinite normal;
+        }
+        @keyframes loop {
+            from {
+                background-position: -600px 0;
+            }
+            to {
+                background-position: 0 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<div>某一天中终于可等到一生中最爱</div>
+</body>
+</html>
