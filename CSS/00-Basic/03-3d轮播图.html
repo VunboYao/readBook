@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        div {
+            margin: 100px auto;
+            width: 600px;
+            height: 338px;
+            box-shadow: 0 0 20px green;
+            perspective: 1000px;
+        }
+        ul {
+            position: relative;
+            list-style: none;
+            height: 100%;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg);
+            animation: sport 10s linear 0s infinite normal;
+        }
+        li {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        li:nth-child(1) {
+            transform: rotateX(90deg) translateZ(169px);
+        }
+        li:nth-child(2) {
+            transform: rotateX(180deg) translateZ(169px);
+        }
+        li:nth-child(3) {
+            transform: rotateX(270deg) translateZ(169px);
+        }
+        li:nth-child(4) {
+            transform: rotateX(360deg) translateZ(169px);
+        }
+        img {
+            width: 100%;
+        }
+        @keyframes sport {
+            from {
+                transform: rotateX(0deg);
+            }
+            to {
+                transform: rotateX(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+<div>
+    <ul>
+        <li><img src="./img/yao.png" alt=""></li>
+        <li><img src="./img/yao.png" alt=""></li>
+        <li><img src="./img/yao.png" alt=""></li>
+        <li><img src="./img/yao.png" alt=""></li>
+    </ul>
+</div>
+</body>
+</html>

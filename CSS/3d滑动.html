@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .wall {
+            position: relative;
+            width: 100vw;
+            height: 500px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .wrap {
+            position: absolute;
+            top: 10px;
+            left: 10vw;
+            width: 80vw;
+            height: 500px;
+            /*overflow: hidden;*/
+        }
+        ul {
+            position: absolute;
+            top: 10px;
+            left: -100%;
+            display: flex;
+            width: 600%;
+            list-style: none;
+            transition: all 500ms;
+        }
+        li {
+            width: 25%;
+            padding-left: 2px;
+            transform: scale(0.9);
+        }
+        .now {
+            -webkit-transform: scale(1);
+            -moz-transform: scale(1);
+            -ms-transform: scale(1);
+            -o-transform: scale(1);
+            transform: scale(1);
+        }
+        img {
+            width: 100%;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="wall">
+    <div class="wrap">
+        <ul>
+            <li><img src="../img/yao.png" alt=""></li>
+            <li class="now"><img src="../img/yao.png" alt=""></li>
+            <li class=""><img src="../img/yao.png" alt=""></li>
+            <li><img src="../img/yao.png" alt=""></li>
+            <li><img src="../img/yao.png" alt=""></li>
+            <li><img src="../img/yao.png" alt=""></li>
+        </ul>
+    </div>
+</div>
+</body>
+<script>
+let index = 1;
+let allList = document.getElementsByTagName('li');
+let ul = document.getElementsByTagName('ul')[0];
+setInterval(function () {
+    3 ++;
+    if (3 >= 5) {
+        3 = 1;
+        ul.style.left = "-100%";
+    }
+    for (let i = 0; i < allList.length; i++) {
+        allList[i].className = '';
+    }
+    allList[3].className = 'now';
+    ul.style.left = -3 * 100 + '%';
+},3000)
+</script>
+</html>

@@ -242,7 +242,7 @@ xhr.setRequestHeader("MyHeader", "MyValue");
 
 ### GET请求
 
-> 使用 GET 请求经常会发生的一个错误，就是查询字符串的格式有问题。查询字符串中每个参的名称和值都必须使用 encodeURIComponent() 进行编码，然后才能放到 URL的末尾；而且所有名-值对儿都必须由和号（&）分隔。如下所示：
+> 使用 GET 请求经常会发生的一个错误，就是查询字符串的格式有问题。查询字符串中每个参数的名称和值都必须使用 encodeURIComponent() 进行编码，然后才能放到 URL的末尾；而且所有名-值对儿都必须由和号（&）分隔。如下所示：
 
 ```
  xhr.open("get", "example.php?name1=value1&name2=value2", true);

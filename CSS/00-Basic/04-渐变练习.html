@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #000;
+        }
+        div {
+            margin: 100px auto;
+            width: 600px;
+            height: 200px;
+            line-height: 200px;
+            font-size: 150px;
+            font-weight: 600;
+            border: 1px solid #f0d260;
+            /* 文字透明 */
+            color: rgba(255,255,255,.3);
+            /* 背景渐变 */
+            background: linear-gradient(135deg,transparent 100px, red 150px, gold 200px, transparent 250px) no-repeat;
+            /* 切割背景为文字形状 */
+            -webkit-background-clip: text;
+            transition: all .8s ease-out;
+        }
+        div:hover {
+            background-position: 450px 0;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+<div>一往无前</div>
+</body>
+</html>

@@ -3306,10 +3306,53 @@ function handleEvent(ev) {
 droptaret.addEventListener('dragenter', handleEvent)
 droptaret.addEventListener('dragover', handleEvent)
 droptaret.addEventListener('drop', handleEvent)*/
+/*function obj2str(data) {
+    data.t = new Date().getTime();
+    let res = []
+    for (let key in data) {
+        res.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+    }
+    return res.join('&');
+}
+function ajax(option) {
+    let str = obj2str(option.data);
+    let xhr, timer;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest()
+    } else {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+    if (option.type.toLocaleLowerCase() === 'get') {
+        xhr.open(option.type, option.url + '?' + str, true);
+        xhr.send()
+    } else {
+        xhr.open(option.type, option.url,true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(str);
+    }
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            clearInterval(timer);
+            if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+                option.success(xhr)
+            } else {
+                option.error(xhr);
+            }
+        }
+    }
+    if (option.timeout) {
+        timer = setInterval(function () {
+            xhr.abort();
+            clearInterval(timer);
+        },option.timeout)
+    }
+}*/
 
-
-
-
+function addURLParam(url, name, value) {
+    url += (url.indexOf('?') === -1 ? "?" : "&");
+    url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
+    return url;
+}
 
 
 
