@@ -4,21 +4,39 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        div {
-            margin: 100px auto;
-            width: 800px;
-            height: 800px;
+        .box {
+            padding: 0 200px;
+            background: #000;
             overflow: hidden;
-            text-align: center;
         }
-        img {
-            margin: 0 -100%;
+        .left {
+            width: 200px;
+            height: 200px;
+            background: saddlebrown;
+            /*margin-left: -50%;*/
+            float: left;
+        }
+        .center {
+            width: 100%;
+            height: 200px;
+            background: yellow;
+            float: left;
+
+        }
+        .right {
+            float: left;
+
+            width: 200px;
+            height: 200px;
+            background: red;
         }
     </style>
 </head>
 <body>
-<div>
-    <img src="../img/yao.png" alt="">
+<div class="box">
+    <div class="center"></div>
+    <div class="left"></div>
+    <div class="right"></div>
 </div>
 </body>
 </html>

@@ -72,16 +72,16 @@ let index = 1;
 let allList = document.getElementsByTagName('li');
 let ul = document.getElementsByTagName('ul')[0];
 setInterval(function () {
-    3 ++;
-    if (3 >= 5) {
-        3 = 1;
+    index ++;
+    if (index > 5) {
+        index = 0;
         ul.style.left = "-100%";
     }
     for (let i = 0; i < allList.length; i++) {
         allList[i].className = '';
     }
-    allList[3].className = 'now';
-    ul.style.left = -3 * 100 + '%';
+    allList[index].className = 'now';
+    ul.style.left = -index * 100 + '%';
 },3000)
 </script>
 </html>
