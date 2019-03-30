@@ -3347,15 +3347,67 @@ function ajax(option) {
         },option.timeout)
     }
 }*/
-
-function addURLParam(url, name, value) {
+/*function addURLParam(url, name, value) {
     url += (url.indexOf('?') === -1 ? "?" : "&");
     url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
     return url;
+}*/
+/*function obj2str(data) {
+    data.t = new Date().getTime();
+    let res = []
+    for (let key in data) {
+        res.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+    }
+    return res.join('&');
 }
-
-
-
-
-
-
+function ajax(option) {
+    let str = obj2str(option.data);
+    let xhr, timer;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+    } else {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+    if (option.type.toLocaleLowerCase() === 'get') {
+        xhr.open(option.type, option.url + '?' + str, true);
+        xhr.send()
+    } else {
+        xhr.open(option.type, option.url, true)
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(str)
+    }
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            clearTimeout(timer);
+            if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+                option.success(xhr);
+            } else {
+                option.error(xhr)
+            }
+        }
+    }
+    if (option.timeout) {
+        timer = setTimeout(() => {
+            xhr.abort();
+            clearTimeout(timer);
+        },option.timeout)
+    }
+}*/
+/*function getQueryStringArgs() {
+    let qs = location.search.length > 0 ? location.search.slice(1) : ''
+    let args = {},
+        item = null,
+        name = null,
+        value = null;
+    let query = qs.length ? qs.split('&') : [];
+    for (let i = 0; i < query.length; i++) {
+        item = query[i].split('=');
+        name = encodeURIComponent(item[0]);
+        value = encodeURIComponent(item[1]);
+        if (name.length) {
+            args[name] = value;
+        }
+    }
+    return args;
+}
+console.log(getQueryStringArgs())*/
