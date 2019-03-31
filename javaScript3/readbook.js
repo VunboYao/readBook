@@ -3488,7 +3488,7 @@ document.getElementById('btn').addEventListener('click', function () {
         }
     })*!/
 })*/
-document.getElementById('btn').onclick = function () {
+/*document.getElementById('btn').onclick = function () {
     document.getElementById('scrol').scrollIntoView({
         behavior: "smooth",
         block: "start",
@@ -3501,4 +3501,7 @@ document.getElementById('goback').onclick = function () {
         block: "start",
         inline: "nearest"
     });
-}
+}*/
+
+let b = +'213'
+console.log(typeof(b));
