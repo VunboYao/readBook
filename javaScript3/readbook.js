@@ -3411,3 +3411,94 @@ function ajax(option) {
     return args;
 }
 console.log(getQueryStringArgs())*/
+/*function obj2str(data){
+    data.t = new Date().getTime();
+    let res = [];
+    for (let key in data) {
+        res.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+    }
+    return res.join('&');
+}
+function ajax(option) {
+    let str = obj2str(option.data)
+    let xhr, timer;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest()
+    } else {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+    if (option.type.toLocaleUpperCase() === 'GET') {
+        xhr.open(option.type, option.url + '?' + str, true);
+        xhr.send();
+    } else {
+        xhr.open(option.type, option.url, true)
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(str);
+    }
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            clearTimeout(timer)
+            if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+                option.success(xhr)
+            } else {
+                option.error(xhr)
+            }
+        }
+    }
+    if (option.timeout) {
+        timer = setTimeout(() => {
+            xhr.abort()
+            clearTimeout(timer)
+        },option.timeout)
+    }
+}
+let dd = document.getElementById('textFile');
+console.log(dd);
+document.getElementById('btn').addEventListener('click', function () {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET'," https://www.easy-mock.com/mock/5ca035ffe09f0c258d2085a0/demo/get",true);
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                let currentData = JSON.parse(xhr.response).data.text;
+                console.log(currentData);
+                let p = document.createElement('p');
+                p.innerText = currentData;
+                dd.insertAdjacentElement('beforeend',p);
+            }
+        }
+    }
+   /!* ajax({
+        type: 'GET',
+        url: ' https://www.easy-mock.com/mock/5ca035ffe09f0c258d2085a0/demo/get',
+        data: {
+            name: 'yyb',
+            age: '20'
+        },
+        success:function (data) {
+            let currentData = JSON.parse(data.response).data.text;
+            console.log(currentData);
+            let p = document.createElement('p');
+            p.innerText = currentData;
+            dd.insertAdjacentElement('beforeend',p);
+        },
+        error(data) {
+            console.log(data.responseText);
+        }
+    })*!/
+})*/
+document.getElementById('btn').onclick = function () {
+    document.getElementById('scrol').scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest"
+    });
+}
+document.getElementById('goback').onclick = function () {
+    document.getElementById('btn').scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest"
+    });
+}

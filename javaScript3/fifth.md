@@ -316,10 +316,10 @@ function ajax(option) {
 
     // 判断超时
     if (option.timeout) {
-        timer = setInterval(function () {
+        timer = setTimeout(function () {
             console.log('中断请求');
             xhr.abort(); // 中断请求
-            clearInterval(timer);
+            clearTimeout(timer);
         }, option.timeout)
     }
 }
