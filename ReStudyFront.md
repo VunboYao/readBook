@@ -237,3 +237,6 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
 ## 条件语句
 - switch/case 判断的是 ===
 
+## 数组
+- push/unshift方法返回值是数组新的长度
+- pop/shift 方法返回值是删除的数据

@@ -306,7 +306,7 @@ function ajax(option) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             clearInterval(timer); // 清除定时器
-            if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+            if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
                 option.success(xhr);
             } else {
                 option.error(xhr);
