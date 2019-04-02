@@ -3502,7 +3502,74 @@ document.getElementById('goback').onclick = function () {
         inline: "nearest"
     });
 }*/
+/*function getQueryArgs() {
+  let query = location.search.length > 0 ? location.search.substring(1) : '';
+  let res = {}, name, value, item;
+  let qs = query.length ? query.split('&') : [];
+  for (let i =0; i < qs.length; i++) {
+    item = qs[i].split('=');
+    name = encodeURIComponent(item[0]);
+    value = encodeURIComponent(item[1]);
+    if (name.length) {
+      res[name] =value;
+    }
+  }
+  return res;
+}
+console.log(getQueryArgs());*/
+/*function obj2str(data) {
+    data.t = new Date().getTime();
+    let res = []
+    for (let key in data) {
+        res.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+    }
+    return res.join('&');
+}
+function ajax(option) {
+    let str = obj2str(option.data);
+    let xhr, timer;
+    if(window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+    } else {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+    if (option.type.toLocaleUpperCase() === 'GET') {
+        xhr.open(option.type,option.url + '?' + str, true)
+        xhr.send()
+    } else {
+        xhr.open(option.type, option.url, true)
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        xhr.send(str);
+    }
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            clearTimeout(timer)
+            if ((xhr.status >= 200 && xhr.status < 300 ) || xhr.status === 304) {
+                option.success(xhr);
+            } else {
+                option.error(xhr);
+            }
+        }
+    }
+    if (option.timeout) {
+        timer = setTimeout(() => {
+            xhr.abort()
+            clearTimeout(timer)
+        },option.timeout)
+    }
+}*/
 
+let arr = [1,2];
+console.log(arr.push('3'));
+
+
+
+
+
+
+
+
+<<<<<<< HEAD
 for (let i = 1; i <= 3; i++) {
     for (let n = 1; n <= i; n++) {
         document.write('-');
@@ -3519,3 +3586,5 @@ for (let i = 1; i <= 3; i++) {
 *
 *
 * */
+=======
+>>>>>>> 1477f6ac8909cc01e9b07d8b1a5bb492b021ce27
