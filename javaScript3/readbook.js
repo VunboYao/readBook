@@ -3503,5 +3503,19 @@ document.getElementById('goback').onclick = function () {
     });
 }*/
 
-let b = +'213'
-console.log(typeof(b));
+for (let i = 1; i <= 3; i++) {
+    for (let n = 1; n <= i; n++) {
+        document.write('-');
+    }
+    for (let j = i; j <= 6 - i; j++) {
+        document.write('*');
+    }
+    document.write('<br>');
+}
+/*
+* -*****
+  --***
+  ---*
+*
+*
+* */
