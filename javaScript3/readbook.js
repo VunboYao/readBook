@@ -3562,3 +3562,22 @@ function ajax(option) {
 
 
 
+<<<<<<< HEAD
+for (let i = 1; i <= 3; i++) {
+    for (let n = 1; n <= i; n++) {
+        document.write('-');
+    }
+    for (let j = i; j <= 6 - i; j++) {
+        document.write('*');
+    }
+    document.write('<br>');
+}
+/*
+* -*****
+  --***
+  ---*
+*
+*
+* */
+=======
+>>>>>>> 1477f6ac8909cc01e9b07d8b1a5bb492b021ce27
