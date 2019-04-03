@@ -3559,13 +3559,6 @@ function ajax(option) {
     }
 }*/
 
-let arr = [1,2];
-console.log(arr.push('3'));
-
-
-
-
-
 
 
 
