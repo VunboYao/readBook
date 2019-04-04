@@ -3559,32 +3559,25 @@ function ajax(option) {
     }
 }*/
 
-let arr = [1,2];
-console.log(arr.push('3'));
-
-
-
-
-
-
-
-
-<<<<<<< HEAD
-for (let i = 1; i <= 3; i++) {
-    for (let n = 1; n <= i; n++) {
-        document.write('-');
+var cat = {
+    say() {
+        console.log('meow');
+    },
+    jump() {
+        console.log('jump');
     }
-    for (let j = i; j <= 6 - i; j++) {
-        document.write('*');
-    }
-    document.write('<br>');
 }
-/*
-* -*****
-  --***
-  ---*
-*
-*
-* */
-=======
->>>>>>> 1477f6ac8909cc01e9b07d8b1a5bb492b021ce27
+var tiger = Object.create(cat, {
+    say: {
+        writable: true,
+        configurable: true,
+        enumerable: true,
+        value: function () {
+            console.log('roar');
+        }
+    }
+})
+var anotherCat = Object.create(cat);
+anotherCat.say()
+var anotherTigger = Object.create(tiger);
+anotherTigger.say();
