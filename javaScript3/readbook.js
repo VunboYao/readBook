@@ -3559,25 +3559,49 @@ function ajax(option) {
     }
 }*/
 
-var cat = {
-    say() {
-        console.log('meow');
-    },
-    jump() {
-        console.log('jump');
+class User {
+    constructor(name, pass) {
+        this.name = name;
+        this.pass = pass;
+    }
+    showName() {
+        alert(this.name);
+    }
+    showPass() {
+        alert(this.pass);
     }
 }
-var tiger = Object.create(cat, {
-    say: {
-        writable: true,
-        configurable: true,
-        enumerable: true,
-        value: function () {
-            console.log('roar');
-        }
+// let a = new User('yyb','123123');
+// a.showName();
+// a.showPass()
+
+class VIPUser extends User{
+    constructor(name,pass,level) {
+        super(name,pass);
+        this.level = level;
     }
-})
-var anotherCat = Object.create(cat);
-anotherCat.say()
-var anotherTigger = Object.create(tiger);
-anotherTigger.say();
+
+    showLevel() {
+        alert(this.level)
+    }
+}
+
+let a = new VIPUser('yyb','123123',5);
+a.showName();
+a.showPass();
+a.showLevel();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
