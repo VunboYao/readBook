@@ -3559,25 +3559,49 @@ function ajax(option) {
     }
 }*/
 
-
-
-
-<<<<<<< HEAD
-for (let i = 1; i <= 3; i++) {
-    for (let n = 1; n <= i; n++) {
-        document.write('-');
+class User {
+    constructor(name, pass) {
+        this.name = name;
+        this.pass = pass;
     }
-    for (let j = i; j <= 6 - i; j++) {
-        document.write('*');
+    showName() {
+        alert(this.name);
     }
-    document.write('<br>');
+    showPass() {
+        alert(this.pass);
+    }
 }
-/*
-* -*****
-  --***
-  ---*
-*
-*
-* */
-=======
->>>>>>> 1477f6ac8909cc01e9b07d8b1a5bb492b021ce27
+// let a = new User('yyb','123123');
+// a.showName();
+// a.showPass()
+
+class VIPUser extends User{
+    constructor(name,pass,level) {
+        super(name,pass);
+        this.level = level;
+    }
+
+    showLevel() {
+        alert(this.level)
+    }
+}
+
+let a = new VIPUser('yyb','123123',5);
+a.showName();
+a.showPass();
+a.showLevel();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
