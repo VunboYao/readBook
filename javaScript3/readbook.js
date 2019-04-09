@@ -3748,29 +3748,3 @@ Student.prototype.run = function() {
 let a = new Student('yyb',12)
 let b = new Person('nb',23)*/
 
-class Person{
-    constructor(name,age) {
-        this.name = name;
-        this.age = age;
-    }
-    // say() {
-    //     console.log(this.name, this.age);
-    // }
-}
-Person.prototype.say = function () {
-    console.log(this.name, this.age);
-}
-
-class Student extends Person{
-    constructor(name,age,score) {
-        super(name,age);
-        this.score = score;
-    }
-    run() {
-        console.log('run');
-    }
-}
-
-let a = new Person('yyb',29)
-let b = new Student('nn',23,99)
-b.say()
