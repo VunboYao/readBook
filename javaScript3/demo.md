@@ -1044,7 +1044,24 @@ let person = {
     book.year = 2005;
     console.log(book.edition); // 2
     ```
-
+    
+    ```
+    let demo = document.getElementById('demo')
+    let text = document.getElementById('text')
+    
+    let str = {}
+    
+    Object.defineProperty(str, 'text', {
+        set: v => str[text] = v,
+        get: () => str.text
+    })
+    
+    demo.onkeydown = function () {
+        str[text] = demo.value;
+        text.innerHTML = str[text];
+    } 
+    ```
+    
 ### 定义多个属性
 - Object.defineProperties() 方法。接收2个对象参数，第一个对象是要添加和修改其属性的对象。第二个对象的属性与第一个对象中要添加和修改的属性一一对应。
 ```

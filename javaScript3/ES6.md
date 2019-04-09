@@ -25,6 +25,26 @@
     - 参数: prev, cur, index, arr
 - filter --------------过滤器
 - forEach--------------迭代
+- includes-------------包含
+- keys/values/entries
+
+## for/in 与 for/of
+
+方式|数组|json    
+---|---|---
+for/in|下标key|key
+for/of|值value|error
+
+- for/of 专用于数组
+- keys/values/entries实体
+
+```
+let arr = [123,4,23,11]
+for (let i of arr.entries()) {
+    console.log(i);
+} 
+```
+
 
 # 字符串
 - startsWith('http')----------以http开头
@@ -46,4 +66,27 @@
 - 简写
     - 名字跟值( key 和 value )一样的,写一个就行
     - 方法: show: function(){...}, 写为 show(){}
+
+# Promise
+- new Promise(function(resolve, reject){})
+- 一次读一堆数据请求
+    
+# generator 生成器
+
+```
+function *show() {
+    alert('a')
+    yield;
+    alert('b')
+}
+let genObj = show(); // Generator 对象
+genObj.next()
+genObj.next() 
+```
+
+- 逻辑性    
+    
+# 新增幂
+- 3**8-------3的8次方
+
 

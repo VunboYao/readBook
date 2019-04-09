@@ -3558,7 +3558,7 @@ function ajax(option) {
         },option.timeout)
     }
 }*/
-
+/*
 class User {
     constructor(name, pass) {
         this.name = name;
@@ -3590,18 +3590,187 @@ let a = new VIPUser('yyb','123123',5);
 a.showName();
 a.showPass();
 a.showLevel();
+*/
+/*function getQueryStringArgs() {
+    let queryStr = location.search.length > 0 ? location.search.substring(1) : '';
+    let qs = queryStr.length ? queryStr.split('&') : [];
+    let item, res = {}, name,value;
+    for (i in qs) {
+        item = qs[i].split('=');
+        name = decodeURIComponent(item[0])
+        value = decodeURIComponent(item[1])
+        if (name.length) {
+            res[name] = value;
+        }
+    }
+    return res;
+}
+getQueryStringArgs();*/
+/*
+function obj2str(data) {
+    data.t = new Date().getTime()
+    let res = []
+    for (let i in data) {
+        res.push(encodeURIComponent(i) + '=' + encodeURIComponent(data[i]))
+    }
+    return res.join('&');
+}
+function ajax(option) {
+    let str = obj2str(option.data);
+    let xhr, timer;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest()
+    } else {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+    if (option.type.toLocaleLowerCase() === 'get') {
+        xhr.open(option.type, option.url + '?' + str, true)
+        xhr.send()
+    } else {
+        xhr.open(option.type, option.url, true)
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(str)
+    }
 
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            clearTimeout(timer)
+            if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
+                option.success(xhr)
+            } else {
+                option.error(xhr);
+            }
+        }
+    }
 
+    if (option.timeout) {
+        timer = setTimeout(() => {
+            xhr.abort();
+            clearTimeout(timer)
+        },option.timeout)
+    }
+}*/
+/*function SuperType() {
+    this.property = true;
+}
+SuperType.prototype.getSuperValue = function () {
+    return this.property;
+}
 
+function SubType() {
+    this.subprototype = false;
+}
+// 继承了 SuperType
+SubType.prototype = new SuperType();
+SubType.prototype.getSubValue = function () {
+    return this.subprototype;
+}
+let instance = new SubType();
+console.log(instance.getSuperValue); // true
+console.dir(instance.constructor); // SuperType*/
+/*let book = {
+    _year: 2004,
+    edition: 1
+};
+Object.defineProperty(book, 'year', {
+    get: () => this._year,
+    set: v => {
+        if (v > 2004) {
+            this._year = v;
+            this.edition += v - 2004
+        }
+    }
+})
+book.year = 2005;
+console.log(book.year);*/
+/*let demo = document.getElementById('demo')
+let text = document.getElementById('text')
 
+let str = {}
 
+Object.defineProperty(str, 'text', {
+    set: v => str[text] = v,
+    get: () => str.text
+})
 
+demo.onkeyup = function () {
+    str[text] = demo.value;
+    text.innerHTML = str[text];
+}
+demo.onkeydown = function () {
+    str[text] = demo.value;
+    text.innerHTML = str[text];
+}
+demo.onkeypress = function () {
+    str[text] = demo.value;
+    text.innerHTML = str[text];
+}*/
+/*function person(name,age) {
+    let o = new Object();
+    o.name = name;
+    o.age = age;
+    o.say = function () {
+        console.log('say');
+    }
+    return o;
+}
 
+let a = person('yyb', 20);
+console.log(a);
 
+function Person(name,age) {
+    // let o = new Object();
+    this.name = name;
+    this.age = age;
+    this.say = function () {
+        console.log('say');
+    }
+    // return o;
+}
 
+let b = new Person('yyb', 20)
+console.log(b);*/
+/*function Person(name, age) {
+    this.name = name;
+    this.age = age;
+}
+Person.prototype.say = function () {
+    console.log('say');
+}
+function Student(name,age){
+    Person.call(this,name,age);
+}
+Student.prototype = new Person();
+Student.prototype.constructor = Student;
+Student.prototype.run = function() {
+    console.log('run');
+}
+let a = new Student('yyb',12)
+let b = new Person('nb',23)*/
 
+class Person{
+    constructor(name,age) {
+        this.name = name;
+        this.age = age;
+    }
+    // say() {
+    //     console.log(this.name, this.age);
+    // }
+}
+Person.prototype.say = function () {
+    console.log(this.name, this.age);
+}
 
+class Student extends Person{
+    constructor(name,age,score) {
+        super(name,age);
+        this.score = score;
+    }
+    run() {
+        console.log('run');
+    }
+}
 
-
-
-
+let a = new Person('yyb',29)
+let b = new Student('nn',23,99)
+b.say()
