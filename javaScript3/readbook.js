@@ -3747,4 +3747,38 @@ Student.prototype.run = function() {
 }
 let a = new Student('yyb',12)
 let b = new Person('nb',23)*/
+/*let arr = []
+console.log(arr.constructor.name);
+
+class Person{
+    name = 'll'
+}
+let p = new Person()
+console.log(p instanceof Person);*/
+/*let str = -233;
+str = str.toString();
+let arr = [];
+let sign = '';
+let infinite = false;
+for (let i = 0; i < str.length; i++) {
+    if (str.length > 32) {
+        infinite = true;
+    }
+    if (str[i] === '-') {
+        sign = '-';
+    }
+    arr.unshift(str[i]);
+}
+let string = ''
+if (sign) {
+    arr = arr.splice(0, arr.length-1);
+}
+for (let j = 0; j < arr.length; j++) {
+   string += arr[j];
+}
+if (sign) {
+    string = sign + string;
+} else {
+}*/
+
 
