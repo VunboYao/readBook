@@ -3781,4 +3781,22 @@ if (sign) {
 } else {
 }*/
 
+function depCopy(target, source) {
+    // 遍历对象
+    for (let key in source) {
+        // 取值
+        let sourceValue = source[key];
+        // 判断是否是对象
+        if (sourceValue instanceof Object) {
+            // 创建相应的对象
+            let subTarget = new sourceValue.constructor;
+            target[key] = subTarget;
+            depCopy(subTarget, sourceValue);
+        } else {
+            target[key] = sourceValue;
+        }
+    }
+}
+
+
 

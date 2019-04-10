@@ -260,8 +260,22 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
     - 在子类的构造函数中通过 call 借助父类的构造函数
     - 将子类的原型对象修改为父类的实例对象
 - 获取对象类型: xx.constructor.name
-
-
+- 对象深拷贝: Object.assign(target,source1,source2).将源对象(source)的所有可枚举资源复制到目标对象(target)
+- 自定义深拷贝
+    ```javascript
+    function depCopy(target, source) {
+        for (let key in source) {
+            let sourceValue = source[key];
+            if (sourceValue instanceof Object) {
+                let subTarget = new sourceValue.constructor;
+                target[key] = subTarget;
+                depCopy(subTarget, sourceValue);
+            } else {
+                target[key] = sourceValue;
+            }
+        }
+    }
+    ```
 
 
 
