@@ -263,12 +263,19 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
 - 对象深拷贝: Object.assign(target,source1,source2).将源对象(source)的所有可枚举资源复制到目标对象(target)
 - 自定义深拷贝
     ```javascript
-    function depCopy(target, source) {
+    function depCopy(target,source) {
+        // 1. 遍历拿到 source 中所有的属性
         for (let key in source) {
+            // 2. 取出当前遍历到的 key 对应的 value
             let sourceValue = source[key];
+            // 3. 判断当前的属性是否是引用类型
             if (sourceValue instanceof Object) {
+                // console.log(sourceValue.constructor);
+                // 创建对应的类型
                 let subTarget = new sourceValue.constructor;
+                // 添加属性
                 target[key] = subTarget;
+                // 递归再次循环数据
                 depCopy(subTarget, sourceValue);
             } else {
                 target[key] = sourceValue;

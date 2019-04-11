@@ -86,7 +86,60 @@ genObj.next()
 
 - 逻辑性    
     
-# 新增幂
+# Math 新增方法
 - 3**8-------3的8次方
+
+
+# Symbol
+
+## 概述
+- 一种新的数据类型,独一无二的值. Symbol 值通过 Symbol 函数生成, 也就是说, 对象的属性名现在可以有两种类型, 一种是原来就有的字符串, 另一种就是新增的 Symbol 类型. 凡是属性名属于 Symbol 类型, 就都是独一无二的, 保证不会与其他属性名冲突.
+- Symbol 函数前不能使用 new 命令, 否则会报错. 因为 Symbol 是一个原始类型的值, 不是对象. 一种类似于字符串的数据类型
+- 可以接受一个字符串作为参数, 表示对 Symbol 实例的描述, 主要是为了在控制台显示, 或者转为字符串时, 比较容易区分.
+- 如果 Symbol 的参数是一个对象, 就会调用该对象的 toString 方法, 将其转换为字符串, 然后才生成一个 Symbol 值
+- **相同参数的 Symbol 函数的返回值是不相等的**
+- Symbol 值不能与其他类型的值进行运算.**可以显示转换为字符串**
+- Symbol 值也可以转换为布尔值, 但是不能转为数值
+
+## 作为属性名的 Symbol
+
+- Symbol 值可以作为标识符, 用于对象的属性名,就能保证不会出现同名的属性.
+- **Symbol 值作为对象属性名时, 不能用点运算符**. 因为点运算符后面总是字符串, 所有不会读取 Symbol 作为标识名所指代的那个值. **类型不同, 字符串与 Symbol**
+    ```javascript 1.8
+    const mySymbol = Symbol()
+    const a = {}
+    
+    a.mySymbol = 'Hello'
+    console.log(a[mySymbol]); // undefined
+    console.log(a['mySymbol']); // Hello 
+    ```
+- **同理, 在对象的内部, 使用 Symbol 值定义属性时, Symbol 值必须放在方括号之中**
+    ```javascript
+    let s = Symbol()
+    let obj = {
+        [s]: function (arg) {
+            console.log(arg);
+        }
+    }
+    obj[s](123); // 123
+    // 上面代码中,如果 s 不是放在方括号中, 该属性的键名就是字符串 s, 而不是 s 所代表的那个 Symbol 值.
+    
+    // 采用增强的对象写法, 上面代码的 obj 对象可以写得更简洁一些
+    let s = Symbol()
+    let obj = {
+        [s](arg) {
+            console.log(arg);
+        }
+    }
+    obj[s](13); // 13
+    ```
+
+
+
+
+
+
+
+
 
 

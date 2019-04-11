@@ -3780,8 +3780,7 @@ if (sign) {
     string = sign + string;
 } else {
 }*/
-
-function depCopy(target, source) {
+/*function depCopy(target, source) {
     // 遍历对象
     for (let key in source) {
         // 取值
@@ -3796,7 +3795,191 @@ function depCopy(target, source) {
             target[key] = sourceValue;
         }
     }
+}*/
+/*function depCopy(target, source) {
+    for (let key in source) {
+        let subSource = source[key];
+        if (subSource instanceof Object) {
+            let newObject = new subSource.constructor;
+            target[key] = newObject;
+            depCopy(newObject, subSource);
+        } else {
+            target[key] = subSource;
+        }
+    }
+}*/
+/*function depCopy(target,source) {
+    // 1. 遍历拿到 source 中所有的属性
+    for (let key in source) {
+        // 2. 取出当前遍历到的 key 对应的 value
+        let sourceValue = source[key];
+        // 3. 判断当前的属性是否是引用类型
+        if (sourceValue instanceof Object) {
+            // console.log(sourceValue.constructor);
+            // 创建对应的类型
+            let subTarget = new sourceValue.constructor;
+            // 添加属性
+            target[key] = subTarget;
+            // 递归再次循环数据
+            depCopy(subTarget, sourceValue);
+        } else {
+            target[key] = sourceValue;
+        }
+    }
+}*/
+/*class Person{
+    constructor(name,age) {
+        this.name = name;
+        this.age = age;
+        this.language = ['chinese','english'];
+        this.score = {
+            'soccer': 99,
+            'football': 39
+        }
+    }
 }
+let a = new Person('yyb',23);
+let b = {}
+depCopy(b,a);
+console.log(a);
+b.age = 99;
+console.log(b);*/
+/*function getQueryArgs() {
+    let query = location.search.length > 0 ? location.search.substring(1) : '';
+    let qs = query.length ? query.split('&') : [];
+    let res = {},
+            name, value, item;
+    for (let i of qs.keys()) {
+        let item = qs[i].split('=');
+        name = decodeURIComponent(item[0])
+        value = decodeURIComponent(item[1])
+        if (name.length) {
+            res[name] = value;
+        }
+    }
+    return res;
+}
+console.log(getQueryArgs());*/
+/*function obj2str(data) {
+    data.t = new Date().getTime();
+    let res = []
+    for (let i in data) {
+        res.push(encodeURIComponent(i) + '=' + encodeURIComponent(data[i]))
+    }
+    return res.join('&');
+}
+function ajax(option) {
+    let str = obj2str(option.data);
+    let xhr,timer;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest()
+    } else {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP')
+    }
+    if (option.type.toLocaleLowerCase() === 'get') {
+        xhr.open(option.type, option.url + '?' + str, true);
+        xhr.send()
+    } else {
+        xhr.open(option.type, option.url, true)
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(str)
+    }
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            clearTimeout(timer);
+            if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
+                option.success(xhr)
+            } else {
+                option.error(xhr)
+            }
+        }
+    }
+    if (option.timeout) {
+        timer = setTimeout(() => {
+            xhr.abort()
+            clearTimeout(timer);
+        },option.timeout)
+    }
+}*/
+/*
+const mySymbol = Symbol()
+const a = {}
 
+a.mySymbol = 'Hello'
+console.log(a[mySymbol]); // undefined
+console.log(a['mySymbol']); // Hello
+*/
+/*let s = Symbol()
+let obj = {
+    [s]: function (arg) {
+        console.log(arg);
+    }
+}
+obj[s](123); // 123
+// 上面代码中,如果 s 不是放在方括号中, 该属性的键名就是字符串 s, 而不是 s 所代表的那个 Symbol 值.
+
+// 采用增强的对象写法, 上面代码的 obj 对象可以写得更简洁一些
+let s = Symbol()
+let obj = {
+    [s](arg) {
+        console.log(arg);
+    }
+}
+obj[s](13); // 13*/
+/*const log = {}
+log.levels = {
+    DEBUG: Symbol('debug'),
+    INFO: Symbol('Info'),
+    WARN: Symbol('warn')
+}
+console.log(log.levels.DEBUG, 'debug msg');
+console.log(log.levels.INFO, 'Info msg');*/
+
+// 无限加载
+/*
+let loading = document.querySelector('.loading');
+let flag = true;
+window.addEventListener('scroll', (e) => {
+    let top = document.documentElement.scrollTop; // 获取页面滚动的高度
+    let allH = document.documentElement.offsetHeight; // 获取页面总高度
+    let crH = document.documentElement.clientHeight;// 视图区高度
+    console.log("当前滚动高度" + top);
+    console.log("总的高度" + allH);
+    // 500的误差即继续加载
+    if ((allH - top) < crH + 500) { // 加载区间判定
+        if (flag) {
+            // 中间件判定正在加载
+            flag = false;
+            loading.style.display = 'block'; // 显示loading
+            let fragment = document.createDocumentFragment();
+            $.ajax({
+                url: 'https://www.easy-mock.com/mock/5ca035ffe09f0c258d2085a0/demo/2',
+                type: 'GET',
+                success: function (data) {
+                    let newData = data.data;
+                    for (let i = 0; i < newData.length; i++) {
+                        let p = document.createElement('li');
+                        p.textContent = newData[i];
+                        fragment.appendChild(p);
+                    }
+                    document.getElementById('ul').appendChild(fragment);
+                    flag = true; // 加载结束
+                    loading.style.display = 'none'; // 关闭loading*!/
+                }
+            })
+        }
+    }
+})
+*/
+
+
+/*const COLOR_RED = Symbol();
+const COLOR_GREEN = Symbol();
+
+function getComplement(color) {
+    switch (color) {
+
+    }
+}*/
 
 
