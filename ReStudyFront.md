@@ -243,6 +243,13 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
 - push/unshift方法返回值是数组新的长度
 - pop/shift 方法返回值是删除的数据
 - fill(),用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。不包括终止索引。
+- 遍历方法:
+    - for
+    - for/of
+    - forEach
+- findIndex(), 传入一个函数,包含是三个参数(current, index, arr). 返回找到的值的索引. 没有则 -1   
+- find(), 同 findIndex() 参数, 返回找到的元素. 没有则返回 undefined
+- delete 删除数组, 数组的 length 属性不会发生变化
 
 # 面向对象
 
@@ -283,7 +290,6 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
         }
     }
     ```
-
 
 
 

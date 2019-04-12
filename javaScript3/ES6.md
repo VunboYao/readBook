@@ -35,6 +35,7 @@
 for/in|下标key|key
 for/of|值value|error
 
+- for/in 专用于对象/无序对象
 - for/of 专用于数组
 - keys/values/entries实体
 
@@ -105,7 +106,7 @@ genObj.next()
 
 - Symbol 值可以作为标识符, 用于对象的属性名,就能保证不会出现同名的属性.
 - **Symbol 值作为对象属性名时, 不能用点运算符**. 因为点运算符后面总是字符串, 所有不会读取 Symbol 作为标识名所指代的那个值. **类型不同, 字符串与 Symbol**
-    ```javascript 1.8
+    ```javascript
     const mySymbol = Symbol()
     const a = {}
     
@@ -133,6 +134,51 @@ genObj.next()
     }
     obj[s](13); // 13
     ```
+- Symbol 值作为属性名时, 该属性是公共属性,不是私有属性.
+- 适合用于消除魔术字符串
+
+## 属性名的遍历
+- Symbol 作为属性名, 该属性不会出现在 **for...in, for...of**循环中,也不会被 Object.keys(), Object.getOwnPropertyNames(), JSON.stringify()返回.
+- 通过Object.getOwnPropertySymbols 方法,返回一个数组,可以获取指定对象的所有 Symbol 属性名. 
+- Reflect.ownKeys(obj),可以返回所有类型的键名, 包括常规键名和 Symbol 键名. 
+
+## Symbol.for(), Symbol.keyFor()
+- Symbol.for(), 接受一个字符串作为参数,搜索有没有以该参数作为名称的 Symbol 值. 如果有则返回该 Symbol, 否则创建一个新的 Symbol 值.
+- **Symbol.for() 与 Symbol() 区别: 前者会被登记在全局环境中供搜索,后者不会.**. Symbol.for() 不会每次调用就返回一个新的 Symbol 类型的值, 而是先检查给定的 key 是否已经存在, 如果不存在才会创建一个值.
+    ```javascript
+    Symbol.for('bar') === Symbol.for('bar') // true
+    Symbol('bar') === Symbol('bar') // false 
+    ```
+- Symbol.keyFor(),可以返回一个已登记的 Symbol 类型值的 key
+- Symbol.for() 为 Symbol 值登记的名字, 是全局环境, 可以在不同的 iframe 或 service worker 中取到同一个值.
+
+## 内置的 Symbol 值
+- Symbol.hasInstance 属性,指向一个内部方法. 当其他对象调用 instanceof 运算符时,判断是否为该对象的实例时,会调用这个方法. 如 foo instanceof Foo 在语言内部, 实际调用 Foo\[Symbol.hasInstance\](foo)
+    ```
+    class MyClass {
+        [Symbol.hasInstance](foo) {
+            return foo instanceof Array;
+        }
+    }
+    
+    console.log([1, 2, 3] instanceof new MyClass()); // true 
+    ```
+- Symbol.isConcatSpreadable 等于一个布尔值, 表示该对象用于 Array.prototype.concat() 时,是否可以展开. 数组默认为 true (默认可以展开), 对象为 false
+- Symbol.species 属性, 指向一个构造函数. 创建衍生对象时, 使用该属性
+- Symbol.match 属性,指向一个函数. 当执行 str.match(myObject) 时, 如果属性存在, 调用并返回该方法的返回值.
+- Symbol.replace 属性, 指向一个方法, 当该对象被 String.prototype.replace 方法调用时, 会返回该方法的返回值. 接收两个参数, 第一个参数是 replace 方法正在作用的对象, 第二个参数是替换后的值.
+- Symbol.search 属性, 指向一个方法, 当该对象被 String.prototype.search 方法调用时, 会返回该方法的返回值.
+- Symbol.split 属性, 指向一个方法, 当该对象被 String.prototype.split 方法调用时,会返回该方法的返回值.
+- Symbol.iterator 属性, 指向该对象的默认遍历器方法
+- Symbol.toPrimitive 属性, 指向一个方法. 该对象被转为原始类型的值时,会调用这个方法,返回该对象对应的原始类型值.接收一个字符串参数,表示当前运算的模式, Number\String\Default
+- Symbol.toStringTag 属性, 指向一个方法.在该对象上调用 Object.prototype.toString 方法时, 如果这个属性存在, 它的返回值会出现在 toString 方法返回的字符串中,表示对象的类型. **这个属性可以用来定制\[object Object\]或\[object Array\] 中 object 后面的那个字符串.**
+- Symbol.unscopables 属性, 指向一个对象. 该对象指定了使用 with 关键字时, 哪些属性会被 with 环境排除.
+
+
+
+
+
+
 
 
 

@@ -3934,7 +3934,6 @@ log.levels = {
 }
 console.log(log.levels.DEBUG, 'debug msg');
 console.log(log.levels.INFO, 'Info msg');*/
-
 // 无限加载
 /*
 let loading = document.querySelector('.loading');
@@ -3971,15 +3970,218 @@ window.addEventListener('scroll', (e) => {
     }
 })
 */
-
-
 /*const COLOR_RED = Symbol();
 const COLOR_GREEN = Symbol();
 
 function getComplement(color) {
     switch (color) {
-
+        case COLOR_GREEN:
+            return COLOR_RED;
+        case COLOR_RED:
+            return COLOR_GREEN;
+        default:
+            throw new Error('Undefined color')
     }
 }*/
+/*
+function getArea(shape, options) {
+    let area = 0;
+
+    switch (shape) {
+        case 'Triangle':
+            area = .5 * options.width * options.height;
+            break;
+    }
+    return area;
+}
+*/
+/*const shapeType = {
+    triangle: Symbol()
+}
+function getArea(shape, options) {
+    let area = 0;
+    switch(shape) {
+        case shapeType.triangle:
+            area = .5 * options.width * options.height;
+            break;
+    }
+    return area;
+}
+getArea(shapeType.triangle, {width: 500, height: 200})*/
+/*let s1 = Symbol.for('foo')
+let s2 = Symbol.for('foo')
+console.log(s1 === s2);
+Symbol.for('bar') === Symbol.for('bar') // true
+Symbol('bar') === Symbol('bar') // false*/
+/*const obj = {}
+let a = Symbol('a')
+let b = Symbol('b')
+obj[a] = 'Hello'
+obj[b] = 'World'
+
+const objectSymbols = Object.getOwnPropertySymbols(obj);
+console.log(objectSymbols);*/
+/*const obj = {}
+let foo = Symbol('foo')
+Object.defineProperty(obj, foo, {
+    value: 'foobar',
+})
+for (let i in obj) {
+    console.log(i);
+}
+console.log(Object.getOwnPropertyNames(obj));
+console.log(Object.getOwnPropertySymbols(obj));*/
+/*let obj = {
+    [Symbol('my_key')]: 1,
+    enum: 2,
+    nonEnum: 3
+}
+console.log(Reflect.ownKeys(obj));*/
+/*
+let size = Symbol('size')
+class Collection {
+    constructor() {
+        this[size] = 0;
+    }
+    add(item) {
+        this[this[size]] = item;
+        this[size]++;
+    }
+    static sizeOf(instance) {
+        return instance[size];
+    }
+}
+let a = new Collection()
+console.log(a);
+console.log(Collection.sizeOf(a));
+a.add('foo');
+console.log(Collection.sizeOf(a));
+console.log(Object.keys(a));
+console.log(Object.getOwnPropertyNames(a));
+console.log(Object.getOwnPropertySymbols(a));*/
+/*
+function getQueryStringArgs() {
+    let query = location.search.length > 0 ? location.search.substring(1) : ''
+    let qs = query.length ? query.split('&'): [];
+    let res = {};
+    let name,value,item;
+    for (let i in qs) {
+        item = qs[i].split('=');
+        name = decodeURIComponent(item[0]);
+        value = decodeURIComponent(item[1])
+        if (name.length) {
+            res[name] = value;
+        }
+    }
+    return res;
+}
+
+console.log(getQueryStringArgs());*/
+/*let s1 = Symbol.for('foo')
+console.log(Symbol.keyFor(s1));*/
+/*global[Symbol('foo')] = {foo: 'world'}
+
+const a = require('./mod')
+console.log(a.foo);*/
+/*class MyClass {
+    [Symbol.hasInstance](foo) {
+        return foo instanceof Array;
+    }
+}
+console.log([1, 2, 3] instanceof new MyClass()); // true
+class Even {
+    static [Symbol.hasInstance](obj) {
+        return Number(obj) % 2 === 0;
+    }
+}
+const Even1 = {
+    [Symbol.hasInstance](obj) {
+        return Number(obj) % 2 === 0;
+    }
+}
+console.log(1 instanceof Even1);
+console.log(2 instanceof Even1);
+console.log(12345 instanceof Even1);*/
+// let arr1 = ['c', 'd'];
+// console.log(['a', 'b'].concat(arr1, 'e'));
+// console.log(arr1[Symbol.isConcatSpreadable]);
+// arr1[Symbol.isConcatSpreadable] = false;
+// console.log(['a', 'b'].concat(arr1, 'e'));
+/*class A1 extends Array {
+    constructor(args) {
+        super(args)
+        this[Symbol.isConcatSpreadable] = true;
+    }
+}
+class A2 extends Array {
+    constructor(args) {
+        super(args)
+    }
+    get [Symbol.isConcatSpreadable]() {
+        return false;
+    }
+}
+
+let a1 = new A1()
+a1[0] = 3;
+a1[1] = 4;
+let a2 = new A2()
+a2[0] = 5;
+a2[1] = 6;
+console.log([1, 2].concat(a1).concat(a2));*/
+// String.prototype.match(regexp)
+// regexp[Symbol.match](this)
+/*class MyMatch {
+    [Symbol.match](string) {
+        return 'hello world'.indexOf(string)
+    }
+}
+
+console.log('e'.match(new MyMatch()));*/
+/*class MySearch {
+    constructor(value) {
+        this.value = value;
+    }
+    [Symbol.split](string) {
+        let index = string.indexOf(this.value);
+        if (index === -1) {
+            return string;
+        }
+        return [
+                string.substr(0,index),
+                string.substr(index + this.value.length)
+        ]
+    }
+}*/
+
+
+/*let arr = [1,3,5,1,6,8,9]
+arr.findIndex((item,value) => {
+    if (item === 5) {
+        console.log(value);
+    }
+})*/
+let arr = [1,3,5,1,6,8,9]
+Array.prototype.myFindIndex = function (fn) {
+    for (let i = 0; i < this.length; i++) {
+    }
+}
+arr.myFindIndex((item,index) => {
+    console.log(item,index);
+})
+
+arr.filter((arr) => {
+
+})
+arr.sort(function (a,b) {
+    return b-a;
+})
+console.log(arr);
+
+
+
+
+
+
 
 
