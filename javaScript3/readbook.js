@@ -4153,30 +4153,56 @@ console.log('e'.match(new MyMatch()));*/
         ]
     }
 }*/
-
-
 /*let arr = [1,3,5,1,6,8,9]
 arr.findIndex((item,value) => {
     if (item === 5) {
         console.log(value);
     }
 })*/
-let arr = [1,3,5,1,6,8,9]
-Array.prototype.myFindIndex = function (fn) {
+/*Array.prototype.some = function (fn) {
+    let _temp = []
     for (let i = 0; i < this.length; i++) {
+        if (fn(this[i], i, this)) {
+            _temp.push(this[i]);
+        }
     }
+    return !!(_temp.length === this.length);
 }
-arr.myFindIndex((item,index) => {
-    console.log(item,index);
-})
 
-arr.filter((arr) => {
+let arr = [1, 3, 5, 1, 6, 8, 9]
+let b = arr.some((item, index, arr) => {
+    return item > 0;
+})
+console.log(b)*/
+/*Array.prototype.some = function (fn) {
+    let _temp
+    for (let i = 0; i < this.length; i++) {
+        if (fn(this[i], i, this)) {
+            _temp = this[i]
+        }
+    }
+    return !!_temp;
+}
 
+let arr = [1, 3, 5, 1, 6, 8, 9]
+let b = arr.some((item, index, arr) => {
+    return item > 5;
 })
-arr.sort(function (a,b) {
-    return b-a;
-})
-console.log(arr);
+console.log(b)*/
+/*for (let i = 0; i < 20; i++) {
+    console.log(Math.floor(Math.random() * 5) + 4);
+}*/
+
+
+
+
+
+
+
+
+
+
+
 
 
 

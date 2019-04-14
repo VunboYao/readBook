@@ -250,6 +250,137 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
 - findIndex(), 传入一个函数,包含是三个参数(current, index, arr). 返回找到的值的索引. 没有则 -1   
 - find(), 同 findIndex() 参数, 返回找到的元素. 没有则返回 undefined
 - delete 删除数组, 数组的 length 属性不会发生变化
+- 模拟 map 的实现
+    ```
+    Array.prototype.myMap = function (fn) {
+        let _temp = []
+        for(let i = 0; i < this.length; i++) {
+            _temp.push(fn(this[i],i,arr));
+        }
+        return _temp
+    }
+    
+    let arr = [1,3,5,1,6,8,9]
+    let b = arr.myMap((item,index) => {
+        return item * 3;
+    })
+    console.log(b); 
+    ```
+- 模拟 filter 的实现
+    ```
+    Array.prototype.myFilter = function (fn) {
+        let _temp = []
+        for(let i = 0; i < this.length; i++) {
+            if (fn(this[i],i,this)) {
+                _temp.push(this[i]);
+            }
+        }
+        return _temp
+    }
+    
+    let arr = [1,3,5,1,6,8,9]
+    let b = arr.myFilter((item,index) => {
+        return (item > 5) && (index > 4);
+    })
+    console.log(b);
+    ```
+- 模拟 forEach 的实现
+    ```
+    Array.prototype.myforEach = function (fn) {
+        for(let i = 0; i < this.length; i++) {
+            fn(this[i],i,this);
+        }
+    }
+    
+    let arr = [1,3,5,1,6,8,9]
+    let b = arr.myforEach((item,index,arr) => {
+        console.log(item,index,arr);
+    }) 
+    ```    
+- 模拟 findIndex 的实现
+    ```
+    Array.prototype.myFindIndex = function (fn) {
+        let _temp;
+        for (let i = 0; i < this.length; i++) {
+            /* 如果未定义则继续, 有值后直接退出循环 */
+            if (_temp === undefined) {
+                if (fn(this[i], i, this)) {
+                    _temp = i
+                }
+            } else {
+                break;
+            }
+        }
+        return _temp !== undefined ? _temp : -1;
+    }
+    
+    let arr = [1, 3, 5, 1, 6, 8, 9]
+    let b = arr.myFindIndex((item, index, arr) => {
+        if (index > 2) {
+            return item === 1
+        }
+    })
+    console.log(b)
+    ```
+- 模拟 find 的实现
+    ```
+    Array.prototype.myFind = function (fn) {
+        let _temp;
+        for (let i = 0; i < this.length; i++) {
+            /* 如果未定义则继续, 有值后直接退出循环 */
+            if (_temp === undefined) {
+                if (fn(this[i], i, this)) {
+                    _temp = this[i]
+                }
+            } else {
+                break;
+            }
+        }
+        return _temp !== undefined ? _temp : undefined;
+    }
+    
+    let arr = [1, 3, 5, 1, 6, 8, 9]
+    let b = arr.myFind((item, index, arr) => {
+        return index === 89;
+    })
+    console.log(b)
+    ```
+- 模拟 some 的实现
+    ```
+     Array.prototype.some = function (fn) {
+         let _temp
+         for (let i = 0; i < this.length; i++) {
+             if (fn(this[i], i, this)) {
+                 _temp = this[i]
+             }
+         }
+         return !!_temp;
+     }
+     
+     let arr = [1, 3, 5, 1, 6, 8, 9]
+     let b = arr.some((item, index, arr) => {
+         return item > 34;
+     })
+     console.log(b)
+    ```
+- 模拟 every 的实现
+    ```
+    Array.prototype.some = function (fn) {
+        let _temp = []
+        for (let i = 0; i < this.length; i++) {
+            if (fn(this[i], i, this)) {
+                _temp.push(this[i]);
+            }
+        }
+        return !!(_temp.length === this.length);
+    }
+    
+    let arr = [1, 3, 5, 1, 6, 8, 9]
+    let b = arr.some((item, index, arr) => {
+        return item > 0;
+    })
+    console.log(b) 
+    ```
 
 # 面向对象
 

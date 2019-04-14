@@ -46,10 +46,11 @@ for (let i of arr.entries()) {
 } 
 ```
 
-
 # 字符串
 - startsWith('http')----------以http开头
 - endsWith('.txt')------------以txt结尾的
+- padStart(minLen, str), 第一个参数为指定参数的最小长度,第二个参数用来补全字符串. 如果省略第二个参数, 则用空格来补全
+- padEnd(minLen, str)
 - 模板字符串   
 
 # 面向对象
