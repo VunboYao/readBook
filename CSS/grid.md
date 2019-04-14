@@ -38,6 +38,9 @@ The most fundamental(基本) unit is the grid line. By defining the placement(�
 - fr 不能放在 minmax 的 min 上.
 - minmax(minimum, maximum) 如果 min 大于 max, 锁定 min 值.
 
+# Content-aware tracks (内容感知轨道)
+- min-content
+- max-content
 
 
 
