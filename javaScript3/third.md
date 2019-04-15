@@ -42,7 +42,7 @@ btn.onclick = function(){
 
 ## 事件对象
 
-### DOM中的事件对象
+s### DOM中的事件对象
 
 - event 对象
 - event 对象包含与创建它的特定事件有关的属性和方法
