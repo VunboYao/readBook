@@ -11,39 +11,22 @@
 
 		.wrapper {
 			display: grid;
-			/* 创建5行, name 为 R, 高为 4em */
-			grid-template-rows: repeat(5, [R] 4em);
-			/* 创建开头为 2em 宽, 重复5次, 相应名称及宽度 最后 2em 宽. 总12列*/
-			grid-template-columns: 2em repeat(5, [col-A] 5em [col-B] 5em) 2em;
+			/*width: 1000px;*/
+			gap: 10px;
+			grid-template: 30px 30px / repeat(5, 60px);
+			grid-auto-rows: 50px;
+			grid-auto-columns: 50px;
+			grid-auto-flow: column dense;
 		}
 		div.item1 {
-			/* R 2 开始 */
-			grid-row-start: R 2;
-			/* 第5行结束 */
-			grid-row-end: 5;
-			/* col-B 列开始 */
-			grid-column-start: col-B;
-			/* 跨域 2 列 */
-			grid-column-end: span 2;
+			grid-area: 1 / 3/ 5 / 6;
 			background: #00B83F;
 		}
 		div.item2 {
 			background: #1b3650;
-			/* 行 R 开始 */
-			grid-row-start: R;
-			/* 跨 R 2行 */
-            grid-row-end: span R 2;
-			/* 第三个 col-A 开始*/
-			grid-column-start: col-A 3;
-			/* 跨越名为 col-A 的 2次 */
-			grid-column-end: span col-A 2;
 		}
 		div.item3 {
 			background: red;
-			/* 4行开始 */
-			grid-row-start: 4;
-			/* 倒数第 2 列开始 */
-			grid-column-start: col-A -2;
 		}
 
 		div.item4 {
@@ -52,6 +35,8 @@
 		}
 
 		div.item5 {
+			grid-column: 5;
+			grid-row: 1 /3 ;
 			background: #8b1d51;
 			/*grid-area: f;*/
 		}
@@ -95,6 +80,11 @@
 	<div class="item4">4</div>
 	<div class="item5">5</div>
 	<div class="item6">6</div>
+	<div class="item7">7</div>
+	<div class="item8">8</div>
+	<div class="item9">9</div>
+	<div class="item9">9</div>
+	<div class="item9">9</div>
 	<div class="item7">7</div>
 	<div class="item8">8</div>
 	<div class="item9">9</div>
