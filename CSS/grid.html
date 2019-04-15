@@ -1,76 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <style type="text/css">
-        * {
-            margin: 0;
-            padding: 0;
-        }
-        .wrapper {
-            margin: 10px auto;
-            /*width: 500px;*/
-            /*height: 500px;*/
-            color: #fff;
-            border: 1px solid #ccc;
-            display: grid;
-            grid-template-columns: 15em 1fr minmax(0, 500px) 10%;
-            grid-template-rows: 3em minmax(5em, 1fr) 2em;
-        }
-        .wrapper div {
-            /*width: 100px;*/
-            /*height: 100px;*/
-        }
-        div.item1 {
-            background: #00B83F;
-        }
-        div.item2 {
-            background: #1b3650;
-        }
-        div.item3 {
-            background: red;
-        }
-        div.item4 {
-            background: orange;
-        }
-        div.item5 {
-            background: #8b1d51;
-        }
-        div.item6 {
-            background: saddlebrown;
-        }
-        div.item7 {
-            background: #97fc3d;
-        }
-        div.item8 {
-            background: #318b87;
-        }
-        div.item9 {
-            background: #8b0028;
-        }
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		.wrapper {
+			display: grid;
+			/* 创建5行, name 为 R, 高为 4em */
+			grid-template-rows: repeat(5, [R] 4em);
+			/* 创建开头为 2em 宽, 重复5次, 相应名称及宽度 最后 2em 宽. 总12列*/
+			grid-template-columns: 2em repeat(5, [col-A] 5em [col-B] 5em) 2em;
+		}
+		div.item1 {
+			/* R 2 开始 */
+			grid-row-start: R 2;
+			/* 第5行结束 */
+			grid-row-end: 5;
+			/* col-B 列开始 */
+			grid-column-start: col-B;
+			/* 跨域 2 列 */
+			grid-column-end: span 2;
+			background: #00B83F;
+		}
+		div.item2 {
+			background: #1b3650;
+			/* 行 R 开始 */
+			grid-row-start: R;
+			/* 跨 R 2行 */
+            grid-row-end: span R 2;
+			/* 第三个 col-A 开始*/
+			grid-column-start: col-A 3;
+			/* 跨越名为 col-A 的 2次 */
+			grid-column-end: span col-A 2;
+		}
+		div.item3 {
+			background: red;
+			/* 4行开始 */
+			grid-row-start: 4;
+			/* 倒数第 2 列开始 */
+			grid-column-start: col-A -2;
+		}
+
+		div.item4 {
+			background: orange;
+			/*grid-area: r;*/
+		}
+
+		div.item5 {
+			background: #8b1d51;
+			/*grid-area: f;*/
+		}
+
+		div.item6 {
+			background: saddlebrown;
+			/*grid-area: a;*/
+		}
+
+		div.item7 {
+			background: #97fc3d;
+			/*grid-area: b;*/
+		}
+
+		div.item8 {
+			background: #318b87;
+			/*grid-area: e;*/
+		}
+
+		div.item9 {
+			background: #8b0028;
+			/*grid-area: d;*/
+		}
 
 
-        .box {
-            margin-top: 20px;
-            display: grid;
-        }
-        .inner {
-            margin-top: 20px;
-        }
-    </style>
+		.box {
+			margin-top: 20px;
+			display: grid;
+		}
+
+		.inner {
+			margin-top: 20px;
+		}
+	</style>
 </head>
 <body>
 <div class="wrapper">
-    <div class="item1"></div>
-    <div class="item2"></div>
-    <div class="item3"></div>
-    <div class="item4"></div>
-    <div class="item5"></div>
-    <div class="item6"></div>
-    <div class="item7"></div>
-    <div class="item8"></div>
-    <div class="item9"></div>
+	<div class="item1">1</div>
+	<div class="item2">2</div>
+	<div class="item3">3</div>
+	<div class="item4">4</div>
+	<div class="item5">5</div>
+	<div class="item6">6</div>
+	<div class="item7">7</div>
+	<div class="item8">8</div>
+	<div class="item9">9</div>
+	<div class="item9">9</div>
+	<div class="item9">9</div>
 </div>
 
 </body>

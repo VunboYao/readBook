@@ -41,7 +41,101 @@ The most fundamental(基本) unit is the grid line. By defining the placement(�
 # Content-aware tracks (内容感知轨道)
 - min-content
 - max-content
+- fit-content 相比 minmax 更友好.
 
+# Repeating Grid Lines
+- repeat(tracks num, width), 可以与网格中其他的值组合.
+- **不能 nest a repeat inside another repeat**
+
+## Auto-filling tracks
+
+> There’s even a way to set up a simple pattern and repeat it until the grid container is filled
+
+- repeat(auto-fill, minmax(200px, 1fr))
+- only one auto-repeat in a given track template
+- With **auto-fill**, you will always get at least one repetition of the track template.
+- 当实际网格内容的宽度不足网格总宽度时,用 **auto-fit**自适应网格总宽度.实现灵活伸缩.
+
+# Grid Areas
+
+```css
+#grid {
+    display: grid;
+    grid-template-areas:
+        "h h h h"
+        "l c c r"
+        "l f f f" 
+}  
+```
+- the name( h === header ) is not only one;
+- they describe a **rectangular shape**! If you try to set up more **complicated** areas, the entire template is invalid.
+- uppercase and lowercase are difference
+- 如果定义一部分区域, 其余区域空白, 用 **one or more . characters** to fill in
+- 如果设定的 column 大于 area 中设定的数量, 将留下多余的网格
+
+# Attaching Elements to the Grid
+
+## Using Column and Row Lines
+
+- grid-row-start: 行开始位置 
+- grid-row-end: 行结束位置
+- grid-column-start: 列开始位置
+- grid-column-end: 列结束位置
+- **如果忽略了结束位置, 则默认下一个网格线是结束位置**
+- 结束位置可以用 **span number**来描述, 跨越的网格轨道数量. 省略 number 则默认为 1; 不能设置 0 或者 负数. 
+
+- span 可以用于 ending and starting gird lines. 如果定义了 start grid lines and set the ending grid line to be a span value, it will search toward the end of the grid. If you define an ending grid line and make the start line a span value, then it will search toward the start of the grid.
+- 与 span 相反, 设置 **grid-line values 可以为负值**. 当设置一个值在右下角时,可以如下设置
+    ```
+      grid-column-end: -1;        
+      grid-row-end: -1; 
+      or
+      grid-column-start: -2;       
+      grid-row-start: -2;       
+    ```
+- 可以通过命名 grid-lines 来设置相应的值.
+   ```css
+   		.wrapper {
+   			display: grid;
+   			/* 创建5行, name 为 R, 高为 4em */
+   			grid-template-rows: repeat(5, [R] 4em);
+   			/* 创建开头为 2em 宽, 重复5次, 相应名称及宽度 最后 2em 宽. 总12列*/
+   			grid-template-columns: 2em repeat(5, [col-A] 5em [col-B] 5em) 2em;
+   		}
+   		div.item1 {
+   			/* R 2 开始 */
+   			grid-row-start: R 2;
+   			/* 第5行结束 */
+   			grid-row-end: 5;
+   			/* col-B 列开始 */
+   			grid-column-start: col-B;
+   			/* 跨域 2 列 */
+   			grid-column-end: span 2;
+   			background: #00B83F;
+   		}
+   		div.item2 {
+   			background: #1b3650;
+   			/* 行 R 开始 */
+   			grid-row-start: R;
+   			/* 跨 R 2行 */
+               grid-row-end: span R 2;
+   			/* 第三个 col-A 开始*/
+   			grid-column-start: col-A 3;
+   			/* 跨越名为 col-A 的 2次 */
+   			grid-column-end: span col-A 2;
+   		}
+   		div.item3 {
+   			background: red;
+   			/* 4行开始 */
+   			grid-row-start: 4;
+   			/* 倒数第 2 列 col-A 开始 */
+   			grid-column-start: col-A -2;
+ 			/* 均没有结束值,所有默认 set to span 1 */
+   		} 
+   ```
+![](http://www.vunbo.com/usr/uploads/2019/04/1412658525.png)
+
+- 可以通过 area 设定的区域标识符名称来设置 grid lines 名称. 因为显示创建的 grid-template-areas, 会隐式的创建以 -start 和 -end 结尾的 grid lines.
 
 
 
