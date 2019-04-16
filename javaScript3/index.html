@@ -572,7 +572,7 @@
                 timer = requestAnimationFrame(function fn(){
                     let top1 = document.documentElement.scrollTop;
                     if(top1 > 0){
-                        document.body.scrollTop = document.documentElement.scrollTop = top1 - 150;
+                        document.body.scrollTop = document.documentElement.scrollTop = top1 - 200;
                         timer = requestAnimationFrame(fn);
                     }else{
                         cancelAnimationFrame(timer);

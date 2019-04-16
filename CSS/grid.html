@@ -1,96 +1,60 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Title</title>
-	<style type="text/css">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style>
 		* {
 			margin: 0;
 			padding: 0;
 		}
 
-		.wrapper {
+		article {
 			display: grid;
-			/*width: 1000px;*/
-			gap: 10px;
-			grid-template: 30px 30px / repeat(5, 60px);
-			grid-auto-rows: 50px;
-			grid-auto-columns: 50px;
-			grid-auto-flow: column dense;
+			grid-template-columns: [full-start] minmax(1em, 1fr)
+			                       [main-start] minmax(0, 56em) [main-end] minmax(1em, 1fr)[full-end];
+			grid-gap: 1em;
 		}
-		div.item1 {
-			grid-area: 1 / 3/ 5 / 6;
-			background: #00B83F;
+		section {
+			grid-column: main;
 		}
-		div.item2 {
-			background: #1b3650;
+		figure {
+			grid-column: full;
 		}
-		div.item3 {
-			background: red;
+		body {
+			padding: 2em 0;
 		}
-
-		div.item4 {
-			background: orange;
-			/*grid-area: r;*/
+		article > * {
+			background-color: #eaeaea;
+			padding: 2em;
 		}
-
-		div.item5 {
-			grid-column: 5;
-			grid-row: 1 /3 ;
-			background: #8b1d51;
-			/*grid-area: f;*/
+		figure {
+			text-align: center;
 		}
-
-		div.item6 {
-			background: saddlebrown;
-			/*grid-area: a;*/
-		}
-
-		div.item7 {
-			background: #97fc3d;
-			/*grid-area: b;*/
-		}
-
-		div.item8 {
-			background: #318b87;
-			/*grid-area: e;*/
-		}
-
-		div.item9 {
-			background: #8b0028;
-			/*grid-area: d;*/
-		}
-
-
-		.box {
-			margin-top: 20px;
-			display: grid;
-		}
-
-		.inner {
-			margin-top: 20px;
+		img {
+			max-width: 100%;
 		}
 	</style>
 </head>
 <body>
-<div class="wrapper">
-	<div class="item1">1</div>
-	<div class="item2">2</div>
-	<div class="item3">3</div>
-	<div class="item4">4</div>
-	<div class="item5">5</div>
-	<div class="item6">6</div>
-	<div class="item7">7</div>
-	<div class="item8">8</div>
-	<div class="item9">9</div>
-	<div class="item9">9</div>
-	<div class="item9">9</div>
-	<div class="item7">7</div>
-	<div class="item8">8</div>
-	<div class="item9">9</div>
-	<div class="item9">9</div>
-	<div class="item9">9</div>
-</div>
-
+<article>
+	<section>
+		<h1>Article Title</h1>
+		<p>Sed autem necessitatibus quibusdam rerum suscipit aspernatur. Aut voluptatem animi rerum vero et et. Explicabo vel pariatur dolorem voluptas blanditiis quia magni eos. Ab temporibus nam tempora.</p>
+		<p>Pariatur consequatur blanditiis voluptatem. Error in esse temporibus quia. Perferendis molestiae velit deleniti deserunt. Provident qui ullam adipisci optio. Molestias similique et deserunt sint molestias autem non autem. Nemo itaque repellat assumenda nostrum qui eos porro dolorum.</p>
+	</section>
+	<figure>
+		<img src="http://via.placeholder.com/1500x450?text=Image">
+	</figure>
+	<section>
+		<p>Ea a assumenda rerum. Omnis ut voluptatem asperiores eius omnis laborum et. Pariatur et eos expedita eos sint modi est ut. Rerum molestiae magni quasi dolorum consequatur harum molestiae. Aut sunomnis atque deserunt molestiae. Repellendus aut unde impedit fugiat quia qui.</p>
+		<p>Saepe voluptas officia corporis sed. Consequatur nam aperiam enim necessitatibus non doloribus quis ullam. Qui aut quisquam voluptatem neque quidem harum.</p>
+		<p>Sed autem necessitatibus quibusdam rerum suscipit aspernatur. Aut voluptatem animi rerum vero et et. Explicabo vel pariatur dolorem voluptas blanditiis quia magni eos. Ab temporibus nam tempora.</p>
+		<p>Pariatur consequatur blanditiis voluptatem. Error in esse temporibus quia. Perferendis molestiae velit deleniti deserunt. Provident qui ullam adipisci optio. Molestias similique et deserunt sint molestias autem non autem. Nemo itaque repellat assumenda nostrum qui eos porro dolorum.</p>
+	</section>
+</article>
 </body>
 </html>
