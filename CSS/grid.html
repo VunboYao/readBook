@@ -6,55 +6,61 @@
 		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Document</title>
-	<style>
-		* {
-			margin: 0;
-			padding: 0;
-		}
-
-		article {
-			display: grid;
-			grid-template-columns: [full-start] minmax(1em, 1fr)
-			                       [main-start] minmax(0, 56em) [main-end] minmax(1em, 1fr)[full-end];
-			grid-gap: 1em;
-		}
-		section {
-			grid-column: main;
-		}
-		figure {
-			grid-column: full;
-		}
+	<style type="text/css">
 		body {
-			padding: 2em 0;
+			margin: 40px;
 		}
-		article > * {
-			background-color: #eaeaea;
-			padding: 2em;
+		.wrapper {
+			display: grid;
+			gap: 10px;
+			grid-template-columns: repeat(4, [col] 150px);
+			grid-template-rows: repeat(2, [row] auto);
+			background-color: #fff;
+			color: #444;
 		}
-		figure {
-			text-align: center;
+		.box {
+			background-color: #444;
+			color: #fff;
+			border-radius: 5px;
+			padding: 20px;
+			font-size: 150%;
 		}
-		img {
-			max-width: 100%;
+		.a {
+			grid-column: col 1/ col 3;
+			grid-row: 1;
+		}
+		.b {
+			grid-column: 3 / 5;
+		}
+		.c {
+			grid-column: col / col 3;
+			grid-row: row 2;
+		}
+		.d {
+			grid-column: col 3 / span 2;
+			display: grid;
+			gap: 10px;
+			grid-template-columns: 1fr 1fr;
+		}
+		.box > .box {
+			background: #efefef;
+			color: #444;
+		}
+		.e {
+			grid-column: 1 / 3;
 		}
 	</style>
 </head>
 <body>
-<article>
-	<section>
-		<h1>Article Title</h1>
-		<p>Sed autem necessitatibus quibusdam rerum suscipit aspernatur. Aut voluptatem animi rerum vero et et. Explicabo vel pariatur dolorem voluptas blanditiis quia magni eos. Ab temporibus nam tempora.</p>
-		<p>Pariatur consequatur blanditiis voluptatem. Error in esse temporibus quia. Perferendis molestiae velit deleniti deserunt. Provident qui ullam adipisci optio. Molestias similique et deserunt sint molestias autem non autem. Nemo itaque repellat assumenda nostrum qui eos porro dolorum.</p>
-	</section>
-	<figure>
-		<img src="http://via.placeholder.com/1500x450?text=Image">
-	</figure>
-	<section>
-		<p>Ea a assumenda rerum. Omnis ut voluptatem asperiores eius omnis laborum et. Pariatur et eos expedita eos sint modi est ut. Rerum molestiae magni quasi dolorum consequatur harum molestiae. Aut sunomnis atque deserunt molestiae. Repellendus aut unde impedit fugiat quia qui.</p>
-		<p>Saepe voluptas officia corporis sed. Consequatur nam aperiam enim necessitatibus non doloribus quis ullam. Qui aut quisquam voluptatem neque quidem harum.</p>
-		<p>Sed autem necessitatibus quibusdam rerum suscipit aspernatur. Aut voluptatem animi rerum vero et et. Explicabo vel pariatur dolorem voluptas blanditiis quia magni eos. Ab temporibus nam tempora.</p>
-		<p>Pariatur consequatur blanditiis voluptatem. Error in esse temporibus quia. Perferendis molestiae velit deleniti deserunt. Provident qui ullam adipisci optio. Molestias similique et deserunt sint molestias autem non autem. Nemo itaque repellat assumenda nostrum qui eos porro dolorum.</p>
-	</section>
-</article>
+<div class="wrapper">
+	<div class="box a">A</div>
+	<div class="box b">B</div>
+	<div class="box c">C</div>
+	<div class="box d">
+		<div class="box e">E</div>
+		<div class="box f">F</div>
+		<div class="box g">G</div>
+	</div>
+</div>
 </body>
 </html>

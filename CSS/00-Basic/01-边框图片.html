@@ -21,25 +21,25 @@
             如果只通过source制定了哪一张图片作为边框的图片，默认情况下会将图片的放到边框的四个顶点
             如果设置了边框图片，那么就不会显示边框的颜色，边框图片的优先级高于边框颜色
             */
-            border-image-source: url('./img/border.jpg');
+            border-image-source: url('./img/vue.png');
 
             /* 上右下左 四个方向按照指定的距离切割图片   每一个小矩形默认是70 */
             /* 参数后加入fill, 可让中间的图片显示。显示方式与图片填充方式有关 */
             /*border-image-slice: 70 70 70 70 fill;*/
-            border-image-slice: 70 70 70 70;
+            border-image-slice: 100 0 0 0;
 
             /* 告诉浏览器边框图片显示的宽度，并不指定边框的宽度
             注意点：如果通过border-image-width 指定了边框图片的宽度，那么图片将按指定的宽度显示。默认的边框宽度无效*/
-            /*border-image-width: 10px;*/
+            border-image-width: 50px;
 
             /* stretch: 指定边框图片，除了4个角以为的图片如何填充，默认是拉伸
                repeat: 重复除了四个角以为的图片
                round: 除了四个顶点意外，图片自适应其余位置
                space:  类似repeat, 如果无法完整平铺所有图像，扩展空间会分布在图像周围*/
-            border-image-repeat: space;
+            border-image-repeat: repeat;
 
             /*告诉浏览器边框图片需要向外移动多少*/
-            border-image-outset: 80px;
+            border-image-outset: 50px;
         }
     </style>
 </head>
