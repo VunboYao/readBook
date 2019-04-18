@@ -51,6 +51,20 @@
                 border: 1px solid #000;
             }
         </style>-->
+        <style>
+            .item {
+                width: 200px;
+                height: 200px;
+                border: 1px solid #000;
+                position: relative;
+            }
+            .item::after {
+                position: absolute;
+                top: 0;
+                left: 0;
+                background: #fff;
+            }
+        </style>
     </head>
     <body>
         <!--   <div id="id" class='div'>

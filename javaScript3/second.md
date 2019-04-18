@@ -966,6 +966,7 @@ font-family|style.fontFamily
 
 **2.计算的样式**
 - DOM2级样式增强了 document.defaultView,提供了 getComputedStyle()方法。
+- 也可以通过 window.getComputedStyle() 获取改方法
 - getComputedStyle()方法，接受2个参数：要取得计算样式的元素和一个伪元素字符串（例如":after"）。如果不需要伪元素，第二个参数可以是null.
 - 能够获取到<style\>中定义的CSS样式
 - IE中使用 元素的 currentStyle 属性

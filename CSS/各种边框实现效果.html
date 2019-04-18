@@ -6,7 +6,9 @@
 	<style>
 		body {
 			margin-bottom: 100px;
+			background: #eee;
 		}
+
 		div {
 			width: 200px;
 			height: 200px;
@@ -34,7 +36,7 @@
 	<style>
 		[class='borderImage'] {
 			border: 1em solid transparent;
-			border-image: linear-gradient(to right, #000,#000) 1% round;
+			border-image: linear-gradient(to right, #000, #000) 1% round;
 		}
 	</style>
 	<!--4.multipleColor-->
@@ -46,10 +48,10 @@
 			/*border: 5px solid yellow;
 			outline: 5px dashed red;*/
 
-			border: 5px solid red;
+			border: 5px solid transparent;
 			padding: 5px;
-			background: linear-gradient(to right, #fff,#fff), yellow;
-			background-clip: content-box, padding-box;
+			background: linear-gradient(to right, #fff, #fff), linear-gradient(yellow, yellow), red;
+			background-clip: content-box, padding-box, border-box;
 		}
 	</style>
 	<!--5.混合边框-->
@@ -57,10 +59,12 @@
 		.body {
 			display: grid;
 			grid-template-columns: repeat(3, minmax(25vw, 1fr));
-			grid-auto-rows: 200px;
+			grid-template-rows: 200px 200px;
 			gap: 10px;
 			padding: 10px;
+			margin-bottom: 20px;
 		}
+
 		.body div:nth-child(1) {
 			width: calc(100% - 20px);
 			height: calc(150px - 20px);
@@ -68,52 +72,229 @@
 			outline: 10px dashed red;
 			box-shadow: 0 0 0 10px;
 		}
+
 		.body > div:nth-child(2) {
 			border: 10px dashed;
 			background: linear-gradient(to top, red 10px, transparent 10px),
-						linear-gradient(to right, red 10px, transparent 10px),
-						linear-gradient(to bottom, red 10px,transparent 10px),
-						linear-gradient(to left, red 10px, transparent 10px);
+			linear-gradient(to right, red 10px, transparent 10px),
+			linear-gradient(to bottom, red 10px, transparent 10px),
+			linear-gradient(to left, red 10px, transparent 10px);
 			background-origin: border-box;
 		}
+
 		.body > div:nth-child(3) {
 			border: 10px dashed;
 			background: linear-gradient(to top, #fff, #fff), red;
 			background-clip: padding-box, border-box;
 		}
 	</style>
-	<!--6.模糊边框-->
+	<!--7.borderImage渐变边框-->
 	<style>
-		.blur-border {
-			margin-top: 20px;
-			display: grid;
-			grid-template-columns: repeat(3, minmax(30vw, 1fr));
-			grid-template-rows: 200px 200px;
-			gap: 2vw;
+		.border-image {
+			width: 300px;
+			height: 150px;
+			border: 5px solid;
+			border-image: linear-gradient(to bottom, #0099cc, #f27280) 1;
 		}
-		.blur-border > div {
-			min-height: 200px;
-			background: url("../img/vue.png") no-repeat;
-			background-size: cover;
+	</style>
+	<!--8.嵌套型渐变-->
+	<style>
+		.gradient-border {
+			padding: 5px;
+			margin: 50px;
+			width: 300px;
+			height: 150px;
+			border-radius: 75px;
+			border: 5px solid #eee;
+			background: linear-gradient(#0099cc, #f27280);
 		}
-		.blur-border > div:first-child {
+
+		.gradient-border .content {
+			background: #fff;
+			width: 280px;
+			height: 130px;
+			border-radius: 70px;
+		}
+	</style>
+	<!--9.伪元素实现圆角边框渐变-->
+	<style>
+		.pseudoGradient-border {
+			margin: 50px;
+			width: 300px;
+			height: 150px;
+			background: #fff;
+			border-radius: 75px;
 			position: relative;
-			border: 1.3em solid rgba(0,0,0,0.1);
-			background-origin: border-box;
-			background-clip: content-box;
 		}
-		.blur-border > div:first-child::before {
+
+		.pseudoGradient-border::before {
+			--borderWidth: 20px;
 			content: '';
 			position: absolute;
+
+			top: calc(-1 * var(--borderWidth));
+			left: calc(-1 * var(--borderWidth));
+			height: calc(100% + var(--borderWidth) * 2);
+			width: calc(100% + var(--borderWidth) * 2);
+			background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b);
+			border-radius: calc(5 * var(--borderWidth));
 			z-index: -1;
-			top: -1.3em;
-			right: -1.3em;
-			left: -1.3em;
-			bottom: -1.3em;
-			border-color: transparent;
-			background: inherit;
-			background-clip: border-box;
-			filter: blur(9px);
+		}
+	</style>
+	<!--10.multiple-bg-Gradient-border-->
+	<style>
+		.multiple-bg-Gradient-border {
+			margin: 50px;
+			border-radius: 70px;
+			border: 5px solid transparent;
+			width: 300px;
+			height: 150px;
+			box-shadow: 0 0 5px #ddd;
+			background-image: linear-gradient(to right, #ff7c2d 3%, #ff016e 97%), linear-gradient(to bottom, #fff3b6, #e27d2c);
+			background-origin: border-box;
+			background-clip: content-box, border-box;
+		}
+	</style>
+	<!--11.渐变图形按钮-->
+	<style>
+		.outer {
+			position: relative;
+			margin: 50px auto;
+			padding: 6px 30px;
+			width: 300px;
+			height: 60px;
+			border-radius: 35px;
+			background-image: linear-gradient(#fff 0%, #ffe2b6 100%);
+		}
+
+		.outer::before, .outer::after {
+			content: '';
+			position: absolute;
+			width: 50%;
+			top: 0;
+			bottom: 0;
+			box-shadow: 0 8px 10px rgba(255, 0, 0, 0.25);
+			z-index: -2;
+		}
+
+		.outer::before {
+			left: 0;
+			border-radius: 35px 0 35px 35px;
+		}
+
+		.outer::after {
+			right: 0;
+			border-radius: 0 35px 35px 35px;
+		}
+
+		.inner {
+			position: absolute;
+			width: 20px;
+			height: 20px;
+			top: 100%;
+			left: 50%;
+			transform: translate(-50%, -50%) rotateZ(45deg);
+			z-index: -1;
+			background-image: linear-gradient(40deg, #ffe2b1 0%, #ffe4b6 100%);
+			box-shadow: 1px 1px 12px 5px rgba(255, 0, 0, 0.25);
+		}
+	</style>
+	<!--12.优惠券-->
+	<style>
+		.coupon {
+			margin: 50px;
+			min-width: 702px;
+			height: 160px;
+			border-radius: 12px;
+			background-image: linear-gradient(#ff2655, #ff4f26),
+			linear-gradient(-90deg, #fff, #fff);
+			background-repeat: no-repeat;
+			background-position: right center;
+			background-size: 210px 100%, cover;
+			position: relative;
+		}
+
+		.coupon::before,
+		.coupon::after {
+			content: '';
+			position: absolute;
+			width: 20px;
+			height: 20px;
+			background: radial-gradient(circle, #eeeeee 50%, transparent 50%),
+			radial-gradient(circle, #6c00af 50%, transparent 50%);
+			background-size: 20px 20px;
+			right: 200px;
+		}
+
+		.coupon::before {
+			top: -10px;
+		}
+
+		.coupon::after {
+			bottom: -10px;
+		}
+	</style>
+	<!--13.渐变PK进度条-->
+	<style>
+		.progress {
+			margin: 100px;
+			width: 608px;
+			height: 90px;
+			border-radius: 45px;
+			position: relative;
+			box-shadow: 0 8px 10px rgba(255, 0, 0, 0.25);
+			overflow: hidden;
+		}
+		.progress::before,
+		.progress::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+		.progress::before {
+			background: linear-gradient(-180deg, #ee0037  0%, #ff355d  100%) no-repeat;
+			left: -5%;
+			transform: skew(-20deg);
+			background-size: 50% 100%;
+		}
+		.progress::after {
+			background: linear-gradient(-180deg, #3f9ffc 2%, #2f3ffc 100%) no-repeat;
+			z-index: -2;
+		}
+	</style>
+	<!--14.动画渐变边框-->
+	<style>
+		.animation-border {
+			position: relative;
+			margin: 50px;
+			width: 200px;
+			height: 200px;
+			background: linear-gradient(#000, #272727);
+		}
+		.animation-border::before,
+		.animation-border::after {
+			content: '';
+			position: absolute;
+			left: -.5em;
+			top:-.5em;
+			background: linear-gradient(45deg, #fb0094, #0000ff, #00ff00,#ffff00, #ff0000, #fb0094,#0000ff, #00ff00,#ffff00, #ff0000);
+			background-size: 400%;
+			width: calc(100% + 1em);
+			height: calc(100% + 1em);
+			z-index: -1;
+			animation: hue 1s linear infinite;
+			border-radius: 5px;
+		}
+		@keyframes hue {
+			from {
+				filter: hue-rotate(0deg);
+			}
+			to {
+				filter: hue-rotate(360deg);
+			}
 		}
 	</style>
 </head>
@@ -132,14 +313,25 @@
 	<div></div>
 	<div></div>
 </div>
-<!--6.模糊边框-->
-<div class="blur-border">
-	<div></div>
-	<div></div>
-	<div></div>
-	<div></div>
-	<div></div>
-	<div></div>
+<!--7.border-image渐变边框-->
+<div class="border-image"></div>
+<!--8.潜套型渐变-->
+<div class="gradient-border">
+	<div class="content"></div>
 </div>
+<!--9.伪元素实现-->
+<div class="pseudoGradient-border"></div>
+<!--10.多背景实现-->
+<div class="multiple-bg-Gradient-border"></div>
+<!--11.渐变图形按钮-->
+<div class="outer">
+	<div class="inner"></div>
+</div>
+<!--12.coupon优惠券的实现-->
+<div class="coupon"></div>
+<!--13.渐变PK进度条-->
+<div class="progress"></div>
+<!--14.动画渐变边框-->
+<div class="animation-border"></div>
 </body>
 </html>

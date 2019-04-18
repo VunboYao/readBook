@@ -4193,11 +4193,9 @@ console.log(b)*/
     console.log(Math.floor(Math.random() * 5) + 4);
 }*/
 
-let a = document.querySelector('.demo');
-console.log(a.previousElementSibling);
-
-
-
+let item = document.querySelector('.item');
+let newItem = getComputedStyle(item);
+console.log(newItem);
 
 
 
