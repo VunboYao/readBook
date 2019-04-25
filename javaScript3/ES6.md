@@ -54,8 +54,159 @@ for (let i of arr.entries()) {
 - 模板字符串   
 
 # 面向对象
-- class 关键字,构造器和类分开
-- class 里面直接加方法
+
+## class 关键字,定义类
+- class 中有个 constructor 方法, 这就是构造方法, **this 关键字** 则代表实例对象.
+- class 中定义方法时, **不需要** 添加 **function** 关键字, 方法之间**不需要逗号分隔**
+    ```javascript
+    class Point {
+        constructor(x,y) {
+            this.x = x;
+            this.y = y;
+        }
+        toString() {
+            return `(${this.x}, ${this.y})`;
+        }
+    }
+    let p = new Point(1,2);
+    console.log(typeof Point); // function
+    console.log(Point === Point.prototype.constructor); // true
+    ``` 
+- **类的数据类型就是函数, 类本身就指向构造函数**
+- 构造函数的 prototype 属性, 在 ES6 的 '类'上面继续存在. 事实上, 类的所有方法都定义在类的 prototype 属性上面
+- 由于类的新方法可以添加在 prototype 对象上面. Object.assign 方法可以很方便的一次向类添加多个方法
+    ```javascript
+    class Point {
+        constructor(x,y) {
+           
+        }
+    }
+    Object.assign(Point.prototype,{
+        toString(){},
+        toValue(){}
+    });
+    ```
+- **类的内部所有定义的方法, 都是不可枚举的(non-enumerable)**, 无法通过 Object.keys(Point.prototype) 获取方法. **ES5 中方法可以枚举.**
+
+## constructor
+
+- constructor 方法时类的默认方法, 通过 new 命令生成对象时, 自动调用该方法. **必须有 constructor 方法**, 没有显示定义, 一个空的 constructor 方法会被默认添加
+- constructor 方法**默认返回实例对象 (即 this)**, 可以指定返回**另外一个对象**.
+- **必须通过 new 调用**,否则回报错.
+
+## 类的实例
+- 与 ES5 一样, 实例的属性除非显示定义在其本身 (即定义在 **this** 对象上), 否则都是定义在原型上 (即定义在 **class** 上)
+- hasOwnProperty(propertyName) ：用于检查给定的属性在当前对象实例中（而不是在实例
+的原型中）是否存在。其中，作为参数的属性名（ propertyName ）必须以字符串形式指定（例如： o.hasOwnProperty("name") ）。
+- 与 ES5 一样, 类的所有实例共享一个原型对象. 可以通过 **\_\_proto\_\_** 为"类"添加方法,但最好不要.
+
+## 取值函数 (getter) 和存值函数 (setter)
+
+- 与 ES5 一样, 在'类'的内部可以使用 get 和 set 关键字, 对某个属性设置存值函数和取值函数,拦截该属性的存取行为.
+    ```javascript
+    class Myclass {
+        constructor(){}
+        get prop() {
+            return 'getter';
+        }
+        set prop(value) {
+            console.log('setter: ' + value);
+        }
+    }
+    let demo = new Myclass()
+    demo.prop = 123; // setter: 123
+    console.log(demo.prop); // getter
+    ```
+- 存值函数和取值函数是设置在属性的 Descriptor 对象上的. 与 ES5 完全一致
+
+## 属性表达式
+- 类的属性名,可以采用表达式
+    ```javascript
+    let methodName = 'getA'
+    class Square{
+        constructor(le) {}
+        [methodName]() {}
+    }
+    ```
+
+## Class 表达式
+- 与函数一样, 类也可以使用表达式的形式定义
+- 采用 class 表达式, 可以写出立即执行的 class
+    ```javascript
+    let person = new class {
+        constructor(name) {
+            this.name = name;
+        }
+        sayName() {
+            console.log(this.name);
+        }
+    }('yyb')
+    person.sayName();// yyb
+    ```
+
+## 注意点:
+- 默认严格模式
+- 类**不存在变量提升** (hoist), 与 ES5 完全不同
+- name 属性总是返回紧跟在 class 关键字后面的类名.
+- 如果方法之前加上星号(*),表示该方法是一个 Generator 函数.
+- this 的指向,默认指向类的实例.
+
+## 静态方法
+- 类相当于实例的原型, 所有在类中定义的方法, 都会被实例继承. 如果在一个方法之前, 加上 static 关键字, 就表示该方法不会被实例继承, 而是直接通过类来调用. 这就称为 **"静态方法"**
+    ```javascript
+    class Foo {
+        static classMethod() {
+            console.log('hello');
+        }
+    }
+    Foo.classMethod(); // hello
+    
+    let foo = new Foo()
+    foo.classMethod(); // TypeError: foo.classMethod is not a function
+    ```
+- **如果静态方法包含 this 关键字, 这个 this 指的是类,而不是实例**
+- 静态方法可以与非静态方法重名, 父类的静态方法, 可以被子类继承. 静态方法也可以从 super 对象上调用
+
+## 实例属性的新写法
+- 实例属性除了定义在 constructor() 方法里面的 this 上面, 也可以定义在类的最顶层
+- 实例属性与方法在同一层级, 不需要在实例属性前面加上 this
+
+## 静态属性
+- 静态属性指的是 Class 本身的属性, 即 **Class.propName**, 而不是定义在实例对象 (this) 上的属性.
+    ```javascript
+    class Foo{}
+    
+    Foo.prop = 1;
+    console.log(Foo.prop); // 1
+    ```
+- 目前,只有这种写法可行, 因为 ES6 明确规定, Class 内部只有静态方法, 没有静态属性.
+- 有一个提案: 在实例属性的前面,加上 static 关键字.
+    ```javascript
+    class Foo{
+        static prop = 1;
+        constructor() {
+            console.log(Foo.prop);
+        }
+    }
+    ```
+
+## 私有方法和私有属性
+- 私有方法和私有属性, 是只能在类的内部访问的方法和属性, 外部不能访问. 这是常见需求,有利于代码的封装, 但 ES6 不提供, 只能通过变通方法实现.
+- 一种是在命名上加以区别. 如 _bar. 方法前加上下划线,表示一个只限内部使用的方法. 但是不保险, 在类的外部, 还是可以调用到这个方法.
+- 另一种方法索性将私有方法移出模块, 因为模块内部的所有方法都是对外可见的.
+- 还有一种方法是利用 **Symbol** 值的唯一性, 将私有方法的名字命名为一个 Symbol 值. 但是也不是绝对不行, Reflect.ownKeys() 依然可以拿到它们.
+
+## 私有属性的提案
+- 在属性名前加上'#'表示私有属性.
+- 只能在内部使用,在类的外部使用则报错.
+- 也可以用于私有方法
+- 私有属性也可以设置 getter 和 setter 方法
+- 私有属性不限于从 this 引用, 只要是在类的内部, 实例也可以引用私有属性.
+- 私有属性和私有方法前面, 也可以加上 static 关键字, 表示这是一个静态的私有属性或私有方法.
+
+
+
+
 
 ## 继承
 - extends

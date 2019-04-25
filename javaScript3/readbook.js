@@ -4192,14 +4192,85 @@ console.log(b)*/
 /*for (let i = 0; i < 20; i++) {
     console.log(Math.floor(Math.random() * 5) + 4);
 }*/
+/*class Point {
+    constructor(x,y) {
+        this.x = x;
+        this.y = y;
+    }
+    toString() {
+        return `(${this.x}, ${this.y})`;
+    }
+}
+let p = new Point(1,2);
+console.log(p);
+/!*function Point(x,y) {
+    this.x = x;
+    this.y = y;
+}
+Point.prototype.toString = function () {
+    return `(${this.x}, ${this.y})`;
+}
+let p = new Point(1,2);
+console.log(p)
+console.log(typeof Point); // function
+console.log(Point === Point.prototype.constructor); // true*!/
+console.log(p.hasOwnProperty('x'));
+console.log(p.hasOwnProperty('toString'));*/
+/*class Myclass {
+    constructor(){}
+    get prop() {
+        return 'getter';
+    }
+    set prop(value) {
+        console.log('setter: ' + value);
+    }
+}
+let demo = new Myclass()
+demo.prop = 123; // setter: 123
+console.log(demo.prop); // getter
 
+const MyClass = class Me{
+    getClassName() {
+        return Me.name;
+    }
+}
+let a = new Myclass();
+console.log(a.name);*/
+/*class Logger{
+    constructor() {
+        this.printName = this.printName.bind(this);
+    }
+    printName (name = 'there') {
+        this.print(`Hello ${name}`)
+    }
+    print(text) {
+        console.log(text);
+    }
+}
 
+const logger = new Logger()
+const { printName } = logger;
+printName()*/
+/*class Foo {
+    static classMethod() {
+        this.baz();
+    }
+    static baz() {
+        console.log('hello');
+    }
+}
 
-
-
-
-
-
-
-
+Foo.classMethod();*/
+/*class IncreasingCounter {
+    constructor () {
+        this._count = 0;
+    }
+    get value() {
+        console.log('getting the current value');
+        return this._count;
+    }
+    increment() {
+        this._count++;
+    }
+}*/
 

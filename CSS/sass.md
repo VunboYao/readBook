@@ -418,3 +418,29 @@ nav {
       }
     } 
     ```
+
+## Sass Function 函数
+
+```
+@function px2vm($px,$width: 750) {
+  @return $px / ($width / 100) + 'vw';
+}
+
+@function px2rem($px,$root: 16) {
+  @return $px / $root + rem;
+}
+
+div {
+  width: px2vm(75);
+  font-size: px2rem(32);
+}
+ 
+```
+
+输出结果:
+
+```
+div {
+  width: "10vw";
+  font-size: 2rem; } 
+```
