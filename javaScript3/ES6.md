@@ -90,8 +90,8 @@ for (let i of arr.entries()) {
 
 ## constructor
 
-- constructor 方法时类的默认方法, 通过 new 命令生成对象时, 自动调用该方法. **必须有 constructor 方法**, 没有显示定义, 一个空的 constructor 方法会被默认添加
-- constructor 方法**默认返回实例对象 (即 this)**, 可以指定返回**另外一个对象**.
+- constructor 方法是类的**默认方法**, 通过 new 命令生成对象时, 自动调用该方法. **必须有 constructor 方法**, 没有显示定义, 一个空的 constructor 方法会被默认添加
+- constructor 方法**默认返回实例对象 (即 this)**, 可以指定返回**另外一个对象**. 则 instanceof 方法会返回 false
 - **必须通过 new 调用**,否则回报错.
 
 ## 类的实例
@@ -204,9 +204,77 @@ for (let i of arr.entries()) {
 - 私有属性不限于从 this 引用, 只要是在类的内部, 实例也可以引用私有属性.
 - 私有属性和私有方法前面, 也可以加上 static 关键字, 表示这是一个静态的私有属性或私有方法.
 
+## new.target 属性
 
+new 是从构造函数生成实例对象的命令. ES6 为 new 命令引入了一个 new.target 属性, 该属性一般用在构造函数之中, **返回 new 命令作用的那个构造函数**. 如果构造函数不是通过 new 命令或 Reflect.construct() 调用的. new.target 会返回 undefined, 因此这个属性可以用来确定构造函数是怎么调用的.
+```javascript
+function Person(name) {
+    if (new.target !== undefined) {
+        this.name = name;
+    } else {
+        throw new Error('please use new command')
+    }
+}
+// 另一种写法
+function Person(name) {
+    if (new.target === Person) {
+        this.name = name;
+    } else {
+        throw new Error('please use new command')
+    }
+}
+let person = new Person('yb'); // 正确
+let notAPerson = Person.call(person, 'yb'); // error
+```
+```javascript
+// Class 内部调用 new.target, 返回当前 Class
+class Rectangle {
+    constructor(length, width) {
+        console.log(new.target === Rectangle);
+        this.length = length;
+        this.width = width;
+    }
+}
+let obj = new Rectangle(3,4); // true
+```
+- 需要注意的是, 子类继承父类时, new.target 会返回子类.
 
+```javascript
+class Rectangle {
+    constructor(length, width) {
+        console.log(new.target === Rectangle);
+    }
+}
+class Square extends Rectangle {
+    constructor(length,width) {
+        super(length, width)
+    }
+}
 
+let obj = new Square(3,4); // false
+console.log(obj); // Square
+```
+
+- 利用这个特点,可以写出不能独立使用,必须继承后才能使用的类
+
+```javascript
+class Shape {
+    constructor() {
+        if (new.target === Shape) {
+            throw new Error('本类不能实例化');
+        }
+    }
+}
+class Rectangle extends Shape {
+    constructor(length, width) {
+        super();
+    }
+}
+
+var x = new Shape();  // 报错
+var y = new Rectangle(3, 4);  // 正确
+```
+- 上面的代码, Shape 类不能被实例化, 只能用于继承. 注意, 在函数外部, 使用 new.target 会报错.
 
 ## 继承
 - extends

@@ -4273,4 +4273,45 @@ Foo.classMethod();*/
         this._count++;
     }
 }*/
+/*function Person(name) {
+    if (new.target !== undefined) {
+        this.name = name;
+    } else {
+        throw new Error('please use new command')
+    }
+}*/
+/*function Person(name) {
+    if (new.target === Person) {
+        this.name = name;
+    } else {
+        throw new Error('please use new command')
+    }
+}*/
+/*class Rectangle {
+    constructor(length, width) {
+        console.log(new.target === Rectangle);
+    }
+}
+class Square extends Rectangle {
+    constructor(length,width) {
+        super(length, width)
+    }
+}
 
+let obj = new Square(3,4); // false
+console.log(obj); // Square*/
+class Shape {
+    constructor() {
+        if (new.target === Shape) {
+            throw new Error('本类不能实例化');
+        }
+    }
+}
+class Rectangle extends Shape {
+    constructor(length, width) {
+        super();
+    }
+}
+
+var x = new Shape();  // 报错
+var y = new Rectangle(3, 4);  // 正确
