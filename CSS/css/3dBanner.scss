@@ -72,12 +72,11 @@ ul {
   position: absolute;
   top: 0;
   left: -200%;
-  width: px2vm(662 * 10);
   height: 100%;
 }
 
 .banner-list > li {
-  width: calc(100% / 10);
+  width: px2vm(662);
   height: 100%;
   float: left;
   transform: scale(0.94);

@@ -52,11 +52,10 @@ ul {
   position: absolute;
   top: 0;
   left: -200%;
-  width: 882.6666666667vw;
   height: 100%; }
 
 .banner-list > li {
-  width: calc(100% / 10);
+  width: 88.2666666667vw;
   height: 100%;
   float: left;
   transform: scale(0.94); }

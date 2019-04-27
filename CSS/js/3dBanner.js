@@ -24,36 +24,54 @@ function yybAnimation(ele,target) {
     }, 20)
 }
 
+// 列表
+let oBannerList = document.querySelector('.banner-list');
 // 所有图片
 let allImages = document.querySelectorAll('.banner-list li');
 // 数量
 let len = allImages.length;
 // 宽度
 let oWrapWidth = document.querySelector('.banner-wrap').offsetWidth;
-// 列表
-let oBannerList = document.querySelector('.banner-list');
+
 // 当前左边滚动距离
 let oScrollLeft;
 let index = 2;
 let oBannerWrap = document.querySelector('.banner-wrap');
-let startX, currentX, endX;
+let startX, currentX, endX,going;
 let nowTimer = null;
+
+let cloneA = allImages[0].cloneNode(true);
+let cloneB = allImages[1].cloneNode(true);
+let cloneC = allImages[allImages.length - 2].cloneNode(true);
+let cloneD = allImages[allImages.length - 1].cloneNode(true);
+oBannerList.insertAdjacentElement('beforeend', cloneA);
+oBannerList.insertAdjacentElement('beforeend', cloneB);
+oBannerList.insertAdjacentElement('afterbegin', cloneD);
+oBannerList.insertAdjacentElement('afterbegin', cloneC);
+
+let newLi = document.querySelectorAll('.banner-list li');
+console.log(newLi.length);
+newLi[index].classList.add('banner-item_current');
+
+let allWidth = oBannerList.style.width = oWrapWidth * 10 + 'px';
+
+
 
 function showImg() {
     nowTimer = setInterval(() => {
-        for (let i = 0; i < len; i++) {
-            allImages[i].className = ''
+        for (let i = 0; i < 10; i++) {
+            newLi[i].className = ''
         }
         if (index >= 7) {
             index = 2;
             oBannerList.style.left = -oWrapWidth + 'px';
-            allImages[2].className = 'banner-item_current';
+            newLi[2].className = 'banner-item_current';
         } else {
             index++
         }
-        allImages[index].className = 'banner-item_current';
+        newLi[index].className = 'banner-item_current';
         yybAnimation(oBannerList, -index * oWrapWidth);
-    },3000)
+    },4000)
 }
 showImg();
 
@@ -68,6 +86,10 @@ oBannerWrap.addEventListener('touchmove',function (ev) {
     oBannerList.style.left = oScrollLeft + moveX + 'px';
 })
 oBannerWrap.addEventListener('touchend',function (ev) {
+    if (going) {
+        return;
+    }
+    going = true;
     endX = ev.changedTouches[0].clientX;
     let lastX = endX - startX;
     if (lastX > 30) {
@@ -76,29 +98,33 @@ oBannerWrap.addEventListener('touchend',function (ev) {
         if (index <= 2) {
             index = 8;
             oBannerList.style.left = -oWrapWidth * 8 + 'px';
-            allImages[8].className = 'banner-item_current';
+            newLi[8].className = 'banner-item_current';
         }
         yybAnimation(oBannerList, -index * oWrapWidth);
-        for (let i = 0; i < len; i++) {
-            allImages[i].className = ''
+        for (let i = 0; i < 10; i++) {
+            newLi[i].className = ''
         }
-        allImages[index].className = 'banner-item_current';
+        newLi[index].className = 'banner-item_current';
     } else {
         yybAnimation(oBannerList, -index * oWrapWidth);
     }
     if (lastX < -30) {
         index++;
+        console.log(index);
         if (index >= 8) {
             index = 2;
             oBannerList.style.left = -oWrapWidth + 'px';
-            allImages[2].className = 'banner-item_current';
+            newLi[2].className = 'banner-item_current';
         }
         yybAnimation(oBannerList, -index * oWrapWidth);
-        for (let i = 0; i < len; i++) {
-            allImages[i].className = ''
+        for (let i = 0; i < 10; i++) {
+            newLi[i].className = ''
         }
-        allImages[index].className = 'banner-item_current';
+        newLi[index].className = 'banner-item_current';
+    }else {
+        yybAnimation(oBannerList, -index * oWrapWidth);
     }
+    going = false;
     showImg();
 })
 

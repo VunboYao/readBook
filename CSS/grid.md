@@ -33,6 +33,9 @@
 - place-self: 单元格位置简写
 - order: 重写顺序
 
+# 使用注意点:
+- 在 grid 布局中, 每个子项(padding-bottom)所相对的计算的宽度已经划分好了, 为当前子项, 并不是父元素的宽度.
+
 # Grid 布局指南
 
 CSS Grid 布局是一个二维布局系统, 可以同时处理列和行. 通过将 CSS 规则应用于 **父元素**(成为 Grid Container 网格容器)和其 **子元素** (成为 Grid Items 网格项), 即可轻松使用 Grid 布局.

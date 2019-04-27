@@ -792,12 +792,16 @@ if (document.compatMode === 'CSS1Compat') {
 - 在读模式下， outerHTML 返回调用它的元素及所有子节点的 HTML 标签。
 - 在写模式下， outerHTML会根据指定的 HTML 字符串创建新的 DOM子树，然后用这个 DOM 子树完全替换调用元素。
 
-**3.insertAdjacentHTML()方法**
-- 该方法接收两个参数：插入位置和要插入的HTML文本。第一个参数必须是下列值之一
+~~**3.insertAdjacentHTML()方法**~~
+**3.insertAdjacentElement()方法**, FireFox 48+
+~~- 该方法接收两个参数：插入位置和要插入的HTML文本。第一个参数必须是下列值之一~~
+- 该方法接收两个参数：插入位置和要插入的 DOM 节点。第一个参数必须是下列值之一
 - "beforebegin" ，在当前元素之前插入一个紧邻的同辈元素；
 - "afterbegin" ，在当前元素之下插入一个新的子元素或在第一个子元素之前再插入新的子元素；
 - "beforeend" ，在当前元素之下插入一个新的子元素或在最后一个子元素之后再插入新的子元素；
 - "afterend" ，在当前元素之后插入一个紧邻的同辈元素。
+
+
 
 ```
 // 作为前一个同辈元素插入
