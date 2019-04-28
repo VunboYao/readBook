@@ -37,7 +37,7 @@ let oWrapWidth = document.querySelector('.banner-wrap').offsetWidth;
 let oScrollLeft;
 let index = 2;
 let oBannerWrap = document.querySelector('.banner-wrap');
-let startX, currentX, endX,going;
+let startX, currentX, endX,going=false;
 let nowTimer = null;
 
 let cloneA = allImages[0].cloneNode(true);
@@ -65,13 +65,12 @@ function showImg() {
         if (index >= 7) {
             index = 2;
             oBannerList.style.left = -oWrapWidth + 'px';
-            newLi[2].className = 'banner-item_current';
         } else {
             index++
         }
         newLi[index].className = 'banner-item_current';
         yybAnimation(oBannerList, -index * oWrapWidth);
-    },4000)
+    },2000)
 }
 showImg();
 

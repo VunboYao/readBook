@@ -62,7 +62,7 @@ ul {
   .banner-list > li.banner-item_current {
     transform: scale(1); }
 
-.banner-list > li > img {
+.banner-list > li img {
   width: 100%;
   height: 100%;
   border-radius: 1.3333333333vw;
