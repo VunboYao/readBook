@@ -42,11 +42,12 @@ let allImg = document.querySelectorAll('.yybSwiper-item');
 
 let len = allImg.length;
 let zIndex = 99;
-let index = 1;
+let index = 0;
 let oWrap = document.querySelector('.yybSwiper-wrap');
 let oWidth = oWrap.offsetWidth;
 for (let i = 0; i < len; i++) {
     allImg[i].style.zIndex = zIndex--;
-    // allImg[i].style.transform = "translateX(-100px)";
-    allImg[i].style.transform = "translateX(-100px)";
+    allImg[i].style.transform = "translateX("+(-oWidth)+"px)";
+    allImg[i].style.transitionDuration = 0;
 }
+allImg[index].style.transform = `translateX(0)`;
