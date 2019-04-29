@@ -99,13 +99,13 @@ class yyb3dSwiper {
             // 当前偏移值
             this.scrollLeft = this.originSwiper.offsetLeft;
             this.startX = ev.touches[0].clientX;
-        });
+        },{passive:true});
         this.oSwiperWrap.addEventListener('touchmove', ev => {
             this.currentX = ev.touches[0].clientX;
             let moveX = this.currentX - this.startX;
             // 设置 banner 的左偏移值
             this.originSwiper.style.left = this.scrollLeft + moveX + 'px';
-        });
+        },{passive:true});
         this.oSwiperWrap.addEventListener('touchend', ev => {
             // 当前轮播是否运行中, 运行中则退出
             if (this.isShow) return;
@@ -131,7 +131,7 @@ class yyb3dSwiper {
             // 运动结束
             this.isShow = false;
             this.showImg();
-        })
+        },{passive:true})
     }
 
     previousImg() {

@@ -810,6 +810,7 @@ HTMLFormElement 类型表示表单 <form\>
 - paste: 在发生粘贴操作时触发
 
 **访问剪贴板中的数据，使用 clipboardData 对象：**
+**访问剪贴板中的数据，使用 clipboardData 对象：**
 - IE中，这个对象是在 window 对象中的属性；
 - 其他是在 event 对象的属性中。
 - 其他只在发生剪贴板事件期间使用该对象。IE中随时可以使用。
