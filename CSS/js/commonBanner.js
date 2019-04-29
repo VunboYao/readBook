@@ -48,6 +48,7 @@ let oWidth = oWrap.offsetWidth;
 let previousNode = null;
 let currentNode = null;
 let nextNode = null;
+let timer;
 
 for (let i = 0; i < len; i++) {
     allImg[i].style.zIndex = zIndex--;
@@ -65,32 +66,39 @@ nextNode = allImg[index + 1]; // 三个初始值
 previousNode = allImg[len - 1];
 currentNode = allImg[index];
 
-let timer = setInterval(() => {
-    index++; // 索引++
-    allImg[index - 1].style.transitionDuration = "300ms";
-    allImg[index - 1].style.transform = `translateX(${-oWidth}px)`; // 上一个移动至左
-    if (index < 5) {
-        allImg[index].style.opacity = 1;
-        allImg[index].style.transform = `translateX(0)`; // 依次显示
-        allImg[index].style.transitionDuration = '300ms';
-    }
-    if (index <= 3) { // 倒数第2个
-        allImg[index + 1].style.transform = `translateX(${oWidth}px)`;
-    }
-    if (index === len - 1) { // 最后一个时
-        allImg[0].style.transitionDuration = "0ms";
-        allImg[0].style.transform = `translateX(${oWidth}px)`;
-    }
-    if (index >= len) { // 最后一个时
-        index = 0; // 索引为0
-        allImg[index].style.transitionDuration = '300ms';
-        allImg[index].style.transform = `translateX(0)`; // 显示
-        allImg[index + 1].style.transitionDuration = "0ms";
-        allImg[index + 1].style.transform = `translateX(${oWidth}px)`; // 初始
-    }
-    console.log(index);
-}, 3000)
-
+function showImg() {
+    timer = setInterval(() => {
+        index++; // 索引++
+        allImg[index - 1].style.transitionDuration = "300ms";
+        allImg[index - 1].style.transform = `translateX(${-oWidth}px)`; // 上一个移动至左
+        previousNode = allImg[index - 1];
+        if (index < 5) {
+            allImg[index].style.opacity = 1;
+            allImg[index].style.transform = `translateX(0)`; // 依次显示
+            allImg[index].style.transitionDuration = '300ms';
+            currentNode = allImg[index];
+        }
+        if (index <= 3) { // 倒数第2个
+            allImg[index + 1].style.transform = `translateX(${oWidth}px)`;
+            nextNode = allImg[index + 1];
+        }
+        if (index === len - 1) { // 最后一个时
+            allImg[0].style.transitionDuration = "0ms";
+            allImg[0].style.transform = `translateX(${oWidth}px)`;
+            currentNode = allImg[0];
+        }
+        if (index >= len) { // 最后一个时
+            index = 0; // 索引为0
+            allImg[index].style.transitionDuration = '300ms';
+            allImg[index].style.transform = `translateX(0)`; // 显示
+            allImg[index + 1].style.transitionDuration = "0ms";
+            allImg[index + 1].style.transform = `translateX(${oWidth}px)`; // 初始
+            currentNode = allImg[index];
+            nextNode = allImg[index + 1];
+        }
+    }, 2000)
+}
+showImg();
 let startX, endX, currentX;
 oWrap.addEventListener('touchstart',(ev) => {
     clearInterval(timer);
@@ -118,20 +126,34 @@ oWrap.addEventListener('touchend', ev => {
     let tempDistance = endX - startX;
 
     /* 右滑,上一张 */
-    if (tempDistance > 80) {
+    if (tempDistance > 30) {
         index--;
         if (index < 0) {
             index = len - 1;
         }
-        console.log(index);
         currentNode.style.transitionDuration = '300ms';
         currentNode.style.transform=`translateX(${oWidth}px)`; // 至右边
         previousNode.style.transitionDuration='300ms';
         previousNode.style.transform=`translateX(0)`;
 
-
-
-
+        currentNode = allImg[index];
+        if (index >= len - 1) {
+            nextNode = allImg[0];
+            previousNode.style.transform = `$translateX(${-oWidth}px)`;
+        } else {
+            nextNode = allImg[index + 1];
+            previousNode.style.opacity = 1;
+        }
+        // 判断: 索引为第一个时, 上一节点为最后一个
+        if (index <= 0) {
+            previousNode = allImg[len -1];
+            previousNode.style.transitionDuration = '0ms';
+            previousNode.style.transform = `translateX(${-oWidth})`;
+        } else {
+            previousNode = allImg[index - 1];
+            previousNode.style.transitionDuration = '0ms';
+            previousNode.style.transform = `translateX(${-oWidth})`;
+        }
 
     } else {
         currentNode.style.transitionDuration = '300ms';
@@ -166,8 +188,12 @@ oWrap.addEventListener('touchend', ev => {
         // 判断: 索引为最后一个时, 下一节点为第一个
         if (index >= len - 1) {
             nextNode = allImg[0];
+            nextNode.style.transitionDuration='0ms';
+            nextNode.style.transform=`translateX(${oWidth}px)`
         } else {
             nextNode = allImg[index + 1]; // 下一节点
+            nextNode.style.transitionDuration='0ms';
+            nextNode.style.transform=`translateX(${oWidth}px)`
         }
         nextNode.style.opacity = 1; // 透明度为1
 
@@ -177,4 +203,5 @@ oWrap.addEventListener('touchend', ev => {
         nextNode.style.transitionDuration='300ms'; // 动画返回
         nextNode.style.transform = `translateX(${oWidth}px)`;
     }
+    showImg();
 },{passive: true})
