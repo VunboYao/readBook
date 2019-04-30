@@ -56,3 +56,26 @@ body {
     }
   }
 }
+.yybSwiper-pagination {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 100;
+  font-size: 0;
+  span {
+    display: inline-block;
+    margin: 8px 4px;
+    width: px2vm(15);
+    height: px2vm(15);
+    border-radius: 50%;
+    background: #ffffff;
+    opacity: .3;
+    &.currentIndex {
+      background: rgb(255,80,0);
+      opacity: 1;
+    }
+  }
+
+}

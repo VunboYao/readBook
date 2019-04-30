@@ -49,6 +49,7 @@ let previousNode = null;
 let currentNode = null;
 let nextNode = null;
 let timer;
+let allPagination = oWrap.querySelectorAll('span');
 
 for (let i = 0; i < len; i++) {
     allImg[i].style.zIndex = zIndex--;
@@ -65,6 +66,7 @@ allImg[index + 1].style.opacity = 1;
 nextNode = allImg[index + 1]; // 三个初始值
 previousNode = allImg[len - 1];
 currentNode = allImg[index];
+
 
 function showImg() {
     timer = setInterval(() => {
@@ -96,6 +98,10 @@ function showImg() {
             currentNode = allImg[index];
             nextNode = allImg[index + 1];
         }
+        for (let i = 0; i < len;i++) {
+            allPagination[i].className = '';
+        }
+        allPagination[index].className = 'currentIndex';
     }, 2000)
 }
 showImg();
@@ -113,12 +119,16 @@ oWrap.addEventListener('touchmove',(ev) => {
     currentX = ev.touches[0].clientX; // 当前坐标
     currentNode = ev.target.parentNode; // 当前目标节点
     let moveX = currentX - startX; // 移动距离
+    if (currentX >= oWidth || currentX <= 0) {
+        return;
+    }
     currentNode.style.transform=`translateX(${moveX}px)`; // 跟随触摸移动距离
     if (moveX > 0) { // 上一张.右滑
         previousNode.style.transform = `translateX(${-oWidth + moveX}px)`;
     } else { // 下一张.左滑
         nextNode.style.transform = `translateX(${oWidth+moveX}px)`;
     }
+
 },{passive:true})
 
 oWrap.addEventListener('touchend', ev => {
@@ -163,7 +173,6 @@ oWrap.addEventListener('touchend', ev => {
     }
 
 
-
     /* 左滑, 下一张 */
     if (tempDistance < -30) {
         index++; // 索引递增
@@ -203,5 +212,11 @@ oWrap.addEventListener('touchend', ev => {
         nextNode.style.transitionDuration='300ms'; // 动画返回
         nextNode.style.transform = `translateX(${oWidth}px)`;
     }
+    for (let i = 0; i < len;i++) {
+        allPagination[i].className = '';
+    }
+
+    allPagination[index].className = 'currentIndex';
     showImg();
 },{passive: true})
+
