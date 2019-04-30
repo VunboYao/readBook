@@ -90,10 +90,12 @@ class yybSwiper {
             this.nextPlay();
             this.prePlay();
 
-            for (let i = 0; i < this.iLen; i++) {
-                this.aDots[i].className = ''
+            if (this.bPagination) {
+                for (let i = 0; i < this.iLen; i++) {
+                    this.aDots[i].className = '';
+                }
+                this.aDots[this.index].className = 'swiper-currentIndex';
             }
-            this.aDots[this.index].className = 'swiper-currentIndex';
             this.showImg();
         })
     }
@@ -162,10 +164,12 @@ class yybSwiper {
             this.removeDuration(this.aAllImg[this.index]);
 
             // 3. 圆点跟随
-            for (let i = 0; i < this.iLen; i++) {
-                this.aDots[i].className = '';
+            if (this.bPagination) {
+                for (let i = 0; i < this.iLen; i++) {
+                    this.aDots[i].className = '';
+                }
+                this.aDots[this.index].className = 'swiper-currentIndex';
             }
-            this.aDots[this.index].className = 'swiper-currentIndex';
 
         }, this.iDuration);
     }
@@ -210,7 +214,7 @@ class yybSwiper {
             } else {
                 this.setTimeLocal(this.aAllImg[this.index], '300ms', 0)
                 this.setTimeLocal(this.aAllImg[this.index + 1], '300ms', this.oWidth);
-                this.removeDuration(this.aAllImg[this.index])
+                this.removeDuration(this.aAllImg[this.index]);
                 this.removeDuration(this.aAllImg[this.index + 1])
             }
         }
@@ -277,7 +281,6 @@ class yybSwiper {
 
 let oContainer = document.querySelector('.yybSwiper-container');
 let obj = {
-    element: oContainer,
-    pagination: true
+    element: oContainer
 }
 let a = new yybSwiper(obj);
