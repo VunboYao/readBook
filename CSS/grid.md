@@ -5,15 +5,16 @@
 - grid-template-columns: 空格定义网格列
 - grid-template-rows: 空格定义网格行
 - grid-template-areas: 网格模板
-- grid-template: rows / columns
+- **grid-template: rows / columns 简写**
 - (grid)-column-gap: 列间距
 - (grid)-row-gap: 行间距
 - (grid)-gap: 行/列 间距缩写
 - justify-items: 网格项水平 stretch|start|center|end
 - align-items: 网格项垂直 stretch|start|center|end
-- place-items: align-items/justify-items 简写
+- **place-items: align-items/justify-items 简写**
 - justify-content: 网格在网格容器中的水平位置
 - align-content: 网格在网格容器中的垂直位置
+- **place-content: align-content/justify-content简写**
 - grid-auto-columns: 设置隐式网格的列大小
 - grid-auto-rows: 设置隐式网格的行大小
 - grid-auto-flow: row | column | dense | row dense | column dense
@@ -25,12 +26,12 @@
 - grid-column-end
 - grid-row-start
 - grid-row-end
-- grid-column: start-line / end-line 
-- grid-row: start-line / end-line 
+- **grid-column: start-line / end-line** 
+- **grid-row: start-line / end-line** 
 - grid-area: 'header'  网格模板名称
 - justify-self: 单元格内水平位置
 - align-self: 单元格内垂直位置
-- place-self: 单元格位置简写
+- **place-self: 单元格位置简写**
 - order: 重写顺序
 
 # 使用注意点:
@@ -52,7 +53,7 @@ CSS Grid 布局是一个二维布局系统, 可以同时处理列和行. 通过�
 - ignore float and clear
 - vertical-align property has no effect on grid items, but may effect the content inside the grid item
 
-> If grid declared inline-grid and the element is either floated or absolutely positioned, the computed value of display becomes grid (thus dropping inline-grid)
+~~> If grid declared inline-grid and the element is either floated or absolutely positioned, the computed value of display becomes grid (thus dropping inline-grid)~~
 
 # Basic Grid Terminology (术语)
 

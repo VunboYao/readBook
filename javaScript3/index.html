@@ -1,604 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Title</title>
-        <!-- <style>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <style>
         * {
             margin: 0;
             padding: 0;
         }
-        body {
-            background: #ccc;
-            padding: 0 calc(50% - 400px);
-        }
-        .div {
-            height: 500px;
-            background: #0022cc;
-            display: flex;
-        }
-        #box {
-            margin: auto;
-            width: 100px;
-            height: 100px;
-            background: #fff;
-        }
-    </style> -->
-        <!--<style>
-            .loading {
-                position: relative;
-                margin-left: 48%;
-                width: 50px;
-                height: 50px;
-                background: transparent;
-                border-radius: 100%;
-                border: 10px solid #4b9cdb;
-                border-left-color: transparent;
-                animation: rotate 0.8s ease-in-out infinite;
-            }
-            @keyframes rotate {
-                0% {
-                    transform: rotateZ(0deg);
-                }
-                100% {
-                    transform: rotateZ(360deg);
-                }
-            }
-            .btn {
-                position: fixed;
-                bottom: 50px;
-                right: 50px;
-                border: 1px solid #000;
-            }
-        </style>-->
-        <style>
-            .item {
-                width: 200px;
-                height: 200px;
-                border: 1px solid #000;
-                position: relative;
-            }
-            .item::after {
-                position: absolute;
-                top: 0;
-                left: 0;
-                background: #fff;
-            }
-        </style>
-    </head>
-    <body>
-        <!--   <div id="id" class='div'>
-      <div id="box">Demo</div>
-  </div> -->
-        <!--<button id="btn">Click Me</button>
-<button id="goback">GoBack</button>
-<div id="textFile">
-    <ul>
-        <li>2</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li><p id="scrol">65626262</p></li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-    </ul>
-</div>-->
-        <!--<div class="btn" data-my="34"></div>-->
-        <!-- <input type="text" id="demo"> -->
-        <!-- <p id="text"></p> -->
-        <!--<input type="text" id="demo">
-<p id="text"></p>-->
-       <!-- <ul id="ul" style="display: none;">
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li><li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
 
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-            <li>122</li>
-        </ul>
-        <div class="btn">goBack</div>-->
-        <div class="item">
-            <h1>1</h1>
-            <h2>2</h2>
-            <p class="demo">demoi</p>
-            <p>4</p>
-        </div>
-        <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-        <script src="readbook.js"></script>
-        <script type="text/html">
-            let btn = document.querySelector('.btn')
-            let timer;
-            btn.onclick = function () {
-               /* let top1 = document.documentElement.scrollTop;
-                console.log(top1);
-                timer = setInterval(() => {
-                    console.log(top1);
-                    top1 = top1 - 200;
-                    document.documentElement.scrollTop = top
-                    if (top1 <= 0) {
-                        clearInterval(timer)
-                    }
-                },200)*/
-                cancelAnimationFrame(timer);
-                timer = requestAnimationFrame(function fn(){
-                    let top1 = document.documentElement.scrollTop;
-                    if(top1 > 0){
-                        document.body.scrollTop = document.documentElement.scrollTop = top1 - 200;
-                        timer = requestAnimationFrame(fn);
-                    }else{
-                        cancelAnimationFrame(timer);
-                    }
-                });
-            }
-        </script>
-    </body>
+        .box {
+            width: 400px;
+            height: 300px;
+            border: 1px solid #000;
+            margin: 100px auto;
+        }
+
+        .top {
+            list-style: none;
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .top > li {
+            position: relative;
+            width: 80px;
+            height: 100%;
+            background: skyblue;
+            border-right: 1px solid #ccc;
+        }
+
+        .top > li span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .top > li:last-child {
+            border: none;
+        }
+
+        .bottom {
+            width: 100%;
+            height: 250px;
+        }
+
+        .bottom > .content {
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+
+        .bottom > .content:first-child {
+            background: red;
+            display: block;
+        }
+
+        .bottom > .content:nth-child(2) {
+            background: #056;
+        }
+
+        .bottom > .content:nth-child(3) {
+            background: #a166ab;
+        }
+
+        .bottom > .content:nth-child(4) {
+            background: #244;
+        }
+
+        .bottom > .content:nth-child(5) {
+            background: #00ff00;
+        }
+
+        input[type='radio'] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        input[type='radio']:checked + span{
+            color: #fff;
+            background: #f058;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <ul class="top">
+        <li>
+            <input type="radio" name="tab" checked>
+            <span>NEWS</span>
+        </li>
+        <li><input type="radio" name="tab">
+            <span>Video</span></li>
+        <li><input type="radio" name="tab">
+            <span>Music</span>
+        </li>
+        <li><input type="radio" name="tab">
+            <span>Army</span></li>
+        <li><input type="radio" name="tab">
+            <span>Money</span></li>
+    </ul>
+    <div class="bottom">
+        <div class="content">NEWS</div>
+        <div class="content">Video</div>
+        <div class="content">Music</div>
+        <div class="content">Army</div>
+        <div class="content">Money</div>
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="readbook.js"></script>
+</body>
 </html>

@@ -38,6 +38,7 @@ for/of|值value|error
 - for/in 专用于对象/无序对象
 - for/of 专用于数组
 - keys/values/entries实体
+- for (let index of arr.keys()){}
 
 ```
 let arr = [123,4,23,11]
@@ -321,6 +322,7 @@ genObj.next()
 - **相同参数的 Symbol 函数的返回值是不相等的**
 - Symbol 值不能与其他类型的值进行运算.**可以显示转换为字符串**
 - Symbol 值也可以转换为布尔值, 但是不能转为数值
+- **new: ES2019 新增实例属性 description, 直接返回 Symbol 的描述**
 
 ## 作为属性名的 Symbol
 
