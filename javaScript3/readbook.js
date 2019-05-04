@@ -4315,14 +4315,4 @@ class Rectangle extends Shape {
 
 var x = new Shape();  // 报错
 var y = new Rectangle(3, 4);  // 正确*/
-/*let allTab = document.querySelectorAll('input[type="radio"]');
-let allContent = document.querySelectorAll('.content');
-let preIndex = 0;
-for (let i = 0; i < allTab.length; i++) {
-    allTab[i].onclick = function () {
-        allContent[preIndex].style.display = 'none';
-        allContent[i].style.display='block';
-        preIndex = i;
-    }
-}*/
 
