@@ -4316,3 +4316,30 @@ class Rectangle extends Shape {
 var x = new Shape();  // 报错
 var y = new Rectangle(3, 4);  // 正确*/
 
+let obj = new Proxy({}, {
+    get: (target, key, receiver) => {
+        console.log(`getting ${key}!`);
+        return Reflect.get(target, key, receiver)
+    },
+    set: (target, p, value, receiver) => {
+        console.log(`setting ${p}!`);
+        return Reflect.set(target, p, value, receiver)
+    }
+})
+
+obj.count = 1;
+++obj.count;
+
+
+
+
+
+
+
+
+
+
+
+
+
+

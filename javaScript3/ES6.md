@@ -620,9 +620,8 @@ B.__proto__ = A;
 
 ## Promise.try()
 - 模拟 try 代码块, 实现 catch 捕获所有的同步和异步错误.
-
-
-    
+   
+   
 # generator 生成器
 
 ```
@@ -726,6 +725,7 @@ genObj.next()
 - Symbol.toStringTag 属性, 指向一个方法.在该对象上调用 Object.prototype.toString 方法时, 如果这个属性存在, 它的返回值会出现在 toString 方法返回的字符串中,表示对象的类型. **这个属性可以用来定制\[object Object\]或\[object Array\] 中 object 后面的那个字符串.**
 - Symbol.unscopables 属性, 指向一个对象. 该对象指定了使用 with 关键字时, 哪些属性会被 with 环境排除.
 
+# Proxy
 
 
 
