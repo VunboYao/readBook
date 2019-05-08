@@ -11,3 +11,9 @@
     - 回调参数：error,data
 - writeFile(文件名，内容，回调)
     - 回调参数：error
+
+### exports 和 module.exports 的区别
+- exports 只能使用(.)点语法来向外暴露内部变量. exports.xxx = xxx;
+- module.exports 既可以通过点语法, 也可以直接赋值一个对象
+- **module.exports 包含了 exports.** 
+- module.exports 指向一个对象, exports 指向对象的属性. **值类型与引用类型**

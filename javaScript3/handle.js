@@ -1,4 +1,4 @@
-let EventUtil = {
+/*let EventUtil = {
     addHandler: function (element, type, handler) {
         if (element.addEventListener) {
             element.addEventListener(type, handler, false);
@@ -93,4 +93,5 @@ let EventUtil = {
             return window.clipboardData.setData('text', value);
         }
     }
-}
+}*/
+
