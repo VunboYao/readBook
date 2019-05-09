@@ -4315,7 +4315,6 @@ class Rectangle extends Shape {
 
 var x = new Shape();  // 报错
 var y = new Rectangle(3, 4);  // 正确*/
-
 // let obj = new Proxy({}, {
 //     get: (target, key, receiver) => {
 //         console.log(`getting ${key}!`);
@@ -4330,4 +4329,42 @@ var y = new Rectangle(3, 4);  // 正确*/
 // obj.count = 1;
 // ++obj.count;
 
+let date = new Date(2019,4,9,23,0,0);
 
+function getDifferTime(furDate, curDate=new Date()) {
+    // 秒数 = 毫秒 / 1000
+    let timeStr = Math.floor((furDate - curDate) / 1000);
+    // 天数 = 秒数 / 一天的秒数
+    let day = Math.floor(timeStr / (24 * 60 * 60));
+    // 时 = 天数以为的秒数 / 一小时的秒数
+    let tempSec = timeStr % (24 * 60 * 60);
+    let hour = Math.floor(tempSec / (60 * 60));
+    // 分 = 秒数 / 一分钟的秒数
+    let temp2Min = timeStr % (60 * 60);
+    let minute = Math.floor(temp2Min / 60);
+    // 秒 = 秒数 % 60
+    let second = timeStr % 60;
+
+    day = day.toString().padStart(2, '0');
+    hour = hour.toString().padStart(2, '0');
+    minute = minute.toString().padStart(2, '0');
+    second = second.toString().padStart(2, '0');
+    return {day,hour,minute,second};
+}
+
+console.log(getDifferTime(date));
+let hour = document.querySelector('.hour')
+let day = document.querySelector('.day')
+let minute = document.querySelector('.minute')
+let second = document.querySelector('.second')
+setInterval(() => {
+    showTime();
+},1000);
+function showTime() {
+    let a = getDifferTime(date);
+    day.innerHTML = a.day;
+    hour.innerText = a.hour;
+    minute.innerText = a.minute;
+    second.innerText = a.second;
+}
+showTime();
