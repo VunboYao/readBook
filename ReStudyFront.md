@@ -47,7 +47,7 @@
         font-size: calc(137.5% + 5 * (100vw - 1000px) / 1000);
         font-size: calc(22px + 5 * (100vw - 1000px) / 1000);
     }
-} 
+}
 ```
 
 ## 图片底部缝隙
@@ -267,6 +267,18 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
 - 绝对定位的元素会忽略祖先元素的padding
 - 只有定位元素才可以设置 z-index
 
+## 1px 边框移动端实现方式
+- 渐变实现, 默认从上到下, linear-gradient(transparent 50%, red 50%);  1px 红线
+- 缩放 + 边框, scaleY(.5) + 1px solid red;
+- 四周边框同时设置
+    ```
+    width: 200%;
+    height: 200%;
+    transform-origin:0 0;
+    border: 1px solid red;
+    transform: scale(.5);
+    ```
+
 # JavaScript
 
 ## 关系运算符
@@ -291,7 +303,7 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
     - for
     - for/of
     - forEach
-- findIndex(), 传入一个函数,包含是三个参数(current, index, arr). 返回找到的值的索引. 没有则 -1   
+- findIndex(), 传入一个函数,包含是三个参数(current, index, arr). 返回找到的值的索引. 没有则 -1
 - find(), 同 findIndex() 参数, 返回找到的元素. 没有则返回 undefined
 - delete 删除数组, 数组的 length 属性不会发生变化
 - 模拟 map 的实现
@@ -303,12 +315,12 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
         }
         return _temp
     }
-    
+
     let arr = [1,3,5,1,6,8,9]
     let b = arr.myMap((item,index) => {
         return item * 3;
     })
-    console.log(b); 
+    console.log(b);
     ```
 - 模拟 filter 的实现
     ```
@@ -321,7 +333,7 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
         }
         return _temp
     }
-    
+
     let arr = [1,3,5,1,6,8,9]
     let b = arr.myFilter((item,index) => {
         return (item > 5) && (index > 4);
@@ -335,12 +347,12 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
             fn(this[i],i,this);
         }
     }
-    
+
     let arr = [1,3,5,1,6,8,9]
     let b = arr.myforEach((item,index,arr) => {
         console.log(item,index,arr);
-    }) 
-    ```    
+    })
+    ```
 - 模拟 findIndex 的实现
     ```
     Array.prototype.myFindIndex = function (fn) {
@@ -357,7 +369,7 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
         }
         return _temp !== undefined ? _temp : -1;
     }
-    
+
     let arr = [1, 3, 5, 1, 6, 8, 9]
     let b = arr.myFindIndex((item, index, arr) => {
         if (index > 2) {
@@ -382,7 +394,7 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
         }
         return _temp !== undefined ? _temp : undefined;
     }
-    
+
     let arr = [1, 3, 5, 1, 6, 8, 9]
     let b = arr.myFind((item, index, arr) => {
         return index === 89;
@@ -400,7 +412,7 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
          }
          return !!_temp;
      }
-     
+
      let arr = [1, 3, 5, 1, 6, 8, 9]
      let b = arr.some((item, index, arr) => {
          return item > 34;
@@ -418,12 +430,12 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
         }
         return !!(_temp.length === this.length);
     }
-    
+
     let arr = [1, 3, 5, 1, 6, 8, 9]
     let b = arr.some((item, index, arr) => {
         return item > 0;
     })
-    console.log(b) 
+    console.log(b)
     ```
 
 # 面向对象
@@ -465,6 +477,3 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
         }
     }
     ```
-
-
-
