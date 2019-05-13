@@ -80,8 +80,10 @@ ul {
   height: 100%;
   float: left;
   transform: scale(0.94);
+  transition: transform 300ms ease-in-out;
   &.banner-item_current {
     transform: scale(1);
+    transition: transform 300ms ease-in-out;
   }
 }
 .banner-list > li img {

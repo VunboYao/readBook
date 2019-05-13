@@ -286,6 +286,6 @@ let oContainer = document.querySelector('.yybSwiper-container')
 let obj = {
     element: oContainer,
     pagination: true,
-    duration: 1500
+    duration: 4500
 }
 let a = new yybSwiper(obj)
