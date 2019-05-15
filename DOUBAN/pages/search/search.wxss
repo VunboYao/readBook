@@ -1,0 +1,23 @@
+.search {
+    padding: 16px;
+    background: #67bb61;
+}
+.search-inner {
+    display: flex;
+    justify-content: flex-start;
+    height: 56rpx;
+    line-height: 56rpx;
+    background: #fff;
+    font-size: 14px;
+    color: #aeaeae;
+    border-radius: 6px;
+}
+.search-icon {
+    position: relative;
+    top: 6px;
+    padding: 0 6rpx;
+}
+.search-input{
+    flex: 1;
+    height: 100%;
+}

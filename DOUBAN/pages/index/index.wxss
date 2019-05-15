@@ -1,0 +1,33 @@
+/* 搜索 Start */
+.search {
+    padding: 16px;
+    background: #67bb61;
+}
+.search-nav {
+    height: 56rpx;
+    line-height: 56rpx;
+    background: #fff;
+    text-align: center;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #aeaeae;
+}
+.search-nav > icon {
+    position: relative;
+    top: 2px;
+    left: 0;
+}
+.search-nav > text {
+    padding-left: 4px;
+}
+/* 搜索 End */
+
+/* 主容器 */
+.container{}
+
+/* 电影类别 */
+.film-type {}
+.film-type_title {}
+.film-type navigator {}
+
+/* 电影列表 */
