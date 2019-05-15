@@ -72,7 +72,7 @@ for (let i of arr.entries()) {
     let p = new Point(1,2);
     console.log(typeof Point); // function
     console.log(Point === Point.prototype.constructor); // true
-    ``` 
+    ```
 - **类的数据类型就是函数, 类本身就指向构造函数**
 - 构造函数的 prototype 属性, 在 ES6 的 '类'上面继续存在. 事实上, 类的所有方法都定义在类的 prototype 属性上面
 - 由于类的新方法可以添加在 prototype 对象上面. Object.assign 方法可以很方便的一次向类添加多个方法
@@ -356,7 +356,7 @@ console.log(Object.getPrototypeOf(ColorPoint) === Point); // true
     let b = new B();
     console.log(b.m);// undefined
     // p 是父类 A 的实例属性, super.p 就引用不到它.
-  
+    
     // 如果属性定义在父类的原型对象上, super就可以取到
     class A {
         constructor() {
@@ -422,7 +422,7 @@ console.log(Object.getPrototypeOf(ColorPoint) === Point); // true
     /*super.x 赋值为 3, 这时等同于对 this.x 赋值为 3. 而当读取 super.x 的时候, 
       读取的是 A.prototype.x, 所以返回 undefined
    */
-    ```
+   ```
 - **如果 super 作为对象, 用在静态方法之中, 这时 super 将指向父类, 而不是父类的原型对象**
     ```javascript
     class Parent {
@@ -468,7 +468,7 @@ console.log(Object.getPrototypeOf(ColorPoint) === Point); // true
     
     console.log(B.__proto__ === A); // true
     console.log(B.prototype.__proto__ === A.prototype); // true
-    ``` 
+   ```
 > 上面代码中, 子类 B 的 \_\_proto\_\_ 属性指向父类 A, 子类 B 的 prototype 属性的 \_\_proto\_\_ 属性指向父类 A 的 prototype 属性.这样的结果是因为, 类的继承是按照下面的模式实现的.
 ```javascript
 class A{}
@@ -512,7 +512,7 @@ B.__proto__ = A;
     - Object()
 - ES5 不能继承以上原生构造函数, 因为子类无法获取原生构造函数的内部属性. ES5 是先新建子类的实例对象 this, 再将父类的属性添加到子类上, 由于父类的内部属性无法获取, 导致无法继承原生的构造函数.
 - ES6 允许继承原生构造函数定义子类，因为 ES6 是先新建父类的实例对象this，然后再用子类的构造函数修饰 this，使得父类的所有行为都可以继承。
-    
+  
 # JSON
 - JSON 对象
     - JSON.stringify
@@ -555,11 +555,11 @@ B.__proto__ = A;
     // Promise 新建后立即执行, 所以首先输出的是 Promise. 然后, then 方法指定的回调函数, 将在当前脚本所有同步任务执行完才会执行, 所以 resolved 最后输出.
     ```
 - 一般来说, 调用 resolve 或 reject 以后, Promise 的使命就完成了, 后续操作应该放到 then 方法里面, 而不应该直接写在 resolve 或 reject 的后面. 所以, 最好在它们的前面加上 return 语句, 这样就不会有意外.
-    
+  
 ## Promise.prototype.then()    
 - Promise 实例具有 then 方法, 也就是说, then 方法是定义在原型对象 Promise.prototype 上的. 它的作用是为 Promise 实例添加状态改变时的回调函数. **then 方法的第一个参数是 resolved 状态的回调函数, 第二个参数(可选) 是 rejected 状态的回调函数**.    
 - then 方法返回的是一个新的 Promise 实例(注意,不是原来那个Promise实例). 因此可以采用链式写法, 即 then 方法后面再调用另一个 then 方法.
-    
+  
 ## Promise.prototype.catch()
 - Promise.prototype.catch 方法是 .then(null, rejection) 或 .then(undefined, rejection) 的别名, 用于指定发生错误时的回调函数.    
     ```javascript
@@ -570,7 +570,7 @@ B.__proto__ = A;
       console.log('发生错误！', error);
     });
     /* 上面代码中, getJSON 方法返回一个 Promise 对象, 如果该对象状态变为 resolved, 则会调用 then 方法指定的回调函数; 如果异步操作抛出错误, 状态就变为 rejected, 就会调用 catch 方法指定的回调函数, 处理这个错误. 另外, then 方法指定的回调函数, 如果运行中抛出了错误, 也会被 catch 方法捕获. */
-    ```  
+    ```
 - 如果 Promise 状态已经变成了 resolved, 再抛出错误是无效的. 因为 Promise 的状态一旦改变, 就永久保存该状态, 不会再变.     
 - Promise 对象的错误具有'冒泡'性质, 会一直向后传递, 知道被捕获为止. 也就是说, 错误总是被下一个 catch 语句捕获.    
 - 一般来说, 不要在 then 方法里面定义 Reject 状态的回调函数 (即 then 的第二个参数), 总是用 catch 方法.    
@@ -585,7 +585,7 @@ B.__proto__ = A;
 - Promise.all方法用于将多个 Promise 实例，包装成一个新的 Promise 实例。
     ```javascript
     const p = Promise.all([p1,p2,p3]);
-    ```    
+    ```
 - Promise.all方法接受一个数组作为参数，p1、p2、p3都是 Promise 实例，如果不是，就会先调用下面讲到的Promise.resolve方法，将参数转为 Promise 实例，再进一步处理。    
 - p的状态由p1、p2、p3决定，分成两种情况
     - 只有p1、p2、p3的状态都变成fulfilled，p的状态才会变成fulfilled，此时p1、p2、p3的返回值组成一个数组，传递给p的回调函数    
@@ -606,7 +606,7 @@ B.__proto__ = A;
     Promise.resolve('foo')
     // 等价于
     new Promise(resolve => resolve('foo')) 
-    ```   
+    ```
 - **Promise.resolve 方法的参数分为四种情况**
     - **参数是一个 Promise 实例**. 如果参数是 Promise 实例，那么Promise.resolve将不做任何修改、原封不动地返回这个实例。
     - **参数是一个thenable对象**,Promise.resolve方法会将这个对象转为 Promise 对象，然后就立即执行thenable对象的then方法
@@ -620,7 +620,7 @@ B.__proto__ = A;
 
 ## Promise.try()
 - 模拟 try 代码块, 实现 catch 捕获所有的同步和异步错误.
-   
+  
    
 # generator 生成器
 
@@ -636,7 +636,7 @@ genObj.next()
 ```
 
 - 逻辑性    
-    
+  
 # Math 新增方法
 - 3**8-------3的8次方
 
@@ -782,8 +782,8 @@ genObj.next()
     
     export default foo;
     // 上面代码中，foo函数的函数名foo，在模块外部是无效的。加载的时候，视同匿名函数加载
-    ```    
-- **通过 export default 命令输出模块时, import 时不需要知道原模块的函数名, 并且 import 命令后面, 不适用大括号**
+    ```
+- **通过 export default 命令输出模块时, import 时不需要知道原模块的函数名, 并且 import 命令后面, 不使用大括号**
 - 一个模块只能有一个默认输出, 因此 export default 命令只能使用一次. 所以 import 命令后面才不用加大括号, 因为只可能唯一对应 export default 命令
 - **本质上，export default就是输出一个叫做default的变量或方法，然后系统允许你为它取任意名字**. 所以，下面的写法是有效的。
     ```javascript
@@ -881,7 +881,7 @@ genObj.next()
     module.exports = {
         counter,incC
     }
-  
+    
     // handle.js
     let mod = require('./readbook');
     console.log(mod.counter); // 3

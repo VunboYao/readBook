@@ -12,6 +12,14 @@
 
 # CSS
 
+## iPhone底部 tabBar 横线处理
+
+- ```css
+  padding-bottom: env(safe-area-inset-bottom);// 底部安全距离
+  ```
+
+- fixed 吸底时(bottom:0), height上更改. height: calc(height + env(safe-area-inset-bottom))
+
 ## 最新适配方案: vm + rem + calc
 
 媒体查询适配字体, vm 设置单位, rem 设置字体大小

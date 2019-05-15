@@ -255,7 +255,7 @@ function getElement(id) {
     console.log(RegExp.$1); 
     ```
 - IOS操作系统检测
-    ```
+    ```javascript
     // "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1"
     let iOS = /CPU (?:iPhone )?OS (\d+_\d+)/.test(navigator.userAgent);
     console.log(RegExp.$1); // 11_0
@@ -434,7 +434,7 @@ alert(div.tagName == div.nodeName); //true
    -  removeNamedItem(name) ：从列表中移除 nodeName 属性等于 name 的节点；
    -  setNamedItem(node) ：向列表中添加节点，以节点的 nodeName 属性为索引；
    -  item(pos) ：返回位于数字 pos 位置处的节点
-   
+
 >attributes 属性中包含一系列节点，每个节点的 nodeName 就是特性的名称，而节点的 nodeValue就是特性的值。要取得元素的 id 特性，可以使用以下代码。
 
 `var id = element.attributes.getNamedItem("id").nodeValue;`
@@ -888,7 +888,7 @@ let supportsDOM3Core = document.implementation.hasFeature('Core', '3.0');
 let supportsDOM2HTML = document.implementation.hasFeature('HTML', '2.0');
 let supportsDOM2Views = document.implementation.hasFeature('Views', '2.0');
 let supportsDOM2XML = document.implementation.hasFeature('XML', '2.0'); 
-``` 
+```
 
 - createHTMLDocument(),创建一个完整的HTML文档。包含 <html\> 、 <head\> 、 <title\> 和 <body\>元素。这个方法只接受一个参数，即新创建文档的标题（放在 <title\> 元素中的字符串），返回新的 HTML 文档。只有 Opera 和 Safari 支持这个方法
 
@@ -935,7 +935,7 @@ alert(div1.isSameNode(div2)); //false
      var iframe = document.getElementById("myIframe");
      var iframeDoc = iframe.contentDocument; //在 IE8 
     ```
-        
+    
 ## 样式
 
 **定义样式的方式有3种**
@@ -1303,6 +1303,7 @@ range2.setEnd(p1, p1.childNodes.length);
     为了插入 <span> ，范围必须包含整个 DOM选区（不能仅仅包含选中的 DOM 节点）。
     ```
     
+
 **5.折叠DOM范围**
 
 所谓折叠范围，就是指范围中未选择文档的任何部分。可以用文本框来描述折叠范围的过程。假设
