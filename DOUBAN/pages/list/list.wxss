@@ -1,1 +1,10 @@
 /* pages/list/list.wxss */
+.film-list {
+    white-space: nowrap;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+.film-item {
+    margin: 30rpx 45rpx 0;
+}

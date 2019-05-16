@@ -1,0 +1,69 @@
+/* pages/detail/detail.wxss */
+/* 全局背景 */
+.container {
+    background-color: #f8f8f3;
+}
+.header {
+    position: relative;
+    padding: 40rpx 0;
+}
+/* 图片 */
+.header > image {
+    margin: 0 30rpx;
+    width: 200rpx;
+    height: 280rpx;
+    border-radius: 8rpx;
+    box-shadow: 0 0 10rpx #ddd;
+}
+/* 标题 */
+.header-intro {
+    position: absolute;
+    top: 40rpx;
+    right: 0;
+    height: 140rpx;
+    width: calc(100% - 260rpx);
+}
+.header-name {
+    display: block;
+    color: #000;
+    font-size: 40rpx;
+    font-weight: 600;
+}
+.header-subName {
+    display: block;
+    font-size: 28rpx;
+    line-height: 1.5;
+    color: #999;
+}
+.header-summary {
+    display: block;
+    font-size: 26rpx;
+    line-height: 2;
+    color: #999;
+}
+
+/* 收藏 */
+.header-operate {
+    position: absolute;
+    top: 200rpx;
+    right: 0;
+    width:calc(100% - 260rpx);
+}
+.header-collect,
+.header-seen {
+    display: inline-block;
+    margin: 10rpx;
+    width: 210rpx;
+    height: 74rpx;
+    line-height: 74rpx;
+    text-align: center;
+    background: #fff;
+    border-radius: 8rpx;
+    box-shadow: 0 2rpx 3rpx #ddd;
+}
+.header-collect > image,
+.header-seen > image {
+    padding: 0 6rpx;
+    height: 30rpx;
+    width: 30rpx;
+}

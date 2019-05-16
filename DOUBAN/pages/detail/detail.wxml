@@ -1,0 +1,21 @@
+<view class="container">
+	<view class="header">
+		<image src="./../../imgs/01.jpg"></image>
+		<view class="header-intro">
+			<text class="header-name">何以为家(2018)</text>
+			<text class="header-subName">2018XXX</text>
+			<text class="header-summary">剧情/黎巴嫩 法国 美国 / 片长 126分钟</text>
+		</view>
+		<view class="header-operate">
+			<view class="header-collect">
+				<image src="./../../imgs/xin.png"></image>
+				<text>想看</text>
+			</view>
+			<view class="header-seen">
+				<image src="./../../imgs/wuxing.png"></image>
+				<text>看过</text>
+			</view>
+		</view>
+<!--		<view class="header-haveSeen">已看过</view>-->
+	</view>
+</view>

@@ -3,9 +3,6 @@ Component({
   /**
    * 组件的属性列表
    */
-  // options: {
-  //   styleIsolation: "apply-shared"
-  // },
   properties: {
       film: {
         type: Object,
@@ -24,6 +21,11 @@ Component({
    * 组件的方法列表
    */
   methods: {
-
+    showDetail(event) {
+      var filmId = event.currentTarget.dataset.filmid;
+      wx.navigateTo({
+        url: '/pages/detail/detail?filmId=' + filmId
+      })
+    }
   }
 })

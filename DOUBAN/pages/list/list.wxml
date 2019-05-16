@@ -1,2 +1,9 @@
-<!--pages/list/list.wxml-->
-<text>pages/list/list.wxml</text>
+<view class="film-list" wx:if="{{films.length > 0}}">
+	<film-item film="{{film}}"
+			   class="film-item"
+			   wx:for="{{films}}"
+			   wx:for-item="film"
+			   wx:for-index="idf"
+			   wx:key="{{idf}}">
+	</film-item>
+</view>

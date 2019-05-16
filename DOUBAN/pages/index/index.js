@@ -1,3 +1,5 @@
+import api from "./../../api/api.js";
+
 Page({
     data: {
         filmList: [
@@ -17,62 +19,63 @@ Page({
 
     /* 加载数据 */
     loadData() {
-        wx.request({
-            url: 'https://m.douban.com/rexxar/api/v2/subject_collection/movie_free_stream/items',
-            data: {
-                start: 0,
-                count: 12
-            },
-            success: ({data: {subject_collection: {name}, subject_collection_items}}) => {
-                // 更新数据
-                this.setData({
-                    "filmList[1]": {
-                        title: name,
-                        films: subject_collection_items,
-                        reqKey: "movie_free_stream"
-                    }
-                })
-            }
+        api.loadMovieShowing(({data: {subject_collection: {name}, subject_collection_items}}) => {
+            // 更新数据
+            this.setData({
+                "filmList[0]": {
+                    title: name,
+                    films: subject_collection_items,
+                    reqKey: "loadMovieShowing"
+                }
+            })
+
         })
-        wx.request({
-            url: "https://m.douban.com/rexxar/api/v2/subject_collection/movie_showing/items",
-            data: {
-                start: 0,
-                count: 12
-            },
-            success: ({data: {subject_collection: {name}, subject_collection_items}}) => {
-                // 更新数据
-                this.setData({
-                    "filmList[2]": {
-                        title: name,
-                        films: subject_collection_items,
-                        reqKey: "movie_showing"
-                    }
-                })
-                // 成功关闭loading
-                wx.hideLoading()
-            }
+        api.loadMovieFreeStream(({data: {subject_collection: {name}, subject_collection_items}}) => {
+            // 更新数据
+            this.setData({
+                "filmList[1]": {
+                    title: name,
+                    films: subject_collection_items,
+                    reqKey: "loadMovieFreeStream"
+                }
+            })
         })
-        wx.request({
-            url: 'https://m.douban.com/rexxar/api/v2/subject_collection/movie_latest/items',
-            data: {
-                start: 0,
-                count: 12
-            },
-            success: ({data: {subject_collection: {name}, subject_collection_items}}) => {
-                // 更新数据
-                this.setData({
-                    "filmList[0]": {
-                        title: name,
-                        films: subject_collection_items,
-                        reqKey: "movie_latest"
-                    }
-                })
-            }
+        api.loadMovieHot(({data: {subject_collection: {name}, subject_collection_items}}) => {
+            // 更新数据
+            this.setData({
+                "filmList[2]": {
+                    title: name,
+                    films: subject_collection_items,
+                    reqKey: "loadMovieHot"
+                }
+            })
+        })
+        api.loadMovieTop250(({data: {subject_collection: {name}, subject_collection_items}}) => {
+            // 更新数据
+            this.setData({
+                "filmList[3]": {
+                    title: name,
+                    films: subject_collection_items,
+                    reqKey: "loadMovieTop250"
+                }
+            })
+        })
+        api.loadMovieLatest(({data: {subject_collection: {name}, subject_collection_items}}) => {
+            // 更新数据
+            this.setData({
+                "filmList[4]": {
+                    title: name,
+                    films: subject_collection_items,
+                    reqKey: "loadMovieLatest"
+                }
+            })
+            // 关闭loading
+            wx.hideLoading();
         })
     }
 
 })
+
 
 
 
