@@ -1,2 +1,12 @@
-<!--pages/aboutMe/aboutMe.wxml-->
-<text>pages/aboutMe/aboutMe.wxml</text>
+<view class="header">
+    <button wx:if="{{getUserInfo}}"
+            size="mini"
+            open-type="getUserInfo"
+            bindgetuserinfo="getUser"
+    >登录</button>
+    <image src="./../../imgs/01.jpg"></image>
+    <text class="userNick">Vunbo Yao</text>
+</view>
+<view class="collect">
+    <text>我的收藏</text>
+</view>

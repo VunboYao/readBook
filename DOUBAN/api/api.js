@@ -6,10 +6,16 @@ const movie_Top250 = "https://m.douban.com/rexxar/api/v2/subject_collection/movi
 
 const movie_Detail = "https://m.douban.com/rexxar/api/v2/movie";
 
+const movie_comment = "https://m.douban.com/rexxar/api/v2/movie";
 
 let param = {
     start: 0,
     count: 8
+}
+let filmCommentParams = {
+    count: 20,
+    order_by: 'time',
+    start: 0
 }
 
 let fail = function () {
@@ -17,6 +23,15 @@ let fail = function () {
         title: '数据加载失败',
         images: "/imgs/error.png",
         duration: 2000
+    })
+}
+
+let loadMovieComment = function (success,filmId,params=filmCommentParams) {
+    wx.request({
+        url: movie_comment + "/" + filmId + "/interests",
+        data: params,
+        success,
+        fail
     })
 }
 
@@ -80,5 +95,6 @@ export default {
     loadMovieFreeStream,
     loadMovieHot,
     loadMovieTop250,
-    loadMovieDetail
+    loadMovieDetail,
+    loadMovieComment
 }

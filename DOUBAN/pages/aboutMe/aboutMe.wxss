@@ -1,1 +1,23 @@
 /* pages/aboutMe/aboutMe.wxss */
+.header {
+    height: 420rpx;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(#5ec56d, #55bd62);
+}
+image {
+    margin-bottom: 20rpx;
+    width: 140rpx;
+    height: 140rpx;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1rpx solid #dedede;
+}
+.userNick {
+    color: #fff;
+}
+.collect {
+    padding: 30rpx;
+}

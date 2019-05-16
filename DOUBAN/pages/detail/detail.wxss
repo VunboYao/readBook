@@ -1,69 +1,168 @@
-/* pages/detail/detail.wxss */
-/* 全局背景 */
-.container {
-    background-color: #f8f8f3;
-}
-.header {
+/* 电影标题  */
+.film-desc {
     position: relative;
-    padding: 40rpx 0;
+    height: 300rpx;
+    width: 100%;
+    margin-bottom: 60rpx;
 }
-/* 图片 */
-.header > image {
-    margin: 0 30rpx;
-    width: 200rpx;
-    height: 280rpx;
-    border-radius: 8rpx;
-    box-shadow: 0 0 10rpx #ddd;
+.film-desc .desc-bc{
+    height: 300rpx;
+    overflow: hidden;
 }
-/* 标题 */
-.header-intro {
+.film-desc .desc-bc .bc-shade{
     position: absolute;
-    top: 40rpx;
-    right: 0;
-    height: 140rpx;
-    width: calc(100% - 260rpx);
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.6;
 }
-.header-name {
-    display: block;
-    color: #000;
-    font-size: 40rpx;
-    font-weight: 600;
+.film-desc .desc-bc image{
+    width: 100%;
 }
-.header-subName {
-    display: block;
+.film-desc .film-info{
+    position: absolute;
+    top: 100rpx;
+    height: 250rpx;
+    z-index: 99;
+    left: 30rpx;
+    display: flex;
+}
+.film-desc .film-info .film-img{
+    width: 240rpx;
+    height: 100%;
+    margin-right: 12rpx;
+}
+.film-desc .film-info .film-intro{
+    color: white;
+}
+.film-intro .title{
     font-size: 28rpx;
-    line-height: 1.5;
-    color: #999;
+    height: 120rpx;
+    line-height: 120rpx;
 }
-.header-summary {
-    display: block;
-    font-size: 26rpx;
-    line-height: 2;
-    color: #999;
+.film-intro .source{
+    font-size: 32rpx;
 }
 
-/* 收藏 */
-.header-operate {
-    position: absolute;
-    top: 200rpx;
-    right: 0;
-    width:calc(100% - 260rpx);
+/* 电影介绍 */
+.film-detail{
+    margin: 18rpx 0rpx;
 }
-.header-collect,
-.header-seen {
-    display: inline-block;
-    margin: 10rpx;
-    width: 210rpx;
-    height: 74rpx;
-    line-height: 74rpx;
+.film-detail .info{
+    font-size: 22rpx;
+    padding: 12rpx 20rpx 0rpx;
+}
+.film-detail .info text:first-child{
+    font-weight: bold;
+    color:#42bd56;
+}
+.film-detail .info.bottom{
+    padding-bottom: 20rpx;
+}
+.film-detail .collection{
+    width: 60%;
+    display: block;
     text-align: center;
-    background: #fff;
-    border-radius: 8rpx;
-    box-shadow: 0 2rpx 3rpx #ddd;
+    line-height: 60rpx;
+    font-size: 24rpx;
+    height: 60rpx;
+    color: sandybrown;
+    border: 1px solid sandybrown;
+    border-radius: 10rpx;
 }
-.header-collect > image,
-.header-seen > image {
-    padding: 0 6rpx;
-    height: 30rpx;
-    width: 30rpx;
+/* 演员 和 评论 公用  */
+.title{
+    font-size: 30rpx;
+    line-height: 40rpx;
+}
+
+.title text {
+    display: block;
+    padding-left: 30rpx;
+    border-left: 6rpx solid #42bd56;
+    border-bottom: 2rpx solid #ccc;
+    padding-bottom: 10rpx;
+    padding-top: 10rpx;
+    margin-bottom: 10rpx;
+}
+/* 演员列表  */
+.performer-list .actors {
+    width: 100%;
+    white-space: nowrap;
+}
+
+.performer-list .actors .actors-item {
+    display: inline-block;
+    padding-right: 20rpx;
+    vertical-align: top;
+}
+
+.performer-list .actors .actors-item:first-child {
+    padding-left: 20rpx;
+}
+
+.performer-list .actors .actors-img {
+    width: 160rpx;
+    height: 220rpx;
+    display: block;
+}
+
+.performer-list .actors .actors-name {
+    text-align: center;
+    font-size: 22rpx;
+    font-weight: bolder;
+    color: #333;
+    width: 160rpx;
+    display: inline-block;
+    white-space: pre-wrap;
+    vertical-align: top;
+}
+
+/* 评论列表  */
+.comment-list .item{
+    width: 100%;
+    height: auto;
+    display: flex;
+}
+.comment-list .item .item-left {
+    width: 100rpx;
+    height: 100%;
+    margin: 10rpx auto;
+    text-align: center;
+}
+.comment-list .item .item-left image {
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 50%;
+}
+.comment-list .item .item-right {
+    padding-left: 20rpx;
+    flex: 1;
+    height: 100%;
+    margin-top: 20rpx;
+    border-bottom: 2rpx solid #ccc;
+    padding-bottom: 30rpx;
+    margin-bottom: 10rpx;
+}
+.comment-list .item .username {
+    font-size: 26rpx;
+    margin-bottom: 10rpx;
+}
+.comment-list .item .item-time {
+    font-size: 24rpx;
+    color: #999;
+    margin-bottom: 10rpx;
+}
+.comment-list .item .item-main {
+    font-size: 24rpx;
+    line-height: 36rpx;
+    color: #222;
+    padding-right: 20rpx;
+}
+button.goTop {
+    position: fixed;
+    bottom: 40rpx;
+    right: 30rpx;
+    border: 1rpx solid #ddd;
 }
