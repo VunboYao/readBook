@@ -18,7 +18,7 @@
 .userNick {
     color: #fff;
 }
-.my-collent {
+.my-collect {
     display: block;
     margin: 30rpx 0 0 30rpx;
 }

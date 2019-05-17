@@ -1,26 +1,26 @@
 <view class="film-item"
       bindtap="showDetail"
       data-filmid="{{film.id}}">
-    <image class="film-item_img"
-           lazy-load="true"
-           src="{{ film.cover.url }}"></image>
-    <text class="film-item_name">{{film.title}}</text>
-    <view class="film-score" wx:if="{{ film.rating.value }}">
-        <block
-                wx:for="{{ 5 }}"
-                wx:key="{{ index }}">
-            <image
-                    wx:if="{{(index + 1) * 2 <= (film.rating.value + 1)}}"
-                    src="./../../imgs/star-open.png"
-                    mode="aspectFit"></image>
-            <image
-                    wx:else src="./../../imgs/star-close.png"
-                    mode="aspectFit"></image>
-        </block>
-        <text class="film-score_number">{{ film.rating.value }}</text>
-    </view>
-    <view class="film-score none" wx:if="{{ !film.rating.value }}">
-        暂无评分
-    </view>
-    <slot></slot>
+  <image class="film-item_img"
+         lazy-load="true"
+         src="{{ film.cover.url }}"></image>
+  <text class="film-item_name">{{film.title}}</text>
+  <view class="film-score" wx:if="{{ film.rating.value }}">
+    <block
+        wx:for="{{ 5 }}"
+        wx:key="{{ index }}">
+      <image
+          wx:if="{{(index + 1) * 2 <= (film.rating.value + 1)}}"
+          src="./../../imgs/star-open.png"
+          mode="aspectFit"></image>
+      <image
+          wx:else src="./../../imgs/star-close.png"
+          mode="aspectFit"></image>
+    </block>
+    <text class="film-score_number">{{ film.rating.value }}</text>
+  </view>
+  <view class="film-score none" wx:if="{{ !film.rating.value }}">
+    暂无评分
+  </view>
+  <slot></slot>
 </view>

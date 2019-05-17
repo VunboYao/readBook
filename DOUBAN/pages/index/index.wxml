@@ -1,28 +1,28 @@
 <!-- 搜索 Start -->
 <view class="search">
-    <navigator class="search-nav" url="./../search/search">
-        <icon type="search" size="14"></icon>
-        <text>搜索</text>
-    </navigator>
+  <navigator class="search-nav" url="./../search/search">
+    <icon type="search" size="14"></icon>
+    <text>搜索</text>
+  </navigator>
 </view>
 <!-- 搜索 END -->
 
 <view class="container">
-    <block wx:for="{{ filmList }}"
-           wx:key="{{ index }}">
-        <!-- 电影类别 -->
-        <view class="film-type">
-            <text class="film-type_title">{{ item.title }}</text>
-            <navigator hover-class="none" url="./../list/list?reqKey={{ item.reqKey }}">查看更多</navigator>
-        </view>
-        <!-- 电影列表 -->
-        <scroll-view class="film-list" scroll-x>
-            <film-item class="film-item"
-                       wx:for="{{ item.films }}"
-                       wx:for-item="film"
-                       wx:key-index="id"
-                       wx:key="{{ id }}"
-                       film="{{ film }}"></film-item>
-        </scroll-view>
-    </block>
+  <block wx:for="{{ filmList }}"
+         wx:key="{{ index }}">
+    <!-- 电影类别 -->
+    <view class="film-type">
+      <text class="film-type_title">{{ item.title }}</text>
+      <navigator hover-class="none" url="./../list/list?reqKey={{ item.reqKey }}">查看更多</navigator>
+    </view>
+    <!-- 电影列表 -->
+    <scroll-view class="film-list" scroll-x>
+      <film-item class="film-item"
+                 wx:for="{{ item.films }}"
+                 wx:for-item="film"
+                 wx:key-index="id"
+                 wx:key="{{ id }}"
+                 film="{{ film }}"></film-item>
+    </scroll-view>
+  </block>
 </view>
