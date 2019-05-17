@@ -1,0 +1,17 @@
+/* pages/classic/classic.wxss */
+.container {
+  display: flex;
+}
+.chunk {
+  width: 100px;
+  height: 100px;
+}
+.color-red {
+  background-color: red;
+}
+.color-blue {
+  background-color: blue;
+}
+.color-grey {
+  background-color: grey;
+}

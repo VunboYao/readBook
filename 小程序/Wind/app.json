@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "pages/classic/classic"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#09BB07",
+    "navigationBarTitleText": "言念君子",
+    "navigationBarTextStyle": "white"
+  }
+}
