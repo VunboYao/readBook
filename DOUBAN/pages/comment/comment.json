@@ -1,4 +1,5 @@
 {
   "usingComponents": {},
-  "navigationBarTitleText": "Comment"
+  "navigationBarTitleText": "Comment",
+  "onReachBottomDistance": 100
 }

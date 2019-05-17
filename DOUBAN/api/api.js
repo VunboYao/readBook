@@ -8,10 +8,18 @@ const movie_Detail = "https://m.douban.com/rexxar/api/v2/movie";
 
 const movie_comment = "https://m.douban.com/rexxar/api/v2/movie";
 
+const free_comment = "https://m.douban.com/rexxar/api/v2/recommend_feed";
+
 let param = {
     start: 0,
     count: 8
 }
+
+const freeCommentParams = {
+    next_date:"2019-05-15",
+    for_mobile:1
+}
+
 let filmCommentParams = {
     count: 20,
     order_by: 'time',
@@ -33,6 +41,15 @@ let loadMovieComment = function (success,filmId,params=filmCommentParams) {
         success,
         fail
     })
+}
+
+const loadFreeComments = function (success, data = freeCommentParams){
+    wx.request({
+        url: free_comment,
+        data,
+        success,
+        fail
+    });
 }
 
 
@@ -96,5 +113,6 @@ export default {
     loadMovieHot,
     loadMovieTop250,
     loadMovieDetail,
-    loadMovieComment
+    loadMovieComment,
+    loadFreeComments
 }

@@ -10,7 +10,7 @@
             <image mode='aspectFit' class='film-img' src='{{ film.normal }}'></image>
             <view class='film-intro'>
                 <view class='title'>{{ film.title }}</view>
-                <view class='source'>{{ film.source }} 分 {{ film.count }} 人评价</view>
+                <view class='source'>{{ film.rating.value }} 分 {{ film.rating.count }} 人评价</view>
             </view>
         </view>
     </view>
@@ -33,7 +33,7 @@
         </view>
 
         <view>
-            <button class='collection' bindtap='addCollection'>收藏</button>
+            <button class='collection' bindtap='addCollection'>{{collect}}</button>
         </view>
     </view>
     <!-- 电影介绍 end -->

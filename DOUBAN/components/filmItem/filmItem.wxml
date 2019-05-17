@@ -22,4 +22,5 @@
     <view class="film-score none" wx:if="{{ !film.rating.value }}">
         暂无评分
     </view>
+    <slot></slot>
 </view>

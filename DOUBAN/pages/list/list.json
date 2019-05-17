@@ -2,7 +2,7 @@
   "usingComponents": {
     "film-item": "./../../components/filmItem/filmItem"
   },
-  "onReachBottomDistance": 50,
+  "onReachBottomDistance": 100,
   "navigationBarBackgroundColor": "#fff",
   "navigationBarTextStyle": "black"
 }
