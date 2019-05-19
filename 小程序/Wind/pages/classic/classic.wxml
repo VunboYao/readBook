@@ -1,5 +1,7 @@
-<view class="container">
-  <view class="chunk color-red"></view>
-  <view class="chunk color-blue"></view>
-  <view class="chunk color-grey"></view>
-</view>
+<y-like
+  bind:like="onLike"
+  like="{{classic.like_status}}"
+  count="{{classic.fav_nums}}"></y-like>
+<y-movie
+  content="{{classic.content}}"
+  img="{{classic.image}}"></y-movie>

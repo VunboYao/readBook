@@ -1,0 +1,7 @@
+page {
+  /* iPhoneX 系列底部横线 */
+  padding-bottom: env(safe-area-inset-bottom);
+
+  font-family: "PingFangSC-Thin";
+  font-size: 32rpx;
+}

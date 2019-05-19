@@ -3,8 +3,9 @@
     "pages/classic/classic"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#09BB07",
+    "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "言念君子",
-    "navigationBarTextStyle": "white"
-  }
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json"
 }
