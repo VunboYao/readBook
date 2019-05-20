@@ -1,11 +1,24 @@
 {
   "pages": [
-    "pages/classic/classic"
+    "pages/classic/classic",
+    "pages/book/book"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "言念君子",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#fcc",
+    "selectedColor": "#f00",
+    "backgroundColor": "#eee",
+    "list": [{
+      "pagePath": "pages/classic/classic",
+      "text": "Main"
+    }, {
+      "pagePath": "pages/book/book",
+      "text": "Book"
+    }]
   },
   "sitemapLocation": "sitemap.json"
 }

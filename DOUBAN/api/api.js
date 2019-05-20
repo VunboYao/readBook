@@ -16,7 +16,7 @@ let param = {
 }
 
 const freeCommentParams = {
-    next_date:"2019-05-15",
+    next_date:"",
     for_mobile:1
 }
 

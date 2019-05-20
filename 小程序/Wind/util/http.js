@@ -1,5 +1,6 @@
 import { config } from './../config.js'
 
+/* 错误状态码提示 */
 const tips = {
   1: "sorry, that's an error!",
   1005: 'appkey无效, 请前往www.7yue.pro申请',
@@ -24,9 +25,9 @@ class HTTP{
         /* startsWith 方法的参数必须是 String 类型 */
         let code = res.statusCode.toString()
 
+        /* 200开头状态码,传递回调中 data{} */
         if (code.startsWith('2')) {
-          /* 200开头状态码,传递回调中 data{} */
-          params.success(res.data)
+          params.success && params.success(res.data)
         } else {
           /* 数据异常 */
           let error_code = res.data.error_code

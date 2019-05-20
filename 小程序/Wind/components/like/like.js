@@ -33,12 +33,12 @@ Component({
         count: count
       })
 
-      // detail
+      // 自定义事件的 detail
       let behavior = this.properties.like ? 'like' : 'cancel'
       // 触发组件自定义事件
       this.triggerEvent('like', {
         behavior: behavior
-      }, {})
+      })
     }
   }
 })

@@ -1,7 +1,28 @@
-<y-like
-  bind:like="onLike"
-  like="{{classic.like_status}}"
-  count="{{classic.fav_nums}}"></y-like>
-<y-movie
-  content="{{classic.content}}"
-  img="{{classic.image}}"></y-movie>
+<view class="container">
+  <!-- 点赞&日期 -->
+  <view class="header">
+    <y-episode
+      class="y-episode"
+      index="{{classic.index}}"></y-episode>
+    <y-like
+      class="y-like"
+      bind:like="onLike"
+      like="{{classic.like_status}}"
+      count="{{classic.fav_nums}}"></y-like>
+  </view>
+
+  <!-- 展示 -->
+  <y-movie
+    content="{{classic.content}}"
+    img="{{classic.image}}"></y-movie>
+
+  <!-- 标题 -->
+  <y-navi
+    bind:left="onNext"
+    bind:right="onPrevious"
+    class="y-navi"
+    first="{{first}}"
+    latest="{{latest}}"
+    title="{{classic.title}}"></y-navi>
+
+</view>

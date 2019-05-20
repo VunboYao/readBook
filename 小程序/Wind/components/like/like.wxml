@@ -2,7 +2,7 @@
   class="container"
   bind:tap="onLike">
   <image
-    class="container"
+    class="likeSrc"
     src="{{like ? yesSrc : noSrc}}"></image>
-  <text>{{count}}</text>
+  <text class="likeNum">{{count}}</text>
 </view>
