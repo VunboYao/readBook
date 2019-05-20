@@ -1,0 +1,12 @@
+<view class="container">
+  <view class="container-index">
+    <view class="container-tip">No.</view>
+    <view class="container-num">{{_index}}</view>
+    <view class="container-separate"></view>
+  </view>
+  <view class="container-date">
+    <view class="container-month">{{month}}</view>
+    <view class="container-year">{{year}}</view>
+  </view>
+
+</view>

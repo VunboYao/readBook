@@ -1,0 +1,5 @@
+<view class="container">
+  <image class="container-bgSrc" src="{{img}}"></image>
+  <image class="container-toggle" src=""></image>
+  <text class="container-content">{{content}}</text>
+</view>

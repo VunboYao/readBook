@@ -34,11 +34,27 @@ Page({
   },
 
   onNext: function (event) {
-
+    this._updateClassic('next');
   },
   onPrevious: function (event) {
-
+    this._updateClassic('previous')
   },
+
+  /* 获取上一期/下一期 公有方法 */
+  _updateClassic(nextOrPrevious) {
+    // 获取当前index
+    let index = this.data.classic.index
+    // 获取期刊
+    classicModel.getClassic(index, nextOrPrevious, res => {
+      // 更新数据
+      this.setData({
+        classic: res,
+        latest: classicModel.isLatest(res.index),
+        first: classicModel.isFirst(res.index)
+      })
+    })
+  },
+
 
 
 

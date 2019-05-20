@@ -1,0 +1,42 @@
+/* components/episode/episode.wxss */
+.container {
+  display: inline-flex;
+  height: 60rpx;
+}
+
+.container-index {
+  display: flex;
+  align-items: baseline;
+}
+
+.container-tip {
+  font-size: 32rpx;
+}
+.container-num {
+  font-size: 60rpx;
+  line-height: 60rpx;
+  font-weight: 800;
+  margin-right: 14rpx;
+}
+
+.container-separate {
+  height: 44rpx;
+  margin-right: 14rpx;
+  border-left: 1px solid #000;
+}
+
+.container-date {
+  height: 60rpx;
+  display: flex;
+  flex-direction: column;
+  margin-top: 6rpx;
+}
+
+.container-month {
+  font-size: 24rpx;
+  line-height: 24rpx;
+}
+
+.container-year {
+  font-size: 20rpx;
+}
