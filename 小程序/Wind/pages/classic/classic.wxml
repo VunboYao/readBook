@@ -1,9 +1,11 @@
 <view class="container">
   <!-- 点赞&日期 -->
   <view class="header">
+    <!-- 传递组件: index -->
     <y-episode
       class="y-episode"
       index="{{classic.index}}"></y-episode>
+      <!-- 传递组件: like, count -->
     <y-like
       class="y-like"
       bind:like="onLike"
@@ -12,11 +14,13 @@
   </view>
 
   <!-- 展示 -->
+  <!-- 传递组件: content, img -->
   <y-movie
     content="{{classic.content}}"
     img="{{classic.image}}"></y-movie>
 
   <!-- 标题 -->
+  <!-- 传递组件: first, latest, title -->
   <y-navi
     bind:left="onNext"
     bind:right="onPrevious"
