@@ -2,31 +2,21 @@
   <!-- 点赞&日期 -->
   <view class="header">
     <!-- 传递组件: index -->
-    <y-episode
-      class="y-episode"
-      index="{{classic.index}}"></y-episode>
-      <!-- 传递组件: like, count -->
-    <y-like
-      class="y-like"
-      bind:like="onLike"
-      like="{{classic.like_status}}"
-      count="{{classic.fav_nums}}"></y-like>
+    <y-episode class="y-episode" index="{{classic.index}}"></y-episode>
+    <!-- 传递组件: like, count -->
+    <y-like class="y-like" bind:like="onLike" like="{{likeStatus}}" count="{{likeCount}}"></y-like>
   </view>
 
   <!-- 展示 -->
   <!-- 传递组件: content, img -->
-  <y-movie
-    content="{{classic.content}}"
-    img="{{classic.image}}"></y-movie>
+  <y-movie wx:if="{{classic.type === 100}}" content="{{classic.content}}" img="{{classic.image}}"></y-movie>
+  <y-music title="{{classic.title}}" src="{{classic.url}}" wx:if="{{classic.type === 200}}"
+    content="{{classic.content}}" img="{{classic.image}}"></y-music>
+  <y-essay wx:if="{{classic.type === 300}}" content="{{classic.content}}" img="{{classic.image}}"></y-essay>
 
   <!-- 标题 -->
   <!-- 传递组件: first, latest, title -->
-  <y-navi
-    bind:left="onNext"
-    bind:right="onPrevious"
-    class="y-navi"
-    first="{{first}}"
-    latest="{{latest}}"
+  <y-navi bind:left="onNext" bind:right="onPrevious" class="y-navi" first="{{first}}" latest="{{latest}}"
     title="{{classic.title}}"></y-navi>
 
 </view>

@@ -3,6 +3,8 @@
     "y-like": "/components/like/like",
     "y-movie": "/components/classic/movie/movie",
     "y-episode": "/components/episode/episode",
-    "y-navi": "/components/navi/navi"
+    "y-navi": "/components/navi/navi",
+    "y-music": "/components/classic/music/music",
+    "y-essay": "/components/classic/essay/essay"
   }
 }

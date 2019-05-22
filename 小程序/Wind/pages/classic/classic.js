@@ -12,7 +12,9 @@ Page({
   data: {
     classic: {},
     latest: true,
-    first: false
+    first: false,
+    likeCount: 0,
+    likeStatus: false
   },
 
   /**
@@ -22,7 +24,9 @@ Page({
     // 更新数据
     classicModel.getLatest(res => {
       this.setData({
-        classic: res
+        classic: res,
+        likeCount: res.fav_nums,
+        likeStatus: res.like_status
       })
     })
   },
@@ -46,6 +50,8 @@ Page({
     let index = this.data.classic.index
     // 获取期刊
     classicModel.getClassic(index, nextOrPrevious, res => {
+      // 获取点赞状态
+      this._getLikeStatus(res.id, res.type)
       // 更新数据
       this.setData({
         classic: res,
@@ -54,6 +60,17 @@ Page({
       })
     })
   },
+
+  // 获取点赞状态
+  _getLikeStatus: function (artId, category) {
+    likeModel.getClassicLikeStatus(artId, category, res => {
+      this.setData({
+        likeCount: res.fav_nums,
+        likeStatus: res.like_status
+      })
+    })
+  },
+
 
 
 

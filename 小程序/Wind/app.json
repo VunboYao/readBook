@@ -8,6 +8,7 @@
     "navigationBarTitleText": "言念君子",
     "navigationBarTextStyle": "black"
   },
+  "requiredBackgroundModes": ["audio"],
   "tabBar": {
     "color": "#fcc",
     "selectedColor": "#f00",
