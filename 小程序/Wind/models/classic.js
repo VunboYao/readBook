@@ -1,4 +1,4 @@
-import { HTTP } from "../util/http.js";
+import { HTTP } from "../util/http.js"
 
 /* 期刊 继承 HTTP */
 class ClassicModel extends HTTP {

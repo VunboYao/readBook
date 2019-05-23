@@ -52,7 +52,7 @@ Component({
 
     // 播放状态判断
     _recoverStatus() {
-      if(mMgr.paused) {
+      if (mMgr.paused) {
         this.setData({
           playing: false
         })

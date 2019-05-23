@@ -554,7 +554,7 @@ B.__proto__ = A;
     
     // Promise 新建后立即执行, 所以首先输出的是 Promise. 然后, then 方法指定的回调函数, 将在当前脚本所有同步任务执行完才会执行, 所以 resolved 最后输出.
     ```
-- 一般来说, 调用 resolve 或 reject 以后, Promise 的使命就完成了, 后续操作应该放到 then 方法里面, 而不应该直接写在 resolve 或 reject 的后面. 所以, 最好在它们的前面加上 return 语句, 这样就不会有意外.
+- 一般来说, 调用 resolve 或 reject 以后, Promise 的使命就完成了, 后续操作应该放到 then 方法里面, 而不应该直接写在 resolve 或 reject 的后面. 所以, 最好在它们的前面加上 **return** 语句, 这样就不会有意外.
   
 ## Promise.prototype.then()    
 - Promise 实例具有 then 方法, 也就是说, then 方法是定义在原型对象 Promise.prototype 上的. 它的作用是为 Promise 实例添加状态改变时的回调函数. **then 方法的第一个参数是 resolved 状态的回调函数, 第二个参数(可选) 是 rejected 状态的回调函数**.    
@@ -572,8 +572,8 @@ B.__proto__ = A;
     /* 上面代码中, getJSON 方法返回一个 Promise 对象, 如果该对象状态变为 resolved, 则会调用 then 方法指定的回调函数; 如果异步操作抛出错误, 状态就变为 rejected, 就会调用 catch 方法指定的回调函数, 处理这个错误. 另外, then 方法指定的回调函数, 如果运行中抛出了错误, 也会被 catch 方法捕获. */
     ```
 - 如果 Promise 状态已经变成了 resolved, 再抛出错误是无效的. 因为 Promise 的状态一旦改变, 就永久保存该状态, 不会再变.     
-- Promise 对象的错误具有'冒泡'性质, 会一直向后传递, 知道被捕获为止. 也就是说, 错误总是被下一个 catch 语句捕获.    
-- 一般来说, 不要在 then 方法里面定义 Reject 状态的回调函数 (即 then 的第二个参数), 总是用 catch 方法.    
+- Promise 对象的错误具有'冒泡'性质, 会一直向后传递, 直到被捕获为止. 也就是说, 错误总是被下一个 catch 语句捕获.    
+- 一般来说, 不要在 then 方法里面定义 reject 状态的回调函数 (即 then 的第二个参数), 总是用 catch 方法.    
 - 与传统的 try/catch 代码块不同的是, 如果没有使用 catch 方法指定错误处理的回调函数, Promise 对象抛出的错误不会传递到外层代码, 即不会有任何反应. **Promise 内部的错误不会影响到 Promise 外部的代码，通俗的说法就是“Promise 会吃掉错误”。** 
 - 一般总是建议，Promise 对象后面要跟catch方法，这样可以处理 Promise 内部发生的错误。
 

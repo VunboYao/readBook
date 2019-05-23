@@ -1,25 +1,41 @@
 {
   "pages": [
     "pages/classic/classic",
-    "pages/book/book"
+    "pages/book/book",
+    "pages/my/my"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "言念君子",
     "navigationBarTextStyle": "black"
   },
-  "requiredBackgroundModes": ["audio"],
+  "requiredBackgroundModes": [
+    "audio"
+  ],
   "tabBar": {
-    "color": "#fcc",
-    "selectedColor": "#f00",
-    "backgroundColor": "#eee",
-    "list": [{
-      "pagePath": "pages/classic/classic",
-      "text": "Main"
-    }, {
-      "pagePath": "pages/book/book",
-      "text": "Book"
-    }]
+    "color": "#c7c7c7",
+    "selectedColor": "#000",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/classic/classic",
+        "text": "流行",
+        "iconPath": "/images/tab/classic.png",
+        "selectedIconPath": "/images/tab/classic@highlight.png"
+      },
+      {
+        "pagePath": "pages/book/book",
+        "text": "书籍",
+        "iconPath": "/images/tab/book.png",
+        "selectedIconPath": "/images/tab/book@highlight.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "喜欢",
+        "iconPath": "/images/tab/my.png",
+        "selectedIconPath": "/images/tab/my@highlight.png"
+      }
+    ]
   },
   "sitemapLocation": "sitemap.json"
 }

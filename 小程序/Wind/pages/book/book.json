@@ -1,3 +1,5 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "y-book": "/components/book/book"
+  }
 }
