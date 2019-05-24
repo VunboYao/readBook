@@ -1,4 +1,3 @@
-
 <view class="container">
   <view class="header">
     <view class="box">
@@ -6,10 +5,10 @@
       <text class="placeholder">搜索书籍</text>
     </view>
   </view>
-  <view class="sub_container">
+  <view class="sub-container">
     <image class="head-img" src="/images/book/quality.png"></image>
     <view class="books-container">
-      <block wx:for="{{books}}" wx:for-item="book" wx:for-index="id" wx:key="{{id}}">
+      <block wx:for="{{books}}" wx:for-item="book" wx:key="id">
         <y-book class="y-book" book="{{book}}"></y-book>
       </block>
     </view>

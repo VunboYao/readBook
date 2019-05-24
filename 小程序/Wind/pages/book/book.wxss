@@ -22,10 +22,6 @@
   justify-content: space-between;
 }
 
-.books-container .book-cmp {
-  margin-bottom: 30rpx;
-}
-
 .header {
   position: fixed;
   background-color: #ffffff;
