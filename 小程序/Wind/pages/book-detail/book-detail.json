@@ -1,3 +1,7 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "y-tag": "/components/tag/tag",
+    "y-like": "/components/like/like",
+    "y-mask": "/components/mask/mask"
+  }
 }

@@ -1,0 +1,1 @@
+<view class="container" catch:touchmove="touchMove"></view>

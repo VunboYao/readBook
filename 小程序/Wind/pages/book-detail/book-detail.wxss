@@ -1,1 +1,195 @@
-/* pages/book-detail/book-detail.wxss */
+.container {
+    background-color: #f5f5f5;
+}
+
+/* 书籍 */
+.head {
+    padding: 40rpx 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+}
+
+.title {
+    color: #2f2f2f;
+    margin-top: 20rpx;
+    font-size: 28rpx;
+    font-weight: 600;
+}
+
+.author {
+    font-size: 28rpx;
+    color: #999;
+}
+
+.head-img {
+    width: 200rpx;
+    height: 300rpx;
+    box-shadow: 2px 2px 3px #e3e3e3;
+}
+
+/* 统一样式,标题 */
+.sub-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30rpx;
+    padding: 30rpx;
+    width: 690rpx;
+    background-color: #fff;
+}
+
+.headline {
+    font-size: 30rpx;
+    font-weight: 600;
+    color: #2f2f2f;
+    margin-bottom: 20rpx;
+}
+
+
+/* 短评 */
+.comment-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* 短评组件 */
+.y-tag {
+    margin: 0 15rpx 10rpx 0;
+}
+/* 短评数量 */
+.slot-num {
+    font-size: 22rpx;
+    margin-left: 10rpx;
+    color: #aaa;
+}
+
+/*.y-tag:first-child > view {
+    background-color: #fffbdd;
+}
+.y-tag:nth-child(2) > view {
+    background-color: #eefbff;
+}*/
+
+/* 短评颜色选择 */
+.tag-class-first {
+    background-color: #fffbdd!important;
+}
+.tag-class-second {
+    background-color: #eefbff!important;
+}
+
+/* 内容简介 */
+.content {
+  text-indent: 2em;
+}
+.detail-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 100rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+/* 书本信息 */
+.vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.description {
+  color: #999;
+  margin-right: 30rpx;
+}
+
+/* 底部评论 */
+.post-container {
+  height: 100rpx;
+  box-shadow: 1px -1px 1px #e3e3e3;
+  position: fixed;
+  width: 690rpx;
+  background-color: #fff;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 30rpx;
+  justify-content: space-between;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 输入框 fake */
+.post-fake {
+  display: flex;
+  align-items: center;
+  height: 60rpx;
+  width: 460rpx;
+  border: 1px solid #999;
+  border-radius: 15px;
+  font-size: 22rpx;
+  padding-left: 20rpx;
+}
+
+.like-container{
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+}
+.y-like {
+  margin-right: 30rpx;
+  margin-top: 10rpx;
+}
+
+/* 输入框 truthy */
+.posting-container{
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  width: 100%;
+  z-index: 999;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.post-header {
+  width: 100%;
+  border-bottom: 1px solid #f5f5f5;
+  border-top: 1px solid #f5f5f5;
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-tip {
+  padding: 25rpx;
+  font-size: 28rpx;
+  color: #bbb;
+}
+
+.cancel {
+  padding: 25rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.posting-container > .comment-container {
+  width: 690rpx;
+  padding: 40rpx 30rpx 0 30rpx;
+}
+
+.post {
+  width: 690rpx;
+  margin: 30rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: 20px;
+  padding-left: 30rpx;
+  background-color: #f5f5f5;
+}
+
+.shadow {
+  color: #999;
+}

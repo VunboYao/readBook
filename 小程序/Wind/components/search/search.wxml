@@ -1,0 +1,55 @@
+<view class="container">
+  <!-- 搜索S -->
+  <view class="header">
+    <view class="search-container">
+      <image class="icon" src="images/search.png"></image>
+      <input value="{{inputValue}}" type="text" bind:confirm="onConfirm" confirm-type="search" class="bar" placeholder-class="in-bar"
+        placeholder="{{placeholder}}" auto-focus="true"></input>
+      <image bind:tap="onDelete" class="cancel-img" src="images/cancel.png"></image>
+    </view>
+    <view class="cancel" bind:tap="onCancel">取消</view>
+  </view>
+  <!-- 搜索E -->
+
+  <!-- 推荐 -->
+  <view wx:if="{{!searching}}" class="recommend">
+    <!-- 历史搜索S -->
+    <view class="history">
+      <view class="title">
+        <view class="chunk"></view>
+        <text class="name">历史搜索</text>
+      </view>
+      <view class="tags">
+        <block wx:for="{{history}}" wx:key="index">
+          <y-tag bind:tapping="onConfirm" class="y-tag" text="{{item}}"></y-tag>
+        </block>
+      </view>
+    </view>
+    <!-- 历史搜索E -->
+
+    <!-- 热门搜索S -->
+    <view class="history hot-search">
+      <view class="title">
+        <view class="chunk"></view>
+        <text class="name">热门搜索</text>
+      </view>
+      <view class="tags">
+        <block wx:for="{{hotKeywords}}" wx:key="index">
+          <y-tag bind:tapping="onConfirm" class="y-tag" text="{{item}}"></y-tag>
+        </block>
+      </view>
+    </view>
+    <!-- 热门搜索E -->
+  </view>
+
+  <!-- 搜索结果 -->
+  <view wx:if="{{searching}}" class="books-container">
+    <block wx:for="{{dataArray}}" wx:key="id">
+      <y-book class="y-book" book="{{item}}"></y-book>
+    </block>
+  </view>
+
+  <y-loading wx:if="{{loadingCenter}}" class="y-loading-center"></y-loading>
+  <y-loading wx:if="{{loading}}" class="y-loading-bottom"></y-loading>
+  <text wx:if="{{noneResult}}" class="empty-tip">没有搜索到书籍</text>
+</view>

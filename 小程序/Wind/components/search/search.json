@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "y-tag": "/components/tag/tag",
+    "y-book": "/components/book/book",
+    "y-loading": "/components/loading/loading"
+  }
+}

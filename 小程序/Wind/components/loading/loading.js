@@ -1,10 +1,11 @@
-// pages/my/my.js
+// components/loading/loading.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+
   },
 
   /**
