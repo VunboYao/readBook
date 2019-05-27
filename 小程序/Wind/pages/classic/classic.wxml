@@ -3,8 +3,13 @@
   <view class="header">
     <!-- 传递组件: index -->
     <y-episode class="y-episode" index="{{classic.index}}"></y-episode>
-    <!-- 传递组件: like, count -->
-    <y-like class="y-like" bind:like="onLike" like="{{likeStatus}}" count="{{likeCount}}"></y-like>
+    <view class="like-container">
+       <!-- 传递组件: like, count -->
+       <y-like class="y-like" bind:like="onLike" like="{{likeStatus}}" count="{{likeCount}}"></y-like>
+       <y-button class="share-btn" open-type="share">
+         <image class="share" slot="img" src="/images/icon/share.png"></image>
+       </y-button>
+    </view>
   </view>
 
   <!-- 展示 -->

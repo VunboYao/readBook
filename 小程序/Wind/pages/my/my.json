@@ -1,3 +1,6 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "y-button": "/components/image-button/image-button",
+    "y-collect": "/components/collect/collect"
+  }
 }

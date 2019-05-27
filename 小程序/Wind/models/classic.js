@@ -67,6 +67,15 @@ class ClassicModel extends HTTP {
     let key = 'classic-' + index
     return key
   }
+
+  /* 获取我的喜欢 */
+  getMyFavor(success) {
+    const params = {
+      url: 'classic/favor',
+      success: success
+    }
+    this.request(params)
+  }
 }
 
 export {ClassicModel}

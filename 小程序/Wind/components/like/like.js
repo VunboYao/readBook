@@ -4,7 +4,8 @@ Component({
    */
   properties: {
     count:Number,
-    like: Boolean
+    like: Boolean,
+    readOnly: Boolean
   },
 
   /**
@@ -23,6 +24,10 @@ Component({
     onLike(event) {
       let bLike = this.properties.like
       let count = this.properties.count
+
+      if (this.properties.readOnly) {
+        return 
+      }
 
       // 如果 bLike 为 true, 则点击后--, 否则++
       count = bLike ? --count : ++count

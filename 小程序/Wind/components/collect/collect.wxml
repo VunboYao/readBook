@@ -1,0 +1,8 @@
+<view class="container">
+  <view class="head">
+    <y-tag tag-class="tag" text="{{typeText}}"></y-tag>
+    <y-like class="like" read-only="{{true}}" like="{{true}}" count="{{classic.fav_nums}}"></y-like>
+  </view>
+  <image class="{{classic.type==200?'music-img':'other-img'}}" src="{{classic.image}}"></image>
+  <view class="text">{{classic.content}}</view>
+</view>

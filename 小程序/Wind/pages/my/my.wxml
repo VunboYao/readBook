@@ -1,0 +1,33 @@
+<view class="container">
+  <image class="bg" src="/images/my/my@bg.png"></image>
+  <y-button
+    wx:if="{{!authorized}}"
+    open-type="getUserInfo"
+    bind:getuserinfo="onGetUserInfo"
+    class="avatar-position">
+    <image slot="img" class="avatar" src="/images/my/my.png"></image>
+  </y-button>
+  <view wx:if="{{authorized}}" class="avatar-container avatar-position">
+    <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
+    <text class="nickName">{{userInfo.nickName}}</text>
+  </view>
+  <view class="about-container">
+    <view class="about-us" bind:tap="onJumpToAbout">
+      <image class="about" src="/images/my/about.png"></image>
+      <text class="description">About Our</text>
+    </view>
+    <view class="about-us">
+      <text class="book-num">{{bookCount}}</text>
+      <text class="description">喜欢的书</text>
+    </view>
+  </view>
+  <view class="like-container">
+    <image class="headline" src="/images/my/like.png"></image>
+    <view class="collect-container">
+      <block wx:for="{{classics}}" wx:key="content">
+        <y-collect class="y-collect" classic="{{item}}"></y-collect>
+      </block>
+    </view>
+  </view>
+</view>
+<image class="study" bind:tap="onStudy" src="/images/my/study.png"></image>

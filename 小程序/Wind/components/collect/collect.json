@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "y-tag": "/components/tag/tag",
+    "y-like": "/components/like/like"
+  }
+}

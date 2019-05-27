@@ -69,6 +69,9 @@
       bind:like="onLike"
       like="{{likeStatus}}"
       count="{{likeCount}}"></y-like>
+      <y-button class="share-btn" open-type="share">
+        <image class="share" slot="img" src="/images/icon/share.png"></image>
+      </y-button>
   </view>
 </view>
 

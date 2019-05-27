@@ -2,6 +2,7 @@
   "usingComponents": {
     "y-tag": "/components/tag/tag",
     "y-like": "/components/like/like",
-    "y-mask": "/components/mask/mask"
+    "y-mask": "/components/mask/mask",
+    "y-button": "/components/image-button/image-button"
   }
 }

@@ -137,8 +137,8 @@
   align-content: center;
 }
 .y-like {
-  margin-right: 30rpx;
-  margin-top: 10rpx;
+  padding-top: 20rpx;
+  display: flex;
 }
 
 /* 输入框 truthy */
@@ -192,4 +192,12 @@
 
 .shadow {
   color: #999;
+}
+.share-btn {
+  /* margin: 28rpx 0 0 10rpx; */
+}
+
+.share {
+  width: 40rpx;
+  height: 40rpx;
 }

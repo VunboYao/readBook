@@ -4,7 +4,9 @@
     "pages/book/book",
     "pages/my/my",
     "pages/book-detail/book-detail",
-    "components/loading/loading"
+    "components/loading/loading",
+    "pages/about/about",
+    "pages/course/course"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
