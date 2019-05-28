@@ -14,8 +14,9 @@
     - type: 默认text/javascript。可省略
     - src: 可选。执行外部代码文件
     - charset: 表示通过 src 属性指定的代码的字符集。很少用
-    
-    
+
+
+​    
 # 第三章：基本概念
 ## 语法
 1. **区分大小写**
@@ -40,6 +41,7 @@
     > - "function"——如果这个值是函数
     > - *声明未初始化的变量，typeof是undefined, 同时未声明的变量，typeof 也是undefined*
 4. **undefined**: 派生自null值
+    
     > 当变量声明，未对其初始化时，这个变量的值就是undefined   
 5. **null**: 一个空对象指针
 6. **NaN**
@@ -338,7 +340,7 @@ function bulidUrl() {
 - 调用数组的toString()方法会返回由数组中每个值的字符串形式，拼接而成的一个以逗号分隔的字符串。
 - alert（）接受的是字符串参数，因此输出数组时，后台调用toString() 方法。
 - 数组继承的toLocalString()、toString() 和 valueOf() 方法，默认以逗号分隔的字符串的形式返回
-- join()只接受一个参数，即用作分隔符的字符串，可以自定义分隔符
+- join()方法将一个数组(或一个类数组对象)的所有元素连接成一个字符串并返回该字符串, 只接受一个参数，即用作分隔符的字符串，可以自定义分隔符. 如果数组只有一个项目，那么将返回该项目而不使用分隔符。
 - > 如果数组中的某一项的值是 null 或者 undefined ，那么该值在 join() 、toLocaleString() 、 toString() 和 valueOf() 方法返回的结果中以空字符串表示。
 
 ### 栈方法
@@ -429,7 +431,7 @@ console.log(colors.slice(1, 4)); // [ 'green', 'blue', 'yellow' ]
         pos = stringValue.indexOf("e", pos + 1);
     }
     console.log(positions); //"3,24,32,35,52" 
-    ```  
+    ```
     
 ### 迭代方法
 > 每个方法都接受两个参数：要在每一项上运行的函数和（可选的）运行该函数的作用域对象——影响this的值。传入这些方法中的函数会接受三个参数：数组项的值、该项在数组中的位置和数组对象本身。    
@@ -822,7 +824,7 @@ console.log(data[0].name); // Zachary
             return new Book(name);
         }
     } 
-    ```    
+    ```
 
 ### Number类型
 - toFixed()，按照指定的小数位返回数值的字符串表示
@@ -1145,10 +1147,10 @@ console.log(typeof descriptor1.get); // function 指向getter函数的指针
      return o;
  }
  let p1 = createPerson('Nicholas', 29, 'Software Engineer');
-```    
+```
 
 - **工厂方法虽然解决了创建多个相似对象的问题， 但却没有解决对象识别的问题（即怎样知道一个对象的类型）**
-    
+  
 ### 构造函数模式   
 ```
  function Person(name, age, job) {
@@ -1161,13 +1163,13 @@ console.log(typeof descriptor1.get); // function 指向getter函数的指针
  }
  let p1 = new Person('Nicholas', 29, 'Software Engineer');
  p1.sayName(); // Nicholas 
- ```
+```
 **不同之处：**
 - 没有显示的创建对象
 - 直接将属性和方法赋给了 this 对象
 - 没有 return 语句    
 > 此外，还应该注意到函数名 Person 使用的是大写字母 P。按照惯例，构造函数始终都应该以一个大写字母开头，而非构造函数则应该以一个小写字母开头。这个做法借鉴自其他 OO 语言，主要是为了区别于 ECMAScript 中的其他函数；因为构造函数本身也是函数，只不过可以用来创建对象而已。   
-  
+
 **要创建 Person 的新实例，必须使用 new 操作符。以这种方式调用构造函数实际上会经历以下4个步骤：**
 1. 创建一个新对象
 2. 将构造函数的作用域赋给新对象（因此 this 就指向了这个新对象）    
@@ -1580,7 +1582,7 @@ friend.sayName(); // Nicholas
 
 > 这个模式可以在特殊的情况下用来为对象创建构造函数。假设我们想创建一个具有额外方法的特殊
   数组。由于不能直接修改 Array 构造函数，因此可以使用这个模式。
-  
+
 ```
 function SpecialArray() {
     let values = new Array();
@@ -1602,7 +1604,7 @@ console.log(colors.toPipedString()); // "red|blue|green"
   性之间没有关系；也就是说，构造函数返回的对象与在构造函数外部创建的对象没有什么不同。为此，
   不能依赖 instanceof 操作符来确定对象类型。由于存在上述问题，我们建议在可以使用其他模式的情
   况下，不要使用这种模式。**
-  
+
 - 在构造函数中创建工厂模式，添加自定义方法。并显式的返回对象。
 ```
 function ToUpper(value) {
@@ -1636,7 +1638,7 @@ console.log(a.toUp()); // Ssss
   以访问其数据成员。即使有其他代码会给这个对象添加方法或数据成员，但也不可能有别的办法访问传
   入到构造函数中的原始数据。稳妥构造函数模式提供的这种安全性，使得它非常适合在某些安全执行环
   境下使用。
-  
+
 **与寄生构造函数模式类似，使用稳妥构造函数模式创建的对象与构造函数之间也没有什么关系，因此 instanceof 操作符对这种对象也没有意义。**    
 
 ## 继承
@@ -1681,7 +1683,7 @@ console.dir(instance.constructor); // SuperType
 - 2.搜索 SubType.prototype ；
 - 3.搜索 SuperType.prototype ，最后一步才会找到该方法
 - 在找不到属性或方法的情况下，搜索过程总是要一环一环地前行到原型链末端才会停下来。
- 
+
 **1.别忘记默认的原型**
 - 所有引用类型默认都继承了 Object， 而这个继承也是通过原型链是实现的。
 - 所有函数的默认原型都是Object的实例，因此默认原型都会包含一个内部指针，指向Object.prototype。
@@ -2140,7 +2142,7 @@ console.log(person.getName()); // Greg
   由于这两个方法是在构造函数内部定义的，它们作为闭包能够通过作用域链访问 name 。私有变量 name
   在 Person 的每一个实例中都不相同，因为每次调用构造函数都会重新创建这两个方法。不过，在构造
   函数中定义特权方法也有一个缺点，那就是你必须使用构造函数模式来达到这个目的。
-  
+
  构造函数模式的缺点是针对每个实例都会创建同样一组新方法，而使用静态私有变量来实现特权方
   法就可以避免这个问题。
 
@@ -2174,7 +2176,7 @@ console.log(person.getName()); // Greg
 > 这个模式与在构造函数中定义特权方法的主要区别，就在于私有变量和函数是由实例共享的。由于
   特权方法是在原型上定义的，因此所有实例都使用同一个函数。而这个特权方法，作为一个闭包，总是
   保存着对包含作用域的引用。来看一看下面的代码
-  
+
 ```
 (function () {
     let name = ''

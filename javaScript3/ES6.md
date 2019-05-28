@@ -93,7 +93,7 @@ for (let i of arr.entries()) {
 
 - constructor 方法是类的**默认方法**, 通过 new 命令生成对象时, 自动调用该方法. **必须有 constructor 方法**, 没有显示定义, 一个空的 constructor 方法会被默认添加
 - constructor 方法**默认返回实例对象 (即 this)**, 可以指定返回**另外一个对象**. 则 instanceof 方法会返回 false
-- **必须通过 new 调用**,否则回报错.
+- **必须通过 new 调用**,否则会报错.
 
 ## 类的实例
 - 与 ES5 一样, 实例的属性除非显示定义在其本身 (即定义在 **this** 对象上), 否则都是定义在原型上 (即定义在 **class** 上)
@@ -727,7 +727,350 @@ genObj.next()
 
 # Proxy
 
+- ES6 原生提供 Proxy 构造函数, 用来生成 Proxy 实例
+    ```javascript
+    var proxy = new Proxy(target, handler)
+    // Proxy 对象的所有用法, 都是上面的这种形式, 不同的只是 handler 参数的写法. 其中, new Proxy() 表示生成一个 Proxy 实例, target 参数表示所要拦截的目标对象, handler 参数也是一个对象,用来定制拦截行为.
+    ```
+    
+    ```javascript
+    var proxy = new Proxy({}, {
+      get: ((target, p) => {
+        console.log(target, p)
+        return 35
+      })
+    })
+    console.log(proxy.time); // 35
+    console.log(proxy.name); // 35
+    console.log(proxy.title) // 35
+    // 上面代码中, 作为构造函数, Proxy 接受两个参数. 第一个参数是所有代码的目标对象(上述为空对象), 即如果没有 Proxy 的介入, 操作原来要访问的就是这个对象; 第二个参数是一个配置对象, 对于每一个被代理的操作, 提供一个对应的处理函数, 拦截对应的操作.
+    // get 方法的两个参数分别是目标对象和要访问的属性.
+    ```
+    
+- **要使得 Proxy 起作用, 必须针对 Proxy 实例进行操作, 而不是针对目标对象进行操作**. 如果 handler 没有设置任何拦截, 那就等同于直接通向原对象
+
+- Proxy 实例也可以作为其他对象的原型对象
+
+    1. ```javascript
+       let proxy = new Proxy({}, {
+         get: ((target, p) => {
+           return 35
+         })
+       })
+       
+       let obj = Object.create(proxy) // 使用现有对象提供新创建对象的__proto__
+       console.log(obj.time); // 35
+       // proxy 对象是 obj 对象的原型, obj 对象本身并没有 time 属性, 所以根据原型链, 会在 proxy 对象上读取该属性, 导致被拦截.
+       ```
+    
+- Proxy 支持的拦截操作一览
+
+    - **get(target, propKey, receiver)**:　拦截对象属性的读取，　比如proxy.foo 和 proxy['foo']
+    - **set(target, propKey, value, receiver)**: 拦截对象属性的设置, 比如 proxy.foo = v 或 proxy['foo'] = v, 返回一个布尔值
+    - **has (target, propKey)**: 拦截 propKey in proxy 的操作, 返回一个布尔值
+    - **deleteProperty(target, propKey)**: 拦截 delete proxy[propKey] 的操作, 返回一个布尔值
+    - **ownKeys(target)**:拦截 Object.getOwnPropertyNames(proxy), Object.getOwnPropertySymbols(proxy), Object.keys(proxy),  for...in 循环, 返回一个数组. 该方法返回目标对象所有自身的属性的属性名, 而 Object.keys() 的返回结果仅包括目标对象自身的可遍历属性.
+    - **getOwnPropertyDescriptor(target, propKey)**：拦截`Object.getOwnPropertyDescriptor(proxy, propKey)`，返回属性的描述对象。
+    - **defineProperty(target, propKey, propDesc)**：拦截`Object.defineProperty(proxy, propKey, propDesc）`、`Object.defineProperties(proxy, propDescs)`，返回一个布尔值。
+    - **preventExtensions(target)**：拦截`Object.preventExtensions(proxy)`，返回一个布尔值。
+    - **getPrototypeOf(target)**：拦截`Object.getPrototypeOf(proxy)`，返回一个对象。
+    - **isExtensible(target)**：拦截`Object.isExtensible(proxy)`，返回一个布尔值。
+    - **setPrototypeOf(target, proto)**：拦截`Object.setPrototypeOf(proxy, proto)`，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。
+    - **apply(target, object, args)**：拦截 Proxy 实例作为函数调用的操作，比如`proxy(...args)`、`proxy.call(object, ...args)`、`proxy.apply(...)`。
+    - **construct(target, args)**：拦截 Proxy 实例作为构造函数调用的操作，比如`new proxy(...args)`。
+
+## Porxy 实例的方法
+
+### get()
+
+- 用于拦截某个属性的读取操作, 可以接受三个参数, 依次是目标对象, 属性名和 proxy实例本身(严格地说, 是操作行为所针对的对象), 其中最后一个参数可选
+
+  ```javascript
+  let person = {
+    name: 'zs'
+  }
+  let proxy = new Proxy(person, {
+    get: (target, property) => {
+      if (property in target) {
+        return target[property]
+      } else {
+        throw new ReferenceError('Property: ' + property + 'does note exist')
+      }
+    }
+  })
+  
+  console.log(proxy.name) // zs
+  console.log(proxy.age) // error
+  ```
+
+- get方法可以继承
+
+  ```javascript
+  let proxy = new Proxy({}, {
+    get: (target, property,receiver) => {
+      console.log('get' + property);
+      return target[property]
+    }
+  })
+  let obj = Object.create(proxy)
+  obj.foo // getfoo
+  ```
+
+- 如果返回 get 方法的第三个参数, 则指向原始的读操作所在的那个对象, 一般情况下就是 Proxy 实例
+
+  ```javascript
+  const proxy = new Proxy({}, {
+    get: function(target, property, receiver) {
+      return receiver;
+    }
+  });
+  proxy.getReceiver === proxy // true
+  ```
+
+- 如果一个属性不可配置(configurable) 且不可写(writable), 则 Proxy 不能修改该属性, 否则通过 Proxy 对象访问该属性会报错.
+
+### set()
+
+- set 方法用来拦截某个属性的赋值操作，可以接受四个参数，依次为目标对象、属性名、属性值和 Proxy 实例本身，其中最后一个参数可选
+
+  ```javascript
+  let validator = {
+    set: (obj, prop, value) => {
+      if (prop === 'age') {
+        if (!Number.isInteger(value)) {
+          throw new TypeError('The age is not an integer')
+        }
+        if (value > 200) {
+          throw new RangeError('The age seems invalid')
+        }
+      }
+  
+      obj[prop] = value // 满足则保存该值
+    }
+  }
+  
+  let person = new Proxy({}, validator)
+  
+  person.age = 100
+  console.log(person.age); // 100
+  person.age = 'you'; // error
+  person.age = 300 // error
+  ```
+
+  > 上面代码中, 由于设置了存值函数 set, 任何不符合要求的 age 属性赋值, 都会抛出一个错误, 这是数据验证的一种实现方法. **利用 set 方法, 还可以数据绑定, 即每当对象发生变化时, 会自动更新 DOM**
+
+- 有时, 会在对象上面设置内部属性, 属性名的第一个字符使用下划线开头, 表示这些属性不应该被外部使用. 结合 get 和 set 方法, 就可以做到防止这些内部属性被外部读写.
+
+  ```javascript
+  const handler = {
+    get (target, key) {
+      invariant(key, 'get');
+      return target[key];
+    },
+    set (target, key, value) {
+      invariant(key, 'set');
+      target[key] = value;
+      return true;
+    }
+  };
+  function invariant (key, action) {
+    if (key[0] === '_') {
+      throw new Error(`Invalid attempt to ${action} private "${key}" property`);
+    }
+  }
+  const target = {};
+  const proxy = new Proxy(target, handler);
+  proxy._prop
+  // Error: Invalid attempt to get private "_prop" property
+  proxy._prop = 'c'
+  // Error: Invalid attempt to set private "_prop" property
+  ```
+
+- 如果目标对象自身的某个属性, 不可写且不可配置, 那么 set 方法将不起作用
+- 严格模式下, set 代理如果没有返回 true, 就会报错
+
+### apply()
+
+- apply 方法拦截函数的调用, call 和 apply 操作
+
+- apply 方法可以接受三个参数, 分别时目标对象, 目标对象的上下文对象(this) 和 目标对象的参数数组
+
+  ```javascript
+  var target = function () { return 'I am the target'; };
+  var handler = {
+    apply: function () {
+      return 'I am the proxy';
+    }
+  };
+  
+  var p = new Proxy(target, handler);
+  
+  p()
+  // "I am the proxy"
+  // 上面代码中，变量p是 Proxy 的实例，当它作为函数调用时（p()），就会被apply方法拦截，返回一个字符串。
+  ```
+
+### has()
+
+- `has`方法用来拦截`HasProperty`操作，即判断对象是否具有某个属性时，这个方法会生效。典型的操作就是`in`运算符
+
+- has 方法可以接受两个参数, 分别是目标对象, 需查询的属性名
+
+  ```javascript
+  var handler = {
+    has (target, key) {
+      if (key[0] === '_') {
+        return false;
+      }
+      return key in target;
+    }
+  };
+  var target = { _prop: 'foo', prop: 'foo' };
+  var proxy = new Proxy(target, handler);
+  '_prop' in proxy // false
+  ```
+
+- 上面代码中, 如果原对象的属性名的第一个字符是下划线, proxy.has就会返回false, 从而不会被 in 运算符发现.
+
+- 如果原对象不可配置或者禁止扩展，这时`has`拦截会报错。
+- 值得注意的是，`has`方法拦截的是`HasProperty`操作，而不是`HasOwnProperty`操作，即`has`方法不判断一个属性是对象自身的属性，还是继承的属性。
+
+- 另外，虽然`for...in`循环也用到了`in`运算符，但是`has`拦截对`for...in`循环不生效。
+
+### construct()
+
+- construct 方法用于拦截 new 命令
+
+  ```javascript
+  var handler = {
+    construct (target, args, newTarget) {
+      return new target(...args);
+    }
+  };
+  ```
+
+- 可以接受两个参数: 
+
+  - target: 目标对象
+  - args: 构造函数的参数对象
+  - newTarget: 创建实例对象时, new 命令作用的构造函数(下面例子的p)
+
+  ```javascript
+  var p = new Proxy(function () {}, {
+    construct: function(target, args) {
+      console.log('called: ' + args.join(', '));
+      return { value: args[0] * 10 };
+    }
+  });
+  
+  (new p(1)).value
+  // "called: 1"
+  // 10
+  ```
+
+- construct 方法返回的必须是一个对象, 否则会报错
+
+
+
+### deleteProperty()
+
+- `deleteProperty`方法用于拦截`delete`操作，如果这个方法抛出错误或者返回`false`，当前属性就无法被`delete`命令删除。
+
+- 注意，目标对象自身的不可配置（configurable）的属性，不能被`deleteProperty`方法删除，否则报错
+
+### defineProperty()
+
+- `defineProperty`方法拦截了`Object.defineProperty`操作。
+
+  ```javascript
+  var handler = {
+    defineProperty (target, key, descriptor) {
+      return false;
+    }
+  };
+  var target = {};
+  var proxy = new Proxy(target, handler);
+  proxy.foo = 'bar' // 不会生效
+  ```
+
+- 如果目标对象不可扩展（non-extensible），则`defineProperty`不能增加目标对象上不存在的属性，否则会报错。另外，如果目标对象的某个属性不可写（writable）或不可配置（configurable），则`defineProperty`方法不得改变这两个设置。
+
+### getOwnPropertyDescriptor()
+
+- `getOwnPropertyDescriptor`方法拦截`Object.getOwnPropertyDescriptor()`，返回一个属性描述对象或者`undefined`
+
+### getPrototypeOf()
+
+- getPrototypeOf 方法主要用来拦截获取对象原型. 具体拦截下面这些操作
+  - `Object.prototype.__proto__`
+  - `Object.prototype.isPrototypeOf()`
+  - `Object.getPrototypeOf()`
+  - `Reflect.getPrototypeOf()`
+  - `instanceof`
+
+- getPrototypeOf  方法的返回值必须是对象或者null, 否则报错. 另外，如果目标对象不可扩展（non-extensible）， `getPrototypeOf`方法必须返回目标对象的原型对象。
+
+### isExtensible()
+
+- 拦截 Object.isExtensible 操作
+
+- 该方法只能返回布尔值，否则返回值会被自动转为布尔值。
+
+### ownKeys()
+
+- `ownKeys`方法用来拦截对象自身属性的读取操作。具体来说，拦截以下操作。
+  - `Object.getOwnPropertyNames()`
+  - `Object.getOwnPropertySymbols()`
+  - `Object.keys()`
+  - `for...in`循环
+- 使用 Object.keys 方法时, 有三类属性会被 ownKeys 方法自动过滤, 不会返回
+  - 目标对象上不存在的属性
+  - 属性名为 Symbol 值
+  - 不可遍历（`enumerable`）的属性
+- `ownKeys`方法返回的数组成员，只能是字符串或 Symbol 值。如果有其他类型的值，或者返回的根本不是数组，就会报错。
+- 如果目标对象自身包含不可配置的属性，则该属性必须被`ownKeys`方法返回，否则报错
+
+### preventExtensions()
+
+- `preventExtensions`方法拦截`Object.preventExtensions()`。该方法必须返回一个布尔值，否则会被自动转为布尔值
+- 这个方法有一个限制，只有目标对象不可扩展时（即`Object.isExtensible(proxy)`为`false`），`proxy.preventExtensions`才能返回`true`，否则会报错。
+
+### setPrototypeOf()
+
+- `setPrototypeOf`方法主要用来拦截`Object.setPrototypeOf`方法。
+- 注意，该方法只能返回布尔值，否则会被自动转为布尔值。另外，如果目标对象不可扩展（non-extensible），`setPrototypeOf`方法不得改变目标对象的原型
+
+## Proxy.revocable()
+
+- `Proxy.revocable`方法返回一个可取消的 Proxy 实例。
+
+  ```javascript
+  let target = {};
+  let handler = {};
+  
+  let {proxy, revoke} = Proxy.revocable(target, handler);
+  
+  proxy.foo = 123;
+  proxy.foo // 123
+  
+  revoke();
+  proxy.foo // TypeError: Revoked
+  ```
+
+  > `Proxy.revocable`方法返回一个对象，该对象的`proxy`属性是`Proxy`实例，`revoke`属性是一个函数，可以取消`Proxy`实例。上面代码中，当执行`revoke`函数之后，再访问`Proxy`实例，就会抛出一个错误。
+
+- `Proxy.revocable`的一个使用场景是，目标对象不允许直接访问，必须通过代理访问，一旦访问结束，就收回代理权，不允许再次访问。
+
+## this 问题
+
+- 目标对象内部的 `this`关键字会指向 Proxy 代理
+
+## 实例: Web 服务的客户端
+
+- Proxy 对象可以拦截目标对象的任意属性，这使得它很合适用来写 Web 服务的客户端
+
 # Module 的语法
+
 - ES6 模块的设计思想是尽量的静态化, 使得**编译时就能确定模块的依赖关系**, 以及输入和输出的变量. CommonJS 和 AMD 模块, 都**只能在运行时确定这些东西**.
 - ES6 模块不是对象, 而是通过 export 命令显示指定输出的代码, 再通过 import 命令输入
 - **严格模式: 不应该在顶层代码使用 this** 
@@ -992,3 +1335,645 @@ CommonJS 模块的重要特性是加载时执行，即脚本代码在require的�
 - **ES6 模块的循环加载**
 
 ES6 处理“循环加载”与 CommonJS 有本质的不同。ES6 模块是动态引用，如果使用import从一个模块加载变量（即import foo from 'foo'），那些变量不会被缓存，而是成为一个指向被加载模块的引用，需要开发者自己保证，真正取值的时候能够取到值
+
+# Reflect
+
+## Outline
+
+- `Reflect`对象与`Proxy`对象一样，也是 ES6 为了操作对象而提供的新 API。`Reflect`对象的设计目的有这样几个
+
+  - 将`Object`对象的一些明显属于语言内部的方法（比如`Object.defineProperty`），放到`Reflect`对象上. 从`Reflect`对象上可以拿到语言内部的方法。
+
+  - 修改某些`Object`方法的返回结果，让其变得更合理。比如，`Object.defineProperty(obj, name, desc)`在无法定义属性时，会抛出一个错误，而`Reflect.defineProperty(obj, name, desc)`则会返回`false`。
+
+  - 让`Object`操作都变成函数行为。某些`Object`操作是命令式，比如`name in obj`和`delete obj[name]`，而`Reflect.has(obj, name)`和`Reflect.deleteProperty(obj, name)`让它们变成了函数行为。
+
+    ```javascript
+    // 老写法
+    'assign' in Object // true
+    
+    // 新写法
+    Reflect.has(Object, 'assign') // true
+    ```
+
+  - `Reflect`对象的方法与`Proxy`对象的方法一一对应，只要是`Proxy`对象的方法，就能在`Reflect`对象上找到对应的方法。这就让`Proxy`对象可以方便地调用对应的`Reflect`方法，完成默认行为，作为修改行为的基础。也就是说，不管`Proxy`怎么修改默认行为，你总可以在`Reflect`上获取默认行为。
+
+    ```javascript
+    Proxy(target, {
+      set: function(target, name, value, receiver) {
+        var success = Reflect.set(target,name, value, receiver);
+        if (success) {
+          console.log('property ' + name + ' on ' + target + ' set to ' + value);
+        }
+        return success;
+      }
+    });
+    // 上面代码中，Proxy方法拦截target对象的属性赋值行为。它采用Reflect.set方法将值赋值给对象的属性，确保完成原有的行为，然后再部署额外的功能。
+    ```
+
+## 静态方法
+
+- Reflect.apply(target, thisArg, args)
+- Reflect.construct(target, args)
+- Reflect.get(target, name, receiver)
+- Reflect.set(target, name, value, receiver)
+- Reflect.defineProperty(target, name, desc)
+- Reflect.deleteProperty(target, name)
+- Reflect.has(target, name)
+- Reflect.ownKeys(target)
+- Reflect.isExtensible(target)
+- Reflect.preventExtensions(target)
+- Reflect.getOwnPropertyDescriptor(target, name)
+- Reflect.getPrototypeOf(target)
+- Reflect.setPrototypeOf(target, prototype)
+
+上面这些方法的作用，大部分与`Object`对象的同名方法的作用都是相同的，而且它与`Proxy`对象的方法是一一对应的。
+
+### Reflect.get(target, name, receiver)
+
+`Reflect.get`方法查找并返回`target`对象的`name`属性，如果没有该属性，则返回`undefined`
+
+```javascript
+var myObject = {
+  foo: 1,
+  bar: 2,
+  get baz() {
+    return this.foo + this.bar;
+  },
+}
+
+Reflect.get(myObject, 'foo') // 1
+Reflect.get(myObject, 'bar') // 2
+Reflect.get(myObject, 'baz') // 3
+```
+
+如果`name`属性部署了读取函数（getter），则读取函数的`this`绑定`receiver`。
+
+```javascript
+var myObject = {
+  foo: 1,
+  bar: 2,
+  get baz() {
+    return this.foo + this.bar;
+  },
+};
+
+var myReceiverObject = {
+  foo: 4,
+  bar: 4,
+};
+
+Reflect.get(myObject, 'baz', myReceiverObject) // 8
+```
+
+如果第一个参数不是对象，`Reflect.get`方法会报错。
+
+```javascript
+Reflect.get(1, 'foo') // 报错
+Reflect.get(false, 'foo') // 报错
+```
+
+### Reflect.set(target, name, value, receiver)
+
+`Reflect.set`方法设置`target`对象的`name`属性等于`value`。
+
+```javascript
+var myObject = {
+  foo: 1,
+  set bar(value) {
+    return this.foo = value;
+  },
+}
+
+myObject.foo // 1
+
+Reflect.set(myObject, 'foo', 2);
+myObject.foo // 2
+
+Reflect.set(myObject, 'bar', 3)
+myObject.foo // 3
+```
+
+如果`name`属性设置了赋值函数，则赋值函数的`this`绑定`receiver`
+
+如果第一个参数不是对象，`Reflect.set`会报错。
+
+### Reflect.has(obj, name)
+
+- `Reflect.has`方法对应`name in obj`里面的`in`运算符。
+
+  ```javascript
+  var myObject = {
+    foo: 1,
+  };
+  
+  // 旧写法
+  'foo' in myObject // true
+  
+  // 新写法
+  Reflect.has(myObject, 'foo') // true
+  ```
+
+- 如果`Reflect.has()`方法的第一个参数不是对象，会报错。
+
+### Reflect.deleteProperty(obj, name)
+
+- `Reflect.deleteProperty`方法等同于`delete obj[name]`，用于删除对象的属性。
+
+  ```javascript
+  const myObj = { foo: 'bar' };
+  
+  // 旧写法
+  delete myObj.foo;
+  
+  // 新写法
+  Reflect.deleteProperty(myObj, 'foo');
+  ```
+
+- 该方法返回一个布尔值。如果删除成功，或者被删除的属性不存在，返回`true`；删除失败，被删除的属性依然存在，返回`false`。
+
+- 如果`Reflect.has()`方法的第一个参数不是对象，会报错。
+
+### Reflect.construct(target, args)
+
+- `Reflect.construct`方法等同于`new target(...args)`，这提供了一种不使用`new`，来调用构造函数的方法
+
+  ```javascript
+  function Greeting(name) {
+    this.name = name;
+  }
+  
+  // new 的写法
+  const instance = new Greeting('张三');
+  
+  // Reflect.construct 的写法
+  const instance = Reflect.construct(Greeting, ['张三']);
+  ```
+
+- 如果`Reflect.construct()`方法的第一个参数不是函数，会报错
+
+### Reflect.getPrototypeOf(obj)
+
+- `Reflect.getPrototypeOf`方法用于读取对象的`__proto__`属性，对应`Object.getPrototypeOf(obj)`
+
+  ```javascript
+  const myObj = new FancyThing();
+  
+  // 旧写法
+  Object.getPrototypeOf(myObj) === FancyThing.prototype;
+  
+  // 新写法
+  Reflect.getPrototypeOf(myObj) === FancyThing.prototype;
+  ```
+
+- `Reflect.getPrototypeOf`和`Object.getPrototypeOf`的一个区别是，如果参数不是对象，`Object.getPrototypeOf`会将这个参数转为对象，然后再运行，而`Reflect.getPrototypeOf`会报错
+
+### Reflect.setPrototypeOf(obj, newProto)
+
+- `Reflect.setPrototypeOf`方法用于设置目标对象的原型（prototype），对应`Object.setPrototypeOf(obj, newProto)`方法。它返回一个布尔值，表示是否设置成功
+
+  ```javascript
+  const myObj = {};
+  
+  // 旧写法
+  Object.setPrototypeOf(myObj, Array.prototype);
+  
+  // 新写法
+  Reflect.setPrototypeOf(myObj, Array.prototype);
+  
+  myObj.length // 0
+  ```
+
+- 如果无法设置目标对象的原型（比如，目标对象禁止扩展），`Reflect.setPrototypeOf`方法返回`false`。
+- 如果第一个参数不是对象，`Object.setPrototypeOf`会返回第一个参数本身，而`Reflect.setPrototypeOf`会报错
+
+- 如果第一个参数是`undefined`或`null`，`Object.setPrototypeOf`和`Reflect.setPrototypeOf`都会报错。
+
+### Reflect.apply(func, thisArg, args)
+
+- `Reflect.apply`方法等同于`Function.prototype.apply.call(func, thisArg, args)`，用于绑定`this`对象后执行给定函数。
+
+  ```javascript
+  const ages = [11, 33, 12, 54, 18, 96];
+  
+  // 旧写法
+  const youngest = Math.min.apply(Math, ages);
+  const oldest = Math.max.apply(Math, ages);
+  const type = Object.prototype.toString.call(youngest);
+  
+  // 新写法
+  const youngest = Reflect.apply(Math.min, Math, ages);
+  const oldest = Reflect.apply(Math.max, Math, ages);
+  const type = Reflect.apply(Object.prototype.toString, youngest, []);
+  ```
+
+### Reflect.defineProperty(target, propertyKey, attributes)
+
+- `Reflect.defineProperty`方法基本等同于`Object.defineProperty`，用来为对象定义属性。未来，后者会被逐渐废除，请从现在开始就使用`Reflect.defineProperty`代替它
+
+  ```javascript
+  function MyDate() {
+    /*…*/
+  }
+  
+  // 旧写法
+  Object.defineProperty(MyDate, 'now', {
+    value: () => Date.now()
+  });
+  
+  // 新写法
+  Reflect.defineProperty(MyDate, 'now', {
+    value: () => Date.now()
+  });
+  ```
+
+- 如果`Reflect.defineProperty`的第一个参数不是对象，就会抛出错误，比如`Reflect.defineProperty(1, 'foo')`。
+
+### Reflect.getOwnPropertyDescriptor(target, propertyKey)
+
+- `Reflect.getOwnPropertyDescriptor`基本等同于`Object.getOwnPropertyDescriptor`，用于得到指定属性的描述对象，将来会替代掉后者。
+
+  ```javascript
+  var myObject = {};
+  Object.defineProperty(myObject, 'hidden', {
+    value: true,
+    enumerable: false,
+  });
+  
+  // 旧写法
+  var theDescriptor = Object.getOwnPropertyDescriptor(myObject, 'hidden');
+  
+  // 新写法
+  var theDescriptor = Reflect.getOwnPropertyDescriptor(myObject, 'hidden');
+  ```
+
+- `Reflect.getOwnPropertyDescriptor`和`Object.getOwnPropertyDescriptor`的一个区别是，如果第一个参数不是对象，`Object.getOwnPropertyDescriptor(1, 'foo')`不报错，返回`undefined`，而`Reflect.getOwnPropertyDescriptor(1, 'foo')`会抛出错误，表示参数非法
+
+### Reflect.isExtensible(target)
+
+- `Reflect.isExtensible`方法对应`Object.isExtensible`，返回一个布尔值，表示当前对象是否可扩展。
+
+  ```javascript
+  const myObject = {};
+  
+  // 旧写法
+  Object.isExtensible(myObject) // true
+  
+  // 新写法
+  Reflect.isExtensible(myObject) // true
+  ```
+
+- 如果参数不是对象，`Object.isExtensible`会返回`false`，因为非对象本来就是不可扩展的，而`Reflect.isExtensible`会报错
+
+### Reflect.preventExtensions(target)
+
+- `Reflect.preventExtensions`对应`Object.preventExtensions`方法，用于让一个对象变为不可扩展。它返回一个布尔值，表示是否操作成功。
+
+  ```javascript
+  var myObject = {};
+  
+  // 旧写法
+  Object.preventExtensions(myObject) // Object {}
+  
+  // 新写法
+  Reflect.preventExtensions(myObject) // true
+  ```
+
+- 如果参数不是对象，`Object.preventExtensions`在 ES5 环境报错，在 ES6 环境返回传入的参数，而`Reflect.preventExtensions`会报错
+
+### Reflect.ownKeys(target)
+
+- `Reflect.ownKeys`方法用于返回对象的所有属性，基本等同于`Object.getOwnPropertyNames`与`Object.getOwnPropertySymbols`之和。
+
+- 如果`Reflect.ownKeys()`方法的第一个参数不是对象，会报错。
+
+
+
+# Set 和 Map 数据结构
+
+## Set
+
+### 基本用法
+
+- ES6 提供了新的数据结构 Set。它类似于数组，但是成员的值都是唯一的，没有重复的值。
+
+- `Set`本身是一个构造函数，用来生成 Set 数据结构。
+
+  ```javascript
+  const s = new Set();
+  
+  [2, 3, 5, 4, 5, 2, 2].forEach(x => s.add(x));
+  
+  for (let i of s) {
+    console.log(i);
+  }
+  // 2 3 5 4
+  // 上面代码通过add()方法向 Set 结构加入成员，结果表明 Set 结构不会添加重复的值
+  ```
+
+- `Set`函数可以接受一个**数组**（或者具有 iterable 接口的其他数据结构）作为参数，用来初始化。
+
+- 一种去除数组重复成员的方法。(**数组去重**)
+
+  ```javascript
+  [...new Set(array)]
+  ```
+
+- 去除字符串里面的重复字符
+
+  ```javascript
+  [...new Set('ababbc')].join('')
+  // "abc"
+  ```
+
+- 向 Set 加入值的时候，**不会发生类型转换**，所以`5`和`"5"`是两个不同的值。Set 内部判断两个值是否不同，使用的算法叫做“Same-value-zero equality”，它类似于精确相等运算符（`===`），**主要的区别是`NaN`等于自身，而精确相等运算符认为`NaN`不等于自身**。
+
+- 两个对象总是不相等的
+
+### Set 实例的属性和方法
+
+Set 结构的实例有以下属性。
+
+- `Set.prototype.constructor`：构造函数，默认就是`Set`函数。
+- `Set.prototype.size`：返回`Set`实例的成员总数
+
+Set 实例的方法分为两大类：**操作方法**（用于操作数据）和遍历方法（用于遍历成员）。下面先介绍四个操作方法。
+
+- `add(value)`：添加某个值，返回 Set 结构本身。
+- `delete(value)`：删除某个值，返回一个布尔值，表示删除是否成功。
+- `has(value)`：返回一个布尔值，表示该值是否为`Set`的成员。
+- `clear()`：清除所有成员，没有返回值
+
+**Array.from**方法可以将 Set 结构转为数组
+
+- 另一种数组去重的方法
+
+  ```javascript
+  function dedupe(array) {
+    return Array.from(new Set(array));
+  }
+  
+  dedupe([1, 1, 2, 3]) // [1, 2, 3]
+  ```
+
+### 遍历操作
+
+Set 结构的实例有四个遍历方法，可以用于遍历成员。
+
+- `keys()`：返回键名的遍历器
+- `values()`：返回键值的遍历器
+- `entries()`：返回键值对的遍历器
+- `forEach()`：使用回调函数遍历每个成员
+
+需要特别指出的是，`Set`的遍历顺序就是插入顺序。这个特性有时非常有用，比如使用 Set 保存一个回调函数列表，调用时就能保证按照添加顺序调用。
+
+1. **keys()，values()，entries()**
+
+   `keys`方法、`values`方法、`entries`方法返回的都是遍历器对象. 由于 Set 结构没有键名，只有键值（或者说键名和键值是同一个值），所以`keys`方法和`values`方法的行为完全一致。
+
+   ```javascript
+   let set = new Set(['red', 'green', 'blue']);
+   
+   for (let item of set.keys()) {
+     console.log(item);
+   }
+   // red
+   // green
+   // blue
+   
+   for (let item of set.values()) {
+     console.log(item);
+   }
+   // red
+   // green
+   // blue
+   
+   for (let item of set.entries()) {
+     console.log(item);
+   }
+   // ["red", "red"]
+   // ["green", "green"]
+   // ["blue", "blue"]
+   // 上面代码中，entries方法返回的遍历器，同时包括键名和键值，所以每次输出一个数组，它的两个成员完全相等。
+   ```
+
+   - Set 结构的实例默认可遍历，它的默认遍历器生成函数就是它的`values`方法。
+
+     ```javascript
+     Set.prototype[Symbol.iterator] === Set.prototype.values
+     // true
+     ```
+
+   - 这意味着，可以省略`values`方法，直接用`for...of`循环遍历 Set。
+
+     ```javascript
+     let set = new Set(['red', 'green', 'blue']);
+     
+     for (let x of set) {
+       console.log(x);
+     }
+     // red
+     // green
+     // blue
+     ```
+
+2. forEach()
+
+   - Set 结构的实例与数组一样，也拥有`forEach`方法，用于对每个成员执行某种操作，没有返回值
+   - 该函数的参数与数组的`forEach`一致，依次为键值、键名、集合本身（上例省略了该参数）。这里需要注意，Set 结构的键名就是键值（两者是同一个值），因此第一个参数与第二个参数的值永远都是一样的。
+   - `forEach`方法还可以有第二个参数，表示绑定处理函数内部的`this`对象
+
+3. 遍历的应用
+
+   - 扩展运算符（`...`）内部使用`for...of`循环，所以也可以用于 Set 结构。
+
+   - 数组的`map`和`filter`方法也可以间接用于 Set 
+
+   - 如果想在遍历操作中，同步改变原来的 Set 结构，目前没有直接的方法，但有两种变通方法。一种是利用原 Set 结构映射出一个新的结构，然后赋值给原来的 Set 结构；另一种是利用`Array.from`方法。
+
+     ```javascript
+     // 方法一
+     let set = new Set([1, 2, 3]);
+     set = new Set([...set].map(val => val * 2));
+     // set的值是2, 4, 6
+     
+     // 方法二
+     let set = new Set([1, 2, 3]);
+     set = new Set(Array.from(set, val => val * 2));
+     // set的值是2, 4, 6
+     ```
+
+## WeakSet
+
+WeakSet 结构与 Set 类似，也是不重复的值的集合。但是，它与 Set 有两个区别。
+
+- 首先，WeakSet 的成员只能是对象，而不能是其他类型的值。
+- 其次，WeakSet 中的对象都是弱引用，即垃圾回收机制不考虑 WeakSet 对该对象的引用，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存，不考虑该对象还存在于 WeakSet 之中。
+
+**垃圾回收机制**
+
+- 因为垃圾回收机制依赖引用计数，如果一个值的引用次数不为`0`，垃圾回收机制就不会释放这块内存。
+- 结束使用该值之后，有时会忘记取消引用，导致内存无法释放，进而可能会引发内存泄漏。
+- **WeakSet 里面的引用，都不计入垃圾回收机制**，所以就不存在这个问题。因此，WeakSet 适合临时存放一组对象，以及存放跟对象绑定的信息。只要这些对象在外部消失，它在 WeakSet 里面的引用就会自动消失。
+
+- 由于上面这个特点，WeakSet 的成员是不适合引用的，因为它会随时消失。
+- 另外，由于 WeakSet 内部有多少个成员，取决于垃圾回收机制有没有运行，运行前后很可能成员个数是不一样的，而垃圾回收机制何时运行是不可预测的，因此 ES6 规定 WeakSet 不可遍历。
+
+- 这些特点同样适用于 WeakMap 结构。
+
+### 语法
+
+- WeakSet 是一个构造函数，可以使用`new`命令，创建 WeakSet 数据结构。
+
+  ```javascript
+  const ws = new WeakSet();
+  ```
+
+- 作为构造函数，WeakSet 可以接受一个数组或类似数组的对象作为参数。（实际上，任何具有 Iterable 接口的对象，都可以作为 WeakSet 的参数。）该数组的所有成员，都会自动成为 WeakSet 实例对象的成员。
+
+  ```javascript
+  const a = [[1, 2], [3, 4]];
+  const ws = new WeakSet(a);
+  // WeakSet {[1, 2], [3, 4]}
+  ```
+
+- 上面代码中，`a`是一个数组，它有两个成员，也都是数组。将`a`作为 WeakSet 构造函数的参数，`a`的成员会自动成为 WeakSet 的成员。
+
+- 注意，是`a`数组的成员成为 WeakSet 的成员，而不是`a`数组本身。这意味着，数组的成员只能是对象。
+
+  ```javascript
+  const b = [3, 4];
+  const ws = new WeakSet(b);
+  // Uncaught TypeError: Invalid value used in weak set(…)
+  // 上面代码中，数组b的成员不是对象，加入 WeaKSet 就会报错。
+  ```
+
+WeakSet 结构有以下三个方法。
+
+- **WeakSet.prototype.add(value)**：向 WeakSet 实例添加一个新成员。
+- **WeakSet.prototype.delete(value)**：清除 WeakSet 实例的指定成员。
+- **WeakSet.prototype.has(value)**：返回一个布尔值，表示某个值是否在 WeakSet 实例之中
+
+- **WeakSet 没有`size`属性，没有办法遍历它的成员。**
+
+- WeakSet 的一个用处，是储存 DOM 节点，而不用担心这些节点从文档移除时，会引发内存泄漏。
+
+## Map
+
+### 含义和基本用法
+
+JavaScript 的对象（Object），本质上是键值对的集合（Hash 结构），但是传统上只能用字符串当作键。这给它的使用带来了很大的限制。
+
+```javascript
+const data = {};
+const element = document.getElementById('myDiv');
+
+data[element] = 'metadata';
+data['[object HTMLDivElement]'] // "metadata"
+// 上面代码原意是将一个 DOM 节点作为对象data的键，但是由于对象只接受字符串作为键名，所以element被自动转为字符串[object HTMLDivElement]。
+```
+
+为了解决这个问题，ES6 提供了 Map 数据结构。它类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。也就是说，Object 结构提供了“字符串—值”的对应，Map 结构提供了“值—值”的对应，是一种更完善的 Hash 结构实现。如果你需要“键值对”的数据结构，Map 比 Object 更合适。
+
+```javascript
+const m = new Map();
+const o = {p: 'Hello World'};
+
+m.set(o, 'content')
+m.get(o) // "content"
+
+m.has(o) // true
+m.delete(o) // true
+m.has(o) // false
+// 上面代码使用 Map 结构的set方法，将对象o当作m的一个键，然后又使用get方法读取这个键，接着使用delete方法删除了这个键。
+```
+
+作为构造函数，Map 也可以接受一个数组作为参数。该数组的成员是一个个表示键值对的数组。
+
+```javascript
+const map = new Map([
+  ['name', '张三'],
+  ['title', 'Author']
+]);
+
+map.size // 2
+map.has('name') // true
+map.get('name') // "张三"
+map.has('title') // true
+map.get('title') // "Author"
+```
+
+上面代码在新建 Map 实例时，就指定了两个键`name`和`title`。
+
+`Map`构造函数接受数组作为参数，实际上执行的是下面的算法。
+
+```javascript
+const items = [
+  ['name', '张三'],
+  ['title', 'Author']
+];
+
+const map = new Map();
+
+items.forEach(
+  ([key, value]) => map.set(key, value)
+);
+```
+
+事实上，不仅仅是数组，任何具有 Iterator 接口、且每个成员都是一个双元素的数组的数据结构都可以当作`Map`构造函数的参数。这就是说，**`Set`和`Map`都可以用来生成新的 Map。**
+
+**如果对同一个键多次赋值，后面的值将覆盖前面的值。**
+
+**如果读取一个未知的键，则返回`undefined`。**
+
+**注意，只有对同一个对象的引用，Map 结构才将其视为同一个键。这一点要非常小心。**
+
+```javascript
+const map = new Map();
+
+map.set(['a'], 555);
+map.get(['a']) // undefined
+// 上面代码的set和get方法，表面是针对同一个键，但实际上这是两个值，内存地址是不一样的，因此get方法无法读取该键，返回undefined
+```
+
+**同理，同样的值的两个实例，在 Map 结构中被视为两个键。**
+
+```javascript
+const map = new Map();
+
+const k1 = ['a'];
+const k2 = ['a'];
+
+map
+.set(k1, 111)
+.set(k2, 222);
+
+map.get(k1) // 111
+map.get(k2) // 222
+// 上面代码中，变量k1和k2的值是一样的，但是它们在 Map 结构中被视为两个键
+```
+
+> 由上可知，Map 的键实际上是跟内存地址绑定的，只要内存地址不一样，就视为两个键。这就解决了同名属性碰撞（clash）的问题，我们扩展别人的库的时候，如果使用对象作为键名，就不用担心自己的属性与原作者的属性同名。
+
+如果 Map 的键是一个简单类型的值（数字、字符串、布尔值），则只要两个值严格相等，Map 将其视为一个键，比如`0`和`-0`就是一个键，布尔值`true`和字符串`true`则是两个不同的键。另外，`undefined`和`null`也是两个不同的键。虽然`NaN`不严格相等于自身，但 Map 将其视为同一个键
+
+```javascript
+let map = new Map();
+
+map.set(-0, 123);
+map.get(+0) // 123
+
+map.set(true, 1);
+map.set('true', 2);
+map.get(true) // 1
+
+map.set(undefined, 3);
+map.set(null, 4);
+map.get(undefined) // 3
+
+map.set(NaN, 123);
+map.get(NaN) // 123
+```
+
+### 实例的属性和操作方法
+
