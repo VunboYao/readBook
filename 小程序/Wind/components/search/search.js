@@ -43,6 +43,10 @@ Component({
           hotKeywords: res.hot
         })
       })
+    },
+    detached() {
+      console.log('组件被注销了');
+      
     }
   },
 
