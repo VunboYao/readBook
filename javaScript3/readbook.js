@@ -4537,13 +4537,22 @@ console.log(map);*/
 const m1 = new Map(set)
 const m2 = new Map([['baz', 3]])
 console.log(m2);*/
+/*const map = new Map([
+    ['f', 'no'],
+    ['t', 'yes']
+])
 
-const map = new Map()
-map.set(['a'], 555);
-// map.set('a', 555)
-console.log(map);
+for (let key of map.keys()) {
+  console.log(key);
+}
+for(let value of map.values()) {
+  console.log(value);
+}
+for (let [item, value] of map.entries()) {
+  console.log(item, value);
+}*/
 
-
-
-
-
+const map0 = new Map().set(1, 'a').set(2,'b').set(3, 'c')
+map0.forEach((value, key, map) => {
+  console.log(value, key, map);
+})

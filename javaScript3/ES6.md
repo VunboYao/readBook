@@ -1725,7 +1725,7 @@ Set 结构的实例有四个遍历方法，可以用于遍历成员。
 - `entries()`：返回键值对的遍历器
 - `forEach()`：使用回调函数遍历每个成员
 
-需要特别指出的是，`Set`的遍历顺序就是插入顺序。这个特性有时非常有用，比如使用 Set 保存一个回调函数列表，调用时就能保证按照添加顺序调用。
+需要特别指出的是，**`Set`的遍历顺序就是插入顺序**。这个特性有时非常有用，比如使用 Set 保存一个回调函数列表，调用时就能保证按照添加顺序调用。
 
 1. **keys()，values()，entries()**
 
@@ -1976,4 +1976,152 @@ map.get(NaN) // 123
 ```
 
 ### 实例的属性和操作方法
+
+Map 结构的实例有以下属性和操作方法。
+
+1. **size** **属性**
+
+   `size`属性返回 Map 结构的成员总数。
+
+2. **set(key, value)**
+
+   `set`方法设置键名`key`对应的键值为`value`，然后返回整个 Map 结构。如果`key`已经有值，则键值会被更新，否则就新生成该键。
+
+   `set`方法**返回的是当前的`Map`对象**，因此可以采用**链式写法。**
+
+3. **get(key)**
+
+   `get`方法读取`key`对应的键值，如果找不到`key`，返回`undefined`。
+
+4. **has(key)**
+
+   `has`方法返回一个布尔值，表示某个键是否在当前 Map 对象之中
+
+   ```javascript
+   const m = new Map();
+   
+   m.set('edition', 6);
+   m.set(262, 'standard');
+   m.set(undefined, 'nah');
+   
+   m.has('edition')     // true
+   m.has('years')       // false
+   m.has(262)           // true
+   m.has(undefined)     // true
+   ```
+
+5. **delete(key)**
+
+   `delete`方法删除某个键，返回`true`。如果删除失败，返回`false`。
+
+6. **clear()**
+
+   clear 方法清除所有成员, 没有返回值
+
+   ```javascript
+   let map = new Map();
+   map.set('foo', true);
+   map.set('bar', false);
+   
+   map.size // 2
+   map.clear()
+   map.size // 0
+   ```
+
+### 遍历方法
+
+Map 结构原生提供三个遍历器生成函数和一个遍历方法。
+
+- `keys()`：返回键名的遍历器。
+- `values()`：返回键值的遍历器。
+- `entries()`：返回所有成员的遍历器。
+- `forEach()`：遍历 Map 的所有成员。
+
+```javascript
+for (let [key, value] of map.entries()) {
+  console.log(key, value);
+}
+// "F" "no"
+// "T" "yes"
+
+// 等同于使用map.entries()
+for (let [key, value] of map) {
+  console.log(key, value);
+}
+// "F" "no"
+// "T" "yes"
+```
+
+上面代码最后的那个例子，表示 Map 结构的默认遍历器接口（`Symbol.iterator`属性），就是`entries`方法。
+
+```javascript
+map[Symbol.iterator] === map.entries
+// true
+```
+
+Map 结构转为数组结构，比较快速的方法是使用扩展运算符（`...`）
+
+```javascript
+const map = new Map([
+  [1, 'one'],
+  [2, 'two'],
+  [3, 'three'],
+]);
+
+[...map.keys()]
+// [1, 2, 3]
+
+[...map.values()]
+// ['one', 'two', 'three']
+
+[...map.entries()]
+// [[1,'one'], [2, 'two'], [3, 'three']]
+
+[...map]
+// [[1,'one'], [2, 'two'], [3, 'three']]
+```
+
+结合数组的`map`方法、`filter`方法，可以实现 Map 的遍历和过滤（Map 本身没有`map`和`filter`方法）。
+
+```javascript
+const map0 = new Map()
+  .set(1, 'a')
+  .set(2, 'b')
+  .set(3, 'c');
+
+const map1 = new Map(
+  [...map0].filter(([k, v]) => k < 3)
+);
+// 产生 Map 结构 {1 => 'a', 2 => 'b'}
+
+const map2 = new Map(
+  [...map0].map(([k, v]) => [k * 2, '_' + v])
+    );
+// 产生 Map 结构 {2 => '_a', 4 => '_b', 6 => '_c'}
+```
+
+Map 还有一个`forEach`方法，与数组的`forEach`方法类似，也可以实现遍历。
+
+`forEach`方法还可以接受第二个参数，用来绑定`this`。
+
+### 与其他数据结构的互相转换
+
+1. **Map 转为数组**
+
+   Map 转为数组最方便的方法，就是使用扩展运算符（`...`）
+
+2. **数组转为 Map**
+
+   将数组传入 Map 构造函数，就可以转为 Map。
+
+   ```javascript
+   new Map([
+     [true, 7],
+     [{foo: 3}, ['abc']]
+   ])
+   // Map {
+   //   true => 7,
+   //   Object {foo: 3} => ['abc']
+   // }
+   ```
 
