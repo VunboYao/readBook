@@ -4328,8 +4328,7 @@ var y = new Rectangle(3, 4);  // 正确*/
 //
 // obj.count = 1;
 // ++obj.count;
-
-let date = new Date(2019,4,9,23,0,0);
+/*let date = new Date(2019,4,9,23,0,0);
 
 function getDifferTime(furDate, curDate=new Date()) {
     // 秒数 = 毫秒 / 1000
@@ -4367,4 +4366,184 @@ function showTime() {
     minute.innerText = a.minute;
     second.innerText = a.second;
 }
-showTime();
+showTime();*/
+/*let handler = {
+  get: (target, name, receiver) => {
+    return {target, name,receiver}
+    /!*if (name === 'prototype') {
+      return Object.prototype
+    }
+    return 'Hello, ' + name*!/
+  },
+
+  apply: (target, thisBinding, args) => {
+    return args[0]
+  },
+
+  construct: (target, args) => {
+    return {value: args[1]}
+  }
+}
+
+var fproxy = new Proxy({}, handler)
+console.log(fproxy.time);*/
+/*let person = {
+  name: 'zs'
+}*/
+/*let proxy = new Proxy({}, {
+  get: (target, property,receiver) => {
+    console.log('get' + property);
+    return target[property]
+  }
+})
+let obj = Object.create(proxy)
+obj.foo // getfoo*/
+/*function createArray(...element) {
+  let handler = {
+    get(target, propkey, rece) {
+      let index = Number(propkey)
+      if (index < 0) {
+        propkey = String(target.length + index)
+      }
+      return Reflect.get(target, propkey, rece)
+    }
+  }
+  let target = []
+  target.push(...element)
+  return new Proxy(target, handler)
+}
+let arr = createArray('a', 'b', 'c')
+console.log(arr[-1]);*/
+/*const handler = {
+  get(t, k) {
+    invariant(k, 'get')
+    return t[k]
+  },
+  set(t, k, v) {
+    invariant(k, 'set')
+    t[k] = v
+    return true
+  }
+}
+
+
+function invariant(k, action) {
+  if (k[0] === '_') {
+    throw new Error(`Invalid attempt to ${action} private "${k}" property`)
+  }
+}
+
+const t = {}
+const proxy = new Proxy(t, handler)
+
+proxy._prop; // Error: Invalid attempt to get private "_prop" property
+proxy._prop = 'c' // Error: Invalid attempt to set private "_prop" property*/
+/*const queuedObservers = new Set();
+
+const observe = fn => queuedObservers.add(fn);
+const observable = obj => new Proxy(obj, {set});
+
+function set(target, key, value, receiver) {
+  const result = Reflect.set(target, key, value, receiver);
+  queuedObservers.forEach(observer => observer());
+  return result;
+}*/
+/*const person = observable({
+  name: '张三',
+  age: 20
+});
+
+function print() {
+  console.log(`${person.name}, ${person.age}`)
+}
+
+observe(print);
+person.name = '李四';*/
+/*
+
+// 输出
+// 李四, 20
+*/
+/*
+const s = new Set();
+
+[2, 3, 4, 1, 4, 12, 1, 2, 1, 1, 3].forEach(x => s.add(x))
+console.log(s);
+let arr = [2, 3, 4, 1, 4, 12, 1, 2, 1, 1, 3];
+
+console.log([...new Set(arr)]);*/
+/*let s = new Set('ababbc')
+
+s.add(1).add(2).add(2);
+console.log(s.size);
+
+console.log(s.has(1));
+console.log(s.has(2));
+console.log(s.has(3));
+
+console.log(s.delete(2));
+
+console.log(s.has(2))
+
+console.log(s);*/
+/*let set = new Set([1,2,3])
+set = new Set([...set].map(val => val * 2))*/
+/*const foos = new WeakSet()
+class Foo {
+  constructor(){
+    foos.add(this)
+  }
+  static method() {
+    if (!foos.has(this)) {
+      throw new TypeError('Foo.prototype.method 只能在Foo的实例上调用')
+    }
+  }
+}
+/!*
+class demo {
+ constructor() {
+   this.key = 2;
+ }
+ static apple(){
+   console.log(this);
+ }
+  static method () {
+    if (!foos.has(this)) {
+      throw new TypeError('Foo.prototype.method 只能在Foo的实例上调用！');
+    }
+  }
+}
+demo.method()
+let a = new demo()
+console.log(a)
+*!/
+Foo.method()*/
+/*const map = new Map([
+  ['name', '张三'],
+  ['title', 'Author']
+]);
+
+map.size // 2
+map.has('name') // true
+map.get('name') // "张三"
+map.has('title') // true
+map.get('title') // "Author"
+map.set('yao', 'vunbo')
+console.log(map);*/
+/*const set = new Set([
+    ['foo', 1],
+    ['bar',2]
+])
+const m1 = new Map(set)
+const m2 = new Map([['baz', 3]])
+console.log(m2);*/
+
+const map = new Map()
+map.set(['a'], 555);
+// map.set('a', 555)
+console.log(map);
+
+
+
+
+
