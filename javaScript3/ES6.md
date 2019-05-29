@@ -40,14 +40,203 @@ for/of|值value|error
 - keys/values/entries实体
 - for (let index of arr.keys()){}
 
-```
+```javascript
 let arr = [123,4,23,11]
 for (let i of arr.entries()) {
     console.log(i);
 } 
 ```
 
+- 扩展运算符(spread)
+
+- 替代函数的 apply 方法
+
+  ```javascript
+  // ES5 的写法
+  Math.max.apply(null, [14, 3, 77])
+  
+  // ES6 的写法
+  Math.max(...[14, 3, 77])
+  
+  // 等同于
+  Math.max(14, 3, 77);
+  ```
+
+- 数组的拼接. `arr1.push(...arr2)`
+
+- 克隆数组
+
+  ```javascript
+  const a1 = [1, 2];
+  // 写法一
+  const a2 = [...a1];
+  // 写法二
+  const [...a2] = a1;
+  ```
+
+- 合并数组 `[...arr1, ...arr2]`, 与`arr1.concat(arr2)`一样, 两种方法都是浅拷贝
+
+- 与解构赋值结合使用时, 必须放到参数的最后一位, 否则会报错
+
+- 扩展运算符可以将字符串转为真正的数组, 并且能够识别四个字节的 Unicode 字符
+
+  ```javascript
+  function length(str) {
+    return [...str].length;
+  }
+  
+  length('x\uD83D\uDE80y') // 3
+  ```
+
+- 实现了 遍历器(iterator) 接口的对象, 都可以用扩展运算符转为真正的数组
+
+- `Array.from`方法用于将两类对象转为真正的数组：类似数组的对象（array-like object）和可遍历（iterable）的对象
+
+  - 只要是部署了 Iterator 接口的数据结构，`Array.from`都能将其转为数组。
+  - 任何有`length`属性的对象，都可以通过`Array.from`方法转为数组，而此时扩展运算符就无法转换。
+
+  - `Array.from`还可以接受第二个参数，作用类似于数组的`map`方法，用来对每个元素进行处理，将处理后的值放入返回的数组。
+
+    ```javascript
+    Array.from(arrayLike, x => x * x);
+    // 等同于
+    Array.from(arrayLike).map(x => x * x);
+    
+    Array.from([1, 2, 3], (x) => x * x)
+    // [1, 4, 9]
+    ```
+
+  - `Array.from`的第三个参数，用来绑定`this`
+
+- Array.of 方法用于将一组值，转换为数组。
+
+  ```javascript
+  Array.of(3, 11, 8) // [3,11,8]
+  Array.of(3) // [3]
+  Array.of(3).length // 1
+  ```
+
+  - `Array.of`总是返回参数值组成的数组。如果没有参数，就返回一个空数组。
+
+  - `Array.of`方法可以用下面的代码模拟实现。
+
+    ```javascript
+    function ArrayOf(){
+      return [].slice.call(arguments);
+    }
+    ```
+
+- 数组实例的 copyWithin()
+
+  数组实例的`copyWithin`方法，在当前数组内部，将指定位置的成员复制到其他位置（会覆盖原有成员），然后返回当前数组。也就是说，使用这个方法，会修改当前数组。
+
+  ```javascript
+  Array.prototype.copyWithin(target, start = 0, end = this.length)
+  ```
+
+  接受三个参数
+
+  - target（必需）：从该位置开始替换数据。如果为负值，表示倒数。
+  - start（可选）：从该位置开始读取数据，默认为 0。如果为负值，表示倒数。
+  - end（可选）：到该位置前停止读取数据，默认等于数组长度。如果为负值，表示倒数。
+
+  ```javascript
+  [1, 2, 3, 4, 5].copyWithin(0, 3)
+  // [4, 5, 3, 4, 5]
+  // 上面代码表示将从 3 号位直到数组结束的成员（4 和 5），复制到从 0 号位开始的位置，结果覆盖了原来的 1 和 2。
+  ```
+
+- find() 和 findIndex()
+
+  - 数组实例的`find`方法，用于找出第一个符合条件的数组成员。它的参数是一个回调函数，所有数组成员依次执行该回调函数，直到找出第一个返回值为`true`的成员，然后返回该成员。如果没有符合条件的成员，则返回`undefined`。
+  - `find`方法的回调函数可以接受三个参数，依次为当前的值、当前的位置和原数组。
+
+  - 数组实例的`findIndex`方法的用法与`find`方法非常类似，返回第一个符合条件的数组成员的位置，如果所有成员都不符合条件，则返回`-1`。
+
+  - 这两个方法都可以接受第二个参数，用来绑定回调函数的`this`对象。
+
+  - 这两个方法都可以发现`NaN`，弥补了数组的`indexOf`方法的不足
+
+    ```javascript
+    [NaN].indexOf(NaN)
+    // -1
+    
+    [NaN].findIndex(y => Object.is(NaN, y))
+    // 0
+    ```
+
+- 数组实例的 fill()
+
+  - `fill`方法用于空数组的初始化非常方便。数组中已有的元素，会被全部抹去。
+
+    ```javascript
+    ['a', 'b', 'c'].fill(7)
+    // [7, 7, 7]
+    
+    new Array(3).fill(7)
+    // [7, 7, 7]
+    ```
+
+  - `fill`方法还可以接受第二个和第三个参数，用于指定填充的起始位置和结束位置。
+
+    ```javascript
+    ['a', 'b', 'c'].fill(7, 1, 2)
+    // ['a', 7, 'c']
+    ```
+
+  - 如果填充的类型为对象，那么被赋值的是同一个内存地址的对象，而不是深拷贝对象。
+
+- 数组实例的 entries(), keys() 和 values() 方法, 可以用for...of 循环进行遍历
+
+- 数组实例的 includes(), 返回一个布尔值, 第二个参数表示起始位置默认为0, 如果第二个参数为负数，则表示倒数的位置，如果这时它大于数组长度（比如第二个参数为`-4`，但数组长度为`3`），则会重置为从`0`开始。
+
+  ```javascript
+  [1, 2, 3].includes(3, 3);  // false
+  [1, 2, 3].includes(3, -1); // true
+  ```
+
+- 数组的成员有时还是数组，`Array.prototype.flat()`用于将嵌套的数组“拉平”，变成一维的数组。该方法返回一个新数组，对原数据没有影响
+
+  ```javascript
+  [1, 2, [3, 4]].flat()
+  // [1, 2, 3, 4]
+  ```
+
+- `flat()`默认只会“拉平”一层，如果想要“拉平”多层的嵌套数组，可以将`flat()`方法的参数写成一个整数，表示想要拉平的层数，默认为1。
+
+  ```javascript
+  [1, 2, [3, [4, 5]]].flat()
+  // [1, 2, 3, [4, 5]]
+  
+  [1, 2, [3, [4, 5]]].flat(2)
+  // [1, 2, 3, 4, 5]
+  ```
+
+- 如果不管有多少层嵌套，都要转成一维数组，可以用`Infinity`关键字作为参数。
+- 如果原数组有空位，`flat()`方法会跳过空位。
+
+- `flatMap()`方法对原数组的每个成员执行一个函数（相当于执行`Array.prototype.map()`），然后对返回值组成的数组执行`flat()`方法。该方法返回一个新数组，不改变原数组。
+
+  ```javascript
+  // 相当于 [[2, 4], [3, 6], [4, 8]].flat()
+  [2, 3, 4].flatMap((x) => [x, x * 2])
+  // [2, 4, 3, 6, 4, 8]
+  ```
+
+- `flatMap()`只能展开一层数组。
+
+- `flatMap()`方法的参数是一个遍历函数，该函数可以接受三个参数，分别是当前数组成员、当前数组成员的位置（从零开始）、原数组。`flatMap()`方法还可以有第二个参数，用来绑定遍历函数里面的`this`。
+
+- ES6 明确将空位转为`undefined`。
+
+
+
+
+
+
+
 # 字符串
+
 - startsWith('http')----------以http开头
 - endsWith('.txt')------------以txt结尾的
 - padStart(minLen, str), 第一个参数为指定参数的最小长度,第二个参数用来补全字符串. 如果省略第二个参数, 则用空格来补全
@@ -671,7 +860,7 @@ genObj.next()
 
 - Symbol 值可以作为标识符, 用于对象的属性名,就能保证不会出现同名的属性.
 - **Symbol 值作为对象属性名时, 不能用点运算符**. 因为点运算符后面总是字符串, 所有不会读取 Symbol 作为标识名所指代的那个值. **类型不同, 字符串与 Symbol**
-    
+  
     ```javascript
     const mySymbol = Symbol()
     const a = {}
