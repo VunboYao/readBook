@@ -16,7 +16,7 @@
     - charset: 表示通过 src 属性指定的代码的字符集。很少用
 
 
-​    
+​
 # 第三章：基本概念
 ## 语法
 1. **区分大小写**
@@ -41,13 +41,13 @@
     > - "function"——如果这个值是函数
     > - *声明未初始化的变量，typeof是undefined, 同时未声明的变量，typeof 也是undefined*
 4. **undefined**: 派生自null值
-    
-    > 当变量声明，未对其初始化时，这个变量的值就是undefined   
+
+    > 当变量声明，未对其初始化时，这个变量的值就是undefined
 5. **null**: 一个空对象指针
 6. **NaN**
     > - NaN ，即非数值（Not a Number）是一个特殊的数值，这个数值用于表示一个本来要返回数值的操作数未返回数值的情况
-    > - 只有 0除以 0 才会返回 NaN，正数除以 0 返回 Infinity，负数除以 0返回-Infinity   
-    > - 任何涉及 NaN 的操作（例如 NaN /10）都会返回 NaN，这个特点在多步计算中有可能导致问题。其次， NaN 与任何值都不相等，包括 NaN 本身     
+    > - 只有 0除以 0 才会返回 NaN，正数除以 0 返回 Infinity，负数除以 0返回-Infinity
+    > - 任何涉及 NaN 的操作（例如 NaN /10）都会返回 NaN，这个特点在多步计算中有可能导致问题。其次， NaN 与任何值都不相等，包括 NaN 本身
     > - isNaN()函数，可以确定参数是否“不是数值”。
 7. **转换为字符串**
     > - toString(): null 和 undefined 值没有这个方法。 多数情况下，调用 toString() 方法不必传递参数。
@@ -55,8 +55,8 @@
     > - **String()**: 在不知道要转换的值是不是 null 或 undefined 的情况下，如果值有 toString() 方法，则调用该方法（没有参数）并返回相应的结果；**如果值是 null ，则返回 "null" ；如果值是 undefined ，则返回 "undefined" 。**
     > - 要把某个值转换为字符串，可以使用加号与字符串(" ")加在一起。
     > - **对象的基本类型转换：首先调用valueOf(),再调用toString() ???**
-    
-### Object实例的属性和方法 
+
+### Object实例的属性和方法
 - constructor ：保存着用于创建当前对象的函数。
 - hasOwnProperty(propertyName) ：用于检查给定的属性在当前对象实例中（而不是在实例
 的原型中）是否存在。其中，作为参数的属性名（ propertyName ）必须以字符串形式指定（例如： o.hasOwnProperty("name") ）。
@@ -65,7 +65,7 @@
 - toLocaleString() ：返回对象的字符串表示，该字符串与执行环境的地区对应。
 - toString() ：返回对象的字符串表示。
 - valueOf() ：返回对象的字符串、数值或布尔值表示。通常与 toString() 方法的返回值相同。
-- 由于在 ECMAScript 中 Object 是所有对象的基础，因此所有对象都具有这些基本的属性和方法。 
+- 由于在 ECMAScript 中 Object 是所有对象的基础，因此所有对象都具有这些基本的属性和方法。
 ## 操作符
 ### 逻辑非
 -  如果操作数是一个对象，返回 false ；
@@ -94,9 +94,9 @@
     let or = a || b;
     console.log(and);// 3
     console.log(or); // 2
-    
+
     console.log(a && d); // ReferenceError: d is not defined
-    
+
     a = false;
     console.log(a && d); // false    短路操作符，为false后不再执行d
 ```
@@ -149,14 +149,14 @@ alert(message); //"The sum of 5 and 10 is 15"
 ```
 while(expression) {
     statement
-} 
+}
 ```
 ### for-in语句
 ```
 一种精准的迭代语句，用来枚举对象的属性
 for (let propName in window) {
     console.log(propName)
-} 
+}
 ```
 ### break和continue语句
 ```
@@ -179,7 +179,7 @@ for (let i = 1; i < 10; i++) {
     }
     num ++;
 }
-console.log(num); // 8 
+console.log(num); // 8
 ```
 ### label语句
 ```
@@ -215,7 +215,7 @@ console.log(num); // 95
     let qs = location.search.substring(1);
     let hostName = location.hostname;
     let url = location.href;
-    
+
     with(location) {
         let qs = search.substring(1)
         let hostName = hostname;
@@ -244,11 +244,11 @@ console.log(num); // 95
             default:
                 statement
         }
-    ``` 
+    ```
 ### 函数
 **return语句之后的任何代码都永远不会执行。当return语句不带有返回值时，函数在停止后将返回undefined值。**
 - 可以向 ECMAScript 函数传递任意数量的参数，并且可以通过 arguments对象来访问这些参数。
-- ECMAScript中没有函数签名的概念，因为其函数参数是以一个包含零或多个值的数组的形式传递的    
+- ECMAScript中没有函数签名的概念，因为其函数参数是以一个包含零或多个值的数组的形式传递的
 # 第四章 变量、作用域和内存问题
 
 ## 基本类型与引用类型
@@ -267,7 +267,7 @@ function setName(obj) {
 }
 let person = new Object();
 setName(person)
-console.log(person.name); // Yyb 
+console.log(person.name); // Yyb
 ```
 
 ## 检测类型
@@ -279,7 +279,7 @@ function Person(name, age, score) {
 this.name = name;
 this.age = age;
 this.score = score;
-} 
+}
 let p1 = new Person('zs', 18, 89);
 console.log(p1 instanceof Person); // true
 ```
@@ -296,7 +296,7 @@ function bulidUrl() {
         var url = href + qs;
     }
     console.log(url)
-} 
+}
 ```
 - with中的‘变量对象’是只读的，所以在他本层中定义的标识符不能定义在本层，而是存储到它的上一层作用域。因此，上一层可以访问url
 - 参考文章：https://lllt.iteye.com/blog/1246424
@@ -328,11 +328,11 @@ function bulidUrl() {
 - 创建Object实例的方式
     > 构造函数： new  Object()
     > 对象字面量
-    
+
 ## Array类型
 - 设置数组的length, 可以从数组的末尾移除项或添加新项
 - 利用length属性可以方便地在数组末尾添加新项
-- 当向数组下标插入一个新的值时，数组新的长度是最后一项的索引加1 
+- 当向数组下标插入一个新的值时，数组新的长度是最后一项的索引加1
 
 ### 检测数组:Array.isArray(value)
 
@@ -364,7 +364,7 @@ function compare(value1, value2) {
 }
 let values = [0, 1, 4, 10, 15];
 console.log(values.sort()); // [ 0, 1, 10, 15, 4 ]
-console.log(values.sort(compare)); // [ 0, 1, 4, 10, 15 ] 
+console.log(values.sort(compare)); // [ 0, 1, 4, 10, 15 ]
 ```
 - 对于数值类型或者其 valueOf() 方法会返回数值类型的对象类型，可以使用一个更简单的比较函数。
 ```
@@ -380,7 +380,7 @@ function compare(value1, value2){
 ```
 let values = [0, 1, 4, 10, 15];
 let newValue = values.concat('yellow', ['black', 'brown'],{name: 'age'})
-console.log(newValue); 
+console.log(newValue);
 // [ 0, 1, 4, 10, 15, 'yellow', 'black', 'brown', { name: 'age' } ]
 ```
 - slice() 方法，基于当前数组中的一或多个项创建一个新数组。
@@ -395,33 +395,33 @@ console.log(colors.slice(1, 4)); // [ 'green', 'blue', 'yellow' ]
     - 删除：删除任意数量的项。只需指定2个参数：要删除的第一项的位置和要删除的数量。
     - 插入：指定位置插入任意数量的项。 3个参数：起始位置、0（要删除的数量）和要插入的项。
     - 替换：指定位置插入任意数量的项，且同时删除任意数量的项。3个参数：起始位置、要删除的数量和插入的任意数量的项。
-    
+
     ```
     let colors = ['red', 'green', 'blue'];
     let remove = colors.splice(0, 1);
     console.log(colors); // [ 'green', 'blue' ]
     console.log(remove); // [ 'red' ]
-    
+
     remove = colors.splice(1, 0, 'yellow', 'orange');
     console.log(colors); // [ 'green', 'yellow', 'orange', 'blue' ]
     console.log(remove); // []
-    
+
     remove = colors.splice(1, 1, 'red', 'purple');
     console.log(colors); // [ 'green', 'red', 'purple', 'orange', 'blue' ]
     console.log(remove); // [ 'yellow' ]
     ```
-    
+
 ### 位置方法
 - indexOf 和 lastIndexOf()，没有找到该子字符串，则返回-1
-> 这两个方法都接受两个参数：要查找的项和（可选的）表示查找起点位置的索引。 
+> 这两个方法都接受两个参数：要查找的项和（可选的）表示查找起点位置的索引。
 > indexOf()会从该参数指定的位置向后搜索，忽略该位置之前的所有字符；而lastIndexOf()则会从指定的位置向前搜索，忽略该位置之后的所有字符。
-- demo 
+- demo
     ```
     let numbers = [1, 2, 3, 4, 5, 4, 3, 2, 1];
     console.log(numbers.indexOf(4)); // 3
     console.log(numbers.lastIndexOf(4)); // 5
     console.log(numbers.indexOf(4, 4)); // 5
-    
+
     // 找到所有的匹配的字符串
     let stringValue = "Lorem ipsum dolor sit amet, consectetur adipisicing elit";
     let positions = new Array();
@@ -430,11 +430,11 @@ console.log(colors.slice(1, 4)); // [ 'green', 'blue', 'yellow' ]
         positions.push(pos);
         pos = stringValue.indexOf("e", pos + 1);
     }
-    console.log(positions); //"3,24,32,35,52" 
+    console.log(positions); //"3,24,32,35,52"
     ```
-    
+
 ### 迭代方法
-> 每个方法都接受两个参数：要在每一项上运行的函数和（可选的）运行该函数的作用域对象——影响this的值。传入这些方法中的函数会接受三个参数：数组项的值、该项在数组中的位置和数组对象本身。    
+> 每个方法都接受两个参数：要在每一项上运行的函数和（可选的）运行该函数的作用域对象——影响this的值。传入这些方法中的函数会接受三个参数：数组项的值、该项在数组中的位置和数组对象本身。
 -  every() ：对数组中的每一项运行给定函数，如果该函数对每一项都返回 true ，则返回 true 。
 -  filter() ：对数组中的每一项运行给定函数，返回该函数会返回 true 的项组成的数组。
 -  forEach() ：对数组中的每一项运行给定函数。这个方法没有返回值。
@@ -446,24 +446,24 @@ console.log(colors.slice(1, 4)); // [ 'green', 'blue', 'yellow' ]
     let numbers = [1, 2, 3, 4, 5, 4, 3, 2, 1];
     let everyResult = numbers.every((item, index, array) => item > 2);
     console.log(everyResult); // false
-    
+
     let someResult = numbers.some((item, index, array) => item > 2);
     console.log(someResult); // true
-    
+
     let filterResult = numbers.filter((item, index, array) => item > 2);
     console.log(filterResult); // [ 3, 4, 5, 4, 3 ]
-    
+
     let mapResult = numbers.map((item, index, array) => item * 2);
     console.log(mapResult); // [ 2, 4, 6, 8, 10, 8, 6, 4, 2 ]
     // 该方法适合创建包含的项与另一个数组一一对应的数组
-    
+
     numbers.forEach((item, index, array) => {
         // 执行某些操作, 与for一样
-    }); 
+    });
     ```
-    
+
 ### 归并方法
-**reduce() 和 reduceRight() **    
+**reduce() 和 reduceRight() **
 > 这两个方法都会迭代数组的所有项，构建一个最终的返回值。其中，reduce()方法从数组的第一项开始，逐个遍历到最后。而reduceRight()则从数组的第一项开始，向前遍历到第一项。
 > 都接受两个参数：一个在每一项上调用的函数和（可选的）作为归并基础的初始值。
 
@@ -473,14 +473,14 @@ console.log(colors.slice(1, 4)); // [ 'green', 'blue', 'yellow' ]
     let values = [1, 2, 3, 4, 5];
     let sum = values.reduce((prev, cur, index, array) => prev + cur);
     console.log(sum); // 15
-    
+
     let values2 = [1, 2, 3, 4, 5];
     let sum2 = values.reduce((prev, cur, index, array) => prev + cur, 10);
     console.log(sum2); // 25
     // 第二个参数为初始值
     ```
-    
-## Date类型    
+
+## Date类型
 - 创建一个日期对象，使用new操作符和 Date构造函数即可
 `let now = new Date()`
 - 不传参时，自动获取当前日期和时间
@@ -495,7 +495,7 @@ console.log(colors.slice(1, 4)); // [ 'green', 'blue', 'yellow' ]
     ```
         console.log(Date.parse("6/12/2004")); // 1086969600000
         console.log(Date.parse("January 12, 2004")); // 1073836800000
-        console.log(Date.parse("2004-5-12")); // 1084291200000 
+        console.log(Date.parse("2004-5-12")); // 1084291200000
     ```
     **超出的日期格式。提示：`Invalid Date`**
 - Date.UTC()方法，返回世界时从1970年1月1日午夜到日期的毫秒数
@@ -640,7 +640,7 @@ xly|匹配‘x'或’y'
     - 返回项虽然是Array的实例，但包含两个额外的属性：index 和 input
     - index 表示匹配项在字符串中的位置，input表示应用正则表达式的字符串
     - **语法：pattern.exec(text)**;
-- RegExp实例继承的toLocalString（）和toString()方法都返回正则表达式    
+- RegExp实例继承的toLocalString（）和toString()方法都返回正则表达式
 - 正则表达式的 valueOf() 方法返回正则表达式本身。
 - match()，本质上与exec()相同。只接收一个参数，正则表达式。返回匹配的数组
 - search(),唯一参数与match()相同。返回字符串中第一个匹配项的索引。
@@ -654,7 +654,7 @@ xly|匹配‘x'或’y'
     if (pattern.test(text)){
         alert(RegExp.$1); //sh
         alert(RegExp.$2); //t
-    } 
+    }
     ```
 
 ### demo
@@ -695,7 +695,7 @@ let data = [{name: 'Zachary', age: 28}, {name: 'Nicholas', age: 29}];
 data.sort(createComparisonFunction('name'));
 console.log(data[0].name); // Nicholas
 data.sort(createComparisonFunction('age'));
-console.log(data[0].name); // Zachary 
+console.log(data[0].name); // Zachary
 ```
 
 ### 函数内部属性
@@ -711,7 +711,7 @@ console.log(data[0].name); // Zachary
             return num * factorial(num - 1);
         }
     }
-    
+
     function factorial(num) {
         if (num <= 1) {
             return 1;
@@ -724,7 +724,7 @@ console.log(data[0].name); // Zachary
         return 0;
     }
     console.log(trueFactorial(5)); // 120
-    console.log(factorial(5)); // 0 
+    console.log(factorial(5)); // 0
     ```
 - this：引用的是函数据以执行的环境对象——或者也可以说是this值（网页的全局作用域中调用函数时，this对象引用就是window。node.js中指向global）
     ```
@@ -749,7 +749,7 @@ console.log(data[0].name); // Zachary
      }
      inner(); // null
      outer(); // 显示outer()函数的源代码
-     
+
      // 为了实现更松散的耦合，可以通过arguments.callee.caller来访问相同的信息
      function outer() {
          inner();
@@ -774,10 +774,10 @@ console.log(data[0].name); // Zachary
             console.log(this.color)
         }
         sayColor(); // red
-        
+
         sayColor().call(this); // red
         sayColor().call(window); // red
-        sayColor().call(o); // blue  
+        sayColor().call(o); // blue
     ```
 - **使用 call() （或 apply() ）来扩充作用域的最大好处，就是对象不需要与方法有任何耦合关系。**
 - ES5新增bind()方法会创建一个函数的实例，其this值会被绑定到传给bind()函数的值。
@@ -789,7 +789,7 @@ console.log(data[0].name); // Zachary
     foo(); // 123
     let o = { a: 'abc'};
     let boo = foo.bind(o); //改变this指向
-    boo(); // abc 
+    boo(); // abc
     ```
 - 每个函数继承的toLocaleString()和toString（）方法始终都返回函数的代码。valueOf()同样也只返回函数代码
 
@@ -814,7 +814,7 @@ console.log(data[0].name); // Zachary
     var number = Number(value); //转型函数
     alert(typeof number); //"number"
     var obj = new Number(value); //构造函数
-    alert(typeof obj); //"object" 
+    alert(typeof obj); //"object"
     ```
 - 为了解决可能会忘记使用 new 关键字的风险，我们可以通过判断 this 的值创建使用范围更高的构造器。
     ```
@@ -823,15 +823,15 @@ console.log(data[0].name); // Zachary
             // the constructor was called without 'new'
             return new Book(name);
         }
-    } 
+    }
     ```
 
 ### Number类型
 - toFixed()，按照指定的小数位返回数值的字符串表示
-- toExponential(),返回指数表示法（e表示法）表示的数值的字符串形式。 
+- toExponential(),返回指数表示法（e表示法）表示的数值的字符串形式。
     ```
     let num = 10;
-    console.log(num.toExponential(2)); // 1.00e+1 
+    console.log(num.toExponential(2)); // 1.00e+1
     ```
 - toPrecision(),返回固定大小（fixed）格式，也可能返回指数格式；参数表示数值的数字的位数（不包括指数部分）
 
@@ -841,11 +841,11 @@ console.log(data[0].name); // Zachary
     ```
     var stringValue = "hello world";
     console.log(stringValue.charAt(1)) //"e"
-    
+
     var stringValue1 = "hello world";
-    console.log(stringValue1.charCodeAt(1)); // 输出"101" 
+    console.log(stringValue1.charCodeAt(1)); // 输出"101"
     ```
-- 可以使用方括号加数字索引来访问字符串中的特定字符    
+- 可以使用方括号加数字索引来访问字符串中的特定字符
 - slice()，参数为起始位置和结束位置。截取到结束位置前一个。当参数为负数时，与字符串的长度相加
 - substr(),**参数为起始位置和返回的个数**。第一个参数为负数则加字符串长度，第二个参数为负数，则转换为0
 - substring()，参数为起始位置和结束位置。截取到结束位置前一个。参数为负数转换为0，这个方法会将较小的数作为开始位置，将较大的数作为结束位置。
@@ -857,16 +857,16 @@ console.log(data[0].name); // Zachary
      var text = "cat, bat, sat, fat";
      var result = text.replace("at", "ond");
      alert(result); //"cond, bat, sat, fat"
-     
+
      result = text.replace(/at/g, "ond");
      alert(result); //"cond, bond, sond, fond"
-     
+
      // 去掉所有空格
      let str = '  vunbo yao ';
      let pattern = /\s/g;
      console.log(str.replace(pattern, '')); // vunboyao
     ```
-    
+
 字符序列|替换文本
 ---|---
 $$|$
@@ -874,7 +874,7 @@ $&|匹配整个模式的子字符串。与 RegExp.lastMatch 的值相同
 $'|匹配的子字符串之前的子字符串。与 RegExp.leftContext 的值相同
 $`|匹配的子字符串之后的子字符串。与 RegExp.rightContext 的值相同
 $n|匹配第n个捕获组的子字符串，其中n等于0～9。例如， $1 是匹配第一个捕获组的子字符串， $2是匹配第二个捕获组的子字符串，以此类推。如果正则表达式中没有定义捕获组，则使用空字符串
-    ``` 
+    ```
     var text = "cat, bat, sat, fat";
     result = text.replace(/(.at)/g, "word ($1)");
     alert(result); //word (cat), word (bat), word (sat), word (fat)
@@ -889,10 +889,10 @@ $n|匹配第n个捕获组的子字符串，其中n等于0～9。例如， $1 是
     let stringValue = 'yellow'
     console.log(stringValue.localeCompare('brick')); // 1
     console.log(stringValue.localeCompare('yellow')); // 0
-    console.log(stringValue.localeCompare('zoo')); // -1 
+    console.log(stringValue.localeCompare('zoo')); // -1
     ```
-- fromCharCode()方法，接受一或多个字符编码，然后转换成一个字符串。与charCodeAt()执行相反的操作。  
-    `console.log(String.fromCharCode(104, 101, 108, 108, 111)); // hello`  
+- fromCharCode()方法，接受一或多个字符编码，然后转换成一个字符串。与charCodeAt()执行相反的操作。
+    `console.log(String.fromCharCode(104, 101, 108, 108, 111)); // hello`
     `console.log('hello'.charCodeAt(2)); // 108`
 
 ## 单体内置对象
@@ -902,11 +902,11 @@ $n|匹配第n个捕获组的子字符串，其中n等于0～9。例如， $1 是
 - URI编码方法：encodeURI()和encodeURIComponent()方法可以对URI进行编码。有效的URI中不能包含某些字符，例如空格。
 - encodeURI()主要用于整个URI，而encodeURIComponent()主要用于对URI中的某一段进行编码。
 - 区别：encodeURI()不会对本身的属于URI的特殊字符进行编码，例如冒号，正斜杠，问好和井字号；而encodeURIComponent()会对任何非标准字符进行编码。
-    ``` 
+    ```
     let uri = 'http://www.wrox.com/illegal value.html#start';
-    console.log(encodeURI(uri)); 
+    console.log(encodeURI(uri));
     // http://www.wrox.com/illegal%20value.html#start 使用encodeURI()编码后除了空格之外的其他字符都原封不动
-    console.log(encodeURIComponent(uri)); 
+    console.log(encodeURIComponent(uri));
     // http%3A%2F%2Fwww.wrox.com%2Fillegal%20value.html%23start  使用encodeURIComponent()编码。替换所有非字母数字字符
     ```
 - 使用encodeURIComponent()比encodeURI()更多。
@@ -942,7 +942,7 @@ URIError|构造函数URIError
     let max = Math.max(3,12,4,1212); // 1212
     let min = Math.min(3,12,4,1212); // 3
     console.log(max, min);
-     
+
     //找到一组数组中的最大值，使用apply()方法
     let values = [1, 2, 3 ,4 ,5 , 7, 8];
     let max = Math.max.apply(Math, values);
@@ -955,25 +955,25 @@ URIError|构造函数URIError
 - Math.random(),返回一个大于等于0小于1的随机数。
     ```
     利用Math.random()从某个正数范围内随机选择一个值
-    值 = Math.floor(Math.random() * 可能值的总数 + 第一个可能的值) 
+    值 = Math.floor(Math.random() * 可能值的总数 + 第一个可能的值)
     公式中用到了Math.floor()方法，因为Math.random()总返回一个小数值。
-    
+
     1到10之间的数值。
     let num = Math.floor(Math.random() * 10 + 1);
-    
+
     function selectFrom(lowerValue, upperValue) {
         let choices = upperValue - lowerValue + 1;
         return Math.floor(Math.random() * choices + lowerValue);
     }
     let num = selectFrom(2, 10);
     console.log(num); // 介于2和10之间（包括2和10）的一个数值
-    
+
     let colors = ['red', 'green', 'blue', 'yellow', 'black', 'purple', 'orange', 'brown']
     let color = colors[selectFrom(0, colors.length - 1)]
     console.log(color)
     ```
-    
-    
+
+
 # 第六章：面向对象的程序设计
 ## 理解对象
 ```
@@ -985,7 +985,7 @@ let person = {
     sayName: function(){
         console.log(this.name);
     }
-} 
+}
 ```
 ### 数据属性
 - [[Configurable]] ：表示能否通过 delete 删除属性从而重新定义属性，能否修改属性的特性，或者能否把属性修改为访问器属性。像前面例子中那样直接在对象上定义的属性，它们的这个特性默认值为 true 。
@@ -995,7 +995,7 @@ let person = {
 - 要修改属性默认的特性，必须使用 ECMAScript 5 的 Object.defineProperty() 方法。
     - 这个方法接收三个参数：属性所在的对象、属性的名字和一个描述符对象。
     - 描述符（descriptor）对象的属性必须是： configurable 、 enumerable 、 writable 和 value 。设置其中的一或多个值，可以修改对应的特性值。
-    ``` 
+    ```
     let person = {};
     Object.defineProperty(person, "name", {
         writable: false, // 只读，无法修改
@@ -1016,7 +1016,7 @@ let person = {
     Object.defineProperty(person, "name", {
         configurable: true, // TypeError: Cannot redefine property: name
         value: "Nicholas"
-    }); 
+    });
     ```
     - 在调用 Object.defineProperty() 方法时，如果不指定， configurable 、 enumerable 和writable 特性的默认值都是 false 。
 
@@ -1027,7 +1027,7 @@ let person = {
 - [[Get]] ：在读取属性时调用的函数。默认值为 undefined 。
 - [[Set]] ：在写入属性时调用的函数。默认值为 undefined 。
     - 访问器属性不能直接定义，必须使用 Object.defineProperty() 来定义
-    ``` 
+    ```
     let book = {
         _year: 2004,
         edition: 1
@@ -1046,24 +1046,24 @@ let person = {
     book.year = 2005;
     console.log(book.edition); // 2
     ```
-    
+
     ```
     let demo = document.getElementById('demo')
     let text = document.getElementById('text')
-    
+
     let str = {}
-    
+
     Object.defineProperty(str, 'text', {
         set: v => str[text] = v,
         get: () => str.text
     })
-    
+
     demo.onkeydown = function () {
         str[text] = demo.value;
         text.innerHTML = str[text];
-    } 
+    }
     ```
-    
+
 ### 定义多个属性
 - Object.defineProperties() 方法。接收2个对象参数，第一个对象是要添加和修改其属性的对象。第二个对象的属性与第一个对象中要添加和修改的属性一一对应。
 ```
@@ -1072,7 +1072,7 @@ Object.defineProperties(book, {
     _year: {
         writable: true,
         value: 2004
-    }, 
+    },
     edition: {
         writable: true,
         value: 1
@@ -1089,7 +1089,7 @@ Object.defineProperties(book, {
         }
     }
 });
-// 以上代码在 book 对象上定义了两个数据属性（ _year 和 edition ）和一个访问器属性（ year ）。最终的对象与上一节中定义的对象相同。唯一的区别是这里的属性都是在同一时间创建的。 
+// 以上代码在 book 对象上定义了两个数据属性（ _year 和 edition ）和一个访问器属性（ year ）。最终的对象与上一节中定义的对象相同。唯一的区别是这里的属性都是在同一时间创建的。
 ```
 
 ### 读取属性的特性
@@ -1150,8 +1150,8 @@ console.log(typeof descriptor1.get); // function 指向getter函数的指针
 ```
 
 - **工厂方法虽然解决了创建多个相似对象的问题， 但却没有解决对象识别的问题（即怎样知道一个对象的类型）**
-  
-### 构造函数模式   
+
+### 构造函数模式
 ```
  function Person(name, age, job) {
      this.name = name;
@@ -1162,37 +1162,37 @@ console.log(typeof descriptor1.get); // function 指向getter函数的指针
      };
  }
  let p1 = new Person('Nicholas', 29, 'Software Engineer');
- p1.sayName(); // Nicholas 
+ p1.sayName(); // Nicholas
 ```
 **不同之处：**
 - 没有显示的创建对象
 - 直接将属性和方法赋给了 this 对象
-- 没有 return 语句    
-> 此外，还应该注意到函数名 Person 使用的是大写字母 P。按照惯例，构造函数始终都应该以一个大写字母开头，而非构造函数则应该以一个小写字母开头。这个做法借鉴自其他 OO 语言，主要是为了区别于 ECMAScript 中的其他函数；因为构造函数本身也是函数，只不过可以用来创建对象而已。   
+- 没有 return 语句
+> 此外，还应该注意到函数名 Person 使用的是大写字母 P。按照惯例，构造函数始终都应该以一个大写字母开头，而非构造函数则应该以一个小写字母开头。这个做法借鉴自其他 OO 语言，主要是为了区别于 ECMAScript 中的其他函数；因为构造函数本身也是函数，只不过可以用来创建对象而已。
 
 **要创建 Person 的新实例，必须使用 new 操作符。以这种方式调用构造函数实际上会经历以下4个步骤：**
 1. 创建一个新对象
-2. 将构造函数的作用域赋给新对象（因此 this 就指向了这个新对象）    
+2. 将构造函数的作用域赋给新对象（因此 this 就指向了这个新对象）
 3. 执行构造函数中的代码（为这个新对象添加属性）
 4. 返回新对象
 > 以这种方式定义的构造函数是定义在 Global 对象（在浏览器中是 window 对象）中的。
 ---
-1. **将构造函数当作函数，与普通函数并没有区别。**    
+1. **将构造函数当作函数，与普通函数并没有区别。**
     ```
     let p1 = new Person('Nicholas', 29, 'Software Engineer');
     p1.sayName(); // Nicholas
-    
+
     Person('Greg', 25, 'Doctor'); // 添加到window
     window.sayName(); // Greg
-    
+
     let o = {};
     Person.call(o, 'Kristen', 27, 'Nurse');
-    o.sayName(); // Kristen 
+    o.sayName(); // Kristen
     ```
-2. **构造函数的问题**    
+2. **构造函数的问题**
     - 每个方法都要在每个实例上重新创建一遍
     - 逻辑角度，此实的构造函数也可以这样定义：
-    ``` 
+    ```
     function Person(name, age, job) {
         this.name = name;
         this.age = age;
@@ -1203,9 +1203,9 @@ console.log(typeof descriptor1.get); // function 指向getter函数的指针
     -  从这个角度上来看构造函数，更容易明白每个 Person 实例都包含一个不同的 Function 实例（以显示 name 属性）的本质。说明白些，以这种方式创建函数，会导致不同的作用域链和标识符解析，但创建 Function 新实例的机制仍然是相同的。
     - 因此，不同实例上的同名函数是不相等的
     `alert(person1.sayName === person2.sayName); //false`
-    > 然而，创建两个完成同样任务的 Function 实例的确没有必要；况且有 this 对象在，根本不用在执行代码前就把函数绑定到特定对象上面。因此，大可像下面这样，通过把函数定义转移到构造函数外部来解决这个问题。  
-  
-    ``` 
+    > 然而，创建两个完成同样任务的 Function 实例的确没有必要；况且有 this 对象在，根本不用在执行代码前就把函数绑定到特定对象上面。因此，大可像下面这样，通过把函数定义转移到构造函数外部来解决这个问题。
+
+    ```
     function Person(name, age, job) {
         this.name = name;
         this.age = age;
@@ -1229,7 +1229,7 @@ console.log(typeof descriptor1.get); // function 指向getter函数的指针
 - 每一个函数都有一个prototype（原型）属性，这个属性是一个指针，指向一个对象。
 - 该对象包含了由特定类型的所有实例共享的属性和方法。
 - prototype 是通过构造函数创建的实例的原型对象。
-``` 
+```
 function Person() {}
 Person.prototype.name = 'Nickolas';
 Person.prototype.age = 29;
@@ -1257,7 +1257,7 @@ console.log(person1.sayName === person2.sayName); // true
 > 虽然在所有实现中都无法访问到 [[Prototype]] ，但可以通过 **isPrototypeOf()** 方法来确定对象之间是否存在这种关系。从本质上讲，如果 [[Prototype]] 指向调用 isPrototypeOf() 方法的对象（ Person.prototype ），那么这个方法就返回 true ，如下所示：
 ```
 console.log(Person.prototype.isPrototypeOf(person1)); // true
-console.log(Person.prototype.isPrototypeOf(person2)); // true 
+console.log(Person.prototype.isPrototypeOf(person2)); // true
 // 因为它们内部都有一个指向 Person.prototype 的指针，因此都返回了 true
 ```
 
@@ -1265,7 +1265,7 @@ console.log(Person.prototype.isPrototypeOf(person2)); // true
     ```
      // Object.getPrototypeOf() 返回的对象实际就是这个对象的原型
     console.log(Object.getPrototypeOf(person1) === Person.prototype); // true
-    console.log(Object.getPrototypeOf(person1).name); // Nickolas 
+    console.log(Object.getPrototypeOf(person1).name); // Nickolas
     ```
 - *每当代码读取某个对象的属性的时候，都会执行一次搜索。目标是具有给定名字的属性。**首先从对象实例开始，如果没有则继续搜索原型对象。调用person1.sayName()时，先后执行了2次搜索。** *
 > 原型最初只包含 constructor 属性，而该属性也是共享的，因此可以通过对象实例访问
@@ -1288,8 +1288,8 @@ console.log(person1.constructor); // [Function: Person]
     let person2 = new Person();
     person1.name = 'Greg';
     console.log(person1.name); // Greg
-    console.log(person2.name); // Nickolas 
-    
+    console.log(person2.name); // Nickolas
+
     delete person1.name;
     console.log(person1.name); // Nickolas
     ```
@@ -1299,7 +1299,7 @@ console.log(person1.constructor); // [Function: Person]
 ```
 console.log(person1.hasOwnProperty('name')); // false
 person1.name = 'yyb';
-console.log(person1.hasOwnProperty('name')); // true 
+console.log(person1.hasOwnProperty('name')); // true
 ```
 
 **2.原型与 in 操作符**
@@ -1327,14 +1327,14 @@ console.log('name' in person1); // true
 delete person1.name;
 console.log(person1.name); // Nicholas ——来自原型
 console.log(person1.hasOwnProperty('name')); // false
-console.log('name' in person1); // true 
+console.log('name' in person1); // true
 ```
 - 同时使用 hasOwnProperty() 方法和 **in** 操作符，可以确定该属性到底是存在于对象中，还是存在于原型中。
 
 ```
 function hasPrototypeProperty(object, name) {
     return !object.hasOwnProperty(name) && (name in object);
-} 
+}
 // 由于 in 操作符只要通过对象能够访问到属性就返回 true ， hasOwnProperty() 只在属性存在于
    实例中时才返回 true ，因此只要 in 操作符返回 true 而 hasOwnProperty() 返回 false ，就可以确
    定属性是原型中的属性
@@ -1355,9 +1355,9 @@ function hasPrototypeProperty(object, name) {
 ```
 - for-in,返回的是所有能够通过对象访问的、可枚举的（enumerated）属性，其中既包括存在于实例中的属性，也包括存在于原型中的属性。
 - 屏蔽了原型中不可枚举属性（即将[[Enumerable]] 标记为 false 的属性）的实例属性也会在 for-in 循环中返回，因为根据规定，所有开发人员定义的属性都是可枚举的——IE8例外。
-- 要取得对象上所有可枚举的实例属性，可以使用ES5的Object.keys()方法。该方法，接收一个参数，返回一个包含所有可枚举属性的字符串数组
+- 要取得对象上所有可枚举的实例属性，可以使用ES5的Object.keys()方法。该方法，接收一个对象作为参数，返回一个包含所有可枚举属性的字符串数组
 
-``` 
+```
 function Person() {}
 Person.prototype.name = 'Nickolas';
 Person.prototype.age = 29;
@@ -1382,7 +1382,7 @@ console.log(p1Keys); // [ 'name', 'age' ]
 
 ```
 let keys = Object.getOwnPropertyNames(Person.prototype);
-console.log(keys); // [ 'constructor', 'name', 'age', 'job', 'sayName' ] 
+console.log(keys); // [ 'constructor', 'name', 'age', 'job', 'sayName' ]
 //  注意结果中包含了不可枚举的 constructor 属性。
 ```
 
@@ -1399,7 +1399,7 @@ console.log(keys); // [ 'constructor', 'name', 'age', 'job', 'sayName' ]
         sayName: function () {
             console.log(this.name);
         }
-    } 
+    }
     ```
 - **但此时 constructor 属性不再指向Person**，因为每创建一个函数，就会同时创建它的 prototype 对象，这个对象也会自动获得 constructor 对象，因此 constructor 属性也就变成了新对象的 constructor 属性（指向 Object）。虽然 instanceof 操作符还能返回true, 但 constructor 已经无法确定对象的类型了。
     ```
@@ -1441,7 +1441,7 @@ console.log(keys); // [ 'constructor', 'name', 'age', 'job', 'sayName' ]
 
 **4.原型的动态性**
 - 由于在原型上查找值的过程是一次搜索，因此即使是先创建了实例后，再修改原型，也能立即在实例上反映出来。
-    ``` 
+    ```
     let friend = new Person();
     Person.prototype.sayName = function() {
         console.log('hi');
@@ -1449,7 +1449,7 @@ console.log(keys); // [ 'constructor', 'name', 'age', 'job', 'sayName' ]
     friend.sayName(); // hi
     ```
 - 但如果重写整个原型对象，则不一样。调用构造函数时会为实例添加一个指向最初原型的[[Prototype]] 指针，而把原型修改为另外一个对象就等于切断了构造函数与最初原型之间的联系。**实例中的指针仅指向原型，而不指向构造函数**
-    ``` 
+    ```
     function Person() {}
     let friend = new Person();
     Person.prototype = {
@@ -1465,7 +1465,7 @@ console.log(keys); // [ 'constructor', 'name', 'age', 'job', 'sayName' ]
 
 **5.原生对象的原型**
 - 原生的引用类型，都是采用原型模式创建的。所有原生引用类型（Object, Array, String, 等等）都是在其构造函数的原型上定义了方法。如Array.prototype 中可以找到 sort() 方法，而在 String.prototype 中可以找到 substring() 方法
-- 通过自定义添加 String 中一个首字母大写的方法。 
+- 通过自定义添加 String 中一个首字母大写的方法。
 ```
 String.prototype.strFirstUpper = function () {
     let first = this.substr(0, 1); // this.charAt(0)
@@ -1474,14 +1474,14 @@ String.prototype.strFirstUpper = function () {
     return first + free;
 }
 let str = 'yyb';
-console.log(str.strFirstUpper()); // Yyb 
+console.log(str.strFirstUpper()); // Yyb
 ```
 - str是字符串，后台通过调用 String 基本包装函数创建这个字符串，因此通过 str可以使用strFirstUpper（）方法。
 ```
 // 基本类型调用方法，后台执行操作。
 let _s = new String('yyb'); // 创建一个临时的字符串对象
 _s.strFirstUpper(); // 调用该方法
-_s = null; // 释放该对象 
+_s = null; // 释放该对象
 ```
 > 不推荐在产品化的程序中修改原生对象的类型。
 
@@ -1505,7 +1505,7 @@ var person2 = new Person();
 person1.friends.push("Van");
 alert(person1.friends); //"Shelby,Court,Van"
 alert(person2.friends); //"Shelby,Court,Van"
-alert(person1.friends === person2.friends); //true 
+alert(person1.friends === person2.friends); //true
 ```
 
 ### 组合使用构造函数模式和原型模式
@@ -1535,7 +1535,7 @@ console.log(person1.friends); // [ 'Shelby', 'Court', 'Van' ]
 console.log(person2.friends); // [ 'Shelby', 'Court' ]
 
 console.log(person1.friends === person2.friends); // false
-console.log(person1.sayName === person2.sayName); // true 
+console.log(person1.sayName === person2.sayName); // true
 ```
 
 ### 动态原型模式
@@ -1555,7 +1555,7 @@ function Person(name, age, job) {
     }
 }
 let friend = new Person('Nicholas', 29, 'Software Engineer');
-friend.sayName(); // Nicholas 
+friend.sayName(); // Nicholas
 ```
 
 - 构造函数中方法部分，这里只会在sayName() 方法不存在的情况下，才会添加到原型中。
@@ -1575,7 +1575,7 @@ function Person(name, age, job) {
     return o;
 }
 let friend = new Person('Nicholas', 29, 'Software Engineer');
-friend.sayName(); // Nicholas 
+friend.sayName(); // Nicholas
 ```
 
 > 在这个例子中， Person 函数创建了一个新对象，并以相应的属性和方法初始化该对象，然后又返回了这个对象。除了使用 new 操作符并把使用的包装函数叫做构造函数之外，这个模式跟工厂模式其实是一模一样的。构造函数在不返回值的情况下，默认会返回新对象实例。而通过在构造函数的末尾添加一个 return 语句，可以重写调用构造函数时返回的值。
@@ -1593,7 +1593,7 @@ function SpecialArray() {
     return values;
 }
 let colors = new SpecialArray('red', 'blue', 'green');
-console.log(colors.toPipedString()); // "red|blue|green" 
+console.log(colors.toPipedString()); // "red|blue|green"
 ```
 > 在这个例子中，我们创建了一个名叫 SpecialArray 的构造函数。在这个函数内部，首先创建了
   一个数组，然后 push() 方法（用构造函数接收到的所有参数）初始化了数组的值。随后，又给数组实
@@ -1615,13 +1615,13 @@ function ToUpper(value) {
     return str;
 }
 let a = new ToUpper('ssss');
-console.log(a.toUp()); // Ssss 
+console.log(a.toUp()); // Ssss
 ```
 
 ### 稳妥构造函数模式
 - 所谓稳妥对象，指的是没有公共属性，而且其方法也不引用this对象。
 - 稳妥对象最适合在一些安全的环境中（这些环境中会禁止使用 this 和 new），或防止数据被其他应用程序改动时使用。
-- 新创建对象的实例方法不引用this; 不使用 new 操作符调用构造函数。 
+- 新创建对象的实例方法不引用this; 不使用 new 操作符调用构造函数。
     ```
     function Person(name, age, job) {
         let o = new Object();
@@ -1631,7 +1631,7 @@ console.log(a.toUp()); // Ssss
         return o;
     }
     let friend = Person('Nicholas', 29, 'Software Engineer')
-    friend.sayName(); // Nicholas 
+    friend.sayName(); // Nicholas
     // 注意，在以这种模式创建的对象中，除了使用 sayName() 方法之外，没有其他办法访问 name 的值。
     ```
 > 变量 friend 中保存的是一个稳妥对象，而除了调用 sayName() 方法外，没有别的方式可
@@ -1639,7 +1639,7 @@ console.log(a.toUp()); // Ssss
   入到构造函数中的原始数据。稳妥构造函数模式提供的这种安全性，使得它非常适合在某些安全执行环
   境下使用。
 
-**与寄生构造函数模式类似，使用稳妥构造函数模式创建的对象与构造函数之间也没有什么关系，因此 instanceof 操作符对这种对象也没有意义。**    
+**与寄生构造函数模式类似，使用稳妥构造函数模式创建的对象与构造函数之间也没有什么关系，因此 instanceof 操作符对这种对象也没有意义。**
 
 ## 继承
 
@@ -1666,7 +1666,7 @@ SubType.prototype.getSubValue = function () {
 }
 let instance = new SubType();
 console.log(instance.getSuperValue); // true
-console.dir(instance.constructor); // SuperType 
+console.dir(instance.constructor); // SuperType
 ```
 
 - 以上代码定义了2个类型：SuperType 和 SubType。每一个类型分别有一个属性和方法。
@@ -1700,9 +1700,9 @@ instance instanceof SubType; //true
 ```
 - isPrototypeOf()方法。只要是原型链中出现过的原型，都可以说是该原型链所派生的实例的原型。
 ```
-Object.prototype.isPrototypeOf(instance); // true 
-SuperType.prototype.isPrototypeOf(instance); // true 
-SubType.prototype.isPrototypeOf(instance); // true 
+Object.prototype.isPrototypeOf(instance); // true
+SuperType.prototype.isPrototypeOf(instance); // true
+SubType.prototype.isPrototypeOf(instance); // true
 ```
 
 **3.谨慎地定义方法**
@@ -1725,7 +1725,7 @@ instance.colors.push('black');
 console.log(instance.colors); // [ 'red', 'blue', 'green', 'black' ]
 
 let instance2 = new SubType();
-console.log(instance2.colors); // [ 'red', 'blue', 'green', 'black' ] 
+console.log(instance2.colors); // [ 'red', 'blue', 'green', 'black' ]
 ```
 > 这个例子中的 SuperType 构造函数定义了一个 colors 属性，该属性包含一个数组（引用类型值）。
   SuperType 的每个实例都会有各自包含自己数组的 colors 属性。当 SubType 通过原型链继承了
@@ -1736,7 +1736,7 @@ console.log(instance2.colors); // [ 'red', 'blue', 'green', 'black' ]
 
 - 函数是在特定环境中执行代码的对象，因此通过apply()和 call（）方法，可以在（将来）新创建的对象上执行构造函数。
 
-``` 
+```
 function SuperType() {
     this.colors = ['red', 'blue', 'green']
 }
@@ -1769,14 +1769,14 @@ function SubType() {
 }
 let instance = new SubType();
 console.log(instance.name); // Nicholas
-console.log(instance.age); // 20 
+console.log(instance.age); // 20
 ```
 - 在 SubType 构造函数内部调用 SuperType 构造函数时，实际上是为 SubType 的实例设置了 name 属性。**为了确保SuperType 构造函数不会重写子类型的属性，可以在调用超类型构造函数后，再添加应该在子类型中定义的属性。**
 
 **2.借用构造函数的问题**
 - 如果仅仅是借用构造函数，那么也将无法避免构造函数模式存在的问题——方法都在构造函数中定义，因此函数复用就无从谈起了。
 - 而且，在超类型的原型中定义的方法，对子类型而言也是不可见的，结果所有类型都只能使用构造函数模式。
-  
+
 ### 组合继承
 
 - 将原型链和借用构造函数的技术组合到一起，从而发挥二者之长的一种继承模式。
@@ -1811,7 +1811,7 @@ instance.sayAge(); // 29
 let instance1 = new SubType('Greg', 27);
 console.log(instance1.colors); // [ 'red', 'blue', 'green' ]
 instance1.sayName(); // Greg
-instance1.sayAge(); // 27 
+instance1.sayAge(); // 27
 ```
 
 ### 原型式继承
@@ -1823,7 +1823,7 @@ function object(o) {
     }
     F.prototype = o;
     return new F();
-} 
+}
 let person = {
     name: 'Nicholas',
     friends: ['Shelby', 'court', 'van']
@@ -1843,14 +1843,14 @@ console.log(person.friends); // [ 'Shelby', 'court', 'van', 'Rob', 'Barbie' ]
 个例子中，可以作为另一个对象基础的是 person 对象，于是我们把它传入到 object() 函数中，然后该
 函数就会返回一个新对象。这个新对象将 person 作为原型，所以它的原型中就包含一个基本类型值属性
 和一个引用类型值属性。这意味着 person.friends 不仅属于 person 所有，而且也会被 anotherPerson
-以及 yetAnotherPerson 共享。实际上，这就相当于又创建了 person 对象的两个副本。    
+以及 yetAnotherPerson 共享。实际上，这就相当于又创建了 person 对象的两个副本。
 
 - ECMAScript 5 通过新增 Object.create() 方法规范化了原型式继承.
 - 在传入一个参数的情况下，Object.create() 与 object() 方法的行为相同。
 - Object.create() 方法的第二个参数与 Object.defineProperties() 方法的第二个参数格式相同：每个属性都是通过自己的描述符定义的。以这种方式指定的任何属性都会覆盖原型对象上的同名属性。
 - 包含引用类型值的属性始终都会共享相应的值，就像使用原型模式一样。
 
-``` 
+```
 function object(o) {
     function F() {
     }
@@ -1892,7 +1892,7 @@ let person = {
     friends: ['shelby', 'court', 'Van']
 };
 let anotherPerson = createAnother(person);
-anotherPerson.sayHi(); // hi 
+anotherPerson.sayHi(); // hi
 ```
 > 使用寄生式继承来为对象添加函数，会由于不能做到函数复用而降低效率；这一点与构造函数模式类似
 
@@ -1917,7 +1917,7 @@ SubType.prototype = new SuperType(); // 第一次调用 SuperType()
 SubType.prototype.constructor = SubType;
 SubType.prototype.sayAge = function(){
     console.log(this.age);
-}; 
+};
 ```
 - 第一次调用 SuperType 构造函数时，SubType.prototype 会得到两个属性：name 和 colors; 它们都是 SuperType 的实例属性，只不过现在位于 SubType 的原型中。
 - 当调用 SubType 构造函数时，又会调用一次 SuperType 构造函数，这一次又在新对象上创建了实例属性 name 和 colors。于是，这两个属性就屏蔽了原型中的两个同名属性。
@@ -1931,7 +1931,7 @@ function inheritPrototype(subType, superType) {
     let prototype = object(superType.prototype);  // 创建对象
     prototype.constructor = subType;              // 增强对象
     superType.prototype = prototype;              // 指定对象
-} 
+}
 ```
 > 这个示例中的 inheritPrototype() 函数实现了寄生组合式继承的最简单形式。这个函数接收两
   个参数：子类型构造函数和超类型构造函数。在函数内部，第一步是创建超类型原型的一个副本。第二
@@ -1960,7 +1960,7 @@ inheritPrototype(SubType, SuperType);
 
 SubType.prototype.sayAge = function () {
     console.log(this.age);
-} 
+}
 ```
 - 这个例子的高效率体现在它只调用了一次 SuperType 构造函数，并且因此避免了在 SubType.prototype 上面创建不必要的、多余的属性。
 - 与此同时，原型链还能保持不变；因此，还能够正常使用 instanceof 和 isPrototypeOf() 。
@@ -1997,7 +1997,7 @@ function factorial(num) {
     } else {
         return num * arguments.callee(num - 1);
     }
-} 
+}
 // 更稳妥的方式。实现阶乘递归
 let factorial = (function f(num) {
     if (num < 1) {
@@ -2022,7 +2022,7 @@ function makeSize(size) {
     }
 }
 btn1.onclick = makeSize(12);
-btn2.onclick = makeSize(14); 
+btn2.onclick = makeSize(14);
 ```
 - **在 createComparisonFunction() 函数内部定义的匿名函数的作用域链中，实际上将会包含外部函数 createComparisonFunction() 的活动对象。**
 
@@ -2041,7 +2041,7 @@ function createComparisonFunction(propertyName) {
     };
 }
 let compare = createComparisonFunction('name');
-let result = compare({name: 'Nicholas'}, {name: 'Greg'}); 
+let result = compare({name: 'Nicholas'}, {name: 'Greg'});
 ```
 
 在匿名函数从 createComparisonFunction() 中被返回后，它的作用域链被初始化为包含createComparisonFunction() 函数的活动对象和全局变量对象。这样，匿名函数就可以访问在createComparisonFunction() 中定义的所有变量。更为重要的是， createComparisonFunction()函数在执行完毕后，其活动对象也不会被销毁，因为匿名函数的作用域链仍然在引用这个活动对象。换句话说，当 createComparisonFunction() 函数返回后，其执行环境的作用域链会被销毁，但它的活动对象仍然会留在内存中；直到匿名函数被销毁后， createComparisonFunction() 的活动对象才会被销毁
@@ -2054,16 +2054,16 @@ let compare = createComparisonFunction('name');
 let result = compare({name: 'Nicholas'}, {name: 'Greg'});
 
 //解除对匿名函数的引用（以便释放内存）
-compare = null; 
+compare = null;
 ```
 首先，创建的比较函数被保存在变量 compareNames 中。而通过将 compareNames设置为等于 null解除该函数的引用，就等于通知垃圾回收例程将其清除。随着匿名函数的作用域链被销毁，其他作用域(除了全局作用域）也都可以安全地销毁了。
 
-### 闭包与变量 
+### 闭包与变量
 
 - 作用域链的这种配置机制引出了一个副作用，即闭包只能取得包含函数中任何变量的最后一个值。
 - 闭包保存的是整个变量对象，而不是某个特殊的值。
 
-### 关于this对象 
+### 关于this对象
 
 - 全局函数中，this 等于 window
 - 当函数被作为某个对象的方法调用时，this等于那个对象。
@@ -2079,7 +2079,7 @@ var object = {
         };
     }
 };
-alert(object.getNameFunc()()); //"The Window"（在非严格模式下） 
+alert(object.getNameFunc()()); //"The Window"（在非严格模式下）
 ```
 以上代码先创建了一个全局变量 name ，又创建了一个包含 name 属性的对象。这个对象还包含一
 个方法—— getNameFunc() ，它返回一个匿名函数，而匿名函数又返回 this.name 。由于 getNameFunc()
@@ -2101,7 +2101,7 @@ var object = {
         };
     }
 };
-console.log(object.getNameFunc()()); // My Object 
+console.log(object.getNameFunc()()); // My Object
 ```
 
 ### 内存泄漏
@@ -2113,12 +2113,12 @@ console.log(object.getNameFunc()()); // My Object
 ```
 (function () {
    // 这里是块级作用域
-})(); 
+})();
 ```
 这种做法可以减少闭包占用的内存问题，因为没有指向匿名函数的引用。只要函
 数执行完毕，就可以立即销毁其作用域链了。
 
-## 私有变量 
+## 私有变量
 
 - 任何在函数中定义的变量，都可以认为是私有变量，因为不能在函数的外部访问这些变量。
 - 私有变量包括函数的参数、局部变量和在函数内部定义的其他函数。
@@ -2135,7 +2135,7 @@ function Person(name) {
 let person = new Person('Nicholas');
 console.log(person.getName()); // Nicholas
 person.setName('Greg')
-console.log(person.getName()); // Greg 
+console.log(person.getName()); // Greg
 ```
 > 以上代码的构造函数中定义了两个特权方法： getName() 和 setName() 。这两个方法都可以在构
   造函数外部使用，而且都有权访问私有变量 name 。但在 Person 构造函数外部，没有任何办法访问 name 。
@@ -2155,7 +2155,7 @@ console.log(person.getName()); // Greg
    function privateFunction() {
        return false;
    }
-   
+
    // 构造函数
    MyObject = function () {}
    // 共有/特权方法
@@ -2163,7 +2163,7 @@ console.log(person.getName()); // Greg
        privateVariable++;
        return privateFunction();
    }
-})() 
+})()
 ```
 > 这个模式创建了一个私有作用域，并在其中封装了一个构造函数及相应的方法。在私有作用域中，
   首先定义了私有变量和私有函数，然后又定义了构造函数及其公有方法。公有方法是在原型上定义的，
@@ -2201,7 +2201,7 @@ console.log(p1.getName()); // Greg
 
 let p2 = new Person('Michael');
 console.log(p1.getName()); // Michael
-console.log(p2.getName()); // Michael 
+console.log(p2.getName()); // Michael
 ```
 > 这个例子中的 Person 构造函数与 getName() 和 setName() 方法一样，都有权访问私有变量 name 。
   在这种模式下，变量 name 就变成了一个静态的、由所有实例共享的属性。也就是说，在一个实例上调
@@ -2222,7 +2222,7 @@ let singleton = function () {
     function privateFunction() {
         return false;
     }
-    
+
     // 特权/公有方法和属性
     return {
         publicProperty: true,
@@ -2231,7 +2231,7 @@ let singleton = function () {
             return privateFunction();
         }
     }
-}(); 
+}();
 ```
 
 > 这个模块模式使用了一个返回对象的匿名函数。在这个匿名函数内部，首先定义了私有变量和函数。
@@ -2266,7 +2266,7 @@ let singleton = function () {
         return privateFunction();
     };
     return object;
-}(); 
+}();
 ```
 
 ## 小结
@@ -2281,7 +2281,7 @@ let singleton = function () {
   如下。**
 
 - 在后台执行环境中，闭包的作用域链包含着它自己的作用域、包含函数的作用域和全局作用域。
-- 通常，函数的作用域及其所有变量都会在函数执行结束后被销毁    
+- 通常，函数的作用域及其所有变量都会在函数执行结束后被销毁
 - 但是，当函数返回了一个闭包时，这个函数的作用域将会一直在内存中保存到闭包不存在为止。使用闭包可以在 JavaScript中模仿块级作用域（JavaScript本身没有块级作用域的概念），要点如下。
     - 创建并立即调用一个函数，这样既可以执行其中的代码，又不会在内存中留下对该函数的引用。
     - 结果就是函数内部的所有变量都会被立即销毁——除非将某些变量赋值给了包含作用域（即外部作用域）中的变量。
@@ -2291,6 +2291,3 @@ let singleton = function () {
 - 即使 JavaScript 中没有正式的私有对象属性的概念，但可以使用闭包来实现公有方法，而通过公有方法可以访问在包含作用域中定义的变量
 - 有权访问私有变量的公有方法叫做特权方法。
 - 可以使用构造函数模式、原型模式来实现自定义类型的特权方法，也可以使用模块模式、增强的模块模式来实现单例的特权方法
-
-
-

@@ -4552,7 +4552,139 @@ for (let [item, value] of map.entries()) {
   console.log(item, value);
 }*/
 
-const map0 = new Map().set(1, 'a').set(2,'b').set(3, 'c')
-map0.forEach((value, key, map) => {
-  console.log(value, key, map);
-})
+/* const map = new Map([
+  ['demo', 'demotest'],
+  ['age', 29],
+  ['score', 99]
+]);
+const obj = Object.create(null); // {}
+for (let [k, v] of map) {
+  obj[k] = v
+}
+console.log(obj); */
+
+/* const obj2 = {
+  "demo": "demotest",
+  "age": 29,
+  "score": 99
+}
+
+const map = new Map()
+for (let k of Object.keys(obj2)) {
+  map.set(k, obj2[k])
+}
+console.log(map); // Map { 'demo' => 'demotest', 'age' => 29, 'score' => 99 } */
+
+/* const arr = [
+  [true, 7],
+  [{"foo": 3},["abc"]]
+]
+let json = JSON.parse(arr)
+console.log(json); */
+// Map {'yes' => true, 'no' => false}
+/* class RangeIterator{
+  constructor(start, stop) {
+    this.value = start;
+    this.stop = stop;
+  }
+  [Symbol.iterator](){
+    return this;
+  }
+
+  next() {
+    let value = this.value;
+    if (value < this.stop) {
+      this.value++;
+      return {done: false, value: value}
+    }
+    return {done: true, value: undefined}
+  }
+}
+
+function range(start, stop) {
+  return new RangeIterator(start, stop)
+}
+for (let item of range(0,3)) {
+  console.log(item); // 0,1,2
+} */
+
+/* function Obj(value) {
+  this.value = value;
+  this.next = null;
+}
+
+Obj.prototype[Symbol.iterator] = function () {
+  let iterator = { next: next};
+  let current = this;
+  function next() {
+    if (current) {
+      let value = current.value;
+      current = current.next;
+      return {done: false, value: value}
+    } else {
+      return {done: true}
+    }
+  }
+  return iterator
+}
+
+let one = new Obj(1)
+let two = new Obj(2)
+let three = new Obj(3)
+
+one.next = two;
+two.next = three;
+for (let i of one) {
+  console.log(i);
+
+}
+
+{
+  let set = new Map([["a", 1], ["b",2]]);
+  console.log(set);
+  set.delete('a')
+  console.log(set);
+}
+ */
+/* {
+    function Validator(target, validator) {
+      return new Proxy(target, {
+        _validator: validator,
+        set(target, key, value, proxy) {
+          if (target.hasOwnProperty(key)) {
+            let va = this._validator[key]
+            if (!!va(value)) {
+              return Reflect.set(target,key,value,proxy)
+            } else {
+              throw Error (`不能设置${key}到${value}`)
+            }
+          } else {
+            throw Error(`${key} 不存在`)
+          }
+        }
+      })
+    }
+    const personValidators = {
+      name (val) {
+        return typeof val === 'string'
+      },
+      age(val) {
+        return typeof val === 'number' && val > 18
+      },
+      phone(val) {
+        return typeof val === 'number' && val.length === 11
+      }
+    }
+
+    class Person{
+      constructor(name,age) {
+        this.name = name;
+        this.age = age;
+        this.phone = 18266488847;
+        return Validator(this, personValidators)
+      }
+    }
+
+    let demo = new Person('zs', 18)
+} */
+
