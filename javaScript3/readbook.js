@@ -4688,3 +4688,84 @@ for (let i of one) {
     let demo = new Person('zs', 18)
 } */
 
+/* class RangeIterator {
+  constructor(start, stop) {
+    this.value = start;
+    this.stop = stop;
+  }
+
+  [Symbol.iterator]() {
+    return this;
+  }
+
+  next() {
+    var value = this.value;
+    if (value < this.stop) {
+      this.value++;
+      return {
+        done: false,
+        value: value
+      };
+    }
+    return {
+      done: true,
+      value: undefined
+    };
+  }
+}
+
+let a = new RangeIterator(0, 3);
+let a1 = a.next()
+let a2 = a.next()
+let a3 = a.next()
+let a4 = a.next()
+console.log(a1,a2,a3,a4);
+// { done: false, value: 0 }
+// { done: false, value: 1 }
+// { done: false, value: 2 }
+// { done: true, value: undefined } */
+/* let obj = {
+  data :['hello', 'world'],
+  [Symbol.iterator]() {
+    const self = this;
+    let index = 0;
+    return {
+      next() {
+        if (index < self.data.length) {
+          return {
+            value: self.data[index++],
+            done: false
+          };
+        } else {
+          return {value: undefined, done: true}
+        }
+      }
+    }
+  }
+};
+
+let a = obj[Symbol.iterator]()
+console.log(a.next());
+console.log(a.next());
+console.log(a.next()); */
+
+/* function* helloWorld() {
+  yield 'hello';
+  yield 'world';
+  return 'ending';
+}
+let hw = helloWorld()
+
+console.log(hw.next());
+console.log(hw.next());
+console.log(hw.next());
+console.log(hw.next()); */
+function* f() {
+  console.log('执行了！')
+}
+
+var generator = f();
+
+setTimeout(function () {
+  generator.next()
+}, 2000);

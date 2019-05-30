@@ -74,7 +74,7 @@ for (let i of arr.entries()) {
   const [...a2] = a1;
   ```
 
-- 合并数组 `[...arr1, ...arr2]`, 与`arr1.concat(arr2)`一样, 两种方法都是浅拷贝
+- **合并数组 `[...arr1, ...arr2]`, 与`arr1.concat(arr2)`一样**, 两种方法都是浅拷贝
 
 - 与解构赋值结合使用时, 必须放到参数的最后一位, 否则会报错
 
@@ -90,12 +90,12 @@ for (let i of arr.entries()) {
 
 - 实现了 遍历器(iterator) 接口的对象, 都可以用扩展运算符转为真正的数组
 
-- `Array.from`方法用于将两类对象转为真正的数组：类似数组的对象（array-like object）和可遍历（iterable）的对象
+- **`Array.from`方法用于将两类对象转为真正的数组**：类似数组的对象（array-like object）和可遍历（iterable）的对象
 
   - 只要是部署了 Iterator 接口的数据结构，`Array.from`都能将其转为数组。
   - 任何有`length`属性的对象，都可以通过`Array.from`方法转为数组，而此时扩展运算符就无法转换。
 
-  - `Array.from`还可以接受第二个参数，作用类似于数组的`map`方法，用来对每个元素进行处理，将处理后的值放入返回的数组。
+  - **`Array.from`还可以接受第二个参数，作用类似于数组的`map`方法**，用来对每个元素进行处理，将处理后的值放入返回的数组。
 
     ```javascript
     Array.from(arrayLike, x => x * x);
@@ -108,7 +108,7 @@ for (let i of arr.entries()) {
 
   - `Array.from`的第三个参数，用来绑定`this`
 
-- Array.of 方法用于将一组值，转换为数组。
+- **Array.of 方法用于将一组值，转换为数组**。空则返回空数组
 
   ```javascript
   Array.of(3, 11, 8) // [3,11,8]
@@ -146,16 +146,16 @@ for (let i of arr.entries()) {
   // 上面代码表示将从 3 号位直到数组结束的成员（4 和 5），复制到从 0 号位开始的位置，结果覆盖了原来的 1 和 2。
   ```
 
-- find() 和 findIndex()
+- **find() 和 findIndex()**
 
   - 数组实例的`find`方法，用于找出第一个符合条件的数组成员。它的参数是一个回调函数，所有数组成员依次执行该回调函数，直到找出第一个返回值为`true`的成员，然后返回该成员。如果没有符合条件的成员，则返回`undefined`。
-  - `find`方法的回调函数可以接受三个参数，依次为当前的值、当前的位置和原数组。
+  - **`find`方法的回调函数可以接受三个参数，依次为当前的值、当前的位置和原数组**。
 
   - 数组实例的`findIndex`方法的用法与`find`方法非常类似，返回第一个符合条件的数组成员的位置，如果所有成员都不符合条件，则返回`-1`。
 
   - 这两个方法都可以接受第二个参数，用来绑定回调函数的`this`对象。
 
-  - 这两个方法都可以发现`NaN`，弥补了数组的`indexOf`方法的不足
+  - **这两个方法都可以发现`NaN`，弥补了数组的`indexOf`方法的不足**
 
     ```javascript
     [NaN].indexOf(NaN)
@@ -165,7 +165,7 @@ for (let i of arr.entries()) {
     // 0
     ```
 
-- 数组实例的 fill()
+- **数组实例的 fill()**
 
   - `fill`方法用于空数组的初始化非常方便。数组中已有的元素，会被全部抹去。
 
@@ -177,7 +177,7 @@ for (let i of arr.entries()) {
     // [7, 7, 7]
     ```
 
-  - `fill`方法还可以接受第二个和第三个参数，用于指定填充的起始位置和结束位置。
+  - **`fill`方法还可以接受第二个和第三个参数，用于指定填充的起始位置和结束位置**。
 
     ```javascript
     ['a', 'b', 'c'].fill(7, 1, 2)
@@ -186,7 +186,7 @@ for (let i of arr.entries()) {
 
   - 如果填充的类型为对象，那么被赋值的是同一个内存地址的对象，而不是深拷贝对象。
 
-- 数组实例的 entries(), keys() 和 values() 方法, 可以用for...of 循环进行遍历
+- 数组实例的 **entries(), keys() 和 values() 方法**, 可以用for...of 循环进行遍历
 
 - 数组实例的 includes(), 返回一个布尔值, 第二个参数表示起始位置默认为0, 如果第二个参数为负数，则表示倒数的位置，如果这时它大于数组长度（比如第二个参数为`-4`，但数组长度为`3`），则会重置为从`0`开始。
 
@@ -228,12 +228,6 @@ for (let i of arr.entries()) {
 - `flatMap()`方法的参数是一个遍历函数，该函数可以接受三个参数，分别是当前数组成员、当前数组成员的位置（从零开始）、原数组。`flatMap()`方法还可以有第二个参数，用来绑定遍历函数里面的`this`。
 
 - ES6 明确将空位转为`undefined`。
-
-
-
-
-
-
 
 # 字符串
 
@@ -2571,7 +2565,14 @@ WeakMap 与 Map 在 API 上的区别主要是两个
 
 # Iterator 和 for...of 循环
 
+- **一个数据结构只要有`Symbol.iterator`属性, 就可以遍历**
+- **`Symbol.iterator`属性本身是一个函数(当前数据结构默认的遍历器生成函数), 执行该函数, 返回一个遍历器对象**
+- **执行对象的next()方法, 返回一个对象, 表示当前数据成员的信息. 该对象具有 `value`和`done`两个属性, `value`属性返回当前位置的成员,`done`属性是一个布尔值,表示遍历是否结束.**
+- **调用指针对象的`next`方法, 就可以遍历实先给定的数据结构**
+
 ## Iterator(遍历器)的概念
+
+JavaScript 原有的表示“集合”的数据结构，主要是数组（`Array`）和对象（`Object`），ES6 又添加了`Map`和`Set`。这样就有了四种数据集合，用户还可以组合使用它们，定义自己的数据结构，比如数组的成员是`Map`，`Map`的成员是对象。这样就需要一种统一的接口机制，来处理所有不同的数据结构。
 
 遍历器（Iterator）就是这样一种机制。它是一种接口，为各种不同的数据结构提供统一的访问机制。任何数据结构只要部署 Iterator 接口，就可以完成遍历操作（即依次处理该数据结构的所有成员）。
 
@@ -2608,13 +2609,15 @@ function makeIterator(array) {
 
 Iterator 只是把接口规格加到数据结构之上, 所以, 遍历器与它所遍历的那个数据结构, 实际上是分开的.
 
+对于遍历器对象来说，`done: false`和`value: undefined`属性都是可以省略的
+
 ## 默认 Iterator 接口
 
 Iterator 接口的目的，就是为所有数据结构，提供了一种统一的访问机制，即`for...of`循环. 当使用`for...of`循环遍历某种数据结构时，该循环会自动去寻找 Iterator 接口。
 
 一种数据结构只要部署了 Iterator 接口，我们就称这种数据结构是“可遍历的”（iterable）
 
-ES6 规定，默认的 Iterator 接口部署在数据结构的`Symbol.iterator`属性，或者说，一个数据结构只要具有`Symbol.iterator`属性，就可以认为是“可遍历的”（iterable）。`Symbol.iterator`属性本身是一个函数，就是当前数据结构默认的遍历器生成函数。执行这个函数，就会返回一个遍历器。至于属性名`Symbol.iterator`，它是一个表达式，返回`Symbol`对象的`iterator`属性，这是一个预定义好的、类型为 Symbol 的特殊值，所以要放在方括号内
+**ES6 规定，默认的 Iterator 接口部署在数据结构的`Symbol.iterator`属性，或者说，一个数据结构只要具有`Symbol.iterator`属性，就可以认为是“可遍历的”（iterable）**。**`Symbol.iterator`属性本身是一个函数，就是当前数据结构默认的遍历器生成函数。执行这个函数，就会返回一个遍历器。**至于属性名`Symbol.iterator`，它是一个表达式，返回`Symbol`对象的`iterator`属性，这是一个预定义好的、类型为 Symbol 的特殊值，所以要放在方括号内
 
 ```javascript
 const obj = {
@@ -2685,4 +2688,199 @@ for (var value of range(0, 3)) {
 }
 // 上面代码是一个类部署 Iterator 接口的写法。Symbol.iterator属性对应一个函数，执行后返回当前对象的遍历器对象。
 ```
+
+```javascript
+class RangeIterator {
+  constructor(start, stop) {
+    this.value = start;
+    this.stop = stop;
+  }
+
+  [Symbol.iterator]() {
+    return this;
+  }
+
+  next() {
+    var value = this.value;
+    if (value < this.stop) {
+      this.value++;
+      return {
+        done: false,
+        value: value
+      };
+    }
+    return {
+      done: true,
+      value: undefined
+    };
+  }
+}
+
+let a = new RangeIterator(0, 3);
+let a1 = a.next()
+let a2 = a.next()
+let a3 = a.next()
+let a4 = a.next()
+console.log(a1,a2,a3,a4);
+// { done: false, value: 0 }
+// { done: false, value: 1 }
+// { done: false, value: 2 }
+// { done: true, value: undefined }
+```
+
+- 对于类似数组的对象（存在数值键名和`length`属性），部署 Iterator 接口，有一个简便方法，就是`Symbol.iterator`方法直接引用数组的 Iterator 接口。
+
+  ```javascript
+  NodeList.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
+  // 或者
+  NodeList.prototype[Symbol.iterator] = [][Symbol.iterator];
+  
+  [...document.querySelectorAll('div')] // 可以执行了
+  ```
+
+## **调用 Iterator 接口的场合**
+
+1. **解构赋值**
+2. **扩展运算符**----只要某个数据结构部署了 Iterator 接口，就可以对它使用扩展运算符，将其转为数组。
+3. **yield\***
+4. **其他场合**
+   - for...of
+   - Array.from()
+   - Map(), Set(), WeakMap(), WeakSet()（比如`new Map([['a',1],['b',2]])`）
+   - Promise.all()
+   - Promise.race()
+
+## 字符串的 Iterator 接口
+
+字符串是一个类似数组的对象，也原生具有 Iterator 接口。
+
+**可以覆盖原生的`Symbol.iterator`方法，达到修改遍历器行为的目的。**
+
+## Iterator 接口与 Generator 函数
+
+```javascript
+let myIterable = {
+  [Symbol.iterator]: function* () {
+    yield 1;
+    yield 2;
+    yield 3;
+  }
+}
+[...myIterable] // [1, 2, 3]
+
+// 或者采用下面的简洁写法
+
+let obj = {
+  * [Symbol.iterator]() {
+    yield 'hello';
+    yield 'world';
+  }
+};
+
+for (let x of obj) {
+  console.log(x);
+}
+// "hello"
+// "world"
+```
+
+## 遍历对象的 return(), throw()
+
+遍历器对象除了具有`next`方法，还可以具有`return`方法和`throw`方法。如果你自己写遍历器对象生成函数，那么**`next`方法是必须部署的**，`return`方法和`throw`方法是否部署是可选的。
+
+> `return`方法的使用场合是，如果`for...of`循环提前退出（通常是因为出错，或者有`break`语句），就会调用`return`方法。如果一个对象在完成遍历前，需要清理或释放资源，就可以部署`return`方法。
+
+> 注意，`return`方法必须返回一个对象，这是 Generator 规格决定的。`throw`方法主要是配合 Generator 函数使用，一般的遍历器对象用不到这个方法
+
+## for...of 循环
+
+一个数据结构只要部署了`Symbol.iterator`属性，就被视为具有 iterator 接口，就可以用`for...of`循环遍历它的成员。也就是说，`for...of`循环内部调用的是数据结构的`Symbol.iterator`方法。
+
+`for...of`循环可以使用的范围包括数组、Set 和 Map 结构、某些类似数组的对象（比如`arguments`对象、DOM NodeList 对象）、 Generator 对象，以及字符串
+
+- `for...of`循环可以代替数组实例的`forEach`方法
+- Set 和 Map 结构原生具有 Iterator 接口, 可以直接使用 `for...of`循环
+- 对于普通的对象，`for...of`结构不能直接使用，会报错，必须部署了 Iterator 接口后才能使用。但是，这样情况下，`for...in`循环依然可以用来遍历键名。一种解决方法是，**使用`Object.keys`方法将对象的键名生成一个数组**，然后遍历这个数组。
+- 其他的遍历方式:
+  - for
+  - forEach: 无法中途跳出`forEach`循环，`break`命令或`return`命令都不能奏效。
+  - `for...in` 专为遍历对象而设计
+  - for...of, 简洁, 可以break, continue和return配合使用, 提供了遍历所有数据结构的统一操作接口.
+
+# Generator 函数的语法
+
+## Outline
+
+- 一种异步编程解决方案, Generator 函数是一个状态机, 封装了多个内部状态, 返回一个**遍历器对象**
+
+- **函数特征**: `function`关键字与函数名之间有一个**星号**; 函数体内使用**yield**表达式, 定义不同的内部状态
+
+- Generator 函数的**调用方法与普通函数一样**，也是在函数名后面加上一对圆括号。不同的是，调用 Generator 函数后，该函数并不执行，返回的也不是函数运行结果，而是一个**指向内部状态的指针对象(Iterator Object)**
+
+- **调用遍历器对象的`next`方法，使得指针移向下一个状态**。也就是说，每次调用`next`方法，内部指针就从函数头部或上一次停下来的地方开始执行，**直到遇到下一个`yield`表达式（或`return`语句）为止**。换言之，Generator 函数是分段执行的，`yield`表达式是暂停执行的标记，而`next`方法可以恢复执行。
+
+  ```javascript
+  function* helloWorldGenerator() {
+    yield 'hello';
+    yield 'world';
+    return 'ending';
+  }
+  
+  var hw = helloWorldGenerator();
+  
+  hw.next()
+  // { value: 'hello', done: false }
+  
+  hw.next()
+  // { value: 'world', done: false }
+  
+  hw.next()
+  // { value: 'ending', done: true }
+  
+  hw.next()
+  // { value: undefined, done: true }
+  ```
+
+- 调用 Generator 函数，返回一个遍历器对象，代表 Generator 函数的内部指针。以后，每次调用遍历器对象的`next`方法，就会返回一个有着`value`和`done`两个属性的对象。**`value`属性表示当前的内部状态的值，是`yield`表达式后面那个表达式的值；`done`属性是一个布尔值，表示是否遍历结束**
+
+## yield 表达式
+
+由于 Generator 函数返回的遍历器对象，只有调用`next`方法才会遍历下一个内部状态，所以其实提供了一种可以暂停执行的函数。`yield`表达式就是暂停标志。
+
+1. 遇到`yield`表达式，就暂停执行后面的操作，并将紧跟在`yield`后面的那个表达式的值，作为返回的对象的`value`属性值。
+2. 下一次调用`next`方法时，再继续往下执行，直到遇到下一个`yield`表达式。
+3. 如果没有再遇到新的`yield`表达式，就一直运行到函数结束，直到`return`语句为止，并将`return`语句后面的表达式的值，作为返回的对象的`value`属性值。
+4. 如果该函数没有`return`语句，则返回的对象的`value`属性值为`undefined`。
+
+需要注意的是，`yield`表达式后面的表达式，只有当调用`next`方法、内部指针指向该语句时才会执行，因此等于为 JavaScript 提供了手动的“惰性求值”（Lazy Evaluation）的语法功能。
+
+**每次遇到`yield`，函数暂停执行**，下一次再从该位置继续向后执行，**而`return`语句不具备位置记忆的功能。一个函数里面，只能执行一次（或者说一个）`return`语句**，但是可以执行多次（或者说多个）`yield`表达式。正常函数只能返回一个值，因为只能执行一次`return`；**Generator 函数可以返回一系列的值，因为可以有任意多个`yield`。**
+
+Generator 函数可以不用`yield`表达式，这时就变成了一个单纯的暂缓执行函数。
+
+```javascript
+function* f() {
+  console.log('执行了！')
+}
+
+var generator = f();
+
+setTimeout(function () {
+  generator.next()
+}, 2000);
+// 上面代码中，函数f如果是普通函数，在为变量generator赋值时就会执行。但是，函数f是一个 Generator 函数，就变成只有调用next方法时，函数f才会执行。
+```
+
+- `yield`表达式如果用在另一个表达式之中，必须放在圆括号里面。
+- `yield`表达式用作函数参数或放在赋值表达式的右边，可以不加括号。
+
+## 与 Iterator 接口的关系
+
+- 任意一个对象的 `Symbol.iterator`方法, 等于该对象的遍历器生成函数, 调用该函数会返回该对象的一个遍历器对象.
+
+- 因为 Generator 函数就是遍历器生成函数, 因此可以把 Generator 赋值给对象的 `Symbol.iterator`属性, 从而使得该对象具有 Iterator 接口.
+
+- Generator 函数执行后，返回一个遍历器对象。**该对象本身也具有`Symbol.iterator`属性，执行后返回自身。**
+
+## next方法的参数
 

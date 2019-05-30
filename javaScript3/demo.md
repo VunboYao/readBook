@@ -16,7 +16,7 @@
     - charset: 表示通过 src 属性指定的代码的字符集。很少用
 
 
-​
+
 # 第三章：基本概念
 ## 语法
 1. **区分大小写**
@@ -215,7 +215,7 @@ console.log(num); // 95
     let qs = location.search.substring(1);
     let hostName = location.hostname;
     let url = location.href;
-
+    
     with(location) {
         let qs = search.substring(1)
         let hostName = hostname;
@@ -1355,7 +1355,7 @@ function hasPrototypeProperty(object, name) {
 ```
 - for-in,返回的是所有能够通过对象访问的、可枚举的（enumerated）属性，其中既包括存在于实例中的属性，也包括存在于原型中的属性。
 - 屏蔽了原型中不可枚举属性（即将[[Enumerable]] 标记为 false 的属性）的实例属性也会在 for-in 循环中返回，因为根据规定，所有开发人员定义的属性都是可枚举的——IE8例外。
-- 要取得对象上所有可枚举的实例属性，可以使用ES5的Object.keys()方法。该方法，接收一个对象作为参数，返回一个包含所有可枚举属性的字符串数组
+- 要取得对象上所有可枚举的实例属性，可以使用ES5的Object.keys()方法。该方法，接收一个对象作为参数，返回一个包含所有可枚举属性的字符串**数组**
 
 ```
 function Person() {}
