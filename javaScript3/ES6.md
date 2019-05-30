@@ -2884,3 +2884,49 @@ setTimeout(function () {
 
 ## next方法的参数
 
+- `yield`表达式本身没有返回值，或者说总是返回`undefined`。`next`方法可以带一个参数，**该参数就会被当作上一个`yield`表达式的返回值**。
+
+  ```javascript
+  function* foo(x) {
+    var y = 2 * (yield (x + 1));
+    var z = yield (y / 3);
+    return (x + y + z);
+  }
+  
+  var a = foo(5);
+  a.next() // Object{value:6, done:false}
+  a.next() // Object{value:NaN, done:false}
+  a.next() // Object{value:NaN, done:true}
+  
+  var b = foo(5);
+  b.next() // { value:6, done:false }
+  b.next(12) // { value:8, done:false }
+  b.next(13) // { value:42, done:true }
+  ```
+
+  上面代码中，第二次运行`next`方法的时候不带参数，导致 y 的值等于`2 * undefined`（即`NaN`），除以 3 以后还是`NaN`，因此返回对象的`value`属性也等于`NaN`。第三次运行`Next`方法的时候不带参数，所以`z`等于`undefined`，返回对象的`value`属性等于`5 + NaN + undefined`，即`NaN`。
+
+  如果向`next`方法提供参数，返回结果就完全不一样了。上面代码第一次调用`b`的`next`方法时，返回`x+1`的值`6`；第二次调用`next`方法，将上一次`yield`表达式的值设为`12`，因此`y`等于`24`，返回`y / 3`的值`8`；第三次调用`next`方法，将上一次`yield`表达式的值设为`13`，因此`z`等于`13`，这时`x`等于`5`，`y`等于`24`，所以`return`语句的值等于`42`。
+
+## for...of 循环
+
+`for...of`循环可以自动遍历 Generator 函数运行时生成的`Iterator`对象，且此时不再需要调用`next`方法。
+
+```javascript
+function* foo() {
+  yield 1;
+  yield 2;
+  yield 3;
+  yield 4;
+  yield 5;
+  return 6;
+}
+
+for (let v of foo()) {
+  console.log(v);
+}
+// 1 2 3 4 5
+```
+
+上面代码使用`for...of`循环，依次显示 5 个`yield`表达式的值。这里需要注意，**一旦`next`方法的返回对象的`done`属性为`true`，`for...of`循环就会中止，且不包含该返回对象，所以上面代码的`return`语句返回的`6`，不包括在`for...of`循环之中。**
+

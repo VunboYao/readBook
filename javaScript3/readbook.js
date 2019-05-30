@@ -4760,12 +4760,16 @@ console.log(hw.next());
 console.log(hw.next());
 console.log(hw.next());
 console.log(hw.next()); */
-function* f() {
-  console.log('执行了！')
+function* foo() {
+  yield 1;
+  yield 2;
+  yield 3;
+  yield 4;
+  yield 5;
+  return 6;
 }
 
-var generator = f();
-
-setTimeout(function () {
-  generator.next()
-}, 2000);
+for (let v of foo()) {
+  console.log(v);
+}
+// 1 2 3 4 5
