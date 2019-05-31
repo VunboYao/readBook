@@ -4551,7 +4551,6 @@ for(let value of map.values()) {
 for (let [item, value] of map.entries()) {
   console.log(item, value);
 }*/
-
 /* const map = new Map([
   ['demo', 'demotest'],
   ['age', 29],
@@ -4562,7 +4561,6 @@ for (let [k, v] of map) {
   obj[k] = v
 }
 console.log(obj); */
-
 /* const obj2 = {
   "demo": "demotest",
   "age": 29,
@@ -4574,7 +4572,6 @@ for (let k of Object.keys(obj2)) {
   map.set(k, obj2[k])
 }
 console.log(map); // Map { 'demo' => 'demotest', 'age' => 29, 'score' => 99 } */
-
 /* const arr = [
   [true, 7],
   [{"foo": 3},["abc"]]
@@ -4607,7 +4604,6 @@ function range(start, stop) {
 for (let item of range(0,3)) {
   console.log(item); // 0,1,2
 } */
-
 /* function Obj(value) {
   this.value = value;
   this.next = null;
@@ -4687,7 +4683,6 @@ for (let i of one) {
 
     let demo = new Person('zs', 18)
 } */
-
 /* class RangeIterator {
   constructor(start, stop) {
     this.value = start;
@@ -4748,7 +4743,6 @@ let a = obj[Symbol.iterator]()
 console.log(a.next());
 console.log(a.next());
 console.log(a.next()); */
-
 /* function* helloWorld() {
   yield 'hello';
   yield 'world';
@@ -4760,16 +4754,33 @@ console.log(hw.next());
 console.log(hw.next());
 console.log(hw.next());
 console.log(hw.next()); */
-function* foo() {
-  yield 1;
-  yield 2;
-  yield 3;
-  yield 4;
-  yield 5;
-  return 6;
+
+let g = function * () {
+  try {
+    yield;
+  } catch (e) {
+    console.log('内部捕获', e);
+  }
+}
+let i = g()
+i.next()
+
+try{
+  i.throw('a')
+  i.throw('b')
+} catch (e) {
+  console.log('外部不哦', e);
 }
 
-for (let v of foo()) {
-  console.log(v);
-}
-// 1 2 3 4 5
+
+
+
+
+
+
+
+
+
+
+
+

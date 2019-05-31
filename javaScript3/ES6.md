@@ -2930,3 +2930,5 @@ for (let v of foo()) {
 
 上面代码使用`for...of`循环，依次显示 5 个`yield`表达式的值。这里需要注意，**一旦`next`方法的返回对象的`done`属性为`true`，`for...of`循环就会中止，且不包含该返回对象，所以上面代码的`return`语句返回的`6`，不包括在`for...of`循环之中。**
 
+## Generator.prototype.throw()
+

@@ -818,7 +818,7 @@ ECMAScript 5允许通过以下几种方式来创建防篡改对象。
 - navigator.onLine, 这个属性值为 true 表示设备能上网，值为 false 设备离线。
 - 除了 navigator.onLine 属性之外，为了更好地确定网络是否可用，H5定义了两个事件： online 和 offline。当网络从离线变为在线或者从在线变为离线时，分别触发这两个事件。在 window 对象上触发。
 
-```
+```javascript
 alert(navigator.onLine);
 window.addEventListener('online', function () {
     alert('online');
@@ -923,16 +923,16 @@ Other-header: other-header-value
 - document.cookie 返回当前页面可用的（根据 cookie 的域、路径、失效时间和安全设置）所有 cookie 的字符串，一系列由分号隔开的名值对儿
 - **所有名字和值都是经过 URL 编码的，所以必须使用 decodeURIComponent() 来解码。**
 - 设置 document.cookie 并不会覆盖 cookie，除非设置的 cookie 的名称已经存在.和 Set-Cookie 头中使用的格式一样。
-    ```
+    ```javascript
     document.cookie = encodeURIComponent('name') + '=' + encodeURIComponent('Nicholas姚');
     console.log(decodeURIComponent(document.cookie));
     ```
 - 要给被创建的 cookie 指定额外的信息，只要将参数追加到该字符串，和 Set-Cookie 头中的格式一样
-    ```
+    ```javascript
     document.cookie = encodeURIComponent("name") + "=" + encodeURIComponent("Nicholas") + "; domain=.wrox.com; path=/";
     ```
 
-```
+```javascript
 let CookieUtil = {
     get: function (name) {
         let cookieName = encodeURIComponent(name) + '=',
@@ -978,7 +978,7 @@ let CookieUtil = {
 
 - 获取子cookie
 
-```
+```javascript
 let SubCookieUtil = {
     get: function (name, subName) {
         let subCookies = this.getAll(name);
