@@ -1,4 +1,4 @@
-# 第 20 章 JSON
+#  第 20 章 JSON
 
 一种数据格式，不是一种编程语言。
 
@@ -873,7 +873,7 @@ HTTP Cookie, 通常叫做 cookie. 该标准要求服务器对任意 HTTP 请求�
 ```
 HTTP/1.1 200 OK
 Content-type: text/html
-Set-Cookie: nam=value
+Set-Cookie: name=value
 Other-header: other-heaer-value
 ```
 这个 HTTP 响应设置以 name 为名称、以 value 为值的一个 cookie，名称和值在传送时都必须是URL 编码的。浏览器会存储这样的会话信息，并在这之后，通过为每个请求添加 Cookie HTTP 头将信息发送回服务器

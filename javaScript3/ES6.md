@@ -2932,3 +2932,361 @@ for (let v of foo()) {
 
 ## Generator.prototype.throw()
 
+Generator 函数返回的遍历器对象，都有一个`throw`方法，可以在函数体外抛出错误，然后在 Generator 函数体内捕获。
+
+```javascript
+var g = function* () {
+  try {
+    yield;
+  } catch (e) {
+    console.log('内部捕获', e);
+  }
+};
+
+var i = g();
+i.next();
+
+try {
+  i.throw('a');
+  i.throw('b');
+} catch (e) {
+  console.log('外部捕获', e);
+}
+// 内部捕获 a
+// 外部捕获 b
+```
+
+`throw`方法抛出的错误**要被内部捕获，前提是必须至少执行过一次`next`方法**。因为第一次执行`next`方法，等同于启动执行 Generator 函数的内部代码，否则 Generator 函数还没有开始执行，这时`throw`方法抛错只可能抛出在函数外部。
+
+`throw`方法被捕获以后，会附带执行下一条`yield`表达式。也就是说，会附带执行一次`next`方法。
+
+```javascript
+var gen = function* gen(){
+  try {
+    yield console.log('a');
+  } catch (e) {
+    // ...
+  }
+  yield console.log('b');
+  yield console.log('c');
+}
+
+var g = gen();
+g.next() // a
+g.throw() // b
+g.next() // c
+// 上面代码中，g.throw方法被捕获以后，自动执行了一次next方法，所以会打印b。另外，也可以看到，只要 Generator 函数内部部署了try...catch代码块，那么遍历器的throw方法抛出的错误，不影响下一次遍历。
+```
+
+## Generator.prototype.return()
+
+Generator 函数返回的遍历器对象，还有一个`return`方法，可以返回给定的值，并且终结遍历 Generator 函数
+
+```javascript
+function* gen() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+var g = gen();
+
+g.next()        // { value: 1, done: false }
+g.return('foo') // { value: "foo", done: true }
+g.next()        // { value: undefined, done: true }
+// 上面代码中，遍历器对象g调用return方法后，返回值的value属性就是return方法的参数foo。并且，Generator 函数的遍历就终止了，返回值的done属性为true，以后再调用next方法，done属性总是返回true。
+```
+
+如果 Generator 函数内部有`try...finally`代码块，且正在执行`try`代码块，那么`return`方法会推迟到`finally`代码块执行完再执行。
+
+## next()   throw()   return()  的共同点
+
+作用都是让 Generator 函数恢复执行, 并且使用不同的语句替换 `yield`表达式
+
+```javascript
+const g = function* (x, y) {
+  let result = yield x + y;
+  return result;
+};
+
+const gen = g(1, 2);
+gen.next(); // Object {value: 3, done: false}
+
+gen.next(1); // Object {value: 1, done: true}
+// 相当于将 let result = yield x + y
+// 替换成 let result = 1;
+gen.throw(new Error('出错了')); // Uncaught Error: 出错了
+// 相当于将 let result = yield x + y
+// 替换成 let result = throw(new Error('出错了'));
+gen.return(2); // Object {value: 2, done: true}
+// 相当于将 let result = yield x + y
+// 替换成 let result = return 2;
+```
+
+- `next()`是将`yield`表达式替换成一个值。
+- `throw()`是将`yield`表达式替换成一个`throw`语句。
+- `return()`是将`yield`表达式替换成一个`return`语句。
+
+
+
+## yield* 表达式
+
+- ES6 提供了`yield*`表达式，作为解决办法，用来在一个 Generator 函数里面执行另一个 Generator 函数。
+
+  ```javascript
+  function* bar() {
+    yield 'x';
+    yield* foo();
+    yield 'y';
+  }
+  
+  // 等同于
+  function* bar() {
+    yield 'x';
+    yield 'a';
+    yield 'b';
+    yield 'y';
+  }
+  
+  // 等同于
+  function* bar() {
+    yield 'x';
+    for (let v of foo()) {
+      yield v;
+    }
+    yield 'y';
+  }
+  
+  for (let v of bar()){
+    console.log(v);
+  }
+  // "x"
+  // "a"
+  // "b"
+  // "y"
+  ```
+
+- 如果`yield`表达式后面跟的是一个遍历器对象，需要在`yield`表达式后面加上星号，表明它返回的是一个遍历器对象。这被称为`yield*`表达式。
+
+- `yield*`后面的 Generator 函数（没有`return`语句时），等同于在 Generator 函数内部，部署一个`for...of`循环。
+
+- 在有`return`语句时，则需要用`var value = yield* iterator`的形式获取`return`语句的值。
+
+- 如果`yield*`后面跟着一个数组，由于数组原生支持遍历器，因此就会遍历数组成员。
+
+  ```javascript
+  function* gen(){
+    yield* ["a", "b", "c"];
+  }
+  
+  gen().next() // { value:"a", done:false }
+  // 上面代码中，yield命令后面如果不加星号，返回的是整个数组，加了星号就表示返回的是数组的遍历器对象。
+  ```
+
+- 实际上，任何数据结构只要有 Iterator 接口，就可以被`yield*`遍历。
+
+## 作为对象属性的 Generator 函数
+
+如果一个对象的属性是 Generator 函数，可以简写成下面的形式。
+
+```javascript
+let obj = {
+  * myGeneratorMethod() {
+    ···
+  }
+};
+```
+
+属性前面有一个星号，表示这个属性是一个 Generator 函数。
+
+## Generator 函数的 this
+
+Generator 函数总是返回一个遍历器，ES6 规定这个遍历器是 Generator 函数的实例，也继承了 Generator 函数的`prototype`对象上的方法。
+
+```javascript
+function* g() {}
+
+g.prototype.hello = function () {
+  return 'hi!';
+};
+
+let obj = g();
+
+obj instanceof g // true
+obj.hello() // 'hi!'
+```
+
+上面代码表明，Generator 函数`g`返回的遍历器`obj`，是`g`的实例，而且继承了`g.prototype`。但是，如果把`g`当作普通的构造函数，并不会生效，因为`g`返回的总是遍历器对象，而不是`this`对象
+
+```javascript
+function* g() {
+  this.a = 11;
+}
+
+let obj = g();
+obj.next();
+obj.a // undefined
+```
+
+Generator 函数也不能跟`new`命令一起用，会报错。
+
+**变通方法。生成一个空对象，使用`call`方法绑定 Generator 函数内部的`this`。**
+
+```javascript
+function* F() {
+  this.a = 1;
+  yield this.b = 2;
+  yield this.c = 3;
+}
+var obj = {};
+var f = F.call(obj);
+
+f.next();  // Object {value: 2, done: false}
+f.next();  // Object {value: 3, done: false}
+f.next();  // Object {value: undefined, done: true}
+
+obj.a // 1
+obj.b // 2
+obj.c // 3
+```
+
+# Generator 函数的异步应用
+
+## 传统方法
+
+- 回调函数
+- 事件监听
+- 发布/订阅
+- Promise 对象
+
+## 回调函数
+
+```javascript
+fs.readFile('/etc/passwd', 'utf-8', function (err, data) {
+  if (err) throw err;
+  console.log(data);
+});
+```
+
+一个有趣的问题是，为什么 Node 约定，回调函数的第一个参数，必须是错误对象`err`（如果没有错误，该参数就是`null`）？
+
+原因是执行分成两段，第一段执行完以后，任务所在的上下文环境就已经结束了。在这以后抛出的错误，原来的上下文环境已经无法捕捉，只能当作参数，传入第二段。
+
+## Generator 函数----协程
+
+传统的编程语言，早有异步编程的解决方案（其实是多任务的解决方案）。其中有一种叫做"协程"（coroutine），意思是多个线程互相协作，完成异步任务。
+
+```javascript
+function* asyncJob() {
+  // ...其他代码
+  var f = yield readFile(fileA);
+  // ...其他代码
+}
+```
+
+上面代码的函数`asyncJob`是一个协程，它的奥妙就在其中的`yield`命令。它表示执行到此处，执行权将交给其他协程。也就是说，`yield`命令是异步两个阶段的分界线。
+
+协程遇到`yield`命令就暂停，等到执行权返回，再从暂停的地方继续往后执行。它的最大优点，就是代码的写法非常像同步操作，如果去除`yield`命令，简直一模一样。
+
+## Thunk 函数的含义
+
+编译器的“传名调用”实现，往往是将参数放到一个临时函数之中，再将这个临时函数传入函数体。这个临时函数就叫做 Thunk 函数。
+
+```javascript
+function f(m) {
+  return m * 2;
+}
+
+f(x + 5);
+
+// 等同于
+
+var thunk = function () {
+  return x + 5;
+};
+
+function f(thunk) {
+  return thunk() * 2;
+}
+```
+
+这就是 Thunk 函数的定义，它是“传名调用”的一种实现策略，用来替换某个表达式。
+
+## Generator 仿长轮询
+
+```javascript
+let ajax = function* (params) {
+  yield new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ code: 0 })
+    }, 200);
+  })
+}
+
+let pull = function (params) {
+  let step = ajax().next();
+  step.value.then(res => {
+    if (res.code === 0) {
+      console.log(res);
+    } else {
+      setTimeout(() => {
+        console.log('wait');
+        pull();
+      }, 1000);
+    }
+  })
+}
+pull()
+```
+
+
+
+# Async 函数
+
+async 函数是什么？一句话，它就是 Generator 函数的语法糖。
+
+`async`函数就是**将 Generator 函数的星号（`*`）替换成`async`，将`yield`替换成`await`，仅此而已**。
+
+`async`函数对 Generator 函数的改进，体现在以下四点。
+
+- 内置执行器。
+
+  Generator 函数的执行必须靠执行器，所以才有了`co`模块，而`async`函数自带执行器。也就是说，`async`函数的执行，与普通函数一模一样，只要一行。
+
+  ```javascript
+  asyncReadFile();
+  ```
+
+  上面的代码调用了`asyncReadFile`函数，然后它就会自动执行，输出最后结果。这完全不像 Generator 函数，需要调用`next`方法，或者用`co`模块，才能真正执行，得到最后结果。
+
+- 更好的语义。
+- 更广的适用性。
+- 返回值是 Promise。
+
+## 语法
+
+### 返回 Promise 对象
+
+`async`函数返回一个 Promise 对象。
+
+`async`函数内部`return`语句返回的值，会成为`then`方法回调函数的参数
+
+`async`函数内部抛出错误，会导致返回的 Promise 对象变为`reject`状态。抛出的错误对象会被`catch`方法回调函数接收到
+
+### await 并发读取远程URl
+
+```javascript
+async function logInOrder(urls) {
+  // 并发读取远程URL
+  const textPromises = urls.map(async url => {
+    const response = await fetch(url);
+    return response.text();
+  });
+
+  // 按次序输出
+  for (const textPromise of textPromises) {
+    console.log(await textPromise);
+  }
+}
+```
+

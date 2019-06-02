@@ -4755,32 +4755,25 @@ console.log(hw.next());
 console.log(hw.next());
 console.log(hw.next()); */
 
-let g = function * () {
-  try {
-    yield;
-  } catch (e) {
-    console.log('内部捕获', e);
-  }
-}
-let i = g()
-i.next()
-
-try{
-  i.throw('a')
-  i.throw('b')
-} catch (e) {
-  console.log('外部不哦', e);
+let ajax = function* (params) {
+  yield new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ code: 0 })
+    }, 200);
+  })
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+let pull = function (params) {
+  let step = ajax().next();
+  step.value.then(res => {
+    if (res.code === 0) {
+      console.log(res);
+    } else {
+      setTimeout(() => {
+        console.log('wait');
+        pull();
+      }, 1000);
+    }
+  })
+}
+pull()
