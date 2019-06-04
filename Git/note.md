@@ -18,9 +18,14 @@
 - git config --system 对系统所有登录的用户有效
 
 **显示 config 的配置，加 --list**
+
 - git config --list --local
 - git config --list --global
 - git config --list --system
+
+**查看固定的属性**
+
+- git config --local user.name
 
 # 搭建 Git 仓库
 1. 把已有的项目代码纳入 Git 管理
@@ -43,7 +48,30 @@
 - git log 查看版本演变历史
   - git log --oneline 简洁版历史（单行历史）
   - git log -n3 查看最近的3次历史（可以与--oneline结合使用）
-  - git log --all 查看全部分支的实力
+  - git log --all 查看全部分支的实例
   - git log --all --graph 查看所有分支图像化的 log 历史
   - git log --oneline --all -n4 --graph 查看所有分支最近4条单行的图形化历史
 - git help --web log 跳转到 git log 的帮助文档网页
+
+# .git 目录
+
+- HEAD: 表示当前工作在那个分支上
+- config: 存放相关配置信息
+- refs: 存放分支
+  - refs/tags: 存放tag, 又叫里程碑(当这次commit是具有里程碑意义的, 如项目1.0时, 就可以使用tag)
+  - refs/heads, 存放分支
+
+- objects：存放对象 .git/objects/ 文件夹中的子文件夹都是以哈希值的前两位字符命名 每个object由40位字符组成，前两位字符用来当文件夹，后38位做文件。
+  - git cat-file -t 前2位+后28位, 类型位 **tree**
+
+- cat 命令主要用来查看文件内容，创建文件，文件合并，追加文件内容等功能
+
+  ​	- cat HEAD
+
+- git cat-file 命令, 显示版本库对象的内容, 类型及大小信息
+  - git cat-file -t  62340de0774   显示版本库对象的类型
+  - git cat-file -p  62340de0774 显示版本库对象的内容, 文件类型位 **blob**
+  - git cat-file -s  62340de0774  显示版本库对象的大小
+
+- 查看分支: git branch -av
+- 切换分支: git checkout master
