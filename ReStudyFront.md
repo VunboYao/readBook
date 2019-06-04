@@ -494,7 +494,6 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
   - `method`,  方式--GET, POST, PUT, HEADER, DELETE; 自定义
   -  **`name`**(必须加)， 可以重复
   - `submit`， 提交
-
 -  数据提交
 
   - GET， 数据放在 url 里面。 **容量小**， **看得见（表单）**， **有缓存**， **利于分享，收藏**
@@ -502,8 +501,11 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
   - POST, 数据放在 http-body 里面。**容量大**， **看不见**， **不缓存**， **无法分享， 收藏**
 
   -  安全性完全一样， https才是真安全
-
-    
+- multipart/form-data, 上传时,必须为enctype的值
+- content-type 有哪些类型?
+  - text/plain                                                   纯文本
+  - application/x-www-form-urlencoded   url编码&&
+  - multipart/form-data                                 定界符分割各个数据(文件上传)
 
 # 技巧
 
