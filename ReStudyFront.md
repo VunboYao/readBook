@@ -485,3 +485,37 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
         }
     }
     ```
+
+# 表单
+
+- 属性：
+
+  -  `action`, 提交到哪儿
+  - `method`,  方式--GET, POST, PUT, HEADER, DELETE; 自定义
+  -  **`name`**(必须加)， 可以重复
+  - `submit`， 提交
+
+-  数据提交
+
+  - GET， 数据放在 url 里面。 **容量小**， **看得见（表单）**， **有缓存**， **利于分享，收藏**
+
+  - POST, 数据放在 http-body 里面。**容量大**， **看不见**， **不缓存**， **无法分享， 收藏**
+
+  -  安全性完全一样， https才是真安全
+
+    
+
+# 技巧
+
+## 快速获取DOM
+
+ ```javascript
+const $ = document.querySelectorAll.bind(document);
+// ...rest参数，数组
+const $ = function(...args) {
+    // rest 参数的逆运算，将一个数组转为用逗号分隔的参数序列。
+    return document.querySelectorAll(...args)
+}
+let oDiv = $('#box')[0];
+ ```
+

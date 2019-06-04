@@ -4754,26 +4754,3 @@ console.log(hw.next());
 console.log(hw.next());
 console.log(hw.next());
 console.log(hw.next()); */
-
-let ajax = function* (params) {
-  yield new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({ code: 0 })
-    }, 200);
-  })
-}
-
-let pull = function (params) {
-  let step = ajax().next();
-  step.value.then(res => {
-    if (res.code === 0) {
-      console.log(res);
-    } else {
-      setTimeout(() => {
-        console.log('wait');
-        pull();
-      }, 1000);
-    }
-  })
-}
-pull()
