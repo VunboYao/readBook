@@ -19,7 +19,7 @@
     - url 路径地址
 - response 响应
     - write
-    - end
+    - end, **必须写**
 
 ## fs file System
 - readFile(文件名，回调)
