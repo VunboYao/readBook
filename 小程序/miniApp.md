@@ -59,23 +59,167 @@
 
 ## 页面构造器Page()
 
-| 参数属性                 | 类型     | 描述                                                         |
-| ------------------------ | -------- | ------------------------------------------------------------ |
-| data                     | Object   | 页面的初始数据                                               |
-| onLoad(**Object query**) | function | 页面加载时触发。一个页面**只会调用一次**，可以获取路径中的**参数** |
-| onShow()                 | function | 页面显示/切入前台时触发。                                    |
-| onReady()                | function | 页面初次渲染完成时触发。一个页面**只会调用一次**。代表页面已经准备妥当。可以交互。对界面内容进行设置的 API 如[wx.setNavigationBarTitle](https://developers.weixin.qq.com/miniprogram/dev/api/ui/navigation-bar/wx.setNavigationBarTitle.html)，请在`onReady`之后进行 |
-| onHide()                 | function | 页面隐藏/切入后台时触发。                                    |
-|                          | function |                                                              |
-|                          | function |                                                              |
-|                          | function |                                                              |
-|                          | function |                                                              |
-|                          | function |                                                              |
-|                          | function |                                                              |
-|                          | function |                                                              |
-| other                    | any      |                                                              |
+| 参数属性            | 类型     | 描述                                                         |
+| ------------------- | -------- | ------------------------------------------------------------ |
+| data                | Object   | 页面的初始数据                                               |
+| onLoad(**Options**) | function | 页面加载时触发。一个页面**只会调用一次**，可以获取路径中的**参数** |
+| onShow()            | function | 页面显示/切入前台时触发。                                    |
+| onReady()           | function | 页面初次渲染完成时触发。一个页面**只会调用一次**。代表页面已经准备妥当。可以交互。对界面内容进行设置的 API 如[wx.setNavigationBarTitle](https://developers.weixin.qq.com/miniprogram/dev/api/ui/navigation-bar/wx.setNavigationBarTitle.html)，请在`onReady`之后进行 |
+| onHide()            | function | 页面隐藏/切入后台时触发。                                    |
+| onUnload()          | function | 页面卸载时触发。                                             |
 
 ## 场景值
 
 - 对于小程序，可以在 `App` 的 `onLaunch` 和 `onShow`，或[wx.getLaunchOptionsSync](https://developers.weixin.qq.com/miniprogram/dev/api/base/app/life-cycle/wx.getLaunchOptionsSync.html) 中获取上述场景值。
 - 对于小游戏，可以在 [wx.getLaunchOptionsSync](https://developers.weixin.qq.com/miniprogram/dev/api/base/app/life-cycle/wx.getLaunchOptionsSync.html) 和 [wx.onShow](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/(wx.onShow)) 中获取上述场景值
+
+# 模块化
+
+- 可以将一些公共的代码抽离成为一个单独的 js 文件，作为一个模块。模块只有通过 [`module.exports`](https://developers.weixin.qq.com/miniprogram/dev/reference/api/module.html) 或者 `exports`才能对外暴露接口。
+
+- 使用 `require` 将公共代码引入
+
+  ```javascript
+  // common.js
+  function sayHello(name) {
+    console.log(`Hello ${name} !`)
+  }
+  function sayGoodbye(name) {
+    console.log(`Goodbye ${name} !`)
+  }
+  
+  module.exports.sayHello = sayHello
+  exports.sayGoodbye = sayGoodbye
+  
+  // require
+  var common = require('common.js')
+  Page({
+    helloMINA: function() {
+      common.sayHello('MINA')
+    },
+    goodbyeMINA: function() {
+      common.sayGoodbye('MINA')
+    }
+  })
+  
+  ```
+
+  
+
+# 模板
+
+WXML提供模板（template），可以在模板中定义代码片段，然后在不同的地方调用。
+
+## 定义模板
+
+- 使用`name`属性, 作为模板的名字. 然后在 `<template/>`内定义代码片段
+
+  ```javascript
+  <template name="msgItem">
+    <view>
+      <text> {{index}}: {{msg}} </text>
+      <text> Time: {{time}} </text>
+    </view>
+  </template>
+  ```
+
+## 使用模板
+
+- 使用 `is` 属性, 声明需要使用的模板, 然后将数据所需要的`data`传入
+
+  ```javascript
+  <template is="msgItem" data="{{...item}}"
+  ```
+
+# WXSS 样式导入
+
+- `@import "common.wxss";` **分号结束**, **相对路径**
+
+# WXS 模块
+
+- 编写在 `wxml`文件中的`<wxs>`标签内, 或以 `.wxs`为后缀名的文件内
+- 每一个`.wxs`文件和`<wxs>`标签都是一个**单独的模块**
+- 每个模块都是**独立的作用域**, 只能通过 **`module.exports`**导出.
+  - `module.exports = {} || module.exports.msg = 'some msg'`
+
+- **引用模块**: `<wxs>`标签
+
+  - `module`, String, 当前`<wxs>`标签的模块名. **必填字段**
+  - `src`, String, 引用**.wxs**文件的**相对路径**. 仅当本标签为**单闭合标签**或**标签的内容为空**时有效
+
+  - `<wxs src="./../../module/comm.wxs" module="tool"></wxs>`
+
+- **module**属性
+  - module 属性是当前 `<wxs>` 标签的模块名。在单个 wxml 文件内，建议其值唯一。
+  - module 属性值的命名必须符合下面两个规则：
+    - 首字符必须是：字母（a-zA-Z），下划线（_）
+    - 剩余字符可以是：字母（a-zA-Z），下划线（_）， 数字（0-9）
+
+```javascript
+<wxs module="foo">
+var some_msg = "hello world";
+module.exports = {
+  msg : some_msg,
+}
+</wxs>
+<view> {{foo.msg}} </view>
+```
+
+- **require函数**
+  - 在`.wxs`模块中引用其他 `wxs` 文件模块，可以使用 `require` 函数。
+  - 只能引用 `.wxs` 文件模块，且必须使用**相对路径**。
+
+# 事件
+
+## 事件绑定和冒泡
+
+- 在**非原生组件**中, `bind`和`catch`后可以紧跟一个冒号, 其含义不变,如`bind:tap`, `catch:touchstart`
+- `bind`事件绑定不会阻止冒泡事件向上冒泡
+- `catch`事件绑定可以阻止冒泡事件向上冒泡
+
+
+
+## 事件的捕获阶段
+
+- 捕获阶段位于冒泡阶段之前, 且在捕获中, 事件到达节点的顺序与冒泡阶段恰好相反.
+
+- `capture-bind`, 捕获事件
+- `capture-catch`, 中断捕获阶段和取消冒泡阶段
+
+## dataset
+
+- 在组件节点中可以附加一些自定义数据, 自定义数据以`data-`开头, 多个单词以`-`连接
+
+- 连字符写法会转换成驼峰写法, 而大写字符会自动转成小写字符
+
+  ```javascript
+  data-element-type ，最终会呈现为 event.currentTarget.dataset.elementType
+  data-elementType ，最终会呈现为 event.currentTarget.dataset.elementtype 
+  ```
+
+## mark
+
+- `mark`可以用于承载一些自定义数据(类似于`dataset`)
+
+- 当事件触发时, 事件冒泡上所有的`mask`会被合并, 并返回给事件回调函数
+
+  ```javascript
+  <view mark:myMark="last" bindtap="bindViewTap">
+    <button mark:anotherMark="leaf" bindtap="bindButtonTap">按钮</button>
+  </view>
+  
+  Page({
+    bindViewTap: function(e) {
+      e.mark.myMark === "last" // true
+      e.mark.anotherMark === "leaf" // true
+    }
+  })
+  ```
+
+`mark` 和 `dataset` 很相似，主要区别在于： `mark` 会包含从触发事件的节点到根节点上所有的 `mark:` 属性值；而 `dataset` 仅包含一个节点的 `data-` 属性值。
+
+- 如果存在同名的 `mark` ，父节点的 `mark` 会被子节点覆盖
+- 在自定义组件中接收事件时， `mark` 不包含自定义组件外的节点的 `mark`
+
+- 不同于 `dataset` ，节点的 `mark` 不会做连字符和大小写转换
+

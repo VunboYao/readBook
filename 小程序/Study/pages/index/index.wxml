@@ -1,0 +1,33 @@
+<!--index.wxml-->
+<view class="container">
+  <button bind:tap="hello">Button</button>
+  <button bind:tap="goodbye">Button</button>
+</view>
+
+<template name="staffName">
+  <view>
+    FirsName: {{firstName}}, LastName: {{lastName}}
+  </view>
+</template>
+
+<template is='staffName' data="{{...staffA}}"></template>
+<template is='staffName' data="{{...staffB}}"></template>
+<template is='staffName' data="{{...staffC}}"></template>
+<view class="demo">{{tool.foo}}</view>
+<view class="demo">{{tool.bar(444)}}</view>
+
+<view id="tapTest" data-hi="WeChat" bind:tap="{{wxs.tapName}}"> Click me! </view>
+
+<wxs src="./../../module/comm.wxs" module="tool"></wxs>
+<wxs module="wxs">
+  function tapName(event, ownerInstance) {
+    console.log('tap wechat', JSON.stringify(event))
+  }
+  module.exports = {
+  tapName: tapName
+  }
+</wxs>
+
+<view class="test" mark:myMark="last" bind:tap="bindViewTap">
+  <button mark:anotherMark="left" bind:tap="bindButtonTap" type="warn">Button</button>
+</view>

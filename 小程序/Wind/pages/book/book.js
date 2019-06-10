@@ -4,6 +4,7 @@ import { random } from "../../util/common";
 
 const bookModel = new BookModel()
 
+
 Page({
 
   /**
