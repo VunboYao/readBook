@@ -31,10 +31,11 @@
 </view>
 
 <view class="demo">
-  <view class="item" wx:for="{{items}}" wx:key="name">
+  <view class="item" wx:for="{{items}}" wx:key="*this">
     <radio class="check"></radio>
-    <text class="content">{{item.name}}</text>
-    <text class="content2">{{item.value}}</text>
+    <text class="content">{{item}}</text>
   </view>
 </view>
 <button bind:tap="onDelete">Delete</button>
+
+<y-demo innerText="Some Data"></y-demo>
