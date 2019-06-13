@@ -6,5 +6,9 @@ function sayGoodBye(name) {
   console.log(`GoodBye ${name}~`);
 }
 
-module.exports.sayHello = sayHello;
-exports.sayGoodBye = sayGoodBye;
+// module.exports.sayHello = sayHello;
+// exports.sayGoodBye = sayGoodBye;
+export {
+  sayHello,
+  sayGoodBye
+}

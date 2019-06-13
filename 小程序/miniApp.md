@@ -70,8 +70,8 @@
 
 ## 场景值
 
-- 对于小程序，可以在 `App` 的 `onLaunch` 和 `onShow`，或[wx.getLaunchOptionsSync](https://developers.weixin.qq.com/miniprogram/dev/api/base/app/life-cycle/wx.getLaunchOptionsSync.html) 中获取上述场景值。
-- 对于小游戏，可以在 [wx.getLaunchOptionsSync](https://developers.weixin.qq.com/miniprogram/dev/api/base/app/life-cycle/wx.getLaunchOptionsSync.html) 和 [wx.onShow](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/(wx.onShow)) 中获取上述场景值
+- 对于小程序，可以在 `App` 的 `onLaunch` 和 `onShow`，或[wx.getLaunchOptionsSync](https://developers.weixin.qq.com/miniprogram/dev/api/base/app/life-cycle/wx.getLaunchOptionsSync.html) 中获取场景值。
+- 对于小游戏，可以在 [wx.getLaunchOptionsSync](https://developers.weixin.qq.com/miniprogram/dev/api/base/app/life-cycle/wx.getLaunchOptionsSync.html) 和 [wx.onShow](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/(wx.onShow)) 中获取场景值
 
 # 模块化
 
@@ -104,7 +104,7 @@
   
   ```
 
-  
+- ES6 方式导入导出， **`export {}`**， **`import {} from  ''`**
 
 # 模板
 
@@ -141,7 +141,8 @@ WXML提供模板（template），可以在模板中定义代码片段，然后�
 - 每一个`.wxs`文件和`<wxs>`标签都是一个**单独的模块**
 - 每个模块都是**独立的作用域**, 只能通过 **`module.exports`**导出.
   - `module.exports = {} || module.exports.msg = 'some msg'`
-
+- module.exports = {} , **key:value 同名时，不可省略简写**
+  
 - **引用模块**: `<wxs>`标签
 
   - `module`, String, 当前`<wxs>`标签的模块名. **必填字段**
