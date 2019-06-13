@@ -1,4 +1,5 @@
-var common = require('./../../module/common');
+// var common = require('./../../module/common');
+import * as common from "./../../module/common";
 
 //index.js
 //获取应用实例
