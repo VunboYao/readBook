@@ -11,6 +11,7 @@ Page({
     staffA: {firstName: 'Hulk', lastName: 'Hu'},
     staffB: {firstName: 'Shag', lastName: 'YOur'},
     staffC: {firstName: 'Giden', lastName: 'Line'},
+    items: ['USA','CHINA','HK','BJ']
   },
   hello() {
     common.sayHello('Vunbo');
@@ -20,5 +21,11 @@ Page({
   },
   bindViewTap(e) {
     console.log(e);
+  },
+  onDelete() {
+    this.data.items.splice(2,1);
+    this.setData({
+      items: this.data.items
+    })
   }
 })

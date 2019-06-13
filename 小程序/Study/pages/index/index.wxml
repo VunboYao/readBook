@@ -3,13 +3,11 @@
   <button bind:tap="hello">Button</button>
   <button bind:tap="goodbye">Button</button>
 </view>
-
 <template name="staffName">
   <view>
     FirsName: {{firstName}}, LastName: {{lastName}}
   </view>
 </template>
-
 <template is='staffName' data="{{...staffA}}"></template>
 <template is='staffName' data="{{...staffB}}"></template>
 <template is='staffName' data="{{...staffC}}"></template>
@@ -31,3 +29,13 @@
 <view class="test" mark:myMark="last" bind:tap="bindViewTap">
   <button mark:anotherMark="left" bind:tap="bindButtonTap" type="warn">Button</button>
 </view>
+
+<view class="demo">
+  <view class="item" wx:for="{{items}}" wx:key="*this">
+    <radio class="check"></radio>
+    <text class="content">{{item}}</text>
+  </view>
+</view>
+<button bind:tap="onDelete">Delete</button>
+
+<y-demo innerText="Some Data"></y-demo>
