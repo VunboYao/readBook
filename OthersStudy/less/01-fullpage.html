@@ -20,7 +20,32 @@
 	<div class="section">Some section4</div>
 </div>
 <script>
-  new fullpage('#fullpage', {});
+  new fullpage('#fullpage', {
+    // 每一屏背景颜色
+    sectionsColor: ['#ff0', '#4BBFC3', '#7BAABE', '#05f', '#000'],
+    // 显示指示器
+    navigation: true,
+    // 设置指示器信息
+    navigationTooltips: ['first', 'second', 'third', 'fourth'],
+    // 指示器默认显示
+    showActiveTooltip: true,
+    // 指示器位置
+    // navigationPosition: 'right',
+    // loopBottom: true,
+    // loopTop: true,
+   /*  onLeave: function (index, nextIndex, direction) {
+      console.log(index);
+      console.log(nextIndex);
+      console.log(direction);
+    }, */
+    /* afterRender: function () {
+      var pluginContainer = this;
+      alert("DOM结构已完成");
+    } */
+    afterLoad: function (origin, destination, direction) {
+      console.log(origin, destination, direction);
+    }
+  });
 </script>
 </body>
 </html>
