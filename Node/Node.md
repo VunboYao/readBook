@@ -66,15 +66,65 @@
 
 
 
+## NPM
 
+- npm root -g 获取全局安装的路径
 
+  
 
+## webpack
 
+- 初始化：`npm init -y`
 
+- 安装： `npm i webpack webpack-cli -D`
 
+- 执行： `npx webpack`
 
+  ```javascript
+  const path = require('path');
+  
+  module.exports = {
+    mode: 'development', // 模式，production/development
+    entry: './src/index.js', // 入口
+    output: {
+      filename: 'bundle.[hash:8].js', // 打包后的文件名, hash 8位
+      path: path.resolve(__dirname, 'dist'), // 路径必须是一个绝对路径
+    },
+  }
+  ```
 
+### webpack-dev-server, 本地服务
 
+- `npm i webpack-dev-server -D`
 
+  ```javascript
+   devServer: {
+      port: 3000,
+      progress: true, // 进度条
+      // contentBase: './dist', // 初始地址
+      compress: true, // 压缩
+      open: true // 自动打开
+    }
+  ```
 
+### 复制HTML
+
+- `cnpm i html-webpack-plugin -D`
+
+  ```javascript
+  const HtmlWebpackPlugin = require('html-webpack-plugin');
+  plugins: [ // 数组，放着所有的webpack插件
+      new HtmlWebpackPlugin({
+        template: './src/index.html', // 模板
+        filename: 'index.html', // 打包后的文件名
+        minify: {
+          removeAttributeQuotes: true, // 删除双引号
+          collapseWhitespace: true, // 折叠一行
+        },
+        hash: true, // 哈希戳
+      })
+    ],
+  ```
+
+  
 
