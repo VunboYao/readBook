@@ -1,0 +1,9 @@
+@import './demo.css';
+
+body {
+  color: #fff;
+  transform: rotate(45deg);
+  background: linear-gradient(#02c6dc, #f2f2f2);
+  display: grid;
+  gap: 20px;
+}

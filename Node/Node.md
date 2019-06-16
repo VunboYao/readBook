@@ -126,5 +126,318 @@
     ],
   ```
 
+### loader
+
+- **css-loader**解析 `@import`语法,路径等
+- **style-loader**将 css 插入到 head 的标签中
+- **loader**特点, 单一
+- 多个 **loader** 需要用到数组
+- **loader**的顺序, **从右向左, 从下到上**
+
+```javascript
+ module: { // 模块
+    rules: [ // 规则
+      {
+        test: /\.css$/i, // 正则匹配
+        use: [
+          {
+            loader: 'style-loader', // 插入到head标签中
+            options: {
+              insertAt: 'top', // 置顶
+            }
+          },
+          'css-loader', // 解析路径 @import 等
+        ]
+      },
+   ]
+ }
+```
+
+### less
+
+- `cnpm i less less-loader -D`
+
+  ```javascript
+  {
+      test: /\.less$/i,
+          use: [
+              {
+                  loader: 'style-loader',
+                  options: {
+                      insertAt: 'top'
+                  }
+              },
+              'css-loader', // @Import 解析路径
+              'less-loader' // 转换less => css
+          ]
+  },
+  ```
+
+### scss
+
+- `cnpm i node-sass sass-loader -D`
+
+  ```javascript
+  {
+      test: /\.scss$/i,
+          use: [
+              {
+                  loader: 'style-loader',
+                  options: {
+                      insertAt: 'top'
+                  }
+              },
+              'css-loader',
+              'sass-loader'
+          ]
+  },
+  ```
+
+### stylus
+
+- `cnpm i stylus stylus-loader -D`
+
+### 抽离CSS
+
+- ` cnpm i mini-css-extract-plugin -D`
+
+  ```javascript
+  const MiniCssExtractPlugin = require('mini-css-extract-plugin');
   
+  // plugins
+  new MiniCssExtractPlugin({
+      filename: 'main.css', // 抽离css的文件名
+  })
+  
+  // module
+  rules: [ // 规则
+      {
+          test: /\.css$/i,
+          use: [
+              MiniCssExtractPlugin.loader,// 抽离css,link链接
+              'css-loader'
+          ]
+      },
+  ]
+  
+  ```
+
+### CSS前缀
+
+- `cnpm i autoprefixer postcss-loader -D`
+
+  ```javascript
+   module: { // 模块
+      rules: [ // 规则
+        {
+          test: /\.css$/i,
+          use: [
+            MiniCssExtractPlugin.loader,// 抽离css,link链接
+            'css-loader', // 解析路径 import等
+            'postcss-loader'// 先添加前缀
+          ]
+        },
+        {
+          test: /\.less$/i,
+          use: [
+            'style-loader',
+            // MiniCssExtractPlugin.loader, // 若不抽离,则添加至head标签中
+            'css-loader', // @Import 解析路径
+            'postcss-loader',
+            'less-loader' // 转换less => css
+          ]
+        },
+     ]
+   }
+  
+  // postcss配置 postcss-config.js
+  module.exports = {
+    plugins: [
+      require('autoprefixer')
+    ]
+  }
+  ```
+
+-  **autoprefixer 失效原因**, **packpage.json文件中新增字段 browserslist**,无效则版本号增大
+
+  ```javascript
+  "browserslist": [
+      "last 5 version"
+  ]
+  ```
+
+### CSS优化插件(压缩)
+
+- `cnpm i optimize-css-assets-webpack-plugin -D`, CSS压缩
+- `cnpm i terser-webpack-plugin -D`, JS压缩
+- **压缩需要为生成模式(mode: production)**
+
+- To minify the output, use a plugin like [optimize-css-assets-webpack-plugin](https://github.com/NMFR/optimize-css-assets-webpack-plugin). Setting `optimization.minimizer` overrides the defaults provided by webpack, so make sure to also specify a JS minimizer:
+
+```javascript
+const TerserJSPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
+module.exports = {
+  optimization: {
+    minimizer: [
+        new TerserJSPlugin({ // 优化CSS
+            cache: true, // 缓存
+            parallel: true, // 并发打包压缩
+            sourceMap: true, // 源码映射
+      	}), 
+        new OptimizeCSSAssetsPlugin({})], // 优化JS
+  },
+};
+```
+
+### JS转换-Babel
+
+- `cnpm i babel-loader @babel/core @babel/preset-env -D`
+
+  ```javascript
+  module: {
+      rules: [
+          {
+              test: /\.js$/i,
+              use: {
+                  loader: 'babel-loader',
+                  options: {
+                      presets: ['@babel/preset-env'],
+                      plugins: [
+                          '@babel/plugin-proposal-class-properties'
+                      ]
+                  }
+              }
+          }
+      ]
+  }
+  ```
+
+  
+
+- `cnpm i @babel/plugin-proposal-class-properties -D`, **class 语法转ES5**
+
+### ES7 generator 转 ES5
+
+- `npm install --save-dev @babel/plugin-transform-runtime`
+
+- `npm install --save @babel/runtime`, 生产依赖
+
+  ```javascript
+  {
+    "plugins": ["@babel/plugin-transform-runtime"]
+  }
+  ```
+
+- 匹配对应文件
+
+  ```javascript
+  {
+      test: /\.js$/i,
+      use: {
+          loader: 'babel-loader',
+          options: {
+              presets: ['@babel/preset-env'],
+              plugins: [
+                  '@babel/plugin-proposal-class-properties',
+                  "@babel/plugin-transform-runtime"
+              ]
+      	}
+      },
+      include: path.resolve(__dirname, 'src'), 
+      exclude: /node_modules/, // 不包含文件
+  },
+  ```
+
+- ES7实例语法转低级
+
+  ```javascript
+  npm install --save @babel/polyfill // 7.4.0废弃
+  
+  // 项目入口文件处
+  require("@babel/polyfill");
+  ```
+
+### Eslint 校验代码
+
+- `cnpm i eslint eslint-loader -D`
+
+  ```javascript
+  module: {
+      rules: [
+          {
+          enforce: 'pre', // previous 需要先执行
+          test: /\.js$/i,
+          use: {
+            loader: 'eslint-loader',
+          },
+        },
+      ]
+  }
+  ```
+
+- `.eslintrc.json`配置文件
+
+### 全局loader
+
+- pre 前面执行的loader
+
+- normal 普通loader
+
+- 内联loader
+
+- 后置loader postloader
+
+  
+
+1. **`cnpm i expose-loader -D`, 暴露全局的loader**
+
+```javascript
+// 暴露到window上
+// 内联loader
+// expose-loader?$!fileName
+import $ from "expose-loader?$!jquery";
+console.log(window.$);
+```
+
+2. **另一种规则配置**
+
+```javascript
+// 所有模块提供一个$
+module: {
+    rules: [
+       {
+        test: require.resolve('jquery'),
+        use: "expose-loader?$"
+      },
+    ]
+}
+```
+
+webpack插件引入, **使用时将不再需要import和require进行引入，直接使用即可**
+
+```javascript
+const webpack = require('webpack');
+
+// plugins
+ new webpack.ProvidePlugin({// 在每个模块中都注入 $
+     $: 'jquery'
+ })
+```
+
+3. **externals 不打包配置**
+
+- 以 cdn 的方式引入一个库, 不进行打包.
+
+- 引入一个库,但不打包, 以全局变量的模式加载所引入外部的库()
+
+```javascript
+// 引入不打包
+module.exports = {
+    externals: {
+    jquery: 'jQuery'
+  },
+}
+```
 

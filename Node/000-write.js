@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-const readline = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout
-})
-readline.question(`What's your name?`, (name) => {
-  console.log(`Hi ${name}!`)
-  readline.close()
-})
-=======
 // 原生启动服务
 {
   /* const http = require('http')
@@ -30,4 +20,3 @@ readline.question(`What's your name?`, (name) => {
     })
   }) */
 }
->>>>>>> 965c1401b62abad55c323c63baaf6a400e9b3940

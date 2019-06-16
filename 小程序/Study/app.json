@@ -1,13 +1,38 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/mine/mine"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle": "black"
+    "navigationBarBackgroundColor": "#2a5caa",
+    "navigationBarTitleText": "",
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": false,
+    "onReachBottomDistance": 150
   },
+  "tabBar": {
+    "color": "#888",
+    "selectedColor": "#2a5caa",
+    "backgroundColor": "#fff",
+    "borderStyle": "white",
+    "list": [{
+        "pagePath": "pages/index/index",
+        "text": "Hello",
+        "iconPath": "/images/main-normal.png",
+        "selectedIconPath": "/images/main-now.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "Vunbo",
+        "iconPath": "/images/mine-normal.png",
+        "selectedIconPath": "/images/mine-now.png"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 50000
+  },
+  "debug": true,
   "sitemapLocation": "sitemap.json"
 }

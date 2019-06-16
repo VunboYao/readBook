@@ -1,0 +1,37 @@
+/* 顶部背景定位 */
+.bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bg-banner {
+  padding: 30rpx;
+  height: 300rpx;
+  color: #fff;
+  font-size: 80rpx;
+  background: linear-gradient(#2a5caa, #585eaa);
+}
+
+.bg-os-tip {
+  text-align: center;
+  color: #2a5caa;
+  font-size: 32rpx;
+  line-height: 3;
+}
+
+/* 主内容 */
+.container {
+  position: relative;
+  padding-top: 280rpx;
+}
+
+.main {
+  border-top-left-radius: 16rpx;
+  border-top-right-radius: 16rpx;
+  background-color: #fff;
+  height: 2000rpx;
+}
