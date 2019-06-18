@@ -1,42 +1,15 @@
-/* import "@babel/polyfill";
+require('./demo.css');
+require('./sass.scss');
 
-let a = require('./a')
-console.log(a);
-require('./index.css');
+import logo from './home.png'
 
-let fn = () =>{
-  console.log('ok');
-}
+let image = new Image();
+image.src = logo;
+document.body.appendChild(image);
 
-class A {
-  a = 1
-}
-class B extends A {
+class Log{
   constructor() {
-    super()
+    console.lo('error')
   }
 }
-let aa = new B();
-console.log(aa.a);
-const promiseA = new Promise((req, res) => {
-  return 4
-})
-console.log(promiseA);
-
-async function showTime() {
-  let a = await demo()
-  console.log(a);
-}
-
-showTime();
-
-function demo() {
-  setTimeout(() => {
-    return 5;
-  }, 2000);
-}
-'aaa'.includes(a);
- */
-
-import $ from "jquery";
-console.log($);
+let log = new Log();

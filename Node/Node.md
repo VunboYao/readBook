@@ -1,4 +1,4 @@
-## babel
+## `babel`
 
 - npm install --save-dev @babel/core @babel/cli @babel/preset-env
 
@@ -128,6 +128,8 @@
 
 ### loader
 
+`cnpm i css-loader style-loader -D`
+
 - **css-loader**解析 `@import`语法,路径等
 - **style-loader**将 css 插入到 head 的标签中
 - **loader**特点, 单一
@@ -215,6 +217,7 @@
           test: /\.css$/i,
           use: [
               MiniCssExtractPlugin.loader,// 抽离css,link链接
+              // 'style-loader',
               'css-loader'
           ]
       },
@@ -440,4 +443,146 @@ module.exports = {
   },
 }
 ```
+
+### 图片导入
+
+- 在 JS 中创建图片来引入
+
+  - `cnpm i file-loader -D`
+  - file-loader 默认会在内部生成一张图片到build目录下，把生成的图片的名字返回回来
+
+  ```javascript
+  // js
+  import logo from './home.png'
+  
+  let image = new Image();
+  image.src = logo;
+  document.body.appendChild(image);
+  
+  // config
+  module: {
+      rules:[
+         {
+            test: /\.(png|jpg|gif)$/i,
+            use: 'file-loader'
+         }
+      ]
+  }
+  ```
+
+  - sass/less 中默认支持CSS引入背景图片引入
+
+- html 中图片地址的引入
+
+  - `cnpm i html-withimg-loader -D`
+
+    ```javascript
+    {
+        test: /\.html$/,
+        use: 'html-withimg-loader'
+    }
+    ```
+
+- url-loader, 超出一定的大小，则使用原图片，否则使用base64
+
+  - `cnpm i url-loader -D`
+
+  ```javascript
+  {
+      test: /\.(png|jpg|gif)$/i,
+      // 限制，当图片小于？k时， 用 base64
+      // 否则用file-loader
+      use: {
+      	loader: 'url-loader',
+          options: {
+              limit: 300 * 1024，
+              outputPath: '/img/'， // 输出路径选择
+          }
+      }
+  },
+  ```
+
+  
+
+### 公共路径
+
+```javascript
+  output: {
+    filename: 'bundle.[hash:8].js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: "http://localhost:63342/webpack/dist",// 所有资源前都有该路径
+  },
+```
+
+- 单独为图片加上公共路径（publicPath)
+
+  ```javascript
+  {
+      test: /\.(png|jpg|gif)$/i,
+      // 限制，当图片小于？k时， 用 base64
+      // 否则用file-loader
+      use: {
+      	loader: 'url-loader',
+          options: {
+              limit: 300 * 1024，
+              outputPath: '/img/'， // 输出路径选择,
+              publicPath: "http://localhost:63342/webpack/dist/img/"
+          }
+      }
+  },
+  ```
+
+### 多页应用
+
+- **多入口**
+
+  ```javascript
+  entry: {
+    index: './src/index.js',
+    other: './src/other.js'
+  },
+  ```
+
+- **出口**
+
+  ```javascript
+  output: {
+      filename: '[name].js',
+      path: path.resolve(__dirname, 'dist')
+  }
+  ```
+
+- **html多页面配置**
+
+  ```javascript
+  const HtmlWebpackPlugin = require('html-webpack-plugin');
+  plugins: [
+      new HtmlWebpackPlugin({
+          template: 'src/index.html',
+          filename: 'index.html',
+          chunks: ['index'], // 入口包name
+      }),
+      new HtmlWebpackPlugin({
+          template: 'src/index.html',
+          filename: 'other.html',
+          chunks: ['other'], // 入口包name
+      }),
+  ]
+  ```
+
+- **source-map**
+
+```javascript
+module.exports = {
+    devtool: 'source-map', // 增加映射文件， 帮助调试bug
+    
+}
+```
+
+- source-map,源码映射， **单独生成一个** sourceMap文件，出错后标识当前行, 大而全，独立
+
+- eval-source-map, 不会产生单独的文件，但是可以显示行和列
+- cheap-module-source-map, 不会产生列， 但是是一个**单独的映射文件**
+
+- cheap-module-eval-source-map,不会产生文件，集成在打包后的文件中， 不会产生列
 

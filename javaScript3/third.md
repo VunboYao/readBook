@@ -108,6 +108,7 @@ UI 事件指的是那些不一定与用户操作有关的事件。这些事件�
      });
     ```
     
+
 **2.unload事件**
 - 与 load 事件对应的是 unload 事件，这个事件在文档被完全卸载后触发。只要用户从一个页面切换到另一个页面，就会发生 unload 事件。而利用这个事件最多的情况是清除引用，以避免内存泄漏。
 
@@ -125,7 +126,7 @@ UI 事件指的是那些不一定与用户操作有关的事件。这些事件�
     ```
 - 与 resize 事件类似， scroll 事件也会在文档被滚动期间重复被触发，所以有必要尽量保持事件处理程序的代码简单。
 
-```
+```javascript
 // 无限加载
 let loading = document.querySelector('.loading');
 let flag = true;
@@ -980,7 +981,7 @@ document.body.addEventListener('copy', function (e) {
 - 在 JavaScript 中使用 noValidate 属性可以取得或设置这个属性的值，如果存在，值为true,如果不存在，值为 false  `<form action="" novalidate>`
 - 如果一个表单中有多个提交按钮，为了指定点击某个提交按钮不必验证表单，可以在相应的按钮上添加 formnovalidate 属性。  `<input type="submit" value="提交" formnovalidate>`  
 - 通过 JavaScript 设置这个属性。`document.forms[0].elements["btnNoValidate"].formNoValidate = true; // 禁用验证`    
-    
+  
 ## 选择框脚本
 
 选择框是通过 select 和 option 元素创建的。提供了下列属性和方法
@@ -996,7 +997,8 @@ document.body.addEventListener('copy', function (e) {
 - 如果有一个选中项，而且该项的value特性已经在HTML中指定，则选择框的 value 属性等于选中项的 value 特性。即使 value 特性的值是空字符串，也同样遵循此规则
 - 如果有一个选中项，但该项的 value 特性在HTML中未指定，则选择框的value属性等于该项的文本
 - 如果有多个选中项，则选择框的value属性将依据前两条规则取得第一个选中项的值。    
-    
+  
+
 在DOM中，每个 option 元素都有一个 HTMLOptionElement 对象表示。具有下列属性：
 - index: 当前选项在 options 集合中的索引。
 - label: 当前选项的标签；等价于HTML中的label特性
@@ -1006,7 +1008,7 @@ document.body.addEventListener('copy', function (e) {
 
 > 在操作选项时，我们建议最好是使用特定于选项的属性，因为所有浏览器都支持这些属性。在将表单控件作为 DOM 节点的情况下，实际的交互方式则会因浏览器而异。我们不推荐使用标准 DOM 技术修改 <option\> 元素的文本或者值。    
 > 选择框的 change 事件与其他表单字段的 change 事件触发的条件不一样。其他表单字段的 change 事件是在值被修改且焦点离开当前字段时触发，而选择框的change 事件只要选中了选项就会触发。    
-    
+
 ### 选择选项
 
 对于只允许选择一项的选择框，访问选中项的最简单的方式，就是使用选择框的 selectedIndex 属性。
@@ -1025,10 +1027,10 @@ function getSelectedOptions(selectbox) {
     }
     return result;
 } 
-``` 
-    
+```
+
 ### 添加选项
-    
+
 三种添加选项方式：
 ```
 let newOption = document.createElement('option')
@@ -1044,8 +1046,8 @@ selectbox.appendChild(otherOption)
 // add() 方法：要添加的新选项和将位于新选项之后的选项。如果想在列表的最后添加一个选项，应该将第二个参数设置为null. 在IE中，第二个参数是可选的。
 let thirdOption = new Option('third Option text', 'Option value')
 selectbox.add(thirdOption, undefined); // 最佳方案 
-```    
-    
+```
+
 ### 移除选项
 
 - removeChild()方法
@@ -1053,16 +1055,16 @@ selectbox.add(thirdOption, undefined); // 最佳方案
 - 将相应选项的索引设置为 null
 
 ### 移动和重排选项
-    
+
 - appendChild() 方法，可以将第一个选择框中的选项直接移动到第二个选择框中。 
 - insertBefore() 移动选项和移除选项有一个共同之处，即会重置每一个选项的 index 属性   
     ```
     // 将选择框中的第二个选项移动到第一个
     let optionToMove = selectbox1.options[1];
     selectbox1.insertBefore(optionToMove, selectbox1.options[optionToMove.index - 1]) 
-    ```    
+    ```
  ## 表单序列化
-    
+
 在 JavaScript 中，利用表单字段的 type 属性, 连同 name 和 value 属性一起实现对表单的序列化。在编写代码之前，必须搞清楚在表单提交期间，浏览器是怎样将数据发送给服务器的。
 - 对表单字段的名称和值进行 URL 编码，使用和好（&）分隔
 - 不发送禁用的表单字段
@@ -1071,7 +1073,7 @@ selectbox.add(thirdOption, undefined); // 最佳方案
 - 多选选择框中的每个选中的值单独一个条目
 - 在单击提交按钮提交表单的情况下，也会发送提交按钮；否则，不发送提交按钮。包括 type 为 image 的 <input\>元素
 - <select\> 元素的值，就是选中的<option\>元素的 value 特性的值。如果<option\>元素没有 value 特性，则是<option\>元素的文本值。    
-    
+  
 ```
 function serialize(form) {
 function serialize(form) {
@@ -1127,8 +1129,8 @@ function serialize(form) {
     }
     return parts.join('&');
 } 
-```    
-    
+```
+
 ## 富文本编辑
 
 富文本编辑器，又称为WYSIWYG（What You See Is What You Get, 所见即所得）。
@@ -1144,15 +1146,15 @@ function serialize(form) {
      frames['richedit'].document.designMode = 'on';
  }) 
 ```
-    
+
 ### 使用contenteditable属性
 
 通过使用名为 contenteditable 的特殊属性，可以立即编辑该元素。
 - 该元素有三个可能的值：‘true’表示打开、‘false’表示关闭、‘inherit’表示从父元素那里继承（因为可以在 contenteditable 元素中创建或删除元素）
 ```
      <div class="editable" id="richedit" contenteditable="true"></div>
-```    
-    
+```
+
 ### 操作富文本
 
 与富文本编辑器交互的主要方式，就是使用 document.execCommand()。这个方法可以对文档执行预定义的命令。
@@ -1188,7 +1190,7 @@ underline|null|为选择的文本添加下划线
 unlink|null|移除文本的链接。这是撤销 createlink 命令的操作
 
 > Opera 根本没有实现任何剪贴板命令，而Firefox 在默认情况下会禁用它们（必须修改用户的首选项来启用它们）。Safari 和 Chrome实现了 cut 和copy ，但没有实现 paste 。
-  
+
 相关命令方法：
 - queryCommandEnabled()：检测是否可以针对当前选择的文本，或者当前插入字符所在位置执行某个命令。接收一个参数，即要检测的命令。返回布尔值。`var result = frames["richedit"].document.queryCommandEnabled("bold");`
 - queryCommandState() 方法用于确定是否已将指定命令应用到了选择的文本。`var isBold = frames["richedit"].document.queryCommandState("bold");`
@@ -1300,7 +1302,7 @@ unlink|null|移除文本的链接。这是撤销 createlink 命令的操作
     var target = EventUtil.getTarget(event);
     target.elements["comments"].value = frames["richedit"].document.body.innerHTML;
  });
-```    
+```
 ```
 // contenteditable元素
  EventUtil.addHandler(form, "submit", function(event){
@@ -1309,7 +1311,7 @@ unlink|null|移除文本的链接。这是撤销 createlink 命令的操作
     target.elements["comments"].value = document.getElementById("richedit").innerHTML;
  });
 ```
-    
+
 ## 小结
 
 - Firefox、Safari 和 Chrome 只允许在 paste 事件发生时读取剪贴板数据，而 IE没有这个限制。    
@@ -1318,7 +1320,8 @@ unlink|null|移除文本的链接。这是撤销 createlink 命令的操作
 - 选择框也是经常要通过 JavaScript 来控制的一个表单字段。由于有了 DOM，对选择框的操作比以前
   要方便多了。添加选项、移除选项、将选项从一个选择框移动到另一个选择框，甚至对选项进行排序等
   操作，都可以使用标准的 DOM技术来实现    
-    
+  
+
 富文本编辑功能是通过一个包含空 HTML 文档的 iframe 元素来实现的。通过将空文档的
 designMode 属性设置为 "on" ，就可以将该页面转换为可编辑状态，此时其表现如同字处理软件。另外，
 也可以将某个元素设置为 contenteditable 。在默认情况下，可以将字体加粗或者将文本转换为斜体，
@@ -1737,11 +1740,12 @@ if (drawing.getContext) {
 WebGL 涉及的复杂计算需要提前知道数值的精度，而标准的 JavaScript 数值无法满足需要。因此，WebGL引入了一个概念，叫类型化数组。类型化数组也是数组，只不过其元素被设置为特定类型的值。
 
 > 类型化数组的核心就是一个名为 ArrayBuffer 的类型。每个 ArrayBuffer 对象表示的只是内存
-  中指定的字节数，但不会指定这些字节用于保存什么类型的数据。通过 ArrayBuffer 所能做的，就是
-  为了将来使用而分配一定数量的字节。例如，下面这行代码会在内存中分配 20B
-  ```
-  var buffer = new ArrayBuffer(20) 
-  
+>   中指定的字节数，但不会指定这些字节用于保存什么类型的数据。通过 ArrayBuffer 所能做的，就是
+>   为了将来使用而分配一定数量的字节。例如，下面这行代码会在内存中分配 20B
+>   ```
+>   var buffer = new ArrayBuffer(20) 
+>   ```
+
   // 创建了 ArrayBuffer 对象后，能够通过该对象获得的信息只有它包含的字节数，方法是访问其
      byteLength 属性
      var bytes = buffer.byteLength;
@@ -1750,7 +1754,7 @@ WebGL 涉及的复杂计算需要提前知道数值的精度，而标准的 Java
 **1.视图**
 
 - 使用 ArrayBuffer （数组缓冲器类型）的一种特别的方式就是用它来创建数组缓冲器视图.其中，最常见的视图是 DataView ，通过它可以选择 ArrayBuffer 中一小段字节。为此，可以在创建 DataView 实例的时候传入一个 ArrayBuffer 、一个可选的字节偏移量（从该字节开始选择）和一个可选的要选择的字节数
-    ```
+  ```
     // 基于整个缓冲器创建一个新视图
     var view = new DataView(buffer);
     // 创建一个开始于字节 9 的新视图

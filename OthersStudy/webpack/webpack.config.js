@@ -1,129 +1,100 @@
-// webpack 是 node 写出来的， so 用 node 语法
-
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');// 压缩css
-const TerserJSPlugin = require('terser-webpack-plugin');// JS压缩
-const webpack = require('webpack');
+const TerserJSPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 
 module.exports = {
-  mode: 'development', // 模式，production/development
-  entry: './src/index.js', // 入口
+  mode: 'production', // development / production
+  /*  optimization: {
+     minimizer: [
+       new TerserJSPlugin({
+         cache: true,
+         parallel: true,
+         sourceMap: true,
+       }),
+       new OptimizeCSSAssetsPlugin({})
+     ]
+   }, */
+  // 多入口
+  entry: {
+    index: './src/index.js',
+  },
   output: {
-    filename: 'bundle.js', // 打包后的文件名, hash 8位
-    path: path.resolve(__dirname, 'dist'), // 路径必须是一个绝对路径
+    // [name]  home,other
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist'),
+    // publicPath: "http://localhost:63342/webpack/dist"
   },
-  optimization: {
-    minimizer: [
-      new TerserJSPlugin({
-        cache: true, // 缓存
-        parallel: true, // 并发打包压缩
-        sourceMap: true, // 源码映射
-      }),
-      new OptimizeCSSAssetsPlugin({})
-    ]
-  },
-  plugins: [ // 数组，放着所有的webpack插件
+  devtool: 'cheap-module-source-map', // 增加映射文件，帮助调试 bug
+  /*
+  * 1) source-map,源码映射， 单独生成一个 sourceMap文件，出错后标识当前行, 大而全，独立
+  * 2) eval-source-map, 不会产生单独的文件，但是可以显示行和列
+  * 3) cheap-module-source-map, 不会产生列， 但是是一个单独的映射文件
+  * 4) cheap-module-eval-source-map,不会产生文件，集成在打包后的文件中， 不会产生列
+  * */
+  plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html', // 模板
-      filename: 'index.html', // 打包后的文件名
-      minify: {
-        // removeAttributeQuotes: true, // 删除双引号
-        collapseWhitespace: false, // 折叠一行
-      },
-      // hash: true, // 哈希戳
+      title: 'My App',
+      template: 'src/index.html',
+      filename: 'index.html',
     }),
+
     new MiniCssExtractPlugin({
-      filename: 'main.css', // 抽离css的文件名
+      filename: 'css/[name].css',
     }),
-   /*  new webpack.ProvidePlugin({// 在每个模块中都注入 $
-      $: 'jquery'
-    }) */
   ],
-  externals: {
-    jquery: 'jQuery'
-  },
-  module: { // 模块
-    rules: [ // 规则
-      // {
-      //   test: require.resolve('jquery'),
-      //   use: "expose-loader?$"
-      // },
-     /*  {
-        enforce: 'pre', // previous 需要先执行
-        test: /\.js$/i,
-        use: {
-          loader: 'eslint-loader',
-        },
-      }, */
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader']
+      },
+      {
+        test: /\.scss$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          'sass-loader',
+        ]
+      },
       {
         test: /\.js$/i,
         use: {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env'],
-            plugins: [
-              '@babel/plugin-proposal-class-properties',
-              "@babel/plugin-transform-runtime"
-            ]
           }
-        },
-        include: path.resolve(__dirname, 'src'),
-        exclude: /node_modules/,
+        }
       },
       {
-        test: /\.css$/i,
-        use: [
-          MiniCssExtractPlugin.loader,// 抽离css,link链接
-          'css-loader',
-          'postcss-loader'
-        ]
+        test: /\.(png|jpg|gif)$/i,
+        // 限制，当图片小于？k时， 用 base64
+        // 否则用file-loader
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 1,
+            outputPath: '/img/',
+            publicPath: "http://localhost:63342/webpack/dist/img/"
+          }
+        }
       },
       {
-        test: /\.less$/i,
-        use: [
-          // 'style-loader',
-          MiniCssExtractPlugin.loader,
-          'css-loader', // @Import 解析路径
-          'postcss-loader',
-          'less-loader' // 转换less => css
-        ]
-      },
-      {
-        test: /\.scss$/i,
-        use: [
-          {
-            loader: 'style-loader',
-            options: {
-              insertAt: 'top'
-            }
-          },
-          'css-loader',
-          'sass-loader'
-        ]
-      },
-      {
-        test: /\.styl$/i,
-        use: [
-          {
-            loader: 'style-loader',
-            options: {
-              insertAt: 'top'
-            }
-          },
-          'css-loader',
-          'stylus-loader'
-        ]
+        test: /\.html$/,
+        use: 'html-withimg-loader'
       }
     ]
   },
   devServer: {
-    port: 8080,
-    progress: true, // 进度条
-    // contentBase: './dist', // 初始地址
-    compress: false, // 压缩
-    open: true // 自动打开
+    port: 3000,
+    contentBase: path.join(__dirname, 'dist'),
+    progress: true,
+    // compress: true,
+    open: true,
   }
 }

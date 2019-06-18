@@ -713,7 +713,7 @@ function matchesSelector(element, selector) {
 - remove(value) ：从列表中删除给定的字符串。
 - toggle(value) ：如果列表中已经存在给定的值，删除它；如果列表中没有给定的值，添加它。
 
-```
+```javascript
 // tab 切换实例实现。该方法只支持Firefox 和 Chrome
 let activeList = document.getElementsByTagName('li');
 let a = 0; // 暂存当前 active 类

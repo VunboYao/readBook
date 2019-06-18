@@ -1,0 +1,13 @@
+h1 {
+  color: #09bb07;
+  background: url(http://localhost:63342/webpack/dist/img/fb6dfed813854575430084552e6dea1d.png) no-repeat;
+}
+
+body {
+  font-size: 50px;
+  color: #fff;
+  -webkit-transform: rotateX(30deg);
+          transform: rotateX(30deg); }
+
+
+/*# sourceMappingURL=index.css.map*/
