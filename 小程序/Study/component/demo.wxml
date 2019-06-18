@@ -1,4 +1,5 @@
 <view class="inner">
   {{innerText}}
 </view>
-<slot></slot>
+<slot name="before"></slot>
+<slot name="after"></slot>

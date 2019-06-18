@@ -9,7 +9,9 @@ Component({
       value: 'Default value'
     }
   },
-
+  options: {
+    multipleSlots: true, // 启用多slot支持
+  },
   /**
    * 组件的初始数据
    */

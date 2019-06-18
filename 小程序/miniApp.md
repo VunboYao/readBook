@@ -239,3 +239,95 @@ module.exports = {
   
     
 
+# 自定义组件
+
+## 创建自定义组件
+
+- `json`文件中声明
+
+  ```js
+  {
+      "component": true
+  }
+  ```
+
+- 自定义组件的`js`文件中, 需要使用`Component()`来注册组件, 并提供组件的属性定义, 内部数据和自定义方法. 组件的**属性值**可以由组件外部传入
+
+  ```js
+  Component({
+      // 属性值可以在组件使用时指定,外部传入
+      properties: {
+          innerText: {
+              type: String,
+              value: 'default value',
+          }
+      },
+      data: {
+          // 组件内部数据
+          someData: {}
+      },
+      methods: {
+          // 自定义方法
+          customMethod: function(){}
+      }
+  })
+  ```
+
+- 自定义组件的使用
+
+  ```js
+  {
+      "usingComponents": {
+          "y-demo": "path/custom/component"
+      }
+  }
+  ```
+
+## 组件wxml的slot
+
+- 默认情况下，一个组件的wxml中只能有一个slot。需要使用多slot时，可以在组件js中声明启用。
+
+  ```js
+  Component({
+      options: {
+          multipleSlots: true // 启用多slot
+      }
+  })
+  ```
+
+- 使用多个slot, 以不同的`name`来区分
+
+  ```html
+  <view class = "wrapper">
+      <slot name="before"></slot>
+      <view>组件内部</view>
+      <slot name="after"></slot>
+  </view>
+  ```
+
+- 使用时, 用`slot`属性来将节点插入到不同的slot上
+
+  ```html
+   <y-demo innerText="{{demoData}}">
+       <view slot="after">HaHa</view>
+       <view slot="before">Hello World</view>
+   </y-demo>
+  ```
+
+## 组件样式
+
+- 只用class选择器
+- 不适用后代选择器
+- `font`, `color`会从组件外继承到组件内
+- 除继承样式外, `app.wxss`中的样式, 组件所在页面的样式对自定义组件无效(**除非更改组件样式隔离**)
+
+- `:host`选择器,可以指定组件所在节点的默认样式
+
+  ```css
+  :host {
+      color: red;
+  }
+  ```
+
+## 组件样式隔离
+

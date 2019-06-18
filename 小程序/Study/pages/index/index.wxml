@@ -7,5 +7,9 @@
 <view class="container">
   <view class="main">
     <view class="main-title">当下感知</view>
+    <y-demo innerText="{{demoData}}">
+      <view slot="after">HaHa</view>
+      <view slot="before">Hello World</view>
+    </y-demo>
   </view>
 </view>
