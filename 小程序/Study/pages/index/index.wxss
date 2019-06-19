@@ -33,5 +33,4 @@
   border-top-left-radius: 16rpx;
   border-top-right-radius: 16rpx;
   background-color: #fff;
-  height: 2000rpx;
 }

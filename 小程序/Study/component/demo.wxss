@@ -1,4 +1,8 @@
 /* component/demo.wxss */
-.inner {
+:host {
   color: red;
+}
+
+.inner {
+  color: #090;
 }
