@@ -1,4 +1,4 @@
-## `babel`
+## ``babel``
 
 - npm install --save-dev @babel/core @babel/cli @babel/preset-env
 
@@ -570,7 +570,8 @@ module.exports = {
   ]
   ```
 
-- **source-map**
+
+### **source-map**
 
 ```javascript
 module.exports = {
@@ -585,4 +586,152 @@ module.exports = {
 - cheap-module-source-map, 不会产生列， 但是是一个**单独的映射文件**
 
 - cheap-module-eval-source-map,不会产生文件，集成在打包后的文件中， 不会产生列
+
+### watch
+
+**实时编译**打包文件
+
+```js
+module.exports = {
+    watch: true,
+    watchOptions: {
+        poll: 3000, // 每2秒更新一次
+        aggregateTimeout: 600, // 防抖， 将这段时间内进行的任何其他更改都聚合到一次重新构建里
+        ignored: /node_modules/,
+    }
+}
+```
+
+### clean-webpack-plugin
+
+- `cnpm i clean-webpack-plugin -D`
+
+  ```js
+  const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+  plugins: [
+      new CleanWebpackPlugin(), // 清空dist文件
+  ]
+  ```
+
+### CopyWebpackPlugin
+
+- `npm install --save-dev copy-webpack-plugin`
+
+  ```js
+  const CopyWebpackPlugin = require('copy-webpack-plugin');
+  plugins: [
+      new CopyWebpackPlugin([
+        {from: './doc'}
+      ]),
+  ]
+  // from: Required
+  ```
+
+### BannerPlugin
+
+​	为每个 chunk 文件头部添加 banner
+
+```js
+new webpack.BannerPlugin(banner)
+```
+
+### webpack跨越配置
+
+- 代理
+
+```js
+devServer: {
+    proxy: {
+      // '/api': 'http://localhost:3000', // 配置代理  api开头去 localhost: 3000
+      '/api': { // 当接口不是 api开头时
+        target: 'http://localhost:3000',
+        pathRewrite: {"^/api" : ""}
+      }
+    }
+}
+```
+
+- 单纯模拟数据
+
+```js
+devServer: {
+    // 单纯模拟数据
+    before(app) { // 提供的方法
+        app.get('/user', (req, res) => {
+            res.json('VunboYao-before');
+        })
+    }
+}
+```
+
+- 服务端启动webpack
+
+  `cnpm i webpack-dev-middleware -D`
+
+  `webpack-dev-middleware` 是一个包装器，通过将webpack配置文件传递给服务器端。由服务端来启动。使用共同的端口，解决跨域问题
+
+  ```JS
+  let express = require('express');
+  let app = express()
+  const webpack = require('webpack');
+  
+  // 中间件
+  const middle = require('webpack-dev-middleware');
+  const config = require('./webpack.config');
+  
+  let compiler = webpack(config)
+  app.use(middle(compiler))
+  
+  app.get('/user', (req, res) => {
+      res.json('VunboYao1');
+  })
+  
+  app.listen(3000)
+  ```
+
+### resolve解析
+
+- `resolve.modules`，参数`array`, 告诉 webpack 解析模块时应该搜索的目录
+- `resolve.extensions`, 参数`array`，自动解析确定的扩展，能够使用户在引入模块时不带扩展， 默认值为`['.js', '.json']`
+
+- `resolve。mainFields`, 参数`array`，当从 npm 包中导入模块时， 此选项决定在`package.json`使用哪个字段导入模块.
+
+- `resolve.alias`, 参数 `object`,创建 `import` 或 `require` 的别名，来确保模块引入变得更简单
+
+```js
+ module.exports = {
+     resolve: { // 解析 第三方包 common
+        // modules: [path.resolve('node_modules')], // 只在当前目录中查找
+        extensions: ['.js', '.css', '.json'],// 自动解析确定的扩展名
+        mainFields: ['style', 'main'], // 先找style文件
+        alias: { // 别名
+          bootstrap: 'bootstrap/dist/css/bootstrap.min.css'
+        }
+      },
+ }
+```
+
+### 环境变量（开发/生产）
+
+```js
+plugins: [
+    new webpack.DefinePlugin({
+        DEV: JSON.stringify('DEV'),
+        FLAG: 'true',
+        expression: '1+1'
+    })
+]
+
+// index.js
+let url = '';
+if (DEV === 'DEV') {
+  url = 'http://localhost:8080'
+} else {
+  url = 'http://www.zhufengpeixun.cn'
+}
+
+console.log(DEV, url); // DEV http://localhost:8080
+console.log(typeof FLAG); // boolean
+console.log(typeof expression, expression); // number 2
+```
 
