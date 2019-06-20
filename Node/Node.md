@@ -1,4 +1,4 @@
-## ``babel``
+## ```babel```
 
 - npm install --save-dev @babel/core @babel/cli @babel/preset-env
 
@@ -733,5 +733,256 @@ if (DEV === 'DEV') {
 console.log(DEV, url); // DEV http://localhost:8080
 console.log(typeof FLAG); // boolean
 console.log(typeof expression, expression); // number 2
+```
+
+### 区分不同环境
+
+`cnpm i webpack-merge -D`
+
+```js
+// webpack.config.js => webpack.base.js
+// + webpack.dev.js
+const {smart} = require('webpack-merge');
+const base = require('./webpack.base.js');
+
+module.exports = smart(base, {
+  mode: 'development',
+  devServer: {
+
+  },
+  devtool: 'source-map'
+})
+
+
+// + webpack.prod.js
+const {smart} = require('webpack-merge');
+const base = require('./webpack.base.js');
+
+module.exports = smart(base, {
+  mode: 'production',
+  optimization: {
+    minimizer: []
+  },
+  plugins: []
+})
+
+```
+
+执行脚本：`npm run build --config webpack.prod.js`
+
+### noParse
+
+```js
+module.exports = {
+    module: {
+        noParse: /jquery/, // 不去解析jQuery中的依赖关系
+    }
+}
+```
+
+
+
+### IgnorePlugin
+
+忽略插件中引入的包
+
+```js
+const webpack = require('webpack');
+plugins: [
+    new webpack.IgnorePlugin(/\.\/locale/, /moment/), // 忽略 moment 中的locale文件
+]
+```
+
+### 动态链接库
+
+`npm i react react-dom -D`
+
+```js
+// index.js
+import React from 'react';
+import {render} from 'react-dom';
+
+render(<h1>jsx</h1>, window.root);
+       
+// index.html
+<div id="root"></div>
+```
+
+独立打包 react react-dom
+
+```js
+// +webpack.config.react.js
+
+let path = require('path');
+let webpack = require('webpack');
+
+module.exports = {
+  mode: 'development',
+  entry: {
+    react: ['react', 'react-dom']
+  },
+  output: {
+    filename: '_dll_[name].js', // 产生的文件名
+    path: path.resolve(__dirname, 'dist'),
+    library: '_dll_[name]', // _dll_react
+    // libraryTarget: 'var' // commonjs umd this  默认为var
+  },
+  plugins: [
+    new webpack.DllPlugin({ //name == library
+      name: '_dll_[name]',
+      path: path.resolve(__dirname, 'dist', 'manifest.json')
+    })
+  ]
+}
+
+// webpack.config.js
+plugins: [
+     new webpack.DllReferencePlugin({
+      manifest: path.resolve(__dirname, 'dist', 'manifest.json')
+    }),
+]
+```
+
+- 先执行webpack.config.react.js， 将react react-dom先打包
+- 执行文件时动态链接。不必每次重新再打包react react-dom
+
+### 多线程打包
+
+`cnpm i happypack -D`
+
+```js
+const HappyPack = require('happypack'); // 多线程打包
+
+module: {
+    rules: [
+       {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        include: path.resolve('src'),
+        use: 'HappyPack/loader?id=js' // id等于相应的文件名
+      },
+    ]
+}
+
+plugins: [
+    new HappyPack({
+      id: 'js',
+      use: [{
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            '@babel/preset-env',
+            '@babel/preset-react'
+          ]
+        }
+      }]
+    }),
+]
+```
+
+### webpack自带优化
+
+**生产环境下**， 去除未用到的代码
+
+```js
+// ohter.js
+let sum = (a, b) => {
+  return a + b + 'sum';
+}
+let minus = (a, b) => {
+  return a + b + 'minus';
+}
+
+export default {
+  sum,minus
+}
+
+// index.js
+import calc from './other';
+// import 在生产环境下，会自动删除没用的代码
+// tree-shaking 把没用到的代码自动删除掉
+console.log(calc.sum(1,2)); // 此时打包后的代码中，只有sum方法
+
+
+const a = require('./other');
+// common.js的放入引入。会将数据放在 default 下
+// require 在生产环境下，不会删除没用的代码
+console.log(a.default.minus(3,1));
+```
+
+**简化代码**,去除冗余定义
+
+```js
+const c = 1;
+const b = 3;
+console.log(c + b, '---------'); // 在webpack中自当省略 可以简化代码
+```
+
+### 抽离公共代码
+
+当多个模块使用到相同的代码模块时，将相同的模块进行代码抽离
+
+```js
+module.exports = {
+    optimization: {
+    splitChunks: { // 分割代码块
+      cacheGroups: { // 缓存组
+        common: { // 公共模块
+          chunks: 'initial', // 初始化时
+          minSize: 0, // 大小
+          minChunks: 2, // 使用次数？以上
+        },
+        // 第三方库抽离
+        vendor: {
+          priority: 1, // 优先级
+          test: /node_modules/, // 抽离node_modules中的文件
+          chunks: 'initial',
+          minSize: 0,
+          minChunks: 2
+        }
+      }
+    }
+  },
+}
+```
+
+### 懒加载
+
+`cnpm i @babel/plugin-syntax-dynamic-import -D`
+
+```js
+// index.js
+let button = document.createElement('button');
+button.innerHTML = 'Hello';
+
+// vue的路由懒加载， react
+button.addEventListener('click', function() {
+  // 草案中的语法， jsonP实现动态加载文件
+  import('./other.js').then(data => {
+    console.log(data.default);
+  })
+})
+
+document.body.appendChild(button);
+
+
+// webpack.config.js
+rules: [{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      include: path.resolve('src'),
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            '@babel/preset-env',
+            '@babel/preset-react'
+          ],
+          plugins: [
+            '@babel/plugin-syntax-dynamic-import', // 插件
+          ]
+        }
+      }
+    }]
 ```
 
