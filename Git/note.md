@@ -62,8 +62,9 @@
   - refs/heads, 存放分支
 
 - objects：存放对象 .git/objects/ 文件夹中的子文件夹都是以哈希值的前两位字符命名 每个object由40位字符组成，前两位字符用来当文件夹，后38位做文件。
-  - git cat-file -t 前2位+后28位, 类型位 **tree**
-
+  
+- git cat-file -t 前2位+后28位, 类型位 **tree**
+  
 - cat 命令主要用来查看文件内容，创建文件，文件合并，追加文件内容等功能
 
   ​	- cat HEAD
@@ -75,3 +76,11 @@
 
 - 查看分支: git branch -av
 - 切换分支: git checkout master
+
+# commit , tree, blob
+
+**commit** 表示当时的快照, 包含了当时所有的文件所组成的 **tree**, 每棵树下都有**blob**
+
+- commit, 所有文件的快照
+- tree, 文件夹
+- blob, 文件
