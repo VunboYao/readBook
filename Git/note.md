@@ -45,6 +45,11 @@
     - git add -u 添加所有修改、删除的文件（跟踪操作过的文件）
     - git add -A(--all) 等价于 git add .
 - git mv 源文件名 新文件名 （git 文件重命名）
+- 上一条commit提交信息变更: git commit --amend 
+- 某一条commit提交信息变更: git rebase -i 修改的commit的上一个(变基)
+- 合并多次commit提交信息: git reabse -i (基于上一个commit)
+- 取消commit信心变更: git rebase --abort
+- git提交时,**暂存区与最近commit提交比较**, git diff --cached
 - git log 查看版本演变历史
   - git log --oneline 简洁版历史（单行历史）
   - git log -n3 查看最近的3次历史（可以与--oneline结合使用）
@@ -56,7 +61,9 @@
 # .git 目录
 
 - HEAD: 表示当前工作在那个分支上
+
 - config: 存放相关配置信息
+
 - refs: 存放分支
   - refs/tags: 存放tag, 又叫里程碑(当这次commit是具有里程碑意义的, 如项目1.0时, 就可以使用tag)
   - refs/heads, 存放分支
@@ -75,7 +82,10 @@
   - git cat-file -s  62340de0774  显示版本库对象的大小
 
 - 查看分支: git branch -av
+
 - 切换分支: git checkout master
+
+- 新建分支: git branch fileName
 
 # commit , tree, blob
 
@@ -84,3 +94,17 @@
 - commit, 所有文件的快照
 - tree, 文件夹
 - blob, 文件
+
+# 分支操作
+
+- 查看分支: git branch -av
+- 切换分支: git checkout master
+- 新建分支: git branch fileName
+- 删除分支: git branch -d fileName
+
+- 新建并切换到分支: git checkout -b fileName [分支/commit]
+- commit 比较差异: git diff commit1 commit2
+  - git diff HEAD HEAD^ 比较当前分支与上一级分支的差异
+  - ^和~都是父节点, 区别是跟随数字时候, ^2是第二个父节点, 而~2是父节点后的父节点
+
+- gitk --all 可视化分支面板
