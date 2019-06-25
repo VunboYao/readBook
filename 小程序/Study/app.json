@@ -19,14 +19,14 @@
     "list": [{
         "pagePath": "pages/index/index",
         "text": "Hello",
-        "iconPath": "/images/main-normal.png",
-        "selectedIconPath": "/images/main-now.png"
+        "iconPath": "/assets/main-normal.png",
+        "selectedIconPath": "/assets/main-now.png"
       },
       {
         "pagePath": "pages/mine/mine",
         "text": "Vunbo",
-        "iconPath": "/images/mine-normal.png",
-        "selectedIconPath": "/images/mine-now.png"
+        "iconPath": "/assets/mine-normal.png",
+        "selectedIconPath": "/assets/mine-now.png"
       }
     ]
   },
