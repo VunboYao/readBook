@@ -55,3 +55,118 @@
 
 # 基础语法
 
+## 指令
+
+- `v-once`，一次性的插值，内容不会再改变
+- `v-html`, 输出html
+- `v-bind`, 用于 HTML 特性， 简写**`:href`**
+- `v-on`， 用户监听 DOM 事件， 简写**`@click`**
+
+## 修饰符
+
+- `.prevent`修饰符， 告诉`v-on`指令对于触发的事件调用`event.preventDefault()`
+
+## 计算属性
+
+**计算属性是基于它们的响应式依赖进行缓存的**，只在相关响应式依赖发生改变时才会重新求值。大量计算时的值可以缓存，如果不希望有缓存，用方法替代
+
+### 计算属性的 setter
+
+计算属性默认只有 getter, 需要时可以提供一个setter
+
+```js
+computed: {
+  fullName: {
+    // getter
+    get: function () {
+      return this.firstName + ' ' + this.lastName
+    },
+    // setter
+    set: function (newValue) {
+      var names = newValue.split(' ')
+      this.firstName = names[0]
+      this.lastName = names[names.length - 1]
+    }
+  }
+}
+```
+
+## Class 与 Style 绑定
+
+### 绑定 HTML Class
+
+#### 对象语法
+
+```vue
+<div v-bind:class="{ active: isActive }"></div>
+// 可以在对象中传入更多属性来动态切换多个class
+<div
+  class="static"
+  v-bind:class="{ active: isActive, 'text-danger': hasError }"
+></div>
+
+
+// 绑定的数据对象不必内联定义在模板里
+<div v-bind:class="classObject"></div>
+data: {
+  classObject: {
+    active: true,
+    'text-danger': false
+  }
+}
+
+
+// 也可以绑定一个返回对象的计算属性
+<div v-bind:class="classObject"></div>
+data: {
+  isActive: true,
+  error: null
+},
+computed: {
+  classObject: function () {
+    return {
+      active: this.isActive && !this.error,
+      'text-danger': this.error && this.error.type === 'fatal'
+    }
+  }
+}
+```
+
+#### 数组语法
+
+```vue
+<div v-bind:class="[activeClass, errorClass]"></div>
+data: {
+  activeClass: 'active',
+  errorClass: 'text-danger'
+}
+
+// 三元表达式
+<div v-bind:class="[isActive ? activeClass : '', errorClass]"></div>
+
+// 数组中使用对象
+<div v-bind:class="[{ active: isActive }, errorClass]"></div>
+```
+
+### 绑定内联样式
+
+#### 对象语法
+
+```vue
+<div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+
+// 直接绑定一个样式对象
+<div v-bind:style="styleObject"></div>
+data: {
+  styleObject: {
+    color: 'red',
+    fontSize: '13px'
+  }
+}
+```
+
+
+
+# 注意事项
+
+- 不要在选项属性上或回调上使用**箭头函数**， 因为箭头函数没有`this`
