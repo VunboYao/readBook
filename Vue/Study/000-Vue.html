@@ -1,29 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
 </head>
+
 <body>
   <div id="example">
-    <p :title="message">鼠标悬停查看</p>
-    <todo-item></todo-item>
+    <button class="a" @click="add">BTN1</button>
+    <button class="b" @click="add">BTN2</button>
+    <button class="b" @click="add">BTN3</button>
+    <button class="b" @click="add">BTN5</button>
+    <h2>{{time}}</h2>
+    {{fullName}}
+     <p>
+       Ask a yes/no question:
+       <input v-model="question">
+     </p>
+     <p>{{ answer }}</p>
   </div>
   <script src="./assets/vue.min.js"></script>
   <script>
-    Vue.component('todo-item', {
-    template: `<li>This is a item</li>`
-    })
-    
     let app = new Vue({
       el: '#example',
       data: {
-        message: `页面加载于 ${new Date().toLocaleString()}`
+        items: [{
+            id: 0,
+            text: 'SC'
+          },
+          {
+            id: 1,
+            text: 'NL'
+          },
+          {
+            id: 2,
+            text: 'something'
+          }
+        ],
+        a: 5,
+        b: 6,
+        number: 0,
+        firstName: 'Foo',
+        lastName: 'Bar',
+        question: '',
+        answer: 'I cannot give you an answer until you ask a question!'
       },
-    });
+      computed: {
+        time() {
+          console.log('computed');
+          return this.a + this.b;
+        },
+        fullName: {
+          get() {
+            return this.firstName + ' ' + this.lastName
+          },
+          set(newValue) {
+            var names = newValue.split(' ');
+            console.log(names);
+            this.firstName = names[0]
+            this.lastName = names[names.length - 1]
+          }
+        }
+      },
+      methods: {
+        add() {
+          this.a = ++this.a;
+        },
+        show() {
+          this.demo = 'once'
+        },
 
+      }
+    });
   </script>
 </body>
+
 </html>
