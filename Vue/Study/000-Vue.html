@@ -2,24 +2,47 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
 </head>
 
 <body>
-  <div id="example">
-    
-  </div>
-  <script src="./assets/vue.min.js"></script>
-  <script>
-    let app = new Vue({
-      el: '#example',
-      data: {
-      }
-    });
-  </script>
+
+<div id="demo">
+	<custom-input>
+		你好
+	</custom-input>
+	{{searchText}}
+</div>
+
+<script src="./assets/vue.min.js"></script>
+<script>
+
+	Vue.component('custom-input', {
+	  props: ['value'],
+		template: `<div class="demo-alert-box">
+      <strong>Error!</strong>
+      <slot></slot>
+    </div>`
+	})
+
+	new Vue({
+		el: '#demo',
+		data: {
+		  title: 'OK',
+      searchText: 'searchText',
+			posts: [
+				{ id: 1, content: '<p>Hello</p>'},
+				{ id: 2, content: '<p>Yao</p>'},
+			],
+		  postFontSize: 1
+		},
+		methods: {
+		}
+	})
+</script>
 </body>
 
 </html>
