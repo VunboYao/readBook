@@ -466,7 +466,55 @@ Vue.component('custom-input', {
 <custom-input v-model="searchText"></custom-input>
 ```
 
+## Prop类型
 
+- 每个 prop 都有指定的值类型
+
+- 可以传递静态类型的值或通过 `v-bind`动态赋值
+
+- 如果传入一个对象的所有属性, 可以使用不带参数的`v-bind`(取代`v-bind:prop-name`).
+
+  ```vue
+  <blog-post v-bind="post"></blog-post>
+  // 等价于
+  <blog-post
+    v-bind:id="post.id"
+    v-bind:title="post.title"
+  ></blog-post>
+  ```
+
+- **Prop验证**
+
+  ```vue
+  Vue.component('my-component', {
+  	props: {
+  		propA: Number, // 基础类型检查
+  		propB: [String, Number], // 多个可能的类型
+  		propC: {
+  			type: String,
+  			required: true, // 必填的字符串
+  		},
+  		propD: {
+  			type: Number,
+  			default: 100, // 带有默认值的数字
+  		},
+  		propE: {
+  			type: Object,
+  			default(){ // 对象或数组默认值必须从一个工厂函数获取
+  				return {message: 'hello'}
+  			}
+  		},
+  		propF: { // 自定义验证
+  			validator(value){
+  				....
+  			}
+  		}
+  	}
+  })
+  ```
+
+- 非 Prop 的特性, 一个非 prop 特性是指传向一个组件，但是该组件并没有相应 prop 定义的特性。会自动添加到元素上
+- 禁用特性继承, 如果你**不**希望组件的根元素继承特性，你可以在组件的选项中设置 `inheritAttrs: false`
 
 # 注意事项
 

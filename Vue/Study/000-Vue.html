@@ -11,20 +11,19 @@
 <body>
 
 <div id="demo">
-	<custom-input>
+	<custom-input v-bind='object' age="object.age">
 		你好
 	</custom-input>
 	{{searchText}}
 </div>
 
-<script src="./assets/vue.min.js"></script>
+<!-- <script src="./assets/vue.min.js"></script> -->
+<script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
 <script>
 
 	Vue.component('custom-input', {
-	  props: ['value'],
-		template: `<div class="demo-alert-box">
-      <strong>Error!</strong>
-      <slot></slot>
+	  props: ['name'],
+    template: `<div class="demo-alert-box">{{name}}
     </div>`
 	})
 
@@ -32,11 +31,14 @@
 		el: '#demo',
 		data: {
 		  title: 'OK',
-      searchText: 'searchText',
+      searchText: 'searchText1',
 			posts: [
 				{ id: 1, content: '<p>Hello</p>'},
 				{ id: 2, content: '<p>Yao</p>'},
-			],
+      ],
+      object:{
+        name: 'yuyb',age: 20
+      },
 		  postFontSize: 1
 		},
 		methods: {
