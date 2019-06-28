@@ -11,39 +11,39 @@
 <body>
 
 <div id="demo">
-	<custom-input v-bind='object' age="object.age">
-		你好
-	</custom-input>
-	{{searchText}}
+  <current-user>
+    <template v-slot:user="slotProps">
+      <span class="demo" :style="{color: slotProps.user.danger}">AA</span>
+    </template>
+  </current-user>
 </div>
 
-<!-- <script src="./assets/vue.min.js"></script> -->
-<script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+<script src="./asset/vue.min.js"></script>
 <script>
-
-	Vue.component('custom-input', {
-	  props: ['name'],
-    template: `<div class="demo-alert-box">{{name}}
-    </div>`
-	})
-
-	new Vue({
-		el: '#demo',
-		data: {
-		  title: 'OK',
-      searchText: 'searchText1',
-			posts: [
-				{ id: 1, content: '<p>Hello</p>'},
-				{ id: 2, content: '<p>Yao</p>'},
-      ],
-      object:{
-        name: 'yuyb',age: 20
-      },
-		  postFontSize: 1
-		},
-		methods: {
-		}
-	})
+  var componentA = {
+    data() {
+      return {
+        user: {
+          warn: '#e64340',
+          danger: '#ffc600',
+          default: '#108ee9'
+        },
+        other: 'HH'
+      }
+    },
+    template: `
+    <div>
+      <p>
+        <slot name="user" :user="user"></slot>
+      </p>
+    `
+  }
+  var vm = new Vue({
+    el: '#demo',
+    components: {
+      'current-user': componentA
+    }
+  })
 </script>
 </body>
 

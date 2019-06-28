@@ -50,6 +50,16 @@
 - 合并多次commit提交信息: git reabse -i (基于上一个commit)
 - 取消commit信心变更: git rebase --abort
 - git提交时,**暂存区与最近commit提交比较**, git diff --cached
+- git diff 默认比较工作区与暂存区的区别
+- git diff -- 文件名 ，查看某一个具体文件的变更
+- git reset HEAD， 将暂存区恢复成和HEAD一样
+- git reset HEAD -- filename  取消暂存区部分文件的更改
+- git checkout -- fileName 暂存区覆盖工作区修改
+- git reset --hard [commit], 消除最近几次的commit **危险**
+- git diff 分支名 分支名 -- fileName 不同分支的文件差异
+- git rm filename 删除某个文件，将该命令更新到暂存区
+- git stash 保留当前任务，处理紧急任务
+- git stash pop/apply 恢复之前的任务，继续work
 - git log 查看版本演变历史
   - git log --oneline 简洁版历史（单行历史）
   - git log -n3 查看最近的3次历史（可以与--oneline结合使用）
@@ -101,10 +111,29 @@
 - 切换分支: git checkout master
 - 新建分支: git branch fileName
 - 删除分支: git branch -d fileName
-
 - 新建并切换到分支: git checkout -b fileName [分支/commit]
 - commit 比较差异: git diff commit1 commit2
   - git diff HEAD HEAD^ 比较当前分支与上一级分支的差异
   - ^和~都是父节点, 区别是跟随数字时候, ^2是第二个父节点, 而~2是父节点后的父节点
-
 - gitk --all 可视化分支面板
+
+# 公钥私钥
+
+- cd ~/.ssh
+
+- ls -al 检查是否有公钥私钥
+
+- 生成密钥
+
+  ```shell
+  ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+  ```
+
+- 将 id_rsa.pub 文件复制到 SSH
+
+# 本地托管至远端
+
+```shell
+git remote add origin https://github.com/user/repo.git
+```
+

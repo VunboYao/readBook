@@ -109,12 +109,6 @@ computed: {
 
 > 在计算属性不适用的情况下，可以使用方法
 
-
-
-## 修饰符
-
-- `.prevent`修饰符， 告诉`v-on`指令对于触发的事件调用`event.preventDefault()`
-
 ## 计算属性
 
 **计算属性是基于它们的响应式依赖进行缓存的**，只在相关响应式依赖发生改变时才会重新求值。大量计算时的值可以缓存，如果不希望有缓存，用方法替代
@@ -430,7 +424,7 @@ Vue.component('blog-post', {
 
 ### 监听子组件事件
 
-子组件通过 `$emit方法`并传入事件名称来触发事件，如果抛出值，可以第二个参数来传递这个值
+子组件通过 `$emit方法` 并传入事件名称来触发事件，如果抛出值，可以第二个参数来传递这个值
 
 ### 在组件上使用 `v-model`
 
@@ -514,7 +508,168 @@ Vue.component('custom-input', {
   ```
 
 - 非 Prop 的特性, 一个非 prop 特性是指传向一个组件，但是该组件并没有相应 prop 定义的特性。会自动添加到元素上
+
 - 禁用特性继承, 如果你**不**希望组件的根元素继承特性，你可以在组件的选项中设置 `inheritAttrs: false`
+
+## 自定义事件
+
+### 事件名
+
+触发事件的事件名，必须使用 **`kebab-case`**事件名
+
+### 自定义组件的 v-model
+
+- 组件上的 `v-model`默认会利用名为 `value`的prop和名为`input`的事件。但是对于单选框和复选框， value会有不同的目的， `model`选项可以用来避免这样的冲突
+
+  ```js
+  Vue.component('base-checkbox', {
+    model: {
+      prop: 'checked',
+      event: 'change'
+    },
+    props: {
+      checked: Boolean
+    },
+    template: `
+      <input
+        type="checkbox"
+        v-bind:checked="checked"
+        v-on:change="$emit('change', $event.target.checked)"
+      >
+    `
+  })
+  
+  <base-checkbox v-model="lovingVue"></base-checkbox>
+  
+  这里的 lovingVue 的值将会传入这个名为 checked 的 prop。同时当 <base-checkbox> 触发一个 change 事件并附带一个新的值的时候，这个 lovingVue 的属性将会被更新。
+  ```
+
+  > 注意你仍然需要在组件的 `props` 选项里声明 `checked` 这个 prop。
+
+### 将原生事件绑定到组件
+
+- `v-on` 的 `.native` 修饰符
+
+  ```vue
+  <base-input v-on:focus.native="onFocus"></base-input>
+  ```
+
+- 当 `<base-input>`组件做了重构， 外层是 `<label>`元素，则无效
+
+- Vue 提供了一个 `$listeners` 属性，包含了作用在这个组件上的所有监听器
+
+### .sync 修饰符
+
+以 `update:myPropName` 的模式触发事件取而代之。举个例子，在一个包含 `title`prop 的假设的组件中，我们可以用以下方法表达对其赋新值的意图：
+
+```vue
+this.$emit('update:title', newTitle)
+```
+
+然后父组件可以监听那个事件并根据需要更新一个本地的数据属性。例如
+
+```vue
+<text-document
+  v-bind:title="doc.title"
+  v-on:update:title="doc.title = $event"
+></text-document>
+```
+
+为了方便起见，我们为这种模式提供一个缩写，即 `.sync` 修饰符：
+
+```html
+<text-document v-bind:title.sync="doc.title"></text-document>
+```
+
+> 带有`.sync`修饰符的 `v-bind`不能和表达式一起使用，只能提供想要绑定的属性名， 类似`v-model`
+
+## 插槽
+
+- 如果一个组件中没有 `<slot>`元素， 则该组件起始标签和结束标签之间的任何内容都会被抛弃
+- 父级模板里的所有内容都是在父级作用域中编译的；子模板里的所有内容都是在子作用域中编译的
+
+### 后备内容
+
+有时为一个插槽设置具体的后备 (也就是默认的) 内容是很有用的，它只会在没有提供内容的时候被渲染。
+
+### 具名插槽
+
+```html
+<div class="container">
+  <header>
+    <slot name="header"></slot>
+  </header>
+  <main>
+    <slot></slot>
+  </main>
+  <footer>
+    <slot name="footer"></slot>
+  </footer>
+</div>
+```
+
+一个不带 `name` 的 `<slot>` 出口会带有隐含的名字“default”。
+
+在向具名插槽提供内容的时候，我们可以在一个 `<template>` 元素上使用 `v-slot` 指令，并以 `v-slot` 的参数的形式提供其名称
+
+```html
+<base-layout>
+  <template v-slot:header>
+    <h1>Here might be a page title</h1>
+  </template>
+
+  <p>A paragraph for the main content.</p>
+  <p>And another one.</p>
+
+  <template v-slot:footer>
+    <p>Here's some contact info</p>
+  </template>
+</base-layout>
+```
+
+现在 `<template>` 元素中的所有内容都将会被传入相应的插槽。任何没有被包裹在带有 `v-slot` 的 `<template>` 中的内容都会被视为默认插槽的内容。
+
+注意 **v-slot 只能添加在一个 `<template> `上** 
+
+### 作用域插槽
+
+让插槽内容访问**子组件中**才有的数据
+
+```html
+<span>
+  <slot v-bind:user="user">
+    {{ user.lastName }}
+  </slot>
+</span>
+```
+
+绑定在 `<slot>` 元素上的特性被称为**插槽 prop**。现在在父级作用域中，我们可以给 `v-slot` 带一个值来定义我们提供的插槽 prop 的名字：
+
+```html
+<current-user>
+  <template v-slot:default="slotProps">
+    {{ slotProps.user.firstName }}
+  </template>
+</current-user>
+```
+
+### 独占默认插槽的缩写语法
+
+当被提供的内容只有默认插槽时，组件的标签才可以被当作插槽的模板来使用。这样就可以把`v-slot`直接用在组件上
+
+```html
+<current-user v-slot:default="slotProps">
+  {{ slotProps.user.firstName }}
+</current-user>
+
+// 这种写法还可以更简单。就像假定未指明的内容对应默认插槽一样，不带参数的 v-slot 被假定对应默认插槽：
+<current-user v-slot="slotProps">
+  {{ slotProps.user.firstName }}
+</current-user>
+
+```
+
+**注意默认插槽的缩写语法**不能**和具名插槽混用，因为它会导致作用域不明确**
 
 # 注意事项
 
