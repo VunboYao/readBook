@@ -1,50 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
 </head>
-
 <body>
-
-<div id="demo">
-  <current-user>
-    <template v-slot:user="slotProps">
-      <span class="demo" :style="{color: slotProps.user.danger}">AA</span>
-    </template>
-  </current-user>
-</div>
-
-<script src="./asset/vue.min.js"></script>
-<script>
-  var componentA = {
-    data() {
-      return {
-        user: {
-          warn: '#e64340',
-          danger: '#ffc600',
-          default: '#108ee9'
-        },
-        other: 'HH'
+  <div id="app" class="demo">
+    <anchored-heading :level="1">
+      Hello world!
+    </anchored-heading>
+    <anchored-heading :level="2">
+      Hello world!
+    </anchored-heading>
+    <input type="text" v-model="value">
+    {{value | capitalize}}
+  </div>
+  <script src="./asset/vue.min.js"></script>
+  <script>
+    Vue.component('anchored-heading', {
+      render(createElement) {
+        return createElement(
+          'h' + this.level,
+          this.$slots.default
+        )
+      },
+      props: {
+        level: {
+          type: Number,
+          required: true
+        }
       }
-    },
-    template: `
-    <div>
-      <p>
-        <slot name="user" :user="user"></slot>
-      </p>
-    `
-  }
-  var vm = new Vue({
-    el: '#demo',
-    components: {
-      'current-user': componentA
-    }
-  })
-</script>
+    })
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        message: 'Hello!',
+        value: ''
+      },
+      filters: {
+        capitalize(value) {
+          if (!value) return ''
+          value = value.toString()
+          return value.charAt(0).toUpperCase() + value.slice(1)
+        }
+      },
+      directives: {
+        demo: {
+          bind(el,binding,vnode) {
+            var s = JSON.stringify
+            el.innerHTML =
+           'name: ' + s(binding.name) + '<br>' +
+              'value: ' + s(binding.value) + '<br>' +
+              'expression: ' + s(binding.expression) + '<br>' +
+              'argument: ' + s(binding.arg) + '<br>' +
+              'modifiers: ' + s(binding.modifiers) + '<br>' +
+              'vnode keys: ' + Object.keys(vnode).join(', ')
+          }
+        }
+      }
+    })
+  </script>
 </body>
-
 </html>

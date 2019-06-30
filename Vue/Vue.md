@@ -671,6 +671,428 @@ this.$emit('update:title', newTitle)
 
 **注意默认插槽的缩写语法**不能**和具名插槽混用，因为它会导致作用域不明确**
 
+### 剧名插槽的缩写
+
+跟 `v-on` 和 `v-bind` 一样，`v-slot` 也有缩写，即把参数之前的所有内容 (`v-slot:`) 替换为字符 `#`。例如 `v-slot:header` 可以被重写为 `#header`, **该缩写只在其有参数的时候才可用**
+
+## 动态组件 & 异步组件
+
+### 动态组件上使用 keep-alive
+
+## 处理边界情况
+
+### 访问根实例
+
+在每个 `new Vue` 实例的子组件中，其根实例可以通过 `$root` 属性进行访问
+
+### 访问父级组件实例
+
+和 `$root` 类似，`$parent` 属性可以用来从一个子组件访问父组件的实例
+
+### 访问子组件实例或子元素
+
+可以通过 `ref` 特性为这个子组件赋予一个 ID 引用
+
+```html
+<base-input ref="usernameInput"></base-input>
+
+// this.$refs.usernameInput
+```
+
+> `$refs` 只会在组件渲染完成之后生效，并且它们不是响应式的。这仅作为一个用于直接操作子组件的“逃生舱”——你应该避免在模板或计算属性中访问 `$refs`。
+
+### 依赖注入
+
+`provide` 选项允许我们指定我们想要**提供**给后代组件的数据/方法
+
+```js
+provide: function () {
+  return {
+    getMap: this.getMap
+  }
+}
+```
+
+在任何后代组件里，我们都可以使用 `inject` 选项来接收指定的我们想要添加在这个实例上的属性
+
+```js
+inject: ['getMap']
+```
+
+## 程序化的事件侦听器
+
+- 通过 `$on(eventName, eventHandler)` 侦听一个事件
+- 通过 `$once(eventName, eventHandler)` 一次性侦听一个事件
+- 通过 `$off(eventName, eventHandler)` 停止侦听一个事件
+
+### 通过 `v-once`创建低开销的静态组件, 慎用
+
+## 过渡 & 动画
+
+### 单元素/组件的过渡
+
+在以下情形中, 可以给任何元素和组件添加进入/离开过渡
+
+- 条件渲染 (使用 `v-if`)
+- 条件展示 (使用 `v-show`)
+- 动态组件
+- 组件根节点
+
+### 过渡类名
+
+在进入/离开的过渡中, 会有 6 个 class 切换
+
+- `v-enter`: 定义进入过渡的开始状态. 插入之前生效, **元素被插入之后的下一帧移除**
+- `v-enter-active`:  定义进入过渡生效时的状态. **在过渡/动画完成之后移除** 定义进入过渡的**过程时间, 延迟和曲线函数**
+- `v-enter-to`: 定义进入过渡的结束状态.在元素被插入之后下一帧生效 (与此同时 `v-enter` 被移除) **在过渡/动画完成之后移除**
+- `v-leave`: 定义离开过渡的开始状态. **在离开过渡被触发时立刻生效，下一帧被移除**
+- `v-leave-avtive`: 定义离开过渡生效时的状态。在离开过渡被触发时立刻生效，**在过渡/动画完成之后移除。**定义进入过渡的**过程时间, 延迟和曲线函数**
+- `v-leave-to`: 定义离开过渡的结束状态.在离开过渡被触发之后下一帧生效 (与此同时 `v-leave` 被删除)，在过渡/动画完成之后移除。
+
+如果你使用一个没有名字的 `<transition>`，则 `v-` 是这些类名的默认前缀。如果你使用了 `<transition name="my-transition">`，那么 `v-enter` 会替换为 `my-transition-enter`
+
+### 自定义过渡的类名
+
+结合第三方 CSS 动画库, Animate.css 结合使用
+
+- `enter-class`
+
+- `enter-active-class`
+
+- `enter-to-class` (2.1.8+)
+
+- `leave-class`
+
+- `leave-active-class`
+
+- `leave-to-class` (2.1.8+)
+
+  ```html
+  <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+  
+  <div id="example-3">
+    <button @click="show = !show">
+      Toggle render
+    </button>
+    <transition
+      name="custom-classes-transition"
+      enter-active-class="animated tada"
+      leave-active-class="animated bounceOutRight"
+    >
+      <p v-if="show">hello</p>
+    </transition>
+  </div>
+  ```
+
+### 同时使用过渡和动画
+
+使用 `type` 特性并设置 `animation` 或 `transition` 来明确声明你需要 Vue 监听的类型。
+
+### 显性的过渡持续时间
+
+```html
+<transition :duration="1000">...</transition>
+
+<!-- 定制进入和移出的持续时间 -->
+<transition :duration="{ enter: 500, leave: 800 }">...</transition>
+```
+
+### JavaScript 钩子
+
+```html
+<transition
+  v-on:before-enter="beforeEnter"
+  v-on:enter="enter"
+  v-on:after-enter="afterEnter"
+  v-on:enter-cancelled="enterCancelled"
+
+  v-on:before-leave="beforeLeave"
+  v-on:leave="leave"
+  v-on:after-leave="afterLeave"
+  v-on:leave-cancelled="leaveCancelled"
+>
+  <!-- ... -->
+</transition>
+```
+
+> 当只用 JavaScript 过渡的时候，**在 enter 和 leave 中必须使用 done 进行回调**。否则，它们将被同步调用，过渡会立即完成。
+
+> 推荐对于仅使用 JavaScript 过渡的元素添加 `v-bind:css="false"`，Vue 会跳过 CSS 的检测。这也可以避免过渡过程中 CSS 的影响。
+
+### 初始渲染的过渡
+
+可以通过 `appear` 特性设置节点在初始渲染的过渡
+
+```html
+<transition appear>
+  <!-- ... -->
+</transition>
+```
+
+### 多个元素的过渡
+
+当有**相同标签名**的元素切换时，需要通过 `key` 特性设置唯一的值来标记以让 Vue 区分它们，否则 Vue 为了效率只会替换相同标签内部的内容。即使在技术上没有必要，**给在 `<transition>` 组件中的多个元素设置 key 是一个更好的实践。**
+
+### 过渡模式
+
+- `in-out`：新元素先进行过渡，完成之后当前元素过渡离开。
+
+- `out-in`：当前元素先进行过渡，完成之后新元素过渡进入
+
+```html
+<transition name="fade" mode="out-in">
+  <!-- ... the buttons ... -->
+</transition>
+```
+
+### 多个组件的过渡
+
+动态组件
+
+## 列表过渡
+
+使用 `<transition-group>` 组件
+
+- 不同于 `<transition>`，它会以一个真实元素呈现：默认为一个 `<span>`。你也可以通过 `tag` 特性更换为其他元素。
+- [过渡模式](https://cn.vuejs.org/v2/guide/transitions.html#过渡模式)不可用，因为我们不再相互切换特有的元素。
+- 内部元素 **总是需要** 提供唯一的 `key` 属性值。
+
+### 列表的进入/离开过渡
+
+[官方实例](https://cn.vuejs.org/v2/guide/transitions.html#%E5%88%97%E8%A1%A8%E7%9A%84%E8%BF%9B%E5%85%A5-%E7%A6%BB%E5%BC%80%E8%BF%87%E6%B8%A1)
+
+### 列表的排序过渡
+
+### 列表的交错过渡
+
+## 可复用的过渡
+
+过渡可以通过 Vue 的组件系统实现复用。要创建一个可复用过渡组件，你需要做的就是将 `<transition>` 或者 `<transition-group>` 作为根组件，然后将任何子组件放置在其中就可以了
+
+### 动态过渡
+
+通过`name`特性来绑定动态值
+
+# 可复用性 & 组合
+
+## 混入
+
+混入 (mixin) 提供了一种非常灵活的方式，来分发 Vue 组件中的可复用功能。一个混入对象可以包含任意组件选项。当组件使用混入对象时，所有混入对象的选项将被“混合”进入该组件本身的选项。
+
+### 选项合并
+
+- 当组件和混入对象含有同名选项时，这些选项将以恰当的方式进行“合并”。冲突时以**组件数据优先**
+- 同名钩子函数将合并为一个数组, 都将被调用. 混入对象的钩子将在组件自身钩子之前调用
+- 值为对象的属性, 如 `methods`, `components` 和 `directives`, 将被合并为同一个对象. 两个对象键名冲突时, 取组件对象的键值对.
+
+### 自定义选项合并策略
+
+自定义选项以自定义逻辑合并
+
+```js
+Vue.config.optionMergeStrategies.myOption = fuction(toVal, formVal){
+    // 返回合并的值
+}
+```
+
+对于多数值为对象的选项，可以使用与 `methods` 相同的合并策略
+
+```js
+var strategies = Vue.config.optionMergeStrategies
+strategies.myOption = strategies.methods
+```
+
+## 自定义指令
+
+```js
+// 注册一个全局自定义指令 `v-focus`
+Vue.directive('focus', {
+  // 当被绑定的元素插入到 DOM 中时……
+  inserted: function (el) {
+    // 聚焦元素
+    el.focus()
+  }
+})
+
+// 注册局部指令
+directives: {
+  focus: {
+    // 指令的定义
+    inserted: function (el) {
+      el.focus()
+    }
+  }
+}
+```
+
+### 钩子函数
+
+一个指令定义对象可以提供如下几个钩子函数 (均为可选)：
+
+- `bind`: 只调用一次, 指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
+- `inserted`: 被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
+- `update`：所在组件的 VNode 更新时调用，**但是可能发生在其子 VNode 更新之前**。
+- `componentUpdated`：指令所在组件的 VNode **及其子 VNode** 全部更新后调用。
+- `unbind`：只调用一次，指令与元素解绑时调用
+
+### 钩子函数参数
+
+- `el`: 指令所绑定的元素, 可以用来直接操作DOM
+- `binding`: 一个对象,包含以下属性:
+  - `name`: 指令名, 不包括 `v-` 前缀
+  - `value`: 指令的绑定值, 例如：`v-my-directive="1 + 1"` 中，绑定值为 `2`。
+  - `oldValue`：指令绑定的前一个值，仅在 `update` 和 `componentUpdated` 钩子中可用。无论值是否改变都可用。
+  - `expression`：字符串形式的指令表达式。例如 `v-my-directive="1 + 1"` 中，表达式为 `"1 + 1"`。
+  - `arg`：传给指令的参数，可选。例如 `v-my-directive:foo` 中，参数为 `"foo"`。
+  - `modifiers`：一个包含修饰符的对象。例如：`v-my-directive.foo.bar` 中，修饰符对象为 `{ foo: true, bar: true }`。
+- `vnode`：Vue 编译生成的虚拟节点
+- `oldVnode`：上一个虚拟节点，仅在 `update` 和 `componentUpdated` 钩子中可用。
+
+> 除了 `el` 之外，其它参数都应该是只读的，切勿进行修改。如果需要在钩子之间共享数据，建议通过元素的 [`dataset`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/dataset) 来进行。
+
+### 动态指令参数
+
+指令的参数可以是动态的。例如，在 `v-mydirective:[argument]="value"` 中，`argument` 参数可以根据组件实例数据进行更新！这使得自定义指令可以在应用中被灵活使用。
+
+### 函数简写
+
+在很多时候，你可能想在 `bind` 和 `update` 时触发相同行为，而不关心其它的钩子
+
+```js
+Vue.directive('color', (el, binding) => {
+    el.style.color = binding.value
+})
+```
+
+### 对象字面量
+
+如果指令需要多个值，可以传入一个 JavaScript 对象字面量。记住，指令函数能够接受所有合法的 JavaScript 表达式。
+
+```html
+<div v-demo="{ color: 'white', text: 'hello!' }"></div>
+```
+
+```js
+Vue.directive('demo', (el,binding) => {
+    console.log(binding.value.color); // => 'white'
+    console.log(binding.value.text); // => 'hello!'
+})
+```
+
+## 渲染函数 & JSX
+
+### 虚拟 DOM
+
+Vue 通过建立一个**虚拟 DOM** 来追踪自己要如何改变真实 DOM
+
+```js
+return createElement('h1', this.blogTitle)
+```
+
+`createElement` 到底会返回什么呢？其实不是一个*实际的* DOM 元素。它更准确的名字可能是 `createNodeDescription`，因为它所包含的信息会告诉 Vue 页面上需要渲染什么样的节点，包括及其子节点的描述信息。我们把这样的节点描述为“虚拟节点 (virtual node)”，也常简写它为“**VNode**”。“虚拟 DOM”是我们对由 Vue 组件树建立起来的整个 VNode 树的称呼。
+
+**`createElement`参数**
+
+```js
+// @returns {VNode}
+createElement(
+    // {String | Object | Function}
+    // 一个 HTML 标签名, 组件选项对象, 或者 resolve 了上述任何一种的一个 async 函数.必填项
+    'div',
+    
+    // {Object}
+    // 一个与模板中属性对应的数据对象.可选
+    {},
+    
+    // {String | Array}
+    // 子级虚拟节点(VNodes), 由 `createElement()` 构建而成, 也可以使用字符串来生成"文本虚拟节点". 可选
+    [
+        "some text",
+        createElement('h2', 'one news'),
+        createElement(MyComponent, {
+            props: {
+                shomeProp: 'footer'
+            }
+        })
+    ]
+)
+```
+
+### 约束
+
+VNode 必须唯一
+
+# 插件
+
+## 使用插件
+
+通用全局方法 `Vue.use()` 使用插件. 需要在调用 `new Vue()` 启动应用之前完成.
+
+```js
+// 调用 `MyPlugin.install(Vue)`
+Vue.use(MyPlugin)
+
+new Vue({
+  // ...组件选项
+})
+```
+
+## 过滤器
+
+过滤器可以用在两个地方: **双花括号插值和`v-bind`表达式**, 过滤器应该被添加在 JavaScript 表达式的尾部, 由"管道" 符号指示
+
+```html
+<!-- 在双花括号中 -->
+{{ message | capitalize }}
+
+<!-- 在 `v-bind` 中 -->
+<div v-bind:id="rawId | formatId"></div>
+```
+
+局部过滤器:
+
+```js
+filters: {
+  capitalize: function (value) {
+    if (!value) return ''
+    value = value.toString()
+    return value.charAt(0).toUpperCase() + value.slice(1)
+  }
+}
+```
+
+全局过滤器
+
+```js
+Vue.filter('capitalize', function (value) {
+  if (!value) return ''
+  value = value.toString()
+  return value.charAt(0).toUpperCase() + value.slice(1)
+})
+```
+
+**当全局过滤器和局部过滤器重名时，会采用局部过滤器。**
+
+过滤器函数总接收表达式的值 (之前的操作链的结果) 作为第一个参数。在上述例子中，`capitalize` 过滤器函数将会收到 `message` 的值作为第一个参数。
+
+```js
+{{ message | filterA }}
+```
+
+过滤器可以串联：
+
+```js
+{{ message | filterA | filterB }}
+```
+
+过滤器是 JavaScript 函数，因此可以**接收参数**：
+
+```html
+{{ message | filterA('arg1', arg2) }}
+```
+
+这里，`filterA` 被定义为接收三个参数的过滤器函数。其中 `message` 的值作为第一个参数，普通字符串 `'arg1'` 作为第二个参数，表达式 `arg2` 的值作为第三个参数
+
 # 注意事项
 
 - 不要在选项属性上或回调上使用**箭头函数**， 因为箭头函数没有`this`

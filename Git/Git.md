@@ -137,3 +137,8 @@
 git remote add origin https://github.com/user/repo.git
 ```
 
+# 危险操作
+
+- git push -f , 强制更新, 会删除commit, 严禁操作
+- 禁止向集成分支改变历史. **炒鱿鱼**
+
