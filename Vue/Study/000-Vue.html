@@ -6,9 +6,22 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+  <style>
+    .actived {
+      color: red;
+      font-size: 40px;
+    }
+    .error {
+      background: #000;
+    }
+  </style>
 </head>
 <body>
   <div id="app" class="demo">
+    <select name="" id="" v-model="selected">
+      <option>ABC</option>
+    </select>
+    {{selected}}
     <anchored-heading :level="1">
       Hello world!
     </anchored-heading>
@@ -17,6 +30,7 @@
     </anchored-heading>
     <input type="text" v-model="value">
     {{value | capitalize}}
+    <div :style="{color,fontSize}">ddd</div>
   </div>
   <script src="./asset/vue.min.js"></script>
   <script>
@@ -38,7 +52,12 @@
       el: '#app',
       data: {
         message: 'Hello!',
-        value: ''
+        value: '',
+        activeClass: 'actived',
+        errClass: 'error',
+        color: 'red',
+        'fontSize': '55px',
+        selected: ''
       },
       filters: {
         capitalize(value) {
