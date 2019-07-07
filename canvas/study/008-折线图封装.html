@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<script>
+  class LineChart {
+    constructor(width = 300, height = 150, grid=50,tempSize,list) {
+    	this.canvas = document.createElement('canvas');
+    	this.canvas.width = width;
+    	this.canvas.height = height;
+    	this.canvas.style.backgroundColor = '#108ee9';
+    	document.body.appendChild(this.canvas);
+    	this.ctx = this.canvas.getContext('2d');
+
+    	// 绘制表格
+    	this.drawGrid(grid,this.ctx);
+
+    	// 绘制坐标轴
+      this.drawCoordinate(grid,this.ctx);
+
+      // 绘制坐标点
+      this.drawDot(tempSize,list,this.ctx);
+
+      // 绘制连线
+      this.drawline(list, this.ctx);
+    }
+
+    /* 绘制表格 */
+    drawGrid(gridSize, ctx) {
+    	let canvasWidth = this.canvas.width;
+    	let canvasHeight = this.canvas.height;
+
+    	let row = Math.floor(canvasWidth / gridSize);
+    	let col = Math.floor(canvasHeight / gridSize);
+
+    	for (let i = 0; i < col; i++) {
+    		ctx.beginPath();
+    		ctx.moveTo(0, gridSize * i - 0.5);
+    		ctx.lineTo(canvasWidth, gridSize * i - 0.5);
+    		ctx.strokeStyle = '#ccc';
+    		ctx.stroke();
+      }
+
+    	for (let i = 0; i < row; i++) {
+    		ctx.beginPath();
+    		ctx.moveTo(gridSize * i - 0.5, 0 );
+    		ctx.lineTo(gridSize * i - 0.5, canvasHeight);
+    		ctx.strokeStyle = '#ccc';
+    		ctx.stroke();
+      }
+    }
+
+    /* 绘制坐标 */
+    drawCoordinate(gridSize,ctx){
+      let originX = gridSize - 0.5;
+      let originY = this.canvas.height - gridSize - 0.5;
+
+      // X 轴
+      let endX = this.canvas.width - gridSize;
+      ctx.beginPath();
+      ctx.moveTo(originX, originY);
+      ctx.lineTo(endX, originY);
+      ctx.strokeStyle = '#000';
+      ctx.stroke();
+      // 箭头
+      ctx.lineTo(endX - 10, originY - 5);
+      ctx.lineTo(endX - 10, originY + 5);
+      ctx.lineTo(endX, originY);
+      ctx.fill();
+
+      // Y 轴
+      ctx.beginPath();
+      ctx.moveTo(originX, originY);
+      ctx.lineTo(gridSize - 0.5, gridSize);
+      ctx.stroke();
+
+      // 箭头
+      ctx.lineTo(gridSize - 0.5 - 5, gridSize + 10);
+      ctx.lineTo(gridSize - 0.5 + 5, gridSize + 10);
+      ctx.lineTo(gridSize - 0.5, gridSize);
+      ctx.fill();
+    }
+
+    /* 绘制坐标点 */
+    drawDot(gridSize,list,ctx) {
+    	for (let i = 0; i < list.length; i++) {
+    		ctx.beginPath();
+    		ctx.moveTo(list[i].x - gridSize / 2, list[i].y - gridSize / 2);
+    		ctx.lineTo(list[i].x + gridSize / 2, list[i].y - gridSize / 2);
+    		ctx.lineTo(list[i].x + gridSize / 2, list[i].y + gridSize / 2);
+    		ctx.lineTo(list[i].x - gridSize / 2, list[i].y + gridSize / 2);
+    		ctx.fill();
+      }
+    	ctx.stroke();
+    }
+
+    /* 绘制连线 */
+    drawline(list,ctx) {
+      ctx.beginPath();
+      for (let i = 0; i < list.length; i++) {
+      	if (i === 0) {
+      		ctx.moveTo(list[i].x, list[i].y)
+        } else {
+      		ctx.lineTo(list[i].x, list[i].y)
+        }
+      }
+      ctx.stroke();
+    }
+  }
+	let list = [
+		{x: 80, y: 280},
+		{x: 160, y: 240},
+		{x: 200, y: 160},
+		{x: 240, y: 240},
+		{x: 320, y: 120},
+	]
+  new LineChart(800,600,40,20,list)
+</script>
+</body>
+</html>

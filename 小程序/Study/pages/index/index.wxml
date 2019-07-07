@@ -13,3 +13,8 @@
     </y-demo>
   </view>
 </view>
+<cover-view class="share-test">
+  <cover-image src="/assets/main-now.png" class="share-img"></cover-image>
+  <cover-view class="share-text">分享</cover-view>
+  <button open-type="share" class="share">分享</button>
+</cover-view>

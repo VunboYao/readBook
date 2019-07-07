@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    canvas {
+      background: #108ee9;
+    }
+  </style>
+</head>
+<body>
+<canvas width="520" height="400"></canvas>
+<script>
+  let oCanvas = document.querySelector('canvas');
+  let ctx = oCanvas.getContext('2d');
+  // 设置格子大小
+  let gridSize = 40;
+  // 获取宽高
+	let canvasWidth = ctx.canvas.width;
+	let canvasHeight = ctx.canvas.height;
+	// 设置行数 列数
+	let row = Math.floor(canvasHeight / gridSize);
+	let col = Math.floor(canvasWidth / gridSize);
+  // 绘制 行
+	for (let i = 0; i < row; i++) {
+		ctx.beginPath();
+		ctx.moveTo(0, gridSize * i - 0.5);
+		ctx.lineTo(canvasWidth,gridSize * i - 0.5);
+		ctx.strokeStyle = '#ccc';
+		ctx.stroke()
+  }
+	// 绘制列
+	for (let i = 0; i < col; i++) {
+		ctx.beginPath();
+		ctx.moveTo(gridSize * i - 0.5, 0);
+		ctx.lineTo(gridSize * i - 0.5,canvasHeight);
+		ctx.strokeStyle = '#ccc';
+		ctx.stroke()
+	}
+</script>
+</body>
+</html>

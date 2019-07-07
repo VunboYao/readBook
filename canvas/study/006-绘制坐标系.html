@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    canvas {
+      background: #108ee9;
+    }
+  </style>
+</head>
+<body>
+<canvas width="520" height="400"></canvas>
+<script>
+	let oCanvas = document.querySelector('canvas')
+	let ctx = oCanvas.getContext('2d')
+	// 设置格子大小
+	let gridSize = 40
+	// 获取宽高
+	let canvasWidth = ctx.canvas.width
+	let canvasHeight = ctx.canvas.height
+	// 1 .设置行数 列数
+	let row = Math.floor(canvasHeight / gridSize)
+	let col = Math.floor(canvasWidth / gridSize)
+	// 2. 绘制 行
+	for (let i = 0; i < row; i++) {
+		ctx.beginPath()
+		ctx.moveTo(0, gridSize * i - 0.5)
+		ctx.lineTo(canvasWidth, gridSize * i - 0.5)
+		ctx.strokeStyle = '#ccc'
+		ctx.stroke()
+	}
+	// 绘制列
+	for (let i = 0; i < col; i++) {
+		ctx.beginPath()
+		ctx.moveTo(gridSize * i - 0.5, 0)
+		ctx.lineTo(gridSize * i - 0.5, canvasHeight)
+		ctx.strokeStyle = '#ccc'
+		ctx.stroke()
+	}
+
+
+	// 坐标系原点的位置
+	let originX = gridSize
+	let originY = canvasHeight - gridSize
+	// X 轴终点 位置
+	let endX = canvasWidth - gridSize
+	// 3. 绘制X轴
+	ctx.beginPath()
+	ctx.moveTo(originX, originY)
+	ctx.lineTo(endX, originY)
+	ctx.strokeStyle = '#000'
+	ctx.stroke()
+	// 绘制X轴箭头
+	ctx.lineTo(endX - 10, originY - 5)
+	ctx.lineTo(endX - 10, originY + 5)
+	ctx.lineTo(endX, originY)
+	ctx.fill()
+
+
+	// Y 轴终点 位置
+	let endY = gridSize
+	// 绘制Y轴
+	ctx.beginPath()
+	ctx.moveTo(originX, originY)
+	ctx.lineTo(originX, endY)
+	ctx.strokeStyle = '#000'
+	ctx.stroke()
+	// 绘制Y轴箭头
+	ctx.lineTo(originX - 5, endY + 10)
+	ctx.lineTo(originX + 5, endY + 10)
+	ctx.lineTo(originX, endY)
+	ctx.fill()
+
+
+	// 4. 点列表
+	let list = [
+		{x: 80, y: 280},
+		{x: 160, y: 240},
+		{x: 200, y: 160},
+		{x: 240, y: 240},
+		{x: 320, y: 120},
+	]
+	let dotLocation = {
+		x: 80,
+		y: 280
+	}
+	let dotSize = 20
+	/* ctx.beginPath();
+   ctx.moveTo(dotLocation.x - dotSize/2, dotLocation.y - dotSize/2);
+   ctx.lineTo(dotLocation.x + dotSize/2, dotLocation.y - dotSize / 2);
+   ctx.lineTo(dotLocation.x + dotSize/2, dotLocation.y + dotSize / 2);
+   ctx.lineTo(dotLocation.x - dotSize/2, dotLocation.y + dotSize / 2);
+   ctx.closePath();
+   ctx.fill();*/
+	// 5. 绘制坐标点
+	for (let i = 0; i < list.length; i++) {
+		ctx.beginPath()
+		ctx.moveTo(list[i].x - dotSize / 2, list[i].y - dotSize / 2)
+		ctx.lineTo(list[i].x + dotSize / 2, list[i].y - dotSize / 2)
+		ctx.lineTo(list[i].x + dotSize / 2, list[i].y + dotSize / 2)
+		ctx.lineTo(list[i].x - dotSize / 2, list[i].y + dotSize / 2)
+		ctx.closePath()
+		ctx.fill()
+	}
+
+	ctx.beginPath()
+	for (let i = 0; i < list.length; i++) {
+		if (i === 0) {
+			ctx.moveTo(list[i].x, list[i].y)
+		} else {
+			ctx.lineTo(list[i].x, list[i].y)
+		}
+	}
+	ctx.stroke();
+</script>
+</body>
+</html>

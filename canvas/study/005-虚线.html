@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    canvas {
+      background: #108ee9;
+    }
+  </style>
+</head>
+<body>
+  <canvas width="500" height="500"></canvas>
+  <script>
+    let oCanvas = document.querySelector('canvas');
+    let ctx = oCanvas.getContext('2d');
+    ctx.moveTo(200,100);
+    ctx.lineTo(400,100);
+    ctx.lineTo(400,400);
+    ctx.lineTo(200,400);
+    ctx.closePath();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'blue';
+    ctx.setLineDash([5,20]);
+		ctx.lineDashOffset = -20;
+		ctx.stroke();
+  </script>
+</body>
+</html>
