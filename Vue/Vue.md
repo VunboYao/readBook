@@ -560,7 +560,7 @@ Vue.component('custom-input', {
 
 ### .sync 修饰符
 
-以 `update:myPropName` 的模式触发事件取而代之。举个例子，在一个包含 `title`prop 的假设的组件中，我们可以用以下方法表达对其赋新值的意图：
+以 `update:myPropName` 的模式触发事件取而代之。举个例子，在一个包含 `title` prop 的假设的组件中，我们可以用以下方法表达对其赋新值的意图：
 
 ```vue
 this.$emit('update:title', newTitle)
@@ -1199,5 +1199,35 @@ vm.userProfile = Object.assing({}, vm.userProfile, {
 <table>
   <tr is="blog-post-row"></tr>
 </table>
+```
+
+# Vue-Cli 3
+
+```bash
+npm install -g @vue/cli
+```
+
+**快速原型开发**
+
+```bash
+npm install -g @vue/cli-service-global
+```
+
+```
+vue serve app.vue
+vue build app.vue
+```
+
+**创建项目**
+
+```
+vue create hello-world
+vue create --help // 帮助命令
+```
+
+**图形化创建**
+
+```
+vue ui
 ```
 
