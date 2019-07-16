@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 匹配 16进制颜色
+    var regex16 = /#([a-f0-9A-F]{6}|[0-9a-fA-Z]{3})/g;
+    var string = "#ffbbad #Fc01DF #FFF #ffE";
+    console.log(string.match(regex16));
+
+
+    // 匹配 24 小时制时间
+    var regexp24 = /([01]\d|2[0-3]):[(0-5)]\d/g;
+    var string24 = "23:57 02:07 22:99 24:20";
+    console.log(string24.match(regexp24));
+    console.log(regexp24.exec(string24));
+
+    // 7:9
+    var regexp9 = /^(0?\d|1\d|2[0-3]):(0?\d|[1-5]\d)$/g;
+    var string9 = "09:05";
+    console.log(regexp9.test(string9));
+    console.log(string9.search(regexp9));
+  </script>
+</body>
+
+</html>
