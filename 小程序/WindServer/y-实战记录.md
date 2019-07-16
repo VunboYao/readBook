@@ -41,6 +41,34 @@
 
   
 
-  
+# 服务自动重启
+
+- 安装 `cnpm i nodemon -g`
+
+- 启动 `nodemon app.js`
 
   
+
+# 自动导入module文件
+
+- `cnpm i require-directory`
+
+- ```js
+  const requireDirectory = require('require-directory');
+  const Router = require('koa-router');
+  
+  const modules = requireDirectory(module, './app/api/v1', {
+    visit: whenLoadModule
+  });
+  
+  function whenLoadModule(obj) {
+    if (obj instanceof Router) {
+      app.use(obj.routes())
+    }
+  }
+  ```
+
+# Process.cwd()
+
+- 获取绝对路径
+
