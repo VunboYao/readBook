@@ -14,10 +14,10 @@
           type="danger">
           <a-icon type="left" />Go Back
           </a-button>
-         <router-link to="/user/A">
+         <router-link to="/user/A/">
           <a-button>带参数的路由A</a-button>
         </router-link>
-         <router-link to="/user/B">
+         <router-link to="/user/B/">
           <a-button>带参数的路由B</a-button>
         </router-link>
          <router-link to="/multiple/Vunbo/post/Yao">
@@ -143,7 +143,7 @@ export default {
 }
 
 
-.router-link-exact-active {
+.router-link-active { // 子路由存在时,也会高亮
   .ant-btn {
     background: #09bb07;
     color: #fff;
