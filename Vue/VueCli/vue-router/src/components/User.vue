@@ -1,5 +1,6 @@
 <template>
   <div>组件User <p>参数id是：{{$route.params.id}}</p>
+  <p>UserID {{id}} </p>
      <a-layout>
        <a-layout-header>
          <router-link to="profile">
@@ -19,10 +20,12 @@
 <script>
 export default {
   name: 'User',
+  props: ['id'],
 }
 </script>
 
 <style lang="scss" scoped>
+
 div {
   font-size: 30px;
   font-weight: 600;

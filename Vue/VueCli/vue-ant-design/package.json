@@ -42,7 +42,8 @@
       "@vue/prettier"
     ],
     "rules": {
-      "eslint-disable-next-line": false
+      "eslint-disable-next-line": false,
+      "eslint-disable": true
     },
     "parserOptions": {
       "parser": "babel-eslint"
