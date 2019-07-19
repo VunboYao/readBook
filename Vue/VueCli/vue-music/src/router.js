@@ -1,5 +1,6 @@
-/*
 import Vue from 'vue'
+import Router from 'vue-router'
+
 
 Vue.use(Router)
 
@@ -7,17 +8,27 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
+      redirect: '/recommend',
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/!* webpackChunkName: "about" *!/ './views/About.vue')
-    }
+      path: '/recommend',
+      name: 'recommend',
+      component: () => import('components/recommend/recommend')
+    },
+    {
+      path: '/singer',
+      name: 'singer',
+      component: () => import('components/singer/singer')
+    },
+    {
+      path: '/rank',
+      name: 'rank',
+      component: () => import('components/rank/rank')
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: () => import('components/search/search')
+    },
   ]
 })
-*/
