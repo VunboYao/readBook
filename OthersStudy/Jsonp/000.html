@@ -7,6 +7,11 @@
   <title>Document</title>
 </head>
 <body>
+  <div id="app"><h1>{{song}}</h1>
+    <p><<{{album.name}}>>是{{singer}}2005年11月发行的专辑</p>
+    <p>主打歌为{{album.theme}}</p>
+    <p>作词人为{{singer}}等人.</p>为你弹奏肖邦的{{album.theme}}
+  </div>
 <script>
   var a = {
     i: '1',
@@ -17,7 +22,7 @@
       return a.i;
     },
   }
-console.log(a.valueOf());
+// console.log(a.valueOf());
 
   // console.log(a.toString());
   // console.log(a.toString());
@@ -33,10 +38,50 @@ console.log(a.valueOf());
   // a.toString = a.shift;
   // console.log(a == 1);
   if (a == 1 && a == 2 && a == 3) {
-    console.log(1);
+    // console.log(1);
   }
   // console.log(a.toString());
   // console.log(a.valueOf());
+
+</script>
+<!-- <script src="Jsonp.js"></script> -->
+<!-- <script>
+  Jsonp({
+    url: 'http://127.0.0.1:3001/',
+    data: {
+      word: '6'
+    },
+    jsonp: 'callback',
+    jsonpCallback: 'yyb',
+    success: (data)=> {
+      console.log(data);
+    }
+  })
+  yyb()
+</script> -->
+<script src="node.js"></script>
+<script>
+ /*  let mvvm = new Mvvm({
+    el: '#app',
+    data: {
+      song: '发如雪',
+      album: {
+        name: '十一月的肖邦',
+        theme: '夜曲'
+      },
+      singer: '周杰伦'
+    }
+  }) */
+  let mvvm = new Mvvm({
+      el: '#app',
+      data: {
+        a: {
+          b: 1
+        },
+        c: 2
+      }
+    })
+  console.log(mvvm);
 
 </script>
 </body>

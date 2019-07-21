@@ -18,4 +18,3 @@ module.exports = {
         .set('components',resolve('src/components'))
   }
 }
-
