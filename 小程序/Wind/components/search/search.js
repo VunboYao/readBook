@@ -46,7 +46,7 @@ Component({
     },
     detached() {
       console.log('组件被注销了');
-      
+
     }
   },
 
@@ -79,16 +79,12 @@ Component({
         })
       }
     },
-
-
-
     // 取消
     onCancel() {
       // 初始化
       this.initialize()
       this.triggerEvent('cancel', {}, {})
     },
-
     // 点击搜索
     onConfirm(e) {
       this._showResult()
@@ -110,7 +106,6 @@ Component({
         this._hideLoadingCenter()
       })
     },
-
     _showLoadingCenter() {
       this.setData({
         loadingCenter: true
@@ -121,7 +116,6 @@ Component({
         loadingCenter: false
       })
     },
-
     // 清除搜索框
     onDelete(e) {
       // 初始化
@@ -131,7 +125,6 @@ Component({
         inputValue: '',
       })
     },
-
     _showResult() {
       this.setData({
         searching: true
