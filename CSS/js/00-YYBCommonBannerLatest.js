@@ -1,7 +1,7 @@
 class yybSwiper {
     constructor(obj) {
         // 0 初始化数据
-        this.oElement = obj.element
+        this.oElement = document.querySelector(obj.element)
         this.bPagination = obj.pagination || false
         this.iDuration = obj.duration || 4000
 
@@ -141,13 +141,13 @@ class yybSwiper {
             // 2. 条件判断
             // 上一张, 如果是第一张时, 指向最后一张
             if (this.index <= 0) {
-                this.setTimeLocal(this.aAllImg[this.iLen - 1], '300ms', -this.oWidth)
+                this.setTimeLocal(this.aAllImg[this.iLen - 1], '500ms', -this.oWidth)
             } else {
-                this.setTimeLocal(this.aAllImg[this.index - 1], '300ms', -this.oWidth)
+                this.setTimeLocal(this.aAllImg[this.index - 1], '500ms', -this.oWidth)
             }
 
             // 3. 当前
-            this.setTimeLocal(this.aAllImg[this.index], '300ms', 0)
+            this.setTimeLocal(this.aAllImg[this.index], '500ms', 0)
             this.aAllImg[this.index].style.opacity = 1
 
             // 4. 下一张, 如果是最后一张时, 指向第一张,无动画时间跳转.
@@ -192,15 +192,15 @@ class yybSwiper {
 
             // update 上一张
             if (this.index === 0) {
-                this.setTimeLocal(this.aAllImg[this.iLen - 1], '300ms', -this.oWidth)
+                this.setTimeLocal(this.aAllImg[this.iLen - 1], '500ms', -this.oWidth)
                 this.removeDuration(this.aAllImg[this.iLen - 1])
             } else {
-                this.setTimeLocal(this.aAllImg[this.index - 1], '300ms', -this.oWidth)
+                this.setTimeLocal(this.aAllImg[this.index - 1], '500ms', -this.oWidth)
                 this.removeDuration(this.aAllImg[this.index - 1])
             }
 
             // update 当前
-            this.setTimeLocal(this.aAllImg[this.index], '300ms', 0)
+            this.setTimeLocal(this.aAllImg[this.index], '500ms', 0)
             this.removeDuration(this.aAllImg[this.index])
 
             // update 下一张
@@ -211,13 +211,13 @@ class yybSwiper {
             }
         } else {
             if (this.index >= this.iLen -1) {
-                this.setTimeLocal(this.aAllImg[this.index], '300ms', 0)
-                this.setTimeLocal(this.aAllImg[0], '300ms', this.oWidth);
+                this.setTimeLocal(this.aAllImg[this.index], '500ms', 0)
+                this.setTimeLocal(this.aAllImg[0], '500ms', this.oWidth);
                 this.removeDuration(this.aAllImg[this.index])
                 this.removeDuration(this.aAllImg[0])
             } else {
-                this.setTimeLocal(this.aAllImg[this.index], '300ms', 0)
-                this.setTimeLocal(this.aAllImg[this.index + 1], '300ms', this.oWidth)
+                this.setTimeLocal(this.aAllImg[this.index], '500ms', 0)
+                this.setTimeLocal(this.aAllImg[this.index + 1], '500ms', this.oWidth)
                 this.removeDuration(this.aAllImg[this.index])
                 this.removeDuration(this.aAllImg[this.index + 1])
             }
@@ -249,21 +249,21 @@ class yybSwiper {
             }
 
             // update 当前
-            this.setTimeLocal(this.aAllImg[this.index], '300ms', 0)
+            this.setTimeLocal(this.aAllImg[this.index], '500ms', 0)
             this.removeDuration(this.aAllImg[this.index])
 
             // update 下一张
             if (this.index >= this.iLen - 1) {
-                this.setTimeLocal(this.aAllImg[0], '300ms', this.oWidth)
+                this.setTimeLocal(this.aAllImg[0], '500ms', this.oWidth)
                 this.removeDuration(this.aAllImg[0]) // 消除动画时间
             } else {
-                this.setTimeLocal(this.aAllImg[this.index + 1], '300ms', this.oWidth)
+                this.setTimeLocal(this.aAllImg[this.index + 1], '500ms', this.oWidth)
                 this.removeDuration(this.aAllImg[this.index + 1]) // 消除动画时间
             }
         } else {
             // 动画滑动至原来的位置
-            this.setTimeLocal(this.aAllImg[this.index], '300ms', 0);
-            this.setTimeLocal(this.aAllImg[this.index - 1], '300ms', -this.oWidth);
+            this.setTimeLocal(this.aAllImg[this.index], '500ms', 0);
+            this.setTimeLocal(this.aAllImg[this.index - 1], '500ms', -this.oWidth);
             this.removeDuration(this.aAllImg[this.index - 1]);
             this.removeDuration(this.aAllImg[this.index]);
         }
@@ -282,10 +282,9 @@ class yybSwiper {
     }
 }
 
-let oContainer = document.querySelector('.yybSwiper-container')
 let obj = {
-    element: oContainer,
+    element: '.yybSwiper-container',
     pagination: true,
-    duration: 4500
+    duration: 5000
 }
 let a = new yybSwiper(obj)
