@@ -282,7 +282,8 @@ class yybSwiper {
     }
 }
 
-let obj = {
+let obj =
+    {
     element: '.yybSwiper-container',
     pagination: true,
     duration: 5000

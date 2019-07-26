@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/mine/mine"
+    "pages/mine/mine",
+    "pages/index/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -19,19 +19,24 @@
     "list": [{
         "pagePath": "pages/index/index",
         "text": "Hello",
-        "iconPath": "/assets/main-normal.png",
-        "selectedIconPath": "/assets/main-now.png"
+        "iconPath": "/asset/main-normal.png",
+        "selectedIconPath": "/asset/main-now.png"
       },
       {
         "pagePath": "pages/mine/mine",
         "text": "Vunbo",
-        "iconPath": "/assets/mine-normal.png",
-        "selectedIconPath": "/assets/mine-now.png"
+        "iconPath": "/asset/mine-normal.png",
+        "selectedIconPath": "/asset/mine-now.png"
       }
     ]
   },
   "networkTimeout": {
     "request": 50000
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
   },
   "debug": true,
   "sitemapLocation": "sitemap.json"
