@@ -1,9 +1,16 @@
 class yybSwiper {
     constructor(obj) {
         // 0 初始化数据
+        /*
+        *  oElement: Dom 节点元素
+        *  bPagination: 显示焦点图 (Boolean)
+        *  iDuration:  动画持续时间 Number
+        *  invalidDis: 无效滑动距离 Number
+        * */
         this.oElement = document.querySelector(obj.element)
         this.bPagination = obj.pagination || false
         this.iDuration = obj.duration || 4000
+        this.invalidDis = obj.invalidDis || 80
 
         // 1.获取基础轮播数据
         this.oWrap = this.oElement.querySelector('.yybSwiper-wrap') // 父级容器
@@ -178,12 +185,12 @@ class yybSwiper {
     // 3. 左滑, 下一张
     nextPlay() {
         /*
-        * 1. dis 小于 -30, 显示下一张, index++
+        * 1. dis 小于 -100, 显示下一张, index++
         * 2. 如果 index > iLen - 1, index = 0
         * 3. 更新位置
-        * 4. dis 大于 -30, 动画返回原来的位置
+        * 4. dis 大于 -100, 动画返回原来的位置
         * */
-        if (this.iMoveDistance < -30) {
+        if (this.iMoveDistance < -this.invalidDis) {
             this.index++
             if (this.index > this.iLen - 1) {
                 this.index = 0
@@ -227,12 +234,12 @@ class yybSwiper {
     // 4. 右滑, 上一张
     prePlay() {
         /*
-        * 1. dis 大于 30, 显示上一张, index--
+        * 1. dis 大于 100, 显示上一张, index--
         * 2. 如果 index < 0, index = iLen - 1;
         * 3. 更新位置
-        * 4. 如果 dis 小于 30, 动画返回原位置
+        * 4. 如果 dis 小于 100, 动画返回原位置
         * */
-        if (this.iMoveDistance > 30) {
+        if (this.iMoveDistance > this.invalidDis) {
             this.index--
             if (this.index < 0) {
                 this.index = this.iLen - 1
@@ -285,7 +292,7 @@ class yybSwiper {
 let obj =
     {
     element: '.yybSwiper-container',
-    pagination: true,
-    duration: 5000
+    pagination: true, // 显示焦点
+    duration: 5000, // 动画时间
 }
 let a = new yybSwiper(obj)

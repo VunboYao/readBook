@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+  background-color: transparent;
+  font: 14px/1.5 Helvetica,sans-serif,STHeiTi;
+  color: #333;
+  outline: 0; }
+
+.fl {
+  float: left; }
+
+.fr {
+  float: right; }
+
+.clearfix::after {
+  content: '';
+  display: block;
+  height: 0;
+  visibility: hidden;
+  clear: both; }
+
+.clearfix {
+  *zoom: 1; }
+
+div {
+  display: flex;
+  justify-content: center;
+  align-content: center; }
+
+.demo {
+  color: red;
+  width: 1rem; }
+
+/*# sourceMappingURL=index.css.map */

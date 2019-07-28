@@ -58,6 +58,16 @@
 }
 ```
 
+## JS 设置 meta:viewport
+
+```js
+    let scale = 1 / window.devicePixelRatio;
+    let text = `<meta name="viewport" content="width=device-width, initial-scale=${scale},maximum-scale=${scale},minimum-scale=${scale},user-scalable=no">`
+    document.write(text);
+    document.documentElement.style.fontSize = window.innerWidth / 7.5 + 'px';
+    // 切换设备界面需要刷新才能响应
+```
+
 ## 图片底部缝隙
 - **产生原因：图片或者表单等行内块元素，他的底线会和父级盒子的基线对齐(即默认vertical-align: baseline)。这样会造成一个问题，就是图片底侧会有一个空白缝隙**
 - 父级fontSize: 0;
@@ -103,12 +113,16 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
     - max-content：最大内容宽度,一往无前不换行
     - min-content: 以内部元素中，宽度最大的值为当前宽度。实现漏斗布局
     - fit-content: 实现元素适应内容宽度。保持原本的block水平状态。
+    - vmin: vm 和 vh 中较小的那一个
+    - vmax: vm 和 vh 中较小的那一个
 
 4. calc() 动态计算长度的值
     - 需要注意的是，运算符前后都需要保留一个空格，例如：width: calc(100% - 10px)
     - 任何长度值都可以使用calc()函数进行计算
     - calc()函数支持 "+", "-", "*", "/" 运算
     - calc()函数使用标准的数学运算优先级规则
+    - 乘法时至少需要一个 number 类型
+    - **除法 / 右边的数必须是 number 类型**
     - 适用场景：满幅背景，定宽内容居中
         - padding: 0 calc(50% - 200px); ****padding的使用****
 
@@ -195,8 +209,8 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
                     height: 60px;
                 }
     ```
-7. padding扩展注意点
-    - CSS padding 属性的百分比数值是相对于其父元素的 width 计算的，如果改变了父元素的 width，则它们也会改变
+7. padding, margin 扩展注意点
+    - CSS padding, margin 属性的百分比数值是相对于其父元素的 width 计算的，如果改变了父元素的 width，则它们也会改变
     - 在 grid 布局中, 每个子项(padding-bottom)所相对的计算的宽度已经划分好了, 为当前子项, 并不是父元素的宽度.
 
 8. 隐藏滚动条

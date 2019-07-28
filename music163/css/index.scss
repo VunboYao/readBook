@@ -1,0 +1,11 @@
+@charset "utf-8";
+@import "common";
+
+div {
+    @include flexCenter;
+}
+
+.demo {
+    color: red;
+    width: (100rem/100);
+}

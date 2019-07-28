@@ -68,14 +68,14 @@ body div {
 - 局部变量会覆盖全局变量，局部变量只会在局部范围内覆盖全局变量
 
 - 选择器嵌套
-    
+  
 ```
 nav {
   a {
     color: red;
   }
 } 
-```    
+```
 
 - 属性嵌套，CSS 中有一些属性前缀相同，只是后缀不一样。
 
@@ -247,7 +247,7 @@ nav {
       margin-left: 250px;
       margin-bottom: 18.5px;
     } 
-    ```    
+    ```
 - 变量也可以计算
 - 字符运算
     - 如果有引号的字符串 + 一个没有引号的字符串，结果会是有引号
@@ -423,7 +423,7 @@ nav {
 
 ```
 @function px2vm($px,$width: 750) {
-  @return $px / ($width / 100) + 'vw';
+  @return $px / ($width / 100) + vw;
 }
 
 @function px2rem($px,$root: 16) {
