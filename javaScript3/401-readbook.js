@@ -4754,3 +4754,29 @@ console.log(hw.next());
 console.log(hw.next());
 console.log(hw.next());
 console.log(hw.next()); */
+let a = 311;
+let b = 511;
+let pr = new Promise((resovle, reject) => {
+  if (a > b) {
+    resovle(a)
+  }else {
+    reject(b);
+  }
+})
+let pr1 = new Promise((resovle, reject) => {
+    // resovle('aaaa')
+    reject('abcd');
+})
+let pr2 = pr.then(res => {
+  console.log(res);
+  return '222'
+},err => {
+  console.log(err);
+  return pr1;
+})
+
+pr2.then(res => {
+  console.log('成功',res);
+}, err => {
+  console.log('失败', err);
+})
