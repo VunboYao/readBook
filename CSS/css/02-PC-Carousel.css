@@ -1,0 +1,92 @@
+/* 初始化 */
+body {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  vertical-align: bottom;
+}
+
+/* 父级容器 */
+.container {
+  position: relative;
+  margin: 10vh auto;
+  width: 80vw;
+  height: 40vw;
+  border-radius: 5px;
+  box-shadow: 0 0 10px #ddd;
+  overflow: hidden;
+}
+
+/* 轮播外层 */
+.carousel-wrap {
+  position: relative;
+  height: 100%;
+}
+
+/* 轮播项 */
+.yyb-swiper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: all .5s;
+}
+
+/* 第一个显示 */
+.yyb-swiper:first-child {
+  opacity: 1;
+}
+
+/* 焦点 */
+.dots {
+  display: none;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 12px;
+}
+
+/* 所有后代 */
+.dots>li {
+  float: left;
+  margin: 0 5px;
+  width: 50px;
+  height: 3px;
+  background: #ccc;
+}
+
+.active {
+  position: relative;
+}
+
+.active::after {
+  position: absolute;
+  content: '';
+  display: block;
+  font-size: 0;
+  height: 100%;
+  background-color: #108ee9;
+  animation: goAli 5s linear;
+  border-radius: 2px;
+  animation-fill-mode: forwards;
+}
+
+@keyframes goAli{
+  from {
+    width: 0%;
+  }
+  to {
+    width: 101%;
+  }
+}
