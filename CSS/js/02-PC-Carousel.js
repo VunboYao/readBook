@@ -19,6 +19,8 @@ class yybPcCarousel {
     this.len = this.allImg.length;
     this.index = 0;
     this.timer = null;
+    this.left = this.el.querySelector('.left');
+    this.right = this.el.querySelector('.right');
 
     // 2. 开启动画
     this._showBanner();
@@ -30,8 +32,25 @@ class yybPcCarousel {
 
     // 4. 重新开启
     this.el.addEventListener('mouseleave', () => {
+      this._showBanner();
+    })
 
-      // 边界处理
+    // 5.left
+    this.left.onclick =  () => {
+      // 0. 边界处理
+      this.index = --this.index < 0 ? (this.len - 1) : this.index;
+      // 1. 切换动画
+      this._changeImg(this.index);
+
+      // 2. 焦点
+      if (this.pagination) {
+        this._pagination(this.index);
+      }
+    }
+
+    // 6.right
+    this.right.onclick = () => {
+      // 0. 边界处理
       this.index = ++this.index > (this.len - 1) ? 0 : this.index;
       // 1. 切换动画
       this._changeImg(this.index);
@@ -40,9 +59,21 @@ class yybPcCarousel {
       if (this.pagination) {
         this._pagination(this.index);
       }
-      /* 划出后强制刷新下一张，并重新开始定时器 */
-      this._showBanner();
-    })
+    }
+
+    // 7.焦点点击事件
+    for (let i = 0; i < this.len; i++) {
+      this.allDots[i].onclick = () => {
+        this.index = i;
+        // 1. 切换动画
+        this._changeImg(this.index);
+
+        // 2. 焦点
+        if (this.pagination) {
+          this._pagination(this.index);
+        }
+      }
+    }
   }
 
   // 0. 轮播动画
