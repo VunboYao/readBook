@@ -94,3 +94,43 @@
         }
     }
 }*/
+
+/*const convertDuration = time => {
+  let minutes = Math.floor(time / 60);
+  let seconds = Math.floor(time - minutes * 60);
+  minutes = String(minutes).length < 2 ? String(minutes).padStart(2,'0'): minutes;
+  seconds = String(seconds).length < 2 ? String(seconds).padStart(2,'0'): seconds;
+  return minutes + ":" + seconds;
+};
+
+convertDuration(308); // 05:08
+convertDuration(6000); // 100:00*/
+
+/*function arrIndexExchange(array,x,y) {
+  /!*
+  * 解析：
+  * x-1,1, 删除索引 X 的值
+  * y-1,1,array[x-1]， 删除索引 Y 的值，插入X的值
+  * ...array, 扩展加入到 X 的位置
+  * *!/
+  let a = array.splice(x-1, 1, ...array.splice(y-1, 1,array[x-1]));
+  return array;
+}
+
+let arr = [1,2,3,4];
+console.log(arrIndexExchange(arr,3,4));*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
