@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -8,11 +9,13 @@
             margin: 0;
             position: relative;
         }
+
         img {
             position: absolute;
             top: 10px;
             left: 10px;
         }
+
         div {
             position: absolute;
             left: 300px;
@@ -23,29 +26,31 @@
         }
     </style>
 </head>
-<body>
-<img id="p3" src="../images/timg.jpg" alt="beautyGirl" title="girl">
-<div id="box"></div>
-<script>
-    let imgId = document.getElementById('p3');
-    let box = document.getElementById('box');
 
-    // 默认不可以drop，阻止其默认行为
-    box.ondragover = function (ev) {
-        ev.preventDefault();
-    }
-    imgId.ondragstart = function (ev) {
-        ev.dataTransfer.setData('imgId', this.id); // 保存当前图片
-        ev.dataTransfer.effectAllowed = 'move'; // 允许拖动的类型。在dragstart中设置
-    }
-    box.ondragenter = function(ev) {
-        ev.dataTransfer.dropEffect = 'move'; // 放下效果必须在dragenter中设置
-    }
-    box.ondrop = function (ev) {
-        let id = ev.dataTransfer.getData('imgId');
-        let img = document.getElementById(id);
-        box.appendChild(img);
-    }
-</script>
+<body>
+    <img id="p3" src="../images/timg.jpg" alt="beautyGirl" title="girl">
+    <div id="box"></div>
+    <script>
+        let imgId = document.getElementById('p3');
+        let box = document.getElementById('box');
+
+        // 默认不可以drop，阻止其默认行为
+        box.ondragover = function (ev) {
+            ev.preventDefault();
+        }
+        imgId.ondragstart = function (ev) {
+            ev.dataTransfer.setData('imgId', this.id); // 保存当前图片
+            ev.dataTransfer.effectAllowed = 'move'; // 允许拖动的类型。在dragstart中设置
+        }
+        box.ondragenter = function (ev) {
+            ev.dataTransfer.dropEffect = 'move'; // 放下效果必须在dragenter中设置
+        }
+        box.ondrop = function (ev) {
+            let id = ev.dataTransfer.getData('imgId');
+            let img = document.getElementById(id);
+            box.appendChild(img);
+        }
+    </script>
 </body>
+
 </html>
