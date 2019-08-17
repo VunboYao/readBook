@@ -1,6 +1,6 @@
 # 常用 linux 操作
 - pwd 当前路径
-- clear 清理界面1
+- clear 清理界面
 - ls -al 显示当前目录下的所有文件及文件夹包括隐藏的.和..等的详细信息
 - cp file1 file2 复制文件1到文件2中 #cp ../file1 .
 - cp -r 复制文件目录下所有文件 # git -r ../images/
