@@ -58,6 +58,19 @@
         :picker-options="pickOptions1"
       ></el-date-picker>
     </el-row>
+    <el-row>
+      <el-date-picker
+        v-model="value7"
+        type="datetime"
+        placeholder="select datetime"
+      ></el-date-picker>
+      <el-date-picker
+        v-model="value7"
+        type="datetime"
+        align="right"
+        :picker-options="pickerOptions4"
+      ></el-date-picker>
+    </el-row>
   </div>
 </template>
 
@@ -69,6 +82,7 @@ export default {
       date1: '',
       week: '',
       date2: '',
+      value7: '',
       id: '',
       options: {
         start: '08:30',
@@ -116,6 +130,28 @@ export default {
             const start = new Date();
             start.setTime(start.getTime()-3000*1000*24*7);
             picker.$emit('pick',[start,end])
+          }
+        }]
+      },
+      pickerOptions4: {
+        shortcuts: [{
+          text: '今天',
+          onClick(picker) {
+            picker.$emit('pick',new Date())
+          }
+        },{
+          text: '昨天',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 1000 * 24);
+            picker.$emit('pick', date)
+          }
+        },{
+          text: 'before a week',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 24 * 1000 * 7);
+            picker.$emit('pick',date)
           }
         }]
       }
