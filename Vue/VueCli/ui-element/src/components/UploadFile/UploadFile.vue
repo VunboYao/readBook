@@ -1,13 +1,13 @@
 <template>
   <div class="app-container">
-    <upload-excel-component 
-      :on-success="handleSuccess" 
+    <upload-excel-component
+      :on-success="handleSuccess"
       :before-upload="beforeUpload" />
   </div>
 </template>
 
 <script>
-import UploadExcelComponent from "./index.vue";
+import UploadExcelComponent from "./index1.vue";
 
 export default {
   name: "UploadExcel",
@@ -16,7 +16,7 @@ export default {
     previewExcel: false, // 是否开始预览
     fileSize: { // 默认文件大小
       type: [Number, String],
-      default: 0.2
+      default: 2
     }
   },
   data() {
