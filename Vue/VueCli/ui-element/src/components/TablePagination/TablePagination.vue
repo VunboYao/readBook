@@ -118,6 +118,7 @@
 </script>
 <style scoped>
   .el-pagination {
+    text-align: center;
     padding: 30px 5px;
   }
 </style>
