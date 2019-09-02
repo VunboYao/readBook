@@ -1,17 +1,22 @@
 <template>
   <div id="app">
-    <upload-file/>
+    <tinymce
+      @content="getContent"
+    />
   </div>
 </template>
 
 <script>
-import UploadFile from './components/UploadFile/UploadFile'
+import Tinymce  from './components/Tinymce/Tinymce'
 export default {
   name: 'app',
   components: {
-    UploadFile
+    Tinymce
   },
   methods: {
+    getContent(item) {
+      console.log(item)
+    }
   }
 }
 </script>
