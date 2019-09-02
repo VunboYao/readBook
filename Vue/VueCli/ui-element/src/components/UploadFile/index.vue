@@ -44,7 +44,7 @@ export default {
     return {
       loading: false,
       rawFile: [], // 原始文件集合
-      tempData: [], // 
+      tempData: [], //
       srcArr: []
     };
   },

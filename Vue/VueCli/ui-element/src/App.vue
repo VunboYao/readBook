@@ -1,13 +1,11 @@
 <template>
   <div id="app">
-    <tinymce
-      @content="getContent"
-    />
+    <tinymce/>
   </div>
 </template>
 
 <script>
-import Tinymce  from './components/Tinymce/Tinymce'
+import Tinymce from './components/TinymceCDN/Tinymcd'
 export default {
   name: 'app',
   components: {

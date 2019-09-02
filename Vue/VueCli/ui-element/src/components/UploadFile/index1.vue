@@ -5,7 +5,6 @@
         type="file"
         class="img-upload-input"
         multiple
-        accept="image/*"
         @change="handleClick"
     />
     <div class="img-upload">
