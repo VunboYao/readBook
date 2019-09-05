@@ -5,23 +5,25 @@
       type="file"
       class="img-upload-input"
       multiple
+      accept="image/*"
       @change="handleClick"
     />
     <div class="img-upload">
-      <el-button class="img-upload-btn" @click="handleUpload" type="primary" :loading="loading">选择文件</el-button>
-      <span class="img-upload-tip">最多上传 {{maxFileNum}} 个文件</span>
+      <el-button class="img-upload-btn" @click="handleUpload" type="primary" :loading="loading">选择图片</el-button>
+      <span class="img-upload-tip">最多上传 {{maxFileNum}} 张图片</span>
       <!-- 预览图片外层 -->
-     <!--  <div class="img-prview-wrap" v-if="previewImg">
+      <div class="img-prview-wrap" v-if="previewImg">
+        <!-- 单图片 -->
           <div class="img-prview-inner" v-for="(item, index) in previewFile" :key="index">
             <img :src="item|filterSrc" :width="imgWidth" :height="imgWidth" />
-            <span :style="{width: imgWidth + 'px'}">
+            <span :style="{width: imgWidth + 'px'}" :title="item.name">
               {{item.name}}
               <i @click="removePreview(item)" class="el-icon-delete-solid"></i>
             </span>
           </div>
-      </div> -->
+      </div>
       <!-- 预览标题列表 -->
-      <div class="img-title-wrap">
+      <div class="img-title-wrap" v-else>
           <p class="img-title" v-for="(item, index) in previewFile" :key="index" :title="item.name">
             <i class="el-icon-document"></i>
             {{item.name}}
@@ -35,13 +37,19 @@
 <script>
 export default {
   props: {
+    imgWidth: {
+      // 预览图片默认宽度
+      type: [Number, String],
+      default: 200
+    },
     maxFileNum: {
       // Default maximum number
       type: Number,
-      default: 99
+      default: 9
     },
     beforeUpload: Function, // validator before upload
     onSuccess: Function, // callback of success
+    previewImg: true
   },
   filters: {
     /* 过滤文件，提取地址 */

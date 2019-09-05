@@ -1,28 +1,39 @@
 <template>
   <div class="app-container">
-    <upload-file-component
+    <upload-img-component
       :max-file-num="maxFileNum"
+      :img-width="imgWidth"
+      :preview-img="previewImg"
       :on-success="handleSuccess"
       :before-upload="beforeUpload" />
   </div>
 </template>
 
 <script>
-import UploadFileComponent from "./index.vue";
+import UploadImgComponent from "./index.vue";
 
 export default {
   name: "UploadExcel",
-  components: { UploadFileComponent },
+  components: { UploadImgComponent },
   props: {
     fileSize: { // 默认文件大小
       type: [Number, String],
-      default: 50
+      default: 2
+    },
+    imgWidth: {
+      // 预览图片默认宽度
+      type: [Number, String],
+      default: 200
     },
      maxFileNum: {
       // Default maximum number
       type: Number,
-      default: 99
+      default: 9
     },
+    previewImg: { // 是否开启预览图片
+      type: [Boolean],
+      default: true
+    }
   },
   data() {
     return {
