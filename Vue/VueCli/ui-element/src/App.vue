@@ -62,6 +62,7 @@ export default {
   components: {
   },
   methods: {
+    test(){}
   }
 }
 </script>
