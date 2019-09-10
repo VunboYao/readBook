@@ -70,6 +70,26 @@
 - `git add -A(--all)`:  添加所有修改, 新建, 删除的文件
 - `git add .`: 等价于 `git add -A`
 
+## 提交文件
+
+- `git commit -m 'xxxxx'`
+- **-m**表示对此次提交进行注释，简述此次提交的相关信息
+- 如果不加**-m**, 那么点击回车之后， 会默认弹出自带的VIM编辑器。
+
+# 查看历史
+
+- `git log --all` 查看所有分支的历史
+- `git log --all --graph` 查看图形化的log历史
+- `git log --oneline` 查看单行的简洁历史
+- `git log --oneline -n4` 查看最近4条简洁历史
+- `git log --oneline --all -n4 --graph` 查看所有分支最近4条单行的图形化历史
+- `git help --web log` 跳转到git log 的帮转文档网页
+
+# Git删除与恢复
+
+- `git rm --cached a.txt` 删除暂存区指定文件,工作区不受影响
+- `git checkout a.txt`，工作区的内容不满意，将暂存区内容还原到工作区
+
 # 回滚相关
 
 1. `git log / git reflog` 查看项目历史
