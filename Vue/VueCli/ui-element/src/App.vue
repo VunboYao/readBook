@@ -1,74 +1,55 @@
 <template>
-  <div id="app">
-    <el-table :data="tableData">
-      <el-table-column
-        type="index"
-        width="50">
-      </el-table-column>
-       <el-table-column
-        type="imgsrc"
-        label="头像"
-        width="50">
-        <template slot-scope="scope">
-          <img :src="tableData[0]['imgsrc']" alt="">
-        </template>
-      </el-table-column>
-      <el-table-column
-        property="date"
-        label="日期"
-        width="120">
-      </el-table-column>
-      <el-table-column
-        property="name"
-        label="姓名"
-        width="120">
-      </el-table-column>
-      <el-table-column
-        property="address"
-        label="地址">
-      </el-table-column>
-    </el-table>
+  <div class="container">
+    <grid-layout
+      :layout.sync="layout"
+      :col-num="2"
+      :row-height="5"
+      :maxRows="2"
+      :is-draggable="true"
+      :is-resizable="false"
+      :is-mirrored="false"
+      :vertical-compact="true"
+      :margin="[10, 10]"
+      :use-css-transforms="true"
+    >
+      <grid-item
+        v-for="item in layout"
+        :x="item.x"
+        :y="item.y"
+        :w="item.w"
+        :h="item.h"
+        :i="item.i"
+        :key="item.i"
+      >
+        {{ item.i }}
+      </grid-item>
+    </grid-layout>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
+import VueGridLayout from 'vue-grid-layout'
+Vue.use(VueGridLayout)
+var testLayout = [
+  { x: 0, y: 1, w: 1, h: 2, i: '0' },
+  { x: 1, y: 1, w: 1, h: 3, i: '1' }
+]
 export default {
-  name: 'app',
   data() {
     return {
-      tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-          imgsrc: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3357786243,3135716437&fm=26&gp=0.jpg'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄',
-          imgsrc: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3357786243,3135716437&fm=26&gp=0.jpg'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄',
-          imgsrc: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3357786243,3135716437&fm=26&gp=0.jpg'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄',
-          imgsrc: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3357786243,3135716437&fm=26&gp=0.jpg'
-        }],
+      layout: testLayout,
     }
   },
   components: {
+    GridLayout: VueGridLayout.GridLayout,
+    GridItem: VueGridLayout.GridItem
   },
-  methods: {
-  }
+  methods: {}
 }
 </script>
 <style>
-img {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
+.vue-grid-item {
+  background-color: #ccc;
 }
 </style>

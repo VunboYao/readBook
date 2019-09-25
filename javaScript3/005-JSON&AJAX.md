@@ -1426,7 +1426,7 @@ fileList.addEventListener('change', function (ev) {
 
 使用对象 URL 的好处是可以不必把文件内容读取到 JavaScript 中而直接使用文件内容。为此，只要在需要文件内容的地方提供对象 URL 即可。要创建对象 URL，可以使用 window.URL.createObjectURL() 方法，并传入File 或 Blob 对象。
 - window.URL.createObjectURL(url) 
-- 手工释放内存，window.URL.revokeObjectURL(url)
+- 手工释放内存，window.URL.revokeObjectURL(url), 该url为通过createObjectURL(url)产生的url
 
 ```
 let fileList = document.getElementById("file");
