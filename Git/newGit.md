@@ -23,6 +23,7 @@
   - l 表示档案的权限, 拥有者以及建立,修改时间
 - **touch**命令, 创建新文件.如果已经存在同名文件，那么只会修改此文件的修改时间，内容保持不变
 - **mkdir命令**, 创建新目录,
+- **clear**, 清理git面板
 - **cp file1 file2命令**, 复制文件1到文件2
 - **mv命令**,重命名文件, `mv a.txt a.html`
 - **rm 命令**, 删除文件
@@ -41,9 +42,9 @@
 - `git config --global user.name 'xxxx'`, 添加用户名 for global
 
 - `git config --global user.email 'xxxx'`, Add Email for global
-  
+
   - if in the current project, no `--global`
-  
+
 - 清除相关信息: `git config --unset --global user.name(user.email)`
 
 - `git config [--local|--global|--system] -e`, 修改配置文件, **默认采用--local**
@@ -63,6 +64,15 @@
   ## global 和 local 参数同事存在时, local优先级更高
 
 # 基础命令
+
+## 获取文件
+
+- `git clone 远程地址`, 克隆获取远程项目仓库地址
+
+
+## 修改文件
+
+- `git diff `:  查看文件最新修改的地方
 
 ## 添加文件
 
@@ -94,3 +104,17 @@
 
 1. `git log / git reflog` 查看项目历史
 2. `git reset --hard 版本号(hash)`, 任意版本之间切换
+   1. 回退到上一个版本：`git reset --hard HEAD^`
+   2. 回退到上上一个版本：`git reset ––hard HEAD^^`
+   3. 回退到上N个版本：`git reset ––hard HEAD~N（N是一个整数）`
+   4. 回退到任意一个版本：`git reset ––hard 版本号（版本号用7位即可）`
+
+# 忽略文件
+
+`.gitignore`文件
+
+- `#`, 表示注释
+- `*.a`, 表示忽略所有 .a 结尾的文件
+- `!lib.a`, 表示 lib.a 除外
+- `/TODO`, 表示忽略项目根目录下的 TODO 文件, 不包括 subdir/TODO
+- `build/`, 表示忽略 build/ 目录下的所有文件, 过滤整个build 文件夹
