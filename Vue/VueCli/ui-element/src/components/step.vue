@@ -1,28 +1,30 @@
 <template>
   <div>
-     <step :step-data="stepData" :active="active" />
-     <button @click="add">addddd</button>
+    <div class="step">
+      <div v-for="(item, index) in stepData" :key="index" class="step-item">
+        <span
+          class="step-item--num"
+          :class="[
+            index > 0 ? 'is-active' : '',
+            active >= (index + 1) ? 'active' : ''
+          ]"
+          >{{ index + 1 }}</span>
+        <span class="step-item--text">{{ item }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import step from './components/step'
 export default {
- components: {
-   step
- },
- data() {
-   return {
-     stepData: ['1111','一路啊第三方', '测试下','爱过', '爱党', '爱人民'],
-     active: 1
-   }
- },
-  methods: {
-    add() {
-      ++this.active;
-      if (this.active > this.stepData.length) {
-        this.active = 1
-      }
+  props: {
+    stepData: {
+      type: Array,
+      default: () => null
+    },
+    active: {
+      type: [Number, String],
+      default: 1
     }
   }
 }
