@@ -1,82 +1,182 @@
 <template>
-  <div>
-     <step :step-data="stepData" :active="active" />
-     <button @click="add">addddd</button>
+  <div class="container">
+    <div class="ul">
+      <div
+          class="li"
+          v-for="(item,index) in arr"
+          @mouseover="father(index)"
+          @mouseleave="close()"
+          :key="index">
+        <h2>{{item.title}}</h2>
+        <transition-group name="el-fade-in">
+          <div class="sub-wrap" key="1" v-show="active === index">
+            <div
+                class="sub-li"
+                v-for="(sub,subIndex) in item.child"
+                :key="subIndex"
+                @mouseover="subFather(subIndex)"
+                @mouseleave="closeSub()"
+            >
+              <h2>{{sub.subTitle}}</h2>
+                <div class="grd-wrap"  v-show="subActive === subIndex">
+                  <h2 v-for="(last, lastIndex) in sub.children" :key="lastIndex">
+                    {{last.grdTitle}}
+                  </h2>
+                </div>
+            </div>
+          </div>
+        </transition-group>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import step from './components/step'
-export default {
- components: {
-   step
- },
- data() {
-   return {
-     stepData: ['1111','一路啊第三方', '测试下','爱过', '爱党', '爱人民'],
-     active: 1
-   }
- },
-  methods: {
-    add() {
-      ++this.active;
-      if (this.active > this.stepData.length) {
-        this.active = 1
-      }
-    }
-  }
-}
+	export default {
+		data() {
+			return {
+				active: null,
+				subActive: null,
+				arr: [
+					{
+						title: '1',
+						child: [
+							{
+								subTitle: '1-1',
+								children: [
+									{grdTitle: '1-1-1'},
+									{grdTitle: '1-1-2'},
+									{grdTitle: '1-1-3'},
+									{grdTitle: '1-1-4'}
+								]
+							},
+							{
+								subTitle: '1-2',
+								children: [
+									{grdTitle: '1-2-1'},
+									{grdTitle: '1-2-2'},
+									{grdTitle: '1-2-3'},
+									{grdTitle: '1-2-4'},
+									{grdTitle: '1-2-5'},
+									{grdTitle: '1-2-6'},
+								]
+							},
+							{
+								subTitle: '1-3',
+								children: [
+									{grdTitle: '1-3-1'},
+									{grdTitle: '1-3-2'},
+									{grdTitle: '1-3-3'}
+								]
+							},
+							{
+								subTitle: '1-4',
+								children: [
+									{grdTitle: '1-4-1'},
+									{grdTitle: '1-4-2'},
+									{grdTitle: '1-4-3'},
+									{grdTitle: '1-4-4'},
+									{grdTitle: '1-4-5'},
+									{grdTitle: '1-4-6'},
+									{grdTitle: '1-4-7'},
+									{grdTitle: '1-4-8'},
+								]
+							}
+						]
+					},
+					{
+						title: '2',
+						child: [
+							{
+								subTitle: '2-1',
+								children: [
+									{grdTitle: '2-1-1'},
+									{grdTitle: '2-1-2'},
+									{grdTitle: '2-1-3'},
+									{grdTitle: '2-1-4'}
+								]
+							},
+							{
+								subTitle: '2-2',
+								children: [
+									{grdTitle: '2-2-1'},
+									{grdTitle: '2-2-2'},
+									{grdTitle: '2-2-3'},
+									{grdTitle: '2-2-4'},
+									{grdTitle: '2-2-5'},
+									{grdTitle: '2-2-6'},
+								]
+							},
+							{
+								subTitle: '3-3',
+								children: [
+									{grdTitle: '3-3-1'},
+									{grdTitle: '3-3-2'},
+									{grdTitle: '3-3-3'}
+								]
+							},
+							{
+								subTitle: '4-4',
+								children: [
+									{grdTitle: '4-4-1'},
+									{grdTitle: '4-4-2'},
+									{grdTitle: '4-4-3'},
+									{grdTitle: '4-4-4'},
+									{grdTitle: '4-4-5'},
+									{grdTitle: '4-4-6'},
+									{grdTitle: '4-4-7'},
+									{grdTitle: '4-4-8'},
+								]
+							}
+						]
+					},
+				]
+			}
+		},
+		methods: {
+			father(i) {
+				this.active = i
+			},
+			close() {
+				this.active = null
+			},
+			subFather(index) {
+				this.subActive = index
+			},
+			closeSub() {
+				this.subActive = null
+			}
+		}
+	}
 </script>
-<style lang="scss">
-.step {
-  display: flex;
-  justify-content: center;
-  .step-item {
-    width: 177px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .step-item--num {
-      width: 22px;
-      height: 22px;
-      color: rgba(0, 0, 0, 0.25);
-      border: 1px solid rgba(0, 0, 0, 0.25);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 12px;
-      box-sizing: border-box;
-    }
-    .is-active {
-      position: relative;
-      &::before {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        right: 32px;
-        content: '';
-        display: block;
-        height: 1px;
-        width: 134px;
-        background: rgba(0, 0, 0, 0.25);
-      }
-    }
-    > .active {
-      background: #3880dd;
-      color: #fff;
-      border: none;
-      position: relative;
-      &::before {
-        transition: all .5s;
-        background: #3880dd;
-      }
-    }
-    .step-item--text {
-      margin-top: 10px;
-      font-size: 14px;
-      color: rgb(89, 89, 89);
-    }
+
+<style>
+  .ul {
+    margin: 0;
+    width: 200px;
   }
-}
+
+  .li {
+    position: relative;
+    cursor: pointer;
+  }
+
+  h2 {
+    margin: 0;
+    border-bottom: 1px solid #000;
+  }
+
+  .sub-wrap {
+    position: absolute;
+    top: 0;
+    right: -110%;
+    width: 110%;
+  }
+
+  .grd-wrap {
+    position: absolute;
+    top: 0;
+    right: -110%;
+    width: 110%;
+  }
 </style>
