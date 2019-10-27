@@ -1,7 +1,0 @@
-{
-  "devDependencies": {
-    "chalk": "^2.4.2",
-    "express": "^4.17.1",
-    "progress": "^2.0.3"
-  }
-}

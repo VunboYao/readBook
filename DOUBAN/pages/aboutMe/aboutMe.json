@@ -1,8 +1,0 @@
-{
-  "usingComponents": {
-    "film-item": "./../../components/filmItem/filmItem"
-  },
-  "navigationBarTitleText": "AboutMe",
-  "navigationBarTextStyle": "black",
-  "navigationBarBackgroundColor": "#fff"
-}

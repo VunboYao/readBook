@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "film-item": "./../../components/filmItem/filmItem"
-  },
-  "navigationBarTitleText": "Main"
-}
