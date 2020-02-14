@@ -6,26 +6,24 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     count: 0,
-    countAlias: 'count',
-    todos: [
-      { id: 1, text: '...', done: true },
-      { id: 2, text: '...', done: false }
-    ]
-  },
-  getters: {
-    doneTodos: state => {
-      return state.todos.filter(todo => todo.done)
-    },
-    doneTodosCount: (state, getters) => {
-      return getters.doneTodos.length
-    }
+    dialogVisible: false,
   },
   mutations: {
     increment(state, payload) {
-      state.count+=payload.amount
+      state.count+=payload
+    },
+    show(state, bool) {
+      state.dialogVisible = bool
     }
   },
   actions: {
+    add1({commit}, payload) {
+      commit('increment', payload)
+      // eslint-disable-next-line no-unused-vars
+      return new Promise((resolve, reject) => {
+        resolve('ok')
+      })
+    },
   },
   modules: {
   }

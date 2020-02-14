@@ -3,7 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="48b81a08-59e8-47b6-a6d1-94bad9f9df27" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaScript3/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/javaScript3/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaScript3/000-面试系列.md" beforeDir="false" afterPath="$PROJECT_DIR$/javaScript3/000-面试系列.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package/vuex/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package/vuex/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package/vuex/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package/vuex/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package/vuex/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/package/vuex/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package/vuex/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/package/vuex/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package/vuex/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/package/vuex/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package/vuex/src/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/package/vuex/src/store/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +36,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/package/vuex" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -76,6 +82,13 @@
       <workItem from="1575952133493" duration="5225000" />
       <workItem from="1575989806087" duration="3451000" />
       <workItem from="1576078038004" duration="759000" />
+      <workItem from="1576731846247" duration="192000" />
+      <workItem from="1576732066509" duration="935000" />
+      <workItem from="1576990379786" duration="292000" />
+      <workItem from="1576991094907" duration="596000" />
+      <workItem from="1577248707384" duration="1202000" />
+      <workItem from="1578113945933" duration="24000" />
+      <workItem from="1578113978229" duration="20000" />
     </task>
     <servers />
   </component>
@@ -96,6 +109,14 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
+    <state x="919" y="254" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1578113956549">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="919" y="254" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1578113956549" />
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1577250576952">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1577250576952" />
     <state width="879" height="232" key="GridCell.Tab.0.bottom" timestamp="1575871306407">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
