@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2a775267-adb2-4fd4-8d74-f334863073d9" name="Default Changelist" comment="" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list default="true" id="2a775267-adb2-4fd4-8d74-f334863073d9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/index.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="music163" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -21,26 +27,31 @@
   </component>
   <component name="ProjectId" id="1OdIpMYXDSVz0hDz6JOZTWQVwW8" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="E:/shop_app" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="SCSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
+  <component name="RunManager">
+    <configuration name="index.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/js/index.js" working-dir="$PROJECT_DIR$/js">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
       <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
+        <item itemvalue="Node.js.index.js" />
       </list>
-    </option>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -56,6 +67,10 @@
       <workItem from="1564567903520" duration="23000" />
       <workItem from="1566057041789" duration="24000" />
       <workItem from="1566102663372" duration="9000" />
+      <workItem from="1580366643166" duration="502000" />
+      <workItem from="1580384467334" duration="2174000" />
+      <workItem from="1582554734951" duration="447000" />
+      <workItem from="1582555203989" duration="327000" />
     </task>
     <servers />
   </component>
@@ -74,5 +89,37 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="683" y="140" width="1735" height="1122" key="DiffContextDialog" timestamp="1582555398460">
+      <screen x="0" y="23" width="2560" height="1341" />
+    </state>
+    <state x="683" y="140" width="1735" height="1122" key="DiffContextDialog/0.23.2560.1341@0.23.2560.1341" timestamp="1582555398460" />
+    <state width="1680" height="216" key="GridCell.Tab.0.bottom" timestamp="1580394075340">
+      <screen x="0" y="23" width="1680" height="970" />
+    </state>
+    <state width="1680" height="216" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1580386330912" />
+    <state width="1680" height="216" key="GridCell.Tab.0.bottom/0.23.1680.970@0.23.1680.970" timestamp="1580394075340" />
+    <state width="1680" height="216" key="GridCell.Tab.0.center" timestamp="1580394075340">
+      <screen x="0" y="23" width="1680" height="970" />
+    </state>
+    <state width="1680" height="216" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1580386330911" />
+    <state width="1680" height="216" key="GridCell.Tab.0.center/0.23.1680.970@0.23.1680.970" timestamp="1580394075340" />
+    <state width="1680" height="216" key="GridCell.Tab.0.left" timestamp="1580394075340">
+      <screen x="0" y="23" width="1680" height="970" />
+    </state>
+    <state width="1680" height="216" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1580386330910" />
+    <state width="1680" height="216" key="GridCell.Tab.0.left/0.23.1680.970@0.23.1680.970" timestamp="1580394075340" />
+    <state width="1680" height="216" key="GridCell.Tab.0.right" timestamp="1580394075340">
+      <screen x="0" y="23" width="1680" height="970" />
+    </state>
+    <state width="1680" height="216" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1580386330911" />
+    <state width="1680" height="216" key="GridCell.Tab.0.right/0.23.1680.970@0.23.1680.970" timestamp="1580394075340" />
+    <state x="520" y="194" key="SettingsEditor" timestamp="1582555521101">
+      <screen x="0" y="23" width="2560" height="1341" />
+    </state>
+    <state x="341" y="134" key="SettingsEditor/0.0.1680.1050@0.0.1680.1050" timestamp="1580386201926" />
+    <state x="341" y="147" key="SettingsEditor/0.23.1680.970@0.23.1680.970" timestamp="1580385199488" />
+    <state x="520" y="194" key="SettingsEditor/0.23.2560.1341@0.23.2560.1341" timestamp="1582555521101" />
   </component>
 </project>
