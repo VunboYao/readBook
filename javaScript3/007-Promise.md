@@ -56,5 +56,205 @@ Promise 对象三种状态
   })
   ```
 
-  
+# 如何中断 Promise 链
 
+- 返回一个状态为 `pending` 的新的 Promise 对象
+
+# 手写 Promise
+
+```javascript
+/*
+* https://www.ituring.com.cn/article/66566
+* */
+
+const PENDING = 'pending'
+const FULFILLED = 'fulfilled'
+const REJECTED = 'rejected'
+
+class YPromise {
+	constructor(executor) {
+		// 初始状态
+		this.state = PENDING
+		// 成功值
+		this.value = undefined
+		// 失败值
+		this.reason = undefined
+		// 成功存放的数组
+		this.onResolvedCallbacks = []
+		// 失败存放的数组
+		this.onRejectedCallbacks = []
+
+		// 成功回调
+		const resolve = value => {
+			if (this.state === PENDING) {
+				this.state = FULFILLED
+				this.value = value
+				this.onResolvedCallbacks.forEach(fn => fn())
+			}
+		}
+
+		// 失败回调
+		const reject = reason => {
+			if (this.state === PENDING) {
+				this.state = REJECTED
+				this.reason = reason
+				this.onRejectedCallbacks.forEach(fn => fn())
+			}
+		}
+
+		try {
+			executor(resolve, reject)
+		} catch (e) {
+			reject(e)
+		}
+	}
+
+	then(onFulfilled, onRejected) {
+		// onFulfilled如果不是函数，就忽略onFulfilled，直接返回value
+		onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : value => value
+		// onRejected如果不是函数，就忽略onRejected，直接扔出错误
+		onRejected = typeof onRejected === 'function' ? onRejected : err => {
+			throw err
+		}
+		const promise2 = new YPromise((resolve, reject) => {
+			// 成功状态
+			if (this.state === FULFILLED) {
+				setTimeout(() => {
+					try {
+						const x = onFulfilled(this.value)
+						this.resolvePromise(promise2, x, resolve, reject)
+					} catch (e) {
+						reject(e)
+					}
+				}, 0)
+
+			}
+
+			// 失败状态
+			if (this.state === REJECTED) {
+				setTimeout(() => {
+					try {
+						const x = onRejected(this.reason)
+						this.resolvePromise(promise2, x, resolve, reject)
+					} catch (e) {
+						reject(e)
+					}
+				}, 0)
+			}
+
+			// Pending 状态
+			if (this.state === PENDING) {
+				// 传入成功数组
+				this.onResolvedCallbacks.push(() => {
+					setTimeout(() => {
+						try {
+							const x = onFulfilled(this.value)
+							this.resolvePromise(promise2, x, resolve, reject)
+						} catch (e) {
+							reject(e)
+						}
+					}, 0)
+				})
+
+				// 传入失败数组
+				this.onRejectedCallbacks.push(() => {
+					setTimeout(() => {
+						try {
+							const x = onRejected(this.reason)
+							this.resolvePromise(promise2, x, resolve, reject)
+						} catch (e) {
+							reject(e)
+						}
+					}, 0)
+				})
+			}
+		})
+
+		return promise2
+	}
+
+	resolvePromise(promise2, x, resolve, reject) {
+		// 循环引用报错
+		if (x === promise2) {
+			return reject(new TypeError('Chaining cycle detected for promise'))
+		}
+
+		// 防止多次调用
+		let called
+		// x 不是null 且是对象或函数
+		if (x !== null & (typeof x === 'object' || typeof x === 'function')) {
+			try {
+				// A+规定, 声明 then = x 的 then 方法
+				let then = x.then
+				// 如果 then 是函数, 默认是 promise
+				if (typeof then === 'function') {
+					// 让 then 执行, 第一个参数是 this 后面是成功的回调和失败的回调
+					then.call(x, y => {
+						// 成功和失败只能调用一个
+						if (called) return
+						called = true
+						// resolve的结果依旧是promise那就继续解析
+						this.resolvePromise(promise2, y, resolve, reject)
+					}, err => {
+						// 成功和失败只能调用一个
+						if (called) return
+						called = true
+						reject(err)
+					})
+				} else {
+					resolve(x)
+				}
+			} catch (e) {
+				if (called) return
+				called = true
+				reject(e)
+			}
+		} else {
+			resolve(x)
+		}
+	}
+
+	static resolve(val) {
+		return new YPromise((resolve, reject) => {
+			resolve(val)
+		})
+	}
+
+	static reject(val) {
+		return new Promise((resolve, reject) => {
+			reject(val)
+		})
+	}
+
+	static race(promises) {
+		return new Promise((resolve, reject) => {
+			for (let i = 0; i < promises.length; i++) {
+				promises[i].then(resolve, reject)
+			}
+		})
+	}
+
+	static all(promises) {
+		let arr = []
+		let i = 0
+
+		function f(index, data, resolve) {
+			arr[index] = data
+			i++
+			if (i === promises.length) {
+				resolve(arr)
+			}
+		}
+
+		return new YPromise((resolve, reject) => {
+			for (let i = 0; i < promises.length; i++) {
+				promises[i].then(data => {
+					f(i, data, resolve)
+				}, reject)
+			}
+		})
+	}
+}
+
+
+```
