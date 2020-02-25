@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+<script>
+	/*
+	*  Promise 特点
+	* 1. 创建时必须传入一个函数, 否则会报错
+	* 2. 会给传入的函数设置两个回调函数
+	* 3. 刚创建的 Promise 对象状态是 pending
+	* 4. 状态一旦发生改变,就不能再改变
+	* 5. 可以通过 then 来监听状态的改变
+	* 5.1 如果添加监听时状态已改变, 立即执行监听的回调
+	* 5.2 如果添加监听时状态还未改变, 那么状态改变时再执行监听回调
+	* 5.3 同一个 Promise 对象可以添加多个 then 监听, 状态改变时所有的监听按照顺序执行
+	* */
+	const PENDING = 'pending'
+	const FULFILLED = 'fulfilled'
+	const REJECTED = 'rejected'
+
+	class MyPromise {
+		constructor(handle) {
+			// 0. 初始化默认状态
+			this.status = PENDING
+			// 定义变量保存存入的参数
+			this.value = undefined
+			this.reason = undefined
+			// 定义变量保存监听的函数
+			// this.onResolvedCallBack = null
+			// this.onRejectedCallBack = null
+			this.onResolvedCallBacks = []
+			this.onRejectedCallBacks = []
+			// 1. 判断是否是一个函数,否则抛出一个异常
+			if (!this._isFunction(handle)) {
+				throw new Error('请传入一个函数')
+			}
+			// 2. 给传入的函数传递形参(传递两个函数)
+			handle(this._resolve.bind(this), this._reject.bind(this))
+		}
+
+		then(onResolved, onRejected) {
+			// 1. 判断是否传入成功回调
+			if (this._isFunction(onResolved)) {
+				// 2. 判断当前状态是否是成功状态
+				if (this.status === FULFILLED) {
+					onResolved(this.value)
+				}
+			}
+			// 2. 判断是否传入失败回调
+			if (this._isFunction(onRejected)) {
+				// 2. 判断当前状态是否是成功状态
+				if (this.status === REJECTED) {
+					onRejected(this.reason)
+				}
+			}
+
+			// 判断当前状态是否是默认状态
+			if (this.status === PENDING) {
+				if (this._isFunction(onResolved)) {
+					// this.onResolvedCallBack = onResolved
+					this.onResolvedCallBacks.push(onResolved)
+				}
+				if (this._isFunction(onRejected)) {
+					// this.onRejectedCallBack = onRejected
+					this.onRejectedCallBacks.push(onRejected)
+				}
+			}
+		}
+
+		_resolve(value) {
+			// 防止重复修改
+			if (this.status === PENDING) {
+				this.status = FULFILLED
+				this.value = value
+				// this.onResolvedCallBack(this.value)
+				this.onResolvedCallBacks.forEach(fn => fn(this.value))
+			}
+		}
+
+		_reject(reason) {
+			// 防止重复修改
+			if (this.status === PENDING) {
+				this.status = REJECTED
+
+				this.reason = reason
+				// this.onRejectedCallBack(this.reason)
+				this.onRejectedCallBacks.forEach(fn => fn(this.reason))
+			}
+		}
+
+		_isFunction(fn) {
+			return typeof fn === 'function'
+		}
+	}
+</script>
+<script>
+	let pp = new MyPromise((resolve, reject) => {
+		setTimeout(() => {
+			resolve('2222')
+			// reject('111')
+		}, 2000)
+
+	})
+	// console.log(pp)
+	pp.then(res => {
+		console.log(res, 'success')
+	}, err => {
+		console.log(err, 'error')
+	})
+	pp.then(res => {
+		console.log(res, 'success1')
+	}, err => {
+		console.log(err, 'error1')
+	})
+	pp.then(res => {
+		console.log(res, 'success2')
+	}, err => {
+		console.log(err, 'error2')
+	})
+	console.log(pp)
+</script>
+</body>
+</html>
