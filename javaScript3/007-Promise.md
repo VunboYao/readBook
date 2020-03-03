@@ -258,3 +258,242 @@ class YPromise {
 
 
 ```
+
+```javascript
+/*
+* 自定义 Promise 函数模块
+* */
+
+(function (window) {
+	const PENDING = 'pending'
+	const RESOLVED = 'resolved'
+	const REJECTED = 'rejected'
+
+	/*
+	* Promise 构造函数
+	* executor: 执行函数(同步执行)
+	* */
+	function Promise(executor) {
+		const that = this
+		that.status = PENDING
+		that.data = undefined
+		that.onResolvedCallbacks = []
+		that.onRejectedCallbacks = []
+
+		function resolve(value) {
+			// 如果状态不是 pending, 直接结束
+			if (that.status !== PENDING) return
+			// 改变状态
+			that.status = RESOLVED
+			// 保留 value
+			that.data = value
+			// 如果有待执行的 callbacks, 立即执行异步回调函数
+			if (that.onResolvedCallbacks.length > 0) {
+				setTimeout(() => {
+					that.onResolvedCallbacks.forEach(onResolved => {
+						onResolved(value)
+					})
+				})
+			}
+		}
+
+		function reject(reason) {
+			// 如果状态不是 pending, 直接结束
+			if (that.status !== PENDING) return
+			// 改变状态
+			that.status = REJECTED
+			// 保留 reason
+			that.data = reason
+			// 如果有待执行的 callbacks, 立即执行异步回调函数
+			if (that.onRejectedCallbacks.length > 0) {
+				setTimeout(() => {
+					that.onRejectedCallbacks.forEach(onRejected => {
+						onRejected(reason)
+					})
+				})
+			}
+		}
+
+		// 立即同步执行 executor
+		try {
+			executor(resolve, reject)
+		} catch (error) { // 如果执行器抛出异常, Promise 对象变为 rejected 状态
+			reject(error)
+		}
+	}
+
+	/*
+	* Promise 原型对象 then()
+	* 指定成功和失败的回调函数
+	* 返回一个新的 Promise 对象
+	* */
+	Promise.prototype.then = function (onResolved, onRejected) {
+
+		onResolved = typeof onResolved === 'function' ? onResolved : value => value
+		// 指定默认的失败的回调(实现错误/异常穿透的关键点)
+		onRejected = typeof onRejected === 'function' ? onRejected : reason => {
+			throw reason
+		} // 异常穿透
+		const that = this
+
+		// 返回一个新的 Promise 对象
+		return new Promise((resolve, reject) => {
+			/*
+			* 调用指定的回调函数处理, 根据执行的结果.改变 return 的 Promise 的状态
+			* */
+			function handle(callback) {
+				/*
+					* 1. 执行抛出异常, return 的 Promise 失败, reason 就是 error
+					* 2. 如果执行返回的非 Promise,  return 的 Promise 成功, value 就是 返回的值
+					* 3. 如果回调函数返回的是 Promise, return 的 Promise 结果就是这个 Promise 的结果
+					* */
+				try {
+					const result = callback(that.data)
+					if (result instanceof Promise) {
+						// 3.如果回调函数返回的是 Promise, return 的 Promise 结果就是这个 Promise 的结果
+						/*result.then(
+								value => resolve(value),
+								reason => reject(reason)
+						)*/
+						result.then(resolve, reject)
+					} else {
+						// 2. 如果执行返回的非 Promise,  return 的 Promise 成功, value 就是 返回的值
+						resolve(result)
+					}
+				} catch (error) {
+					// 1. 执行抛出异常, return 的 Promise 失败, reason 就是 error
+					reject(error)
+				}
+			}
+
+			if (that.status === PENDING) {
+				that.onResolvedCallbacks.push(() => {
+					handle(onResolved)
+				})
+				that.onRejectedCallbacks.push(() => {
+					handle(onRejected)
+				})
+			}
+			if (that.status === RESOLVED) {
+				setTimeout(() => {
+					handle(onResolved)
+				})
+			}
+			if (that.status === REJECTED) {
+				setTimeout(() => {
+					handle(onRejected)
+				})
+			}
+		})
+	}
+
+	/*
+	* Promise 原型对象 catch()
+	* 指定失败的回调函数
+ 	* 返回一个新的 Promise 对象
+	* */
+	Promise.prototype.catch = function (onRejected) {
+		return this.then(undefined, onRejected)
+	}
+
+	/*
+	* 函数对象 resolve()
+	* 返回一个 fulfilled 状态的 Promise
+	* */
+	Promise.resolve = function (value) {
+		return new Promise((resolve, reject) => {
+			if (value instanceof Promise) {
+				value.then(resolve, reject)
+			} else {
+				resolve(value)
+			}
+		})
+	}
+
+	/*
+	* 函数对象 reject()
+	* 返回一个 rejected 状态的 Promise
+	* */
+	Promise.reject = function (reason) {
+		return new Promise((resolve, reject) => {
+			reject(reason)
+		})
+	}
+
+	/*
+	* 函数对象 all()
+	* 当所有 Promise 都成功时, 返回一个 Promise, 如果其中一个失败则失败
+	* */
+	Promise.all = function (promises) {
+		// 用来保存成功 value 的数组
+		const values = []
+		// 用来保存成功 Promise 的数量
+		let resolvedCount = 0
+		// 返回一个新的 Promise
+		return new Promise((resolve, reject) => {
+			// 遍历 promises 获取每一个 Promise 的结果
+			promises.forEach((p, index) => {
+				Promise.resolve(p).then(value => {
+					resolvedCount++
+					values[index] = value
+
+					// 如果全部成功了,将 return 的 Promise 改为成功
+					if (resolvedCount === promises.length) {
+						resolve(values)
+					}
+				}, reason => {
+					// 只要一个失败, return 的 Promise 就失败
+					reject(reason)
+				})
+			})
+		})
+	}
+
+	/*
+	* 函数对象 race()
+	* 返回一个 Promise, 其结果由第一个完成的 Promise 决定
+	* */
+	Promise.race = function (promises) {
+		return new Promise((resolve, reject) => {
+			promises.forEach(p => {
+				Promise.resolve(p).then(value => {
+					resolve(value)
+				}, reason => {
+					reject(reason)
+				})
+			})
+		})
+
+	}
+
+	/*
+	* 返回一个 Promise 对象, 在指定的时间后才确定
+	* */
+	Promise.resolveDelay = function (value, time) {
+		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				if (value instanceof Promise) {
+					value.then(resolve, reject)
+				} else {
+					resolve(value)
+				}
+			}, time)
+		})
+	}
+
+	/*
+	* 返回一个 Promise 对象, 在指定的时间后才失败
+	* */
+
+	Promise.rejectDelay = function (reason, time) {
+		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				reject(reason)
+			}, time)
+		})
+	}
+
+	// 向外暴露 Promise 函数
+	window.Promise = Promise
+})(window)
+```

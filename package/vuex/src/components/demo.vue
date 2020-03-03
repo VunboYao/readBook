@@ -6,17 +6,16 @@
   </div>
 </template>
 <script>
-  import model from "./model"
+import model from "./model";
 export default {
-    components: {
-      model
-    },
+  components: {
+    model
+  },
   data() {
     return {
-      de: '1'
-    }
+      de: "1"
+    };
   },
-  methods: {
-  }
+  methods: {}
 };
 </script>
