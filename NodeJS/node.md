@@ -11,7 +11,7 @@
 # 模块暴露的方式
 
 - **都需要先 require 导入**
-- exports.xxx = xxx, 不能直接赋值 export = xxx
+- exports.xxx = xxx, 不能直接赋值 exports = xxx
 - module.exports.xxx = xxx
 - global.xxx = xxx
 
