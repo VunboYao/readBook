@@ -8,8 +8,18 @@
 
 #include <stdio.h>
 
-int main(int argc, const char * argv[]) {
-    // insert code here...
-    printf("Hello, World!\n");
+//int main(int argc, const char * argv[]) {
+//    // insert code here...
+//    printf("Hello, World!\n");
+//    return 0;
+//}
+int test(){
+    printf("ok");
+    return 0;
+}
+
+int main(){
+    printf("姚远波第一\n");
+    test();
     return 0;
 }
