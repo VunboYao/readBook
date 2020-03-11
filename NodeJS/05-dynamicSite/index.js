@@ -3,6 +3,7 @@ const qs = require('querystring')
 const path = require('path')
 const fs = require('fs')
 const url = require('url')
+const template = require('art-template')
 
 const persons = {
 	'lisi': {
@@ -51,19 +52,24 @@ http.createServer((req, res) => {
 			// 拼接路径
 			let filePath = path.join(__dirname, req.url)
 			// 读取文件并解析返回
-			fs.readFile(filePath, 'utf8', (err, data) => {
-				if (err) {
-					res.writeHead(404, {
-						'Content-Type': 'text/plain; charset=utf-8'
-					})
-					res.end('走远了, NOT FOUND')
-				} else {
-					data = data.replace('!!!name!!!', per.name)
-					data = data.replace('!!!gender!!!', per.gender)
-					data = data.replace('!!!age!!!', per.age)
-					res.end(data)
-				}
+			// fs.readFile(filePath, 'utf8', (err, data) => {
+			// 	if (err) {
+			// 		res.writeHead(404, {
+			// 			'Content-Type': 'text/plain; charset=utf-8'
+			// 		})
+			// 		res.end('走远了, NOT FOUND')
+			// 	} else {
+			// 		data = data.replace('!!!name!!!', per.name)
+			// 		data = data.replace('!!!gender!!!', per.gender)
+			// 		data = data.replace('!!!age!!!', per.age)
+			// 		res.end(data)
+			// 	}
+			// })
+			res.writeHead(200, {
+				'Content-Type': 'text/html; charset=utf-8'
 			})
+			let html = template(filePath, per)
+			res.end(html)
 		})
 	}
 }).listen(3000)

@@ -43,5 +43,19 @@
 
 # fs
 
-- wirteStream 写入流执行完成后. 需要执行 writeStream.end()
+- writeStream 写入流执行完成后. 需要执行 writeStream.end()
 - readStream.pipe(writeStream), 读取流管道方法实现拷贝
+
+# 核心原理
+
+执行引入的文件，但引入的为字符串，如何执行字符串中的代码？
+
+## 执行字符串代码
+
+- eval， 执行字符串， 存在依赖关系， 字符串可以访问外界数据， 不安全
+- new Function， 存在依赖关系， 字符串可以访问外界数据， 不安全
+
+## vm
+
+- vm.runInThisContext: 提供了一个安全的环境执行字符串中的代码。提供的代码不能访问本地的变量， 但是可以访问全局的变量（global上的变量
+- vm.runInNewContext: 提供了一个安全的环境执行字符串中的代码。不能访问本地与 global 上的变量

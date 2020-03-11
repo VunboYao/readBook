@@ -201,15 +201,53 @@
 
 // 10. 区分请求方式
 {
-	const http = require('http')
-	http.createServer((req, res) => {
-		res.writeHead(200, {
-			'Content-Type': 'text/plain; charset=utf-8'
-		})
-		if (req.method.toLocaleLowerCase() === 'get') {
-			res.end('get方式')
-		} else {
-			res.end('post方式')
-		}
-	}).listen(3000)
+	// const http = require('http')
+	// http.createServer((req, res) => {
+	// 	res.writeHead(200, {
+	// 		'Content-Type': 'text/plain; charset=utf-8'
+	// 	})
+	// 	if (req.method.toLocaleLowerCase() === 'get') {
+	// 		res.end('get方式')
+	// 	} else {
+	// 		res.end('post方式')
+	// 	}
+	// }).listen(3000)
+}
+
+// 11. 练习 
+{
+	// const fs = require('fs')
+	// const path = require('path')
+	// const http = require('http')
+	// const mime = require('./mime')
+	// const url = require('url')
+
+	// http.createServer((req, res) => {
+	// 	const obj = url.parse(req.url, true)
+	// 	console.log('obj :', obj);
+	// 	// res.writeHead(200, {
+	// 	// 	'Content-Type': 'text/plain; charset=utf-8'
+	// 	// })
+	// 	// readFile(req, res)
+	// }).listen(3000)
+
+	// function readFile(req, res) {
+	// 	const filePath = path.join(__dirname, 'www', req.url)
+	// 	const extName = path.extname(filePath)
+	// 	let type = mime[extName]
+	// 	if (String(type).startsWith('text')) {
+	// 		type += '; charset=utf-8'
+	// 	}
+	// 	console.log('type :', type);
+	// 	res.writeHead(200, {
+	// 		'Content-Type': type
+	// 	})
+	// 	fs.readFile(filePath, (err, data) => {
+	// 		if (err) {
+	// 			res.end('Server Error')
+	// 		} else {
+	// 			res.end(data)
+	// 		}
+	// 	})
+	// }
 }
