@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div></div>
+    <button class="add">Add</button>
+    <button class="del">Del</button>
+    <script>
+        const div = document.querySelector('div')
+        const add = document.querySelector('.add')
+        const del = document.querySelector('.del')
+        add.onclick = function() {
+            const op = document.createElement('p')
+            op.innerText = 'i am some text'
+            div.appendChild(op)
+        }
+        del.onclick = function() {
+            const op = document.querySelector('p')
+            div.removeChild(op)
+        }
+
+        const mb = new MutationObserver(() => {
+            console.log('execute');
+        })
+        mb.observe(div, {
+            "childList": true
+        })
+        console.log('1');
+        console.log('2');
+    </script>
+</body>
+</html>
