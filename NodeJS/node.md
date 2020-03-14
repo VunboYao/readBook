@@ -134,3 +134,14 @@ console.log(aModule);
 
 - 宏任务， setTimeout, setInterval
 - 微任务， promise, MutationObserver, 优先执行
+
+# npm 包发布
+
+- npm addUser
+- npm publish
+
+## script
+
+- test: 可省略为 npm test
+- start: 同 test
+- bin: 添加一个 key/value， 定义全局包
