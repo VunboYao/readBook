@@ -112,6 +112,7 @@ const oImg = document.createElement('img')
 oImg.src = img.default
 document.body.appendChild(oImg)
 
+
 /***/ })
 
 /******/ });

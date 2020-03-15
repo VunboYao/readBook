@@ -34,16 +34,30 @@ module.exports = {
     module: 告诉 webpack 如何处理 webpack 不能够识别的文件
     */
     module: {
-        rules: [{
-            test: /\.(png|jpg|gif)$/,
-            use: [{
-                loader: 'file-loader',
-                options: {
-                    publicPath: 'dist/images', // 文件的公共路径
-                    name: '[name].[ext]', // 文件名称
-                    outputPath: 'images' // 文件输出的目录
-                }
-            }]
-        }]
+        rules: [
+            /* {
+                        test: /\.(png|jpg|gif)$/,
+                        use: [{
+                            loader: 'file-loader',
+                            options: {
+                                publicPath: 'dist/images', // 文件的公共路径
+                                name: '[name].[ext]', // 文件名称
+                                outputPath: 'images' // 文件输出的目录
+                            }
+                        }]
+                    } */
+            {
+                test: /\.(png|jpg|gif)$/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        limit: 1024 * 3,
+                        publicPath: 'dist/images', // 文件的公共路径
+                        name: '[name].[ext]', // 文件名称
+                        outputPath: 'images' // 文件输出的目录
+                    }
+                }]
+            }
+        ]
     }
 }
