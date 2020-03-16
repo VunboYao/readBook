@@ -35,17 +35,9 @@ module.exports = {
     */
     module: {
         rules: [
-            /* {
-                        test: /\.(png|jpg|gif)$/,
-                        use: [{
-                            loader: 'file-loader',
-                            options: {
-                                publicPath: 'dist/images', // 文件的公共路径
-                                name: '[name].[ext]', // 文件名称
-                                outputPath: 'images' // 文件输出的目录
-                            }
-                        }]
-                    } */
+            /**
+             * 打包图片规则
+             */
             {
                 test: /\.(png|jpg|gif)$/,
                 use: [{
@@ -57,6 +49,26 @@ module.exports = {
                         outputPath: 'images' // 文件输出的目录
                     }
                 }]
+            },
+            /**
+             * css-loader: 解析css文件中的@import依赖关系
+             * style-loader: 将webpack处理之后的内容插入到HTML的style标签中
+             */
+            {
+                test: /\.css$/,
+                // use: ['style-loader', 'css-loader']
+                use: [{
+                        loader: 'style-loader'
+                    },
+                    {
+                        loader: 'css-loader'
+                    }
+                ]
+            },
+            // less
+            {
+                test: /\.less$/,
+                use: ['style-loader', 'css-loader', 'less-loader']
             }
         ]
     }

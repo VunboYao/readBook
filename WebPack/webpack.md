@@ -65,3 +65,43 @@
 - limit（byte）: 限制图片的大小。小于该数值的以`base64`格式显示。1kb = 1024
 - 同 file-loader 可设置文件名称，打包路径等。
 - mac 环境下，打包时需要设置 `publicPath`，否则路径无效
+
+## css-loader
+
+解析 CSS 文件中 @import 和 URL（）, 会 import/require() 后再解析(resolve)它们。
+
+## style-loader
+
+将 CSS 添加到 DOM 节点的 style 标签中
+
+```js
+{
+    test: /\.css$/,
+    // use: ['style-loader', 'css-loader']
+    use: [{
+            // 将webpack处理之后的内容插入到HTML的style标签中
+            loader: 'style-loader'
+        },
+        {
+            // 解析css文件中的@import依赖关系
+            loader: 'css-loader'
+        }
+    ]
+}
+```
+
+## loader特点
+
+- 单一原则，一个loader只做一件事
+- 多个loader按照从右到左， 从下到上依次执行
+
+## less-loader
+
+npm i -D less less-loader
+
+```js
+{
+    test: /\.less$/,
+    use: ['style-loader', 'css-loader', 'less-loader']
+}
+```
