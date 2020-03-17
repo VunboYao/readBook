@@ -1,0 +1,37 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "13497500",
+      "name": "床上用品",
+      "font_class": "chuangshangyongpin",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "13497501",
+      "name": "抱被",
+      "font_class": "baobei",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "13497502",
+      "name": "家居",
+      "font_class": "jiaju",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "13497503",
+      "name": "化妆棉",
+      "font_class": "huazhuangmian",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    }
+  ]
+}

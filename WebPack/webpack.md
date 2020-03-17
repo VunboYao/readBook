@@ -57,6 +57,22 @@
     - `name:'[name].[ext]'`属性，控制打包后图片名
     - `publicPath: 'dist/images'`, 配置文件 public 发布目录
     - `outputPath: 'images/'`, 配置文件输出目录
+- 打包字体图标。若字体图标列名失效，css-loader中模块化关闭
+
+    ```js
+        // 打包字体图片规则
+        {
+            test: /\.(eot|json|svg|ttf|woff|woff2)$/,
+            use: [{
+                loader: 'file-loader',
+                options: {
+                    publicPath: 'dist/font/',
+                    name: '[name].[ext]',
+                    outputPath: 'font/'
+                }
+            }]
+        }
+    ```
 
 ## url-loader
 
@@ -69,6 +85,15 @@
 ## css-loader
 
 解析 CSS 文件中 @import 和 URL（）, 会 import/require() 后再解析(resolve)它们。
+
+```js
+{
+    loader: 'css-loader',
+    options: {
+        modules: true // 启用css模块化
+    }
+}
+```
 
 ## style-loader
 
@@ -105,3 +130,75 @@ npm i -D less less-loader
     use: ['style-loader', 'css-loader', 'less-loader']
 }
 ```
+
+## sass-loader
+
+npm install sass-loader node-sass --save-dev
+
+```js
+{
+    test: /\.scss$/,
+    use: ['style-loader', 'css-loader', 'sass-loader']
+}
+```
+
+## postcss-loader
+
+- `npm i -D postcss-loader`, 在css-loader, style-loader之后，,less-loader,sass-loader之前添加postcss-loader
+- `npm i -D autoprefixer`, 添加私有前缀
+- 1.添加`postcss.config.js`配置文件
+
+    ```js
+    module.exports = {
+        plugins: {
+            'autoprefixer': {
+                'overrideBrowserslist': [
+                    'ie >= 8',
+                    'Firefox >= 3.5',
+                    'chrome >= 35',
+                    'opera >= 11.5'
+                ]
+            }
+        }
+    }
+    ````
+
+- 2.不需要配置文件
+
+    ```js
+    {
+        loader: 'postcss-loader',
+        options: {
+            ident: 'postcss',
+            plugins: [
+                require('autoprefixer')(['chrome >= 3'])
+            ]
+        }
+    }
+    ```
+
+- `npm i -D postcss-pxtorem`, 将 px 转换为 rem
+
+    ```js
+    {
+        loader: 'postcss-loader',
+        options: {
+            plugins: [
+                require('autoprefixer')(['chrome >= 3']),
+                require('postcss-pxtorem')({
+                    rootValue: 100,
+                    propList: ['*'] // * 全都转换， 传递特定的属性，则转换特定的属性
+                })
+            ]
+        }
+    }
+    ```
+
+# 插件
+
+## HtmlWebpackPlugin
+
+- `npm i --save-dev html-webpack-plugin`
+- https://github.com/jantimon/html-webpack-plugin#minification
+
+

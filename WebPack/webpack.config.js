@@ -1,4 +1,5 @@
 const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     /* 
@@ -35,6 +36,18 @@ module.exports = {
     */
     module: {
         rules: [
+            // 打包字体图片规则
+            {
+                test: /\.(eot|json|svg|ttf|woff|woff2)$/,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        publicPath: 'dist/font/',
+                        name: '[name].[ext]',
+                        outputPath: 'font/'
+                    }
+                }]
+            },
             /**
              * 打包图片规则
              */
@@ -69,7 +82,40 @@ module.exports = {
             {
                 test: /\.less$/,
                 use: ['style-loader', 'css-loader', 'less-loader']
+            },
+            // sass
+            {
+                test: /\.scss$/,
+                use: [{
+                        loader: 'style-loader'
+                    },
+                    {
+                        loader: 'css-loader'
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: [
+                                require('autoprefixer')(['chrome >= 3']),
+                                require('postcss-pxtorem')({
+                                    rootValue: 100,
+                                    propList: ['*'] // * 全都转换， 传递特定的属性，则转换特定的属性
+                                })
+                            ]
+                        }
+                    },
+                    {
+                        loader: 'sass-loader'
+                    }
+                ]
             }
         ]
-    }
+    },
+    // plugins: 告诉webpack需要新增一些什么样的功能
+    plugins: [new HtmlWebpackPlugin({
+        template: './index.html',
+        minify: {
+            collapseWhitespace: true
+        }
+    })]
 }

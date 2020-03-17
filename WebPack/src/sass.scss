@@ -1,0 +1,13 @@
+body {
+    background: #10bb0c;
+
+    img {
+        border: 10px solid blue;
+        transform: translate(200px, 200px) rotate(30deg);
+        box-shadow: 0 0 0 #000;
+    }
+
+    h2 {
+        font-size: 100px;
+    }
+}
