@@ -56,7 +56,7 @@
     - 默认情况下， 打包后的图片名称为文件内容的 MD5 哈希值
     - `name:'[name].[ext]'`属性，控制打包后图片名
     - `publicPath: 'dist/images'`, 配置文件 public 发布目录
-    - `outputPath: 'images/'`, 配置文件输出目录
+    - `outputPath: './images/'`, **配置文件输出目录，务必使用相对目录，热更新时会导致路径错误**
 - 打包字体图标。若字体图标列名失效，css-loader中模块化关闭
 
     ```js
@@ -219,3 +219,186 @@ npm install sass-loader node-sass --save-dev
         to: 'doc' // 打包后的地址目录
     }])
     ```
+
+## MiniCssExtractPlugin
+
+- 提取独立css文件
+- `npm install --save-dev mini-css-extract-plugin`
+
+    ```js
+    const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+    module.exports = {
+        plugins: [new MiniCssExtractPlugin()],
+        module: {
+            rules: [
+                {
+                    test: /\.css$/i,
+                    use: [{
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            hmr: true // 热更新时生效
+                        }
+                    }, 'css-loader'],
+                },
+            ],
+        },
+    };
+    ```
+
+## optimization:优化项，压缩CSS
+
+- `npm i -D optimize-css-assets-webpack-plugin`, 压缩css插件
+- **但是使用该插件之后，会覆盖webpack默认的压缩JS功能。因此需要独立下载一个压缩JS插件**
+- `npm i -D terser-webpack-plugin`
+
+    ```js
+    const TerserJSPlugin = require('terser-webpack-plugin');
+    const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+    const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+    module.exports = {
+        // webpack优化项
+        optimization: {
+            minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+        },
+        plugins: [
+            new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[id].css',
+            }),
+        ],
+        module: {
+            rules: [
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+            },
+            ],
+        },
+    };
+    ```
+
+# watch
+
+监听文件变化， 当文件修改后会重新编译
+
+```js
+watch: true, // 开启监听文件变化
+watchOptions: {
+    ignored: /node_modules/, // 排除巨大的文件夹
+    aggregateTimeout: 300, // 防抖
+    poll: 1000 //每隔多少时间检查一次，指定毫秒为单位进行轮询
+}
+```
+
+# webpack-dev-server
+
+`webpack-dev-server` 为你提供了一个简单的 web 服务器，并且能够实时重新加载(live reloading)
+
+- `npm install --save-dev webpack-dev-server`
+
+    ```js
+    devServer: {
+        publicPath: './dist/images',
+        contentBase: './dist', // 告诉webpack-dev-server， dist目录下的文件，可以作为访问文件
+        port: 2020,
+        open: true, // 是否自动打开页面
+        compress: false, // 是否启用压缩
+    }
+    ```
+
+- 跨越代理 proxy
+- 使用方式一
+
+    ```js
+    proxy: {
+        // 请求到 /api/users 现在会被代理到请求 http://localhost:3000/api/users
+        "/api": {
+        "target": "http://localhost:3000",
+        "secure": false, // HTTPS跨域
+        "changeOrigin": true, // 域名跨域
+        },
+        "/login": {
+            ...
+        }
+    }
+    ```
+
+- 使用方式二. 代理多个特定路径到同一个目标，则可以使用带有上下文属性的一个或多个对象数组
+
+    ```js
+    proxy: [{
+        context: ["/auth", "/api"],
+        target: "http://localhost:3000",
+        pathRewrite: {"^/api" : ""} // 重写路径
+    }]
+    ```
+
+- devServer只能解决开发阶段的问题，因为项目上线之后是将打包好的文件上传到服务器， 而打包后的文件中没有devServer
+
+# webpack热更新
+
+1. 通过webpack-dev-server自动打包并没有真正的放到指定的目录中。因为读写磁盘是非常耗时和消耗性能的，所以为了提升性能， webpack-dev-server将转换好的内容放到了内存中
+2. 通过webpack-dev-server可以实时监听打包内容的变化，每次打包之后都会自动刷新网页，因此带了有很多不便，这时就需要通过HMR插件来优化调试开发
+3. HMR（HotModuleReplacementPlugin）热更新插件会在内容发生变化的时候更新修改的内容并不会重新刷新网站  
+
+    ```js
+    const Webpack = require('webpack')
+    plugins: [
+        new Webpack.HotModuleReplacementPlugin()
+    ]
+    devServer: {
+        contentBase: './dist', // 告诉webpack-dev-server， dist目录下的文件，可以作为访问文件
+        port: 2020,
+        open: true, // 是否自动打开页面
+        compress: false, // 是否启用压缩
+        // 热更新服务设置
+        hot: true, // 开启热更新，就不会自动刷新网页
+        hotOnly: true // 即使不支持热更新，也不刷新网页
+    }
+    ```
+
+4. 热更新JS模块
+
+    ```js   
+    // demo.js
+    function add() {
+        const li = document.createElement('p')
+        li.innerHTML = 'are you ok123?'
+        document.body.appendChild(li)
+    }
+    export default add
+
+    // entry.js
+    // 判断当前是否开启热更新
+    if (module.hot) {
+        // 如果开启热更新，监听当前模块
+        module.hot.accept('./dmeo.js', function () {
+            const p = document.querySelector('p')
+            document.body.removeChild(p)
+            add()
+        })
+    }
+    ```
+
+# 转换ES678高级语法
+
+- `npm install --save-dev babel-loader @babel/core`
+- `npm install @babel/preset-env --save-dev`
+
+    ```js
+    {
+        test: /\.js$/,
+        exclude: /node_modules/, // 不做处理的目录
+        loader: 'babel-loader',
+        options: {
+            'presets': [
+                ['@babel/preset-env', { // 高级版本不做转换
+                    "targets": {
+                        "chrome": "58"
+                    }
+                }]
+            ]
+        }
+    }
+    ```
+

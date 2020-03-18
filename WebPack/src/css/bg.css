@@ -1,3 +1,7 @@
 body {
-    background: #1089b4;
+    background: #30681a;
+}
+
+li:nth-of-type(even) {
+    color: red;
 }

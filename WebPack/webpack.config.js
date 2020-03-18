@@ -4,8 +4,22 @@ const {
     CleanWebpackPlugin
 } = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const TerserJSPlugin = require('terser-webpack-plugin')
+const Webpack = require('webpack')
 
 module.exports = {
+    // watch: true, // 开启监听文件变化
+    // watchOptions: {
+    //     ignored: /node_modules/, // 排除巨大的文件夹
+    //     aggregateTimeout: 300, // 防抖
+    //     poll: 1000 //每隔多少时间检查一次，指定毫秒为单位进行轮询
+    // },
+    // optimization：配置webpack优化项
+    optimization: {
+        minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+    },
     /* 
     devtool: 配置 source map
     */
@@ -40,6 +54,21 @@ module.exports = {
     */
     module: {
         rules: [
+            // 打包JS规则
+            {
+                test: /\.js$/,
+                exclude: /node_modules/, // 不做处理的目录
+                loader: 'babel-loader',
+                options: {
+                    'presets': [
+                        ['@babel/preset-env', { // 高级版本不做转换
+                            "targets": {
+                                "chrome": "58"
+                            }
+                        }]
+                    ]
+                }
+            },
             // 打包字体图片规则
             {
                 test: /\.(eot|json|svg|ttf|woff|woff2)$/,
@@ -63,7 +92,7 @@ module.exports = {
                         limit: 1024 * 3,
                         publicPath: 'images', // 文件的公共路径
                         name: '[name].[ext]', // 文件名称
-                        outputPath: '/images' // 文件输出的目录
+                        outputPath: './images' // 文件输出的目录
                     }
                 }]
             },
@@ -75,7 +104,10 @@ module.exports = {
                 test: /\.css$/,
                 // use: ['style-loader', 'css-loader']
                 use: [{
-                        loader: 'style-loader'
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            hmr: true
+                        }
                     },
                     {
                         loader: 'css-loader'
@@ -123,13 +155,27 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',
             minify: {
-                collapseWhitespace: true
+                collapseWhitespace: false
             }
         }),
         // 复制指定的文件
-        new CopyWebpackPlugin([{
-            from: './src/doc',
-            to: 'doc'
-        }])
-    ]
+        // new CopyWebpackPlugin([{
+        //     from: './src/doc',
+        //     to: 'doc'
+        // }]),
+        // 打包css文件
+        new MiniCssExtractPlugin({
+            filename: 'css/[name].css'
+        }),
+        new Webpack.HotModuleReplacementPlugin()
+    ],
+    // web 服务
+    devServer: {
+        contentBase: path.join(__dirname, 'dist'), // 告诉webpack-dev-server， dist目录下的文件，可以作为访问文件
+        port: 2020,
+        open: true, // 是否自动打开页面
+        compress: false, // 是否启用压缩
+        hot: true, // 开启热更新，就不会自动刷新网页
+        hotOnly: true // 即使不支持热更新，也不刷新网页
+    }
 }
