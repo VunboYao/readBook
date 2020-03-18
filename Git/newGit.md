@@ -85,6 +85,8 @@
 - `git commit -m 'xxxxx'`
 - **-m**表示对此次提交进行注释，简述此次提交的相关信息
 - 如果不加**-m**, 那么点击回车之后， 会默认弹出自带的VIM编辑器。
+- Git push origin master
+- Git remote add origin <server>
 
 # 查看历史
 

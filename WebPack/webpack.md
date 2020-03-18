@@ -201,4 +201,21 @@ npm install sass-loader node-sass --save-dev
 - `npm i --save-dev html-webpack-plugin`
 - https://github.com/jantimon/html-webpack-plugin#minification
 
+## CleanWebpackPlugin
 
+- 清楚上一次打包残留的文件
+- npm i -D clean-webpack-plugin
+- `const { CleanWebpackPlugin } = require('clean-webpack-plugin')`
+
+## copy-webpack-plugin
+
+- 拷贝指定的文件
+- `npm i -D copy-webpack-plugin`
+- `const CopyWebpackPlugin = require('copy-webpack-plugin')`
+
+    ```js
+    new CopyWebpackPlugin([{
+        from: './src/doc', // 源文件地址
+        to: 'doc' // 打包后的地址目录
+    }])
+    ```

@@ -1,5 +1,9 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const {
+    CleanWebpackPlugin
+} = require('clean-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
     /* 
@@ -16,7 +20,7 @@ module.exports = {
     /*
     entry: 指定打包需要的文件
     */
-    entry: './src/entry',
+    entry: './src/js/entry',
 
     /*
     output: 指定打包之后的文件输出的路径和输出的文件名称
@@ -57,9 +61,9 @@ module.exports = {
                     loader: 'url-loader',
                     options: {
                         limit: 1024 * 3,
-                        publicPath: 'dist/images', // 文件的公共路径
+                        publicPath: 'images', // 文件的公共路径
                         name: '[name].[ext]', // 文件名称
-                        outputPath: 'images' // 文件输出的目录
+                        outputPath: '/images' // 文件输出的目录
                     }
                 }]
             },
@@ -112,10 +116,20 @@ module.exports = {
         ]
     },
     // plugins: 告诉webpack需要新增一些什么样的功能
-    plugins: [new HtmlWebpackPlugin({
-        template: './index.html',
-        minify: {
-            collapseWhitespace: true
-        }
-    })]
+    plugins: [
+        // 清除残留文件
+        new CleanWebpackPlugin(),
+        // 打包出口index.html
+        new HtmlWebpackPlugin({
+            template: './src/index.html',
+            minify: {
+                collapseWhitespace: true
+            }
+        }),
+        // 复制指定的文件
+        new CopyWebpackPlugin([{
+            from: './src/doc',
+            to: 'doc'
+        }])
+    ]
 }
