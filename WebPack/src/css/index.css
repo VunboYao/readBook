@@ -1,5 +1,10 @@
 @import './bg.css';
+
 .size {
     width: 300px;
     height: 300px;
+}
+
+body {
+    background: url('../images/test.png') no-repeat 100% 100%;
 }

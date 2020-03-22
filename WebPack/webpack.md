@@ -82,15 +82,18 @@
 - 同 file-loader 可设置文件名称，打包路径等。
 - mac 环境下，打包时需要设置 `publicPath`，否则路径无效
 
+
 ## css-loader
 
-解析 CSS 文件中 @import 和 URL（）, 会 import/require() 后再解析(resolve)它们。
+- 解析 CSS 文件中 @import 和 URL（）, 会 import/require() 后再解析(resolve)它们。
+- 分离 CSS 导致的图片解析问题， url 参数为 false
 
 ```js
 {
     loader: 'css-loader',
     options: {
-        modules: true // 启用css模块化
+        modules: true， // 启用css模块化
+        url: false // 不解析 Url(), 解析CSS中图片引入的路径问题
     }
 }
 ```
@@ -402,3 +405,79 @@ watchOptions: {
     }
     ```
 
+# babel低版本语法实现
+
+## 实现方式一
+
+- `npm install --save-dev @babel/core`
+
+    ```js
+    // import "@babel/polyfill"; // webpack中配置了useBuiltIns: usage，不用该选项
+    options: {
+        'presets': [
+            ['@babel/preset-env', { // 高级版本不做转换
+                "targets": {
+                    "chrome": "58"
+                },
+                "useBuiltIns": "usage" // 只打包用的的语法。避免代码臃肿
+            }]
+        ]
+    }
+    ```
+
+## 实现方式二
+
+直接倒入 polyfill 的方式只适用于一般项目开发，但是如果在编写一些第三方模块的时候这种方式会出现一些问题。因为这种方式是通过全局变量的方式来注入代码的，会污染全局环境
+
+1. `npm install --save-dev @babel/plugin-transform-runtime`
+2. `npm install --save @babel/runtime`
+
+    ```js
+    options: {
+        'presets': [
+            ['@babel/preset-env', { // 高级版本不做转换
+                "targets": {
+                    "chrome": "58"
+                },
+                // "useBuiltIns": "usage"
+            }]
+        ],
+        "plugins": [
+            [
+                "@babel/plugin-transform-runtime",
+                {
+                    "absoluteRuntime": false,
+                    "corejs": 2, // 需要安装独立的包，只支持全局变量promise和静态属性Array.from
+                    "helpers": true,
+                    "regenerator": true,
+                    "useESModules": false,
+                    "version": "7.0.0-beta.0"
+                }
+            ]
+        ]
+    }
+    ```
+
+3. `npm install --save @babel/runtime-corejs2`
+
+## babel-使用技巧
+
+- 查看错误提示
+- 根据错误信息查询文档
+- 根据文档缺什么就配置什么
+
+# html 中图片解析
+
+- `npm install html-withimg-loader --save`
+
+    ```js
+    loaders: [
+        {
+            test: /\.(htm|html)$/i,
+            loader: 'html-withimg-loader'
+        }
+    ]
+
+    ```
+
+- 错误处理：若新包更新出错，url-loader 中 esModule: false

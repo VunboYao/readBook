@@ -64,8 +64,22 @@ module.exports = {
                         ['@babel/preset-env', { // 高级版本不做转换
                             "targets": {
                                 "chrome": "58"
-                            }
+                            },
+                            // "useBuiltIns": "usage"
                         }]
+                    ],
+                    "plugins": [
+                        [
+                            "@babel/plugin-transform-runtime",
+                            {
+                                "absoluteRuntime": false,
+                                "corejs": 2,
+                                "helpers": true,
+                                "regenerator": true,
+                                "useESModules": false,
+                                "version": "7.0.0-beta.0"
+                            }
+                        ]
                     ]
                 }
             },
@@ -92,9 +106,15 @@ module.exports = {
                         limit: 1024 * 3,
                         publicPath: 'images', // 文件的公共路径
                         name: '[name].[ext]', // 文件名称
-                        outputPath: './images' // 文件输出的目录
+                        outputPath: './images', // 文件输出的目录
+                        esModule: false
                     }
                 }]
+            },
+            // 打包html中图片规则
+            {
+                test: /\.(htm|html)$/i,
+                loader: 'html-withimg-loader'
             },
             /**
              * css-loader: 解析css文件中的@import依赖关系
@@ -106,11 +126,15 @@ module.exports = {
                 use: [{
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                            hmr: true
+                            hmr: true,
+                            publicPath: '../'
                         }
                     },
                     {
-                        loader: 'css-loader'
+                        loader: 'css-loader',
+                        options: {
+                            url: false
+                        }
                     }
                 ]
             },
