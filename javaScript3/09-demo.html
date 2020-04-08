@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="file" onchange="showData()">
+    <script>
+        function showData() {
+            const input = document.getElementsByTagName('input')[0].files[0]
+            const reader = new FileReader()
+            if (input) {
+                reader.readAsDataURL(input)
+            }
+            console.log('input :', reader);
+        }
+    </script>
+</body>
+
+</html>

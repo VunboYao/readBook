@@ -1,43 +1,45 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <ul>
-      <li v-for="(item, index) in items" :key="index">{{item}}</li>
-    </ul>
+    <input type="file" multiple ref="uploadWidget" @change="showData" />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: "HelloWorld",
   props: {
     msg: String
   },
   data() {
     return {
-      items: [],
-      index: 0
+      files: null,
+      baseArr: [],
+      originData: []
+    };
+  },
+  methods: {
+    showData(e) {
+      this.files = e.target.files
+      this.baseArr = []
+      this.files.forEach(file => {
+        this.baseArr.push(this.get(file));
+      });
+      Promise.all(this.baseArr).then(res => {
+        this.$emit("success", res);
+      });
+    },
+    get(file) {
+      return new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          resolve(reader);
+        };
+        reader.readAsDataURL(file);
+      });
     }
-  },
-  mounted() {
-    // this.timer = setInterval(() => {
-    //   this.index++
-    //   this.items.push(this.index)
-    // }, 1000)
-    const timer = setInterval(() => {
-       this.index++
-       this.items.push(this.index)
-    }, 1000)
-    this.$once('hook:beforeDestroy', () => {
-      clearInterval(timer)
-      console.log('interval');
-    })
-  },
-  // beforeDestroy() {
-  //   console.log('object : cleartinterval');
-  //   clearInterval(this.timer)
-  // }
-}
+  }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

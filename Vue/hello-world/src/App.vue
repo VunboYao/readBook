@@ -1,31 +1,29 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld v-if="showH" msg="Welcome to Your Vue.js App"/>
-    <button @click="show">change</button>
+    <img alt="Vue logo" src="./assets/logo.png" />
+    <HelloWorld @success="success" msg="Welcome to Your Vue.js App" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from "./components/HelloWorld.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     HelloWorld
   },
   data() {
     return {
       showH: true
-    }
+    };
   },
   methods: {
-    show() {
-      console.log('show');
-      this.showH = !this.showH
+    success(data) {
+      console.log(data);
     }
   }
-}
+};
 </script>
 
 <style>
