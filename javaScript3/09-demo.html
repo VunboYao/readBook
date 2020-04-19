@@ -8,15 +8,16 @@
 </head>
 
 <body>
-    <input type="file" onchange="showData()">
+    <input type="file" onchange="showData(event)">
     <script>
-        function showData() {
-            const input = document.getElementsByTagName('input')[0].files[0]
-            const reader = new FileReader()
-            if (input) {
-                reader.readAsDataURL(input)
-            }
-            console.log('input :', reader);
+        function showData(e) {
+            const files = e.target.files
+            let src = window.URL.createObjectURL(files[0])
+            const img = document.createElement('img')
+            img.src = src
+            img.height = 100;
+            img.width = 100;
+            document.body.appendChild(img)
         }
     </script>
 </body>
