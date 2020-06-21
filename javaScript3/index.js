@@ -1,7 +1,7 @@
 {
-    // 3, 7, 4
-    // 宏队列: [5]
-    // 微队列: [1, 2]
+	// 3, 7, 4
+	// 宏队列: [5]
+	// 微队列: [1, 2]
 	/* const first = () => (new Promise((resolve, reject) => {
 		console.log(3)
 		let p = new Promise(((resolve1, reject1) => {
@@ -23,46 +23,46 @@
 	console.log(4) */
 }
 {
-    // 第一轮
-    // 同步执行: 1 7
-    // 宏: [0]
-    // 微: [2, 8]
+	// 第一轮
+	// 同步执行: 1 7
+	// 宏: [0]
+	// 微: [2, 8]
 
-    // 第二轮
-    // 同步执行: 1 7 2 3
-    // 宏: [0]
-    // 微: [8, 4, 6]
+	// 第二轮
+	// 同步执行: 1 7 2 3
+	// 宏: [0]
+	// 微: [8, 4, 6]
 
-    // 第三轮
-    // 同步执行: 1 7 2 3 8 4 6 5 0
-    // 宏: []
-    // 微: []
-    /* 	setTimeout(() => {
-            console.log(0)
-        }, 0)
-        new Promise(((resolve, reject) => {
-            console.log(1)
-            resolve()
-        })).then(() => {
-            console.log(2)
-            new Promise(((resolve, reject) => {
-                console.log(3)
-                resolve()
-            })).then(() => {
-                console.log(4)
-            }).then(() => {
-                console.log(5)
-            })
-        }).then(() => {
-            console.log(6)
-        })
+	// 第三轮
+	// 同步执行: 1 7 2 3 8 4 6 5 0
+	// 宏: []
+	// 微: []
+	setTimeout(() => {
+		console.log(0)
+	}, 0)
+	new Promise(((resolve, reject) => {
+		console.log(1)
+		resolve()
+	})).then(() => {
+		console.log(2)
+		new Promise(((resolve, reject) => {
+			console.log(3)
+			resolve()
+		})).then(() => {
+			console.log(4)
+		}).then(() => {
+			console.log(5)
+		})
+	}).then(() => {
+		console.log(6)
+	})
 
-        new Promise(((resolve, reject) => {
-            console.log(7)
-            resolve()
-        })).then(() => {
-            console.log(8)
-        }) */
+	new Promise(((resolve, reject) => {
+		console.log(7)
+		resolve()
+	})).then(() => {
+		console.log(8)
+	})
 }
 {
 	/*
@@ -73,7 +73,7 @@
 	* 5. next 方法每次执行都会返回一个对象 { value: 1, done: false }
 	* 6. 这个对象中存储了当前取出的数据和是否取完了的标记
 	* */
-	class MyArray {
+	/*class MyArray {
 		constructor() {
 			for (let i = 0; i < arguments.length; i++) {
 				this[i] = arguments[i]
@@ -100,7 +100,7 @@
 	// 自定义数组执行 for...of...
 	for (let i of arr) {
 		console.log(i)
-	}
+	}*/
 	/*const it = arr[Symbol.iterator]()
 	console.log(it.next()) // { value: 1, done: false }
 	console.log(it.next()) // { value: 3, done: false }

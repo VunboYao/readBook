@@ -559,6 +559,19 @@ Vue.component('custom-input', {
 
   > 注意你仍然需要在组件的 `props` 选项里声明 `checked` 这个 prop。
 
+### 解析
+
+#### v-model语法糖
+
+```vue
+<input type="text"
+       :value="price"
+       @input="price=$event.target.value"
+>
+```
+
+
+
 ### 将原生事件绑定到组件
 
 - `v-on` 的 `.native` 修饰符

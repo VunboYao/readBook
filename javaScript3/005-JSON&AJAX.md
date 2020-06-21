@@ -160,7 +160,7 @@ let xhr = new XMLHttpRequest();
 
 ### XHR 的用法
 
-```
+```javascript
 // 1.创建一个异步对象
 let xhr = new XMLHttpRequest();
 
@@ -175,7 +175,7 @@ xhr.open('get', 'example.php', false);
 /*这里的 send() 方法接收一个参数，即要作为请求主体发送的数据。如果不需要通过请求主体发送数据，则必须传入 null ，因为这个参数对有些浏览器来说是必需的。调用 send() 之后，请求就会被分派到服务器。*/
 xhr.send(null);
 
-// 4.监听状态的变化
+// 4.监听状态的变化 
 xhr.onreadystatechange = function() {
     /*
     * 0：未初始化。尚未调用open(方法）

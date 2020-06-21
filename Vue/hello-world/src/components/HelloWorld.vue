@@ -11,6 +11,7 @@ export default {
   props: {
     msg: String
   },
+  inject: ['app'],
   data() {
     return {
       files: null,
@@ -18,6 +19,9 @@ export default {
       originData: []
     };
   },
+  created() {
+		console.log(this.app, 'app')
+	},
   methods: {
     showData(e) {
       this.files = e.target.files
