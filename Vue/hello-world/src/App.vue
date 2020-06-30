@@ -1,42 +1,32 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png"/>
-    <HelloWorld @success="success" msg="Welcome to Your Vue.js App"/>
-    <y-button size="large" @test="show">
-      <h2 slot="one">OK</h2>
-      button one
-    </y-button>
+    <router-link to="/user/abc">GO TO FOO</router-link>
+    <router-view/>
   </div>
 </template>
 
 <script>
-	import HelloWorld from "./components/HelloWorld.vue"
-	import yButton from './components/button'
-
 	export default {
 		name: "App",
-    provide() {
-			return {
-				app: this
-      }
+    mounted() {
+      this.show()
     },
-		components: {
-			HelloWorld,
-			yButton
-		},
-		data() {
-			return {
-				showH: true
-			}
-		},
-		methods: {
-			show(val) {
-				console.log(val, '---')
-			},
-			success(data) {
-				console.log(data)
-			}
-		}
+    methods: {
+      test() {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve('123')
+          }, 2000);
+        })
+      },
+      async show() {
+        await this.test().then(res => {
+          console.log(res);
+        })
+        console.log('345');
+      }
+    }
 	}
 </script>
 
