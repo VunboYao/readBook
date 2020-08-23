@@ -2,6 +2,7 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png"/>
     <router-link to="/user/abc">GO TO FOO</router-link>
+    <router-link to="/demo">GO TO DEMO</router-link>
     <router-view/>
   </div>
 </template>
@@ -9,24 +10,27 @@
 <script>
 	export default {
 		name: "App",
-    mounted() {
-      this.show()
-    },
-    methods: {
-      test() {
-        return new Promise(resolve => {
-          setTimeout(() => {
-            resolve('123')
-          }, 2000);
-        })
-      },
-      async show() {
-        await this.test().then(res => {
-          console.log(res);
-        })
-        console.log('345');
-      }
-    }
+		mounted() {
+			history.pushState(null,null,document.URL)
+			window.addEventListener('popstate', function () {
+				history.pushState(null,null,document.URL)
+			})
+		},
+		methods: {
+			test() {
+				return new Promise((resolve) => {
+					setTimeout(() => {
+						resolve("123")
+					}, 2000)
+				})
+			},
+			async show() {
+				await this.test().then((res) => {
+					console.log(res)
+				})
+				console.log("345")
+			},
+		},
 	}
 </script>
 

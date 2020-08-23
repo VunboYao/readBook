@@ -2,24 +2,36 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 
 <body>
-    <input type="file" onchange="showData(event)">
-    <script>
-        function showData(e) {
-            const files = e.target.files
-            let src = window.URL.createObjectURL(files[0])
-            const img = document.createElement('img')
-            img.src = src
-            img.height = 100;
-            img.width = 100;
-            document.body.appendChild(img)
-        }
-    </script>
+  <input type="file" onchange="showData(event)">
+  <a href="https://www.baidu.com/" class='Href'>BaiDu</a>
+  <a href="https://www.baidu.com/" class='href'>baiDu</a>
+  <script>
+    const res = document.querySelector('.Href')
+    res.onclick = () => {
+      console.log('click UpperCase');
+      return false
+    }
+    const res1 = document.querySelector('.href')
+    res1.onclick = () => {
+      console.log('LowerCase clicked');
+      return true
+    }
+    function showData(e) {
+      const files = e.target.files
+      let src = window.URL.createObjectURL(files[0])
+      const img = document.createElement('img')
+      img.src = src
+      img.height = 100;
+      img.width = 100;
+      document.body.appendChild(img)
+    }
+  </script>
 </body>
 
 </html>
