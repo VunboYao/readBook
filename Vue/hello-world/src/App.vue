@@ -1,8 +1,6 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png"/>
-    <router-link to="/user/abc">GO TO FOO</router-link>
-    <router-link to="/demo">GO TO DEMO</router-link>
     <router-view/>
   </div>
 </template>
