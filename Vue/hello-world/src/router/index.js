@@ -3,16 +3,26 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 import user from "../components/user"
+import UserProfile from "../components/UserProfile"
 
 export default new VueRouter({
   mode: 'history',
 	routes: [
 		{
 			path: '/',
-			redirect: '/demo'
+			redirect: '/user'
 		},
 		{
-			path: '/user/:id', component: user,
+			path: 'user',
+			name: 'User',
+			component: user,
+			children: [
+				{
+					path: 'profile',
+					name: 'UserProfile',
+					component: UserProfile
+				}
+			]
     }
 	]
 })

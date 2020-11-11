@@ -1,7 +1,9 @@
 <template>
-<div>
-  {{ $route.params }}
-</div>
+  <div>
+    {{ $route.params }}
+    <router-link :to="{name: 'UserProfile'}">ShowProfile</router-link>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -9,14 +11,7 @@
 		name: "User",
 		data() {
 			return {}
-		},
-		mounted() {
-			history.pushState(null,null,document.URL)
-			window.addEventListener('popstate', function () {
-				history.pushState(null,null,document.URL)
-			})
-		},
-		methods: {}
+		}
 	}
 </script>
 
