@@ -5,9 +5,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    .a{
+  width: 0;
+  height: 0;
+  border-width: 100px;
+  border-style: solid;
+  border-color: transparent #0099CC transparent transparent;
+  transform: rotate(90deg); /*顺时针旋转90°*/
+  }
+  </style>
 </head>
 
 <body>
+
+  <div class="a"></div>
   <input type="file" onchange="showData(event)">
   <script>
     /* const res = document.querySelector('.Href')

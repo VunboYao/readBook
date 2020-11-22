@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png"/>
+    <router-link :to="{ name: 'User', params: {userId: '123'}}">GoUser</router-link>
     <router-view/>
   </div>
 </template>
