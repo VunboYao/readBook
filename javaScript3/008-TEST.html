@@ -7,9 +7,9 @@
 </head>
 
 <body>
-<script src="index.js"></script>
-<script>
-	/* class MyArray {
+	<script src="index.js"></script>
+	<script>
+		/* class MyArray {
 		 constructor() {
 			 for (let i = 0; i < arguments.length; i++) {
 				 this[i] = arguments[i]
@@ -37,23 +37,21 @@
 
 		let arr2 =[...arr, ...arr1]
 	 console.log(arr2)*/
-async function getSome() {
-  return 'something'
-}
+		async function getSome() {
+			return 'something'
+		}
 
-async function testAsync() {
-  return Promise.resolve('hello async')
-}
+		async function testAsync() {
+			return Promise.resolve('hello async')
+		}
 
-async function test() {
-  const v1 = getSome()
-  const v2 = await testAsync()
-  console.log(v1, v2);
-}
-test()
-
-
-</script>
+		async function test() {
+			const v1 = getSome()
+			const v2 = await testAsync()
+			console.log(v1, v2);
+		}
+		test()
+	</script>
 </body>
 
 </html>
