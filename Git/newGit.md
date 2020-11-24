@@ -128,3 +128,24 @@
 - `!lib.a`, 表示 lib.a 除外
 - `/TODO`, 表示忽略项目根目录下的 TODO 文件, 不包括 subdir/TODO
 - `build/`, 表示忽略 build/ 目录下的所有文件, 过滤整个build 文件夹
+
+# 公钥私钥
+
+- cd ~/.ssh
+
+- ls -al 检查是否有公钥私钥
+
+- 生成密钥
+
+  ```shell
+  ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+  ```
+
+- 将 id_rsa.pub 文件复制到 SSH
+
+# 本地托管至远程
+
+```shell
+git remote add origin https://github.com/user/repo.git
+```
+
