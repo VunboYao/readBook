@@ -108,7 +108,7 @@
 - 创建分支：`git branch 分支名称`
 - 切换分支：`git switch 分支名称`
 - 查看远程分支：`git branch -r`
-- 
+- 分支合并：`git merge dev`. 将 dev分支合并到当前分支
 
 # 回滚相关
 
