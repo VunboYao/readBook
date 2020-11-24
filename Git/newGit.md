@@ -102,6 +102,12 @@
 - `git rm --cached a.txt` 删除暂存区指定文件,工作区不受影响
 - `git checkout a.txt`，工作区的内容不满意，将暂存区内容还原到工作区
 
+# 分支操作
+
+- 查看分支：`git branch`
+- 创建分支：`git branch 分支名称`
+- 切换分支：`git switch 分支名称`
+
 # 回滚相关
 
 1. `git log / git reflog` 查看项目历史
