@@ -109,6 +109,9 @@
 - 切换分支：`git switch 分支名称`
 - 查看远程分支：`git branch -r`
 - 分支合并：`git merge dev`. 将 dev分支合并到当前分支
+- 删除分支：`git branch -D 分支名称`
+- 删除远程分支：`git push origin --delete 分支名称`
+- 更新远程分支：`git remote prune origin`
 
 # 回滚相关
 
