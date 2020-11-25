@@ -105,8 +105,11 @@
 # 分支操作
 
 - 查看分支：`git branch`
+  - 查看每个分支的最后一次提交：`git branch -v`
 - 创建分支：`git branch 分支名称`
 - 切换分支：`git switch 分支名称`
+  - **2.23** 低版本中，使用命令：`git checkout 分支名称`
+  - 新建分支并切换过去：`git checkout -b 分支名称`
 - 查看远程分支：`git branch -r`
 - 分支合并：`git merge dev`. 将 dev分支合并到当前分支
 - 删除分支：`git branch -D 分支名称`
