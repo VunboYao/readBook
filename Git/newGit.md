@@ -104,7 +104,7 @@
 
 # 分支操作
 
-- 查看分支：`git branch`
+- 查看分支：`git branch`。DemoBranch
   
   - 查看每个分支的最后一次提交：`git branch -v`
 - 创建分支：`git branch 分支名称`
