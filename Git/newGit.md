@@ -107,7 +107,9 @@
 - 查看分支：`git branch`。
   
   - 查看每个分支的最后一次提交：`git branch -v`
+  
 - 创建分支：`git branch 分支名称`
+
 - 切换分支：`git switch 分支名称`
   - **2.23** 低版本中，使用命令：`git checkout 分支名称`
   
@@ -116,10 +118,19 @@
     > **低版本**: `git checkout -b 分支名称`
     >
     > **新版本**: `git switch -c 分支名称`
+  
 - 查看远程分支：`git branch -r`
+
 - 分支合并：`git merge dev`. 将 dev分支合并到当前分支
+
+  > 通常合并分支时， *Git* 会用 `Fast forward` 模式，但这种模式下，删除分支后，会丢掉分支信息。为了保留分支信息，禁用 `Fast forward` 模式。合并分支时使用 **`--no-ff`**。
+  >
+  > `git merge --no-ff -m '合并分支时的描述' dev`
+
 - 删除分支：`git branch -D 分支名称`
+
 - 删除远程分支：`git push origin --delete 分支名称`
+
 - 更新远程分支：`git remote prune origin`
 
 # 回滚相关
