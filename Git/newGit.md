@@ -168,6 +168,10 @@
     >
     > 远程删除：`git push origin :refs/tags/v1.1`
 
+- **应用标签**：`git checkout -b <branchName> <tagName>`。
+
+  > :1st_place_medal:`tag` 相当于一个快照，不能更改它的代码。如果要在 `tag` 代码的基础上做修改，需要创建一个分支。
+
 # 暂存
 
 - 存储：`git stash`
