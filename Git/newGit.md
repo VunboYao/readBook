@@ -104,7 +104,7 @@
 
 # 分支操作
 
-- 查看分支：`git branch`。
+- 查看分支：`git branch`
   
   - 查看每个分支的最后一次提交：`git branch -v`
   
@@ -125,13 +125,30 @@
 
   > 通常合并分支时， *Git* 会用 `Fast forward` 模式，但这种模式下，删除分支后，会丢掉分支信息。为了保留分支信息，禁用 `Fast forward` 模式。合并分支时使用 **`--no-ff`**。
   >
-  > `git merge --no-ff -m '合并分支时的描述' dev`
+  > **`git merge --no-ff -m '合并分支时的描述' dev`**
 
-- 删除分支：`git branch -D 分支名称`
+- 删除分支：`git branch -D 分支名称`， 强制删除
 
 - 删除远程分支：`git push origin --delete 分支名称`
 
 - 更新远程分支：`git remote prune origin`
+
+# 暂存
+
+- 存储：`git stash`
+- 查看：`git stash list`
+- 恢复贮藏
+  - 获取刚刚贮藏的：`git stash apply`
+  - 获取更久的：`git stash apply stash@{2}`
+
+- 删除贮藏
+  - 删除最近的：`git stash drop`
+  - 删除某一个：`git stash drop stash@{1}`
+- **应用并删除: `git stash pop`**
+- **指定贮藏应用并删除：`git stash pop stash@{2}`**
+- 在master分支上修复的bug，想要合并到当前dev分支，可以用**`git cherry-pick <commit>`**命令，把bug提交的修改“复制”到当前分支，避免重复劳动。
+
+:face_with_thermometer:可以在一个分支上保存一个贮藏，切换到另一个分支，然后尝试重新应用这些修改
 
 # 回滚相关
 
