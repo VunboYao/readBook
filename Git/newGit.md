@@ -49,6 +49,8 @@
 
 - `git config [--local|--global|--system] -e`, 修改配置文件, **默认采用--local**
 
+- 查看远程库信息：`git remote -v`
+
   ## config 的三个作用域
 
   **等同于 local**
@@ -132,6 +134,12 @@
 - 删除远程分支：`git push origin --delete 分支名称`
 
 - 更新远程分支：`git remote prune origin`
+
+  :stuck_out_tongue:`master` 分支是主分支。需要与远程同步
+
+  :blonde_woman:`dev` 分支是开发分支，团队成员都需要在上面工作。也需要远程同步
+
+  :last_quarter_moon_with_face:`bug` 分支只在本地修复，不用推送到远程。
 
 # 暂存
 
