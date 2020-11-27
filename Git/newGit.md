@@ -141,6 +141,33 @@
 
   :last_quarter_moon_with_face:`bug` 分支只在本地修复，不用推送到远程。
 
+# 标签
+
+:grey_question:标签是版本库的一个快照。本质是指向某个`commit`的指针。**分支可以移动, 标签不能移动**
+
+- 创建一个新标签：
+
+  - `git tag v1.0`
+  - 特定的 commit 打标签：`git tag v1.1 f53c132`
+
+- 查看所有标签：`git tag`
+
+- 查看标签信息：`git show v1.1`
+
+- 创建带有说明的标签：`git tag -a <tagname> -m 'somebalaba' `。 `-a`指定标签名， `-m`指定说明文字
+
+- 删除标签：`git tag -d v1.1`
+
+- 推送标签至远程：`git push origin <tagname>`
+
+  - 一次性推送到远程：`git push origin --tags`
+
+  - 删除远程标签：
+
+    > 先删除本地：`git tag -d v1.1`
+    >
+    > 远程删除：`git push origin :refs/tags/v1.1`
+
 # 暂存
 
 - 存储：`git stash`
