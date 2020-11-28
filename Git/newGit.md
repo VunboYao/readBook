@@ -101,6 +101,12 @@
 - 重新提交
   - `git commit --amend` 修改提交信息。
 
+# 回滚历史版本
+
+:1st_place_medal: `git reset --soft HEAD~`。*撤销上一次提交 `git commit` 命令*
+
+
+
 # 查看历史
 
 - `git log --all` 查看所有分支的历史
