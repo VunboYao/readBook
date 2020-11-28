@@ -90,6 +90,17 @@
 - Git push origin master
 - Git remote add origin <server>
 
+# 撤销
+
+- 撤销对文件的修改
+  - 低版本：`git checkout -- <file>`
+  - 高版本：`git restore <file>`
+- 撤销暂存的文件
+  - 低版本：`git reset HEAD <file>`
+  - 高版本：`git restore --staged <file>`
+- 重新提交
+  - `git commit --amend` 修改提交信息。
+
 # 查看历史
 
 - `git log --all` 查看所有分支的历史
