@@ -110,6 +110,14 @@
 - `git log --oneline --all -n4 --graph` 查看所有分支最近4条单行的图形化历史
 - `git help --web log` 跳转到git log 的帮转文档网页
 
+# 回滚历史版本
+
+:1st_place_medal: `git reset --soft HEAD~`。*撤销上一次提交 `git commit` 命令*
+
+:2nd_place_medal: `git reset [--mixed] HEAD~`。撤销上一次**提交**， 但还会**取消暂存** 所有的东西**
+
+:3rd_place_medal: `git reset --hard HEAD~`。撤销上一次提交、`git add` 和 `git commit `命令 以及 工作目录中的所有工作。
+
 # Git删除与恢复
 
 - `git rm --cached a.txt` 删除暂存区指定文件,工作区不受影响
@@ -238,5 +246,3 @@
 ```shell
 git remote add origin https://github.com/user/repo.git
 ```
-
-- DEMO
