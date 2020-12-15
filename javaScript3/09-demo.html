@@ -11,10 +11,13 @@
 
 <body>
   <script>
-		const global = function () {
-			return this
-		}()
-		console.log(global)
+    function Person(name, age, job) {
+		}
+
+		const obj = new Person()
+		console.log(obj.__proto__ === Person.prototype)
+		console.log(Function.prototype === Person.__proto__)
+		console.log(Person.__proto__ === Object.__proto__)
   </script>
 </body>
 
