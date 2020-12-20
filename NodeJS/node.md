@@ -1,3 +1,11 @@
+# NVM
+
+- nvm list 查看当前安装的Node.JS所有版本
+- nvm install 版本号 安装指定版本的Node.js
+- num uninstall 版本号 卸载指定版本的Node.js
+- num use 版本号 选择指定版本的Node.js
+- nvm list available 查看可下载版本
+
 # 环境代码区别
 
 - 浏览器内置提供window 全局对象, this 默认指向window

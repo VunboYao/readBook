@@ -11,32 +11,21 @@
 
 <body>
   <script>
-		class Vehicle {}
-		let FooMixin = (Superclass) => class extends Superclass {
-			foo() {
-				console.log('foo');
-			}
-		};
-		let BarMixin = (Superclass) => class extends Superclass {
-			bar() {
-				console.log('bar');
-			}
-		};
-		let BazMixin = (Superclass) => class extends Superclass {
-			baz() {
-				console.log('baz');
-			}
-		};
-		function mix(BaseClass, ...Mixins) {
-			return Mixins.reduce((accumulator, current) => {
-				return current(accumulator)
-      }, BaseClass);
+    const userList = []
+    function emit(newValue) {
 		}
-		class Bus extends mix(Vehicle, FooMixin, BarMixin, BazMixin) {}
-		let b = new Bus();
-		b.foo(); // foo
-		b.bar(); // bar
-		b.baz(); // baz
+		const proxy = new Proxy(userList, {
+			set(target, property, value, receiver) {
+				const result = Reflect.set(...arguments)
+        if (result) {
+					console.log(property)
+					emit(Reflect.get(target, property, receiver))
+        }
+        return result
+      }
+    })
+    proxy.push('John')
+    proxy.push('John2')
   </script>
 </body>
 
