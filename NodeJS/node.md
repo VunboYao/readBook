@@ -44,6 +44,8 @@
 - npm init -y 初始化 package.json
 - npm install xxx (生产环境包依赖)等同于 npm install xxx --save  
 - npm install xxx --save-dev (开发环境包依赖) 
+- npm install === npm install --development 安装开发依赖
+- npm install --production 安装生产依赖
 - 版本差异:
     - '5.0.3', 表示指定安装的 5.0.3 版本
     - '~5.0.3', 表示安装 5.0.X 中最新的版本
