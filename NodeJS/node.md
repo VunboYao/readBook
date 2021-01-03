@@ -6,6 +6,19 @@
 - num use 版本号 选择指定版本的Node.js
 - nvm list available 查看可下载版本
 
+#  Yarn
+
+- npm install -g yarn 全局安装
+- yarn --version 查看版本
+- yarn init -y 初始化
+- yarn add xx --save 安装生产依赖
+- yarn add xx --dev 安装开发依赖
+- yarn remove xxx 移除包
+- yarn upgrade xxx 更新依赖
+- yarn global add xxx 全局安装
+- yarn global upgrade xxx 全局更新
+- yarn global remove xxx 全局删除
+
 # 环境代码区别
 
 - 浏览器内置提供window 全局对象, this 默认指向window
@@ -46,15 +59,205 @@
 - npm install xxx --save-dev (开发环境包依赖) 
 - npm install === npm install --development 安装开发依赖
 - npm install --production 安装生产依赖
+- npm update 更新包
+- npm uninstall xxx 卸载包
+- `npm list -g --depth 0` 查看全局安装的包
 - 版本差异:
+    - `x.y.z`
+        - 第一个数字是主版本
+        - 第二个数字是次版本
+        - 第三个数字是补丁版本
+        - `^`，表示更新**补丁版本**、**次版本**
+        - `~`，表示更新**补丁版本**
     - '5.0.3', 表示指定安装的 5.0.3 版本
     - '~5.0.3', 表示安装 5.0.X 中最新的版本
     - '^5.0.3', 表示安装 5.X.X 中最新的版本
 
 # fs
 
-- writeStream 写入流执行完成后. 需要执行 writeStream.end()
+- `stats()`, 文件信息
+
+  ```javascript
+  let fs = require('fs')
+  // 读取文件状态，判断是文件/文件夹
+  fs.stat(__dirname, (err, status) => {
+    if (status.isFile()) {
+      console.log('is a File');
+    } else if (status.isDirectory()) {
+      console.log('is a Directory');
+    }
+  })
+  
+  // 同步
+  let status = fs.statSync(__filename)
+  ```
+
+- `readFile()`，读取文件
+
+  ```javascript
+  // 1.获取读取文件的路径
+  let path = Path.join(__dirname, 'www/index.html')
+  // 2.读取文件
+  fs.readFile(path, 'utf8', (err, data) => {
+    if(err) {
+      throw new Error('readFile error')
+    }
+    console.log(data); // 指定第二个参数
+    // console.log(data.toString()); // 未指定第二个参数，则返回buffer
+  })
+  
+  let data = fs.readFileSync(path, 'utf8')
+  ```
+
+- `writeFile（file，data[, options],callback)`：写入文件
+
+  ```javascript
+  let str = Path.join(__dirname, 'www/demo.txt')
+  fs.writeFile(str, 'some demo txt', 'utf-8', (err) => {
+    if (err) {
+      throw new Error('writeFile error')
+    } else {
+      console.log('success');
+    }
+  })
+  
+  let  res = fs.writeFileSync(str, 'some demo sync txt', 'utf-8')
+  ```
+
+- `appendFile(file, data[,options],callback)`: 追加文件
+
+  ```javascript
+  let str = Path.join(__dirname, 'www/append.txt')
+  let br = '\n'
+  const content = `${'some append.txt'}${br}`
+  fs.appendFile(str, content, 'utf8', err => {
+    if (err) throw err;
+    console.log('success appendFile');
+  })
+  let file = fs.appendFileSync(str, content, 'utf8')
+  ```
+
+- `createReadStream(path[, options])`: 文件读取流
+
+  ```javascript
+  let readStr = Path.join(__dirname, 'www/demo.txt')
+  
+  // 2.Create ReadStream
+  let readStream = fs.createReadStream(readStr, {
+    encoding: 'utf8',
+    highWaterMark: 1
+  })
+  
+  // 3. Open Stream
+  readStream.on('open', () => {
+    console.log('ReadStream Open');
+  })
+  
+  readStream.on('error', () => {
+    console.log('ReadStream error');
+  })
+  
+  readStream.on('data', (data) => {
+    console.log('ReadStream has get Data: ', data);
+  })
+  
+  readStream.on('close', () => {
+    console.log('ReadStream Close');
+  })
+  ```
+
+- `createWriteStream(path[,options])`：文件写入流
+
+  - writeStream 写入流执行完成后. 需要执行 writeStream.end()
+
+  ```javascript
+  // 1.write url
+  let writeStr = Path.join(__dirname, 'www/new.txt')
+  // 2.CreateWriteStream
+  let writeStream = fs.createWriteStream(writeStr, {
+    encoding: 'utf-8'
+  })
+  // 3.Listening Open
+  writeStream.on('open', () => {
+    console.log('writeStream Open');
+  })
+  
+  writeStream.on('error', () => {
+    console.log('writeStream error');
+  })
+  
+  writeStream.on('close', () => {
+    console.log('writeStream Close');
+  })
+  
+  let index = 0
+  let str = 'www.vunbo.com'
+  let timerId = setInterval(() => {
+    writeStream.write(str[index])
+    console.log('writing data: ', str[index]);
+    index++
+    if (index === str.length) {
+      clearInterval(timerId)
+      writeStream.end()
+    }
+  }, 1000)
+  ```
+
+## 读写流实现拷贝
+
 - readStream.pipe(writeStream), 读取流管道方法实现拷贝
+
+```javascript
+// 1.Create url
+let readUrl = Path.join(__dirname, 'www/demo.mp4')
+let writeUrl = Path.join(__dirname, 'www/write.mp4')
+
+// 2.Create ReadStream
+let readStream = fs.createReadStream(readUrl)
+// 3.Create WriteStream
+let writeStream = fs.createWriteStream(writeUrl)
+// 4.Listening ReadStream
+readStream.on('open', () => {
+  console.log('readSteam open');
+})
+readStream.on('error', () => {
+  console.log('readSteam error');
+})
+readStream.on('close', () => {
+  console.log('readSteam close');
+  // 读取结束，写入结束
+  writeStream.end()
+})
+readStream.on('data', (data) => {
+  console.log('readSteam data: ', data);
+  // 写入数据
+  writeStream.write(data)
+})
+
+// 5.Listening WriteStream
+writeStream.on('open', () => {
+  console.log('writeStream open');
+})
+writeStream.on('error', () => {
+  console.log('writeStream error');
+})
+writeStream.on('close', () => {
+  console.log('writeStream close');
+})
+
+
+// pipe() 实现快速拷贝
+let readUrl = Path.join(__dirname, 'www/demo.mp4')
+let writeUrl = Path.join(__dirname, 'www/write2.mp4')
+
+// 2.Create ReadStream
+let readStream = fs.createReadStream(readUrl)
+// 3.Create WriteStream
+let writeStream = fs.createWriteStream(writeUrl)
+readStream.pipe(writeStream)
+```
+
+
 
 # 核心原理
 
@@ -155,3 +358,33 @@ console.log(aModule);
 - test: 可省略为 npm test
 - start: 同 test
 - bin: 添加一个 key/value， 定义全局包
+
+# path
+
+- `require('path')`
+- `basename`(): 获取路径的最后一部分，第二个参数**过滤文件扩展名**
+- `dirname()`: 用于获取路径中的目录，除了最后一部分的内容
+- `extname()`: 获取路径中最后一部分的扩展名
+- `isAbsolute()`: 方法检测 `path` 是否为绝对路径
+  - Linux操作系统中`/`开头就是绝对路径。**`/`左斜杠**
+  - Windows操作系统中盘符开头就是绝对路径。 `\`右斜杠
+- `sep()`: 获取当前系统的路径分隔符
+
+- `delimiter`: 路径定界符。
+  - Windows 上用 `;`
+  - Linux 上用 `：`
+- `parse()`: 用于将路径换成对象
+- `format()`：用于将对象换成路径
+- `join()`: 将所有给定的 `path` 片段连接到一起
+  - 如果参数中有`..`，那么会自动根据前面的参数生成的路径，去到上一个路径
+
+- `normalize()`: 规范化给定的 path
+- `relative()` : 根据当前工作目录返回 `from` 到 `to` 的相对路径
+
+- `resolve()`: 将路径或路径片段的序列解析为绝对路径。后边的绝对路径会覆盖前边的参数。
+
+# CommonJS模块
+
+- `__filename`: 当前的模块文件的绝对路径
+- `__dirname`：当前模块的目录名。相当于 `path.dirname()`
+
