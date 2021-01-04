@@ -26,8 +26,8 @@
 
 # 全局属性和方法
 
-- dirname: 该文件所处的目录
-- filename: 当前文件的绝对路径
+- __dirname: 该文件所处的目录
+- __filename: 当前文件的绝对路径
 
 # 模块暴露的方式
 
@@ -56,7 +56,7 @@
 - npm config list 查看配置
 - npm init -y 初始化 package.json
 - npm install xxx (生产环境包依赖)等同于 npm install xxx --save  
-- npm install xxx --save-dev (开发环境包依赖) 
+- npm install xxx --save-dev (安装开发环境包依赖) 
 - npm install === npm install --development 安装开发依赖
 - npm install --production 安装生产依赖
 - npm update 更新包
@@ -75,7 +75,7 @@
 
 # fs
 
-- `stats()`, 文件信息
+- `stat()`, 文件信息
 
   ```javascript
   let fs = require('fs')
@@ -202,6 +202,71 @@
     }
   }, 1000)
   ```
+
+- `mkdir/rmdir/readdir`：目录操作
+
+  ```javascript
+  // Create dir
+  let str = Path.join(__dirname, 'abc')
+  fs.mkdir(str, (err) => {
+    if (err) throw err;
+    console.log('success mkdir');
+  })
+  
+  // delete dir
+  fs.rmdir(str, err => {
+    if (err) throw err;
+    console.log('delete dir success');
+  })
+  
+  fs.readdir(__dirname, (err, files) => {
+    if (err) throw err;
+    files.forEach(file => {
+      let fileStr = Path.join(__dirname, file)
+      let status = fs.statSync(fileStr)
+      if (status.isFile()) {
+        console.log('isFile: ' + file);
+      } else if (status.isDirectory()) {
+        console.log('isDirectory: ' + file);
+      }
+    })
+  })
+  ```
+
+## 生成文件夹
+
+```javascript
+class CreateProject{
+  constructor(projectPath, projectName) {
+    this.projectPath = projectPath
+    this.projectName = projectName
+    this.subFiles = ['js', 'css', 'image', 'index.html']
+  }
+
+  initProject() {
+    // 主文件目录
+    let projectP = Path.join(this.projectPath, this.projectName)
+    // 写入文件
+    fs.mkdirSync(projectP)
+    // 遍历内置文件
+    this.subFiles.forEach(file => {
+      // 子文件目录
+      let subPath = Path.join(projectP, file)
+      // 扩展名检查
+      if (Path.extname(file)) {
+        fs.writeFileSync(subPath, '')
+      } else {
+        fs.mkdirSync(subPath)
+      }
+    })
+  }
+}
+
+let a = new CreateProject(__dirname, 'taobao')
+a.initProject()
+```
+
+
 
 ## 读写流实现拷贝
 
@@ -387,4 +452,184 @@ console.log(aModule);
 
 - `__filename`: 当前的模块文件的绝对路径
 - `__dirname`：当前模块的目录名。相当于 `path.dirname()`
+
+# http
+
+## req, res
+
+- `res.end()`, 只会执行一次
+- `res.write()`, 发送请求主体。不具备结束请求的功能
+- `req.method`, 返回接口请求方式GET/POST
+
+## 服务器建立
+
+```javascript
+const Port = 3000
+const Http = require('http')
+Http.createServer((req,res) => {
+  // 通知浏览器返回数据的类型
+  res.writeHead(200, {
+    'Content-Type': 'text/plain;charset=utf-8'
+  })
+  res.end('你好，世界')
+}).listen(Port, () => {
+  console.log('listening port: ' + Port);
+})
+```
+
+## 路由分发
+
+```javascript
+Http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain;charset=utf8'})
+  if (req.url.startsWith('/index')) {
+    res.end('i am Index')
+  } else if (req.url.startsWith('/login')) {
+    res.end('i am Login')
+  }
+  res.end('你好。朋友') // 404
+}).listen(Port, () => {
+  console.log(`Serving is running in: ${Host}:${Port}`)
+})
+
+// 路由返回页面
+Http.createServer((req, res) => {
+  readFile(req, res)
+}).listen(Port, () => {
+  console.log(`${Host}:${Port}`)
+})
+
+function readFile(req, res) {
+  let readPath = Path.join(__dirname, 'www', req.url)
+  Fs.readFile(readPath, 'utf8', (err, data) => {
+    if (err) {
+      res.end('Serving Error')
+    } else {
+      res.end(data)
+    }
+  })
+}
+```
+
+## 服务返回静态资源
+
+- 加载其他资源不能写`utf-8`
+- 服务器在响应数据时，如果没有设置响应头，在某些浏览器上将不能正常展示数据
+
+```javascript
+Http.createServer((req, res) => {
+  readFile(req, res)
+}).listen(Port, () => {
+  console.log(`${Host}:${Port}`)
+})
+
+function readFile(req, res) {
+  // 文件路径
+  let readPath = Path.join(__dirname, 'www', req.url)
+  // 扩展名
+  const extName = Path.extname(readPath)
+  // 对应数据类型的响应头类型
+  let type = mime[extName]
+  if (type.startsWith('text')) {
+    type += ';charset=utf8'
+  }
+  // 设置响应头
+  res.writeHead(200, {
+    'Content-Type': type
+  })
+  Fs.readFile(readPath, (err, data) => {
+    if (err) {
+      res.end('Serving Error')
+    } else {
+      res.end(data)
+    }
+  })
+}
+```
+
+## 静态资源服务封装
+
+```javascript
+const Path = require('path')
+const Fs = require('fs')
+const mime = require('./mime.json')
+
+function readFile(req, res, rootPath) {
+  // 文件路径
+  let readPath = Path.join(rootPath, req.url)
+  // 扩展名
+  const extName = Path.extname(readPath)
+  // 对应数据类型的响应头类型
+  let type = mime[extName]
+  // 存在文件扩展类型
+  const mimeType = type && type.startsWith('text')
+  if (!mimeType) {
+    res.end('Unavailable mime Type ')
+    return
+  }
+  if (mimeType) {
+    type += ';charset=utf8'
+  }
+  // 设置响应头
+  res.writeHead(200, {
+    'Content-Type': type
+  })
+  Fs.readFile(readPath, (err, data) => {
+    if (err) {
+      res.end('Serving Error')
+    } else {
+      res.end(data)
+    }
+  })
+}
+
+module.exports.staticServer = readFile
+
+
+// 引用资源文件
+const ss = require('./10-StaticServer.js')
+Http.createServer((req, res) => {
+  // const rootPath = Path.join(__dirname, 'www')
+  const rootPath = '/Users/vunboyao/Desktop/readBook/CSS'
+  ss.staticServer(req, res, rootPath)
+}).listen(Port, () => {
+  console.log(`${Host}:${Port}`)
+})
+```
+
+# url
+
+解析url路径信息
+
+```javascript
+const Url = require('url')
+let str = "http://root:123456@www.vunbo.com:90/index.html?name=yyb&age=26#apple"
+let obj = Url.parse(str, true)
+console.log(obj)
+```
+
+# querystring(查询字符串)
+
+用于解析和格式化 URL 查询字符串的实用工具
+
+- `parse(str[,sep[,eq[,options]]])`, 解析字符串
+  - 别名：`decode()`
+- `stringify(obj,[,sep[,eq[,options]]])`：序列化为URL查询字符串的对象
+  - 别名：`encode()`
+
+## 获取post请求数据
+
+```javascript
+Http.createServer((req, res) => {
+  console.log(req.method)
+  let params = ''
+  req.on('data', chunk => {
+    params += chunk
+  })
+  req.on('end', () => {
+    let obj = querystring.parse(params)
+    res.end(`${obj.userName}:${obj.password}`)
+  })
+}).listen(Port)
+```
 

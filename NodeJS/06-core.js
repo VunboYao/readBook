@@ -1,5 +1,6 @@
-let Path = require('path')
-let fs = require('fs')
+const Path = require('path')
+const Fs = require('fs')
+const Http = require('http')
 
 // 读取文件状态，判断是文件/文件夹
 /* fs.stat(__dirname, (err, status) => {
@@ -138,11 +139,194 @@ writeStream.on('close', () => {
   console.log('writeStream close');
 }) */
 
-let readUrl = Path.join(__dirname, 'www/demo.mp4')
+/* let readUrl = Path.join(__dirname, 'www/demo.mp4')
 let writeUrl = Path.join(__dirname, 'www/write2.mp4')
 
 // 2.Create ReadStream
 let readStream = fs.createReadStream(readUrl)
 // 3.Create WriteStream
 let writeStream = fs.createWriteStream(writeUrl)
-readStream.pipe(writeStream)
+readStream.pipe(writeStream) */
+
+// Create dir
+/* let str = Path.join(__dirname, 'abc')
+fs.mkdir(str, (err) => {
+  if (err) throw err;
+  console.log('success mkdir');
+})
+
+// delete dir
+fs.rmdir(str, err => {
+  if (err) throw err;
+  console.log('delete dir success');
+})
+
+fs.readdir(__dirname, (err, files) => {
+  if (err) throw err;
+  files.forEach(file => {
+    let fileStr = Path.join(__dirname, file)
+    let status = fs.statSync(fileStr)
+    if (status.isFile()) {
+      console.log('isFile: ' + file);
+    } else if (status.isDirectory()) {
+      console.log('isDirectory: ' + file);
+    }
+  })
+}) */
+
+// 创建目录文件实例
+/* class CreateProject{
+  constructor(projectPath, projectName) {
+    this.projectPath = projectPath
+    this.projectName = projectName
+    this.subFiles = ['js', 'css', 'image', 'index.html']
+  }
+
+  initProject() {
+    // 主文件目录
+    let projectP = Path.join(this.projectPath, this.projectName)
+    // 写入文件
+    fs.mkdirSync(projectP)
+    // 遍历内置文件
+    this.subFiles.forEach(file => {
+      // 子文件目录
+      let subPath = Path.join(projectP, file)
+      // 扩展名检查
+      if (Path.extname(file)) {
+        fs.writeFileSync(subPath, '')
+      } else {
+        fs.mkdirSync(subPath)
+      }
+    })
+  }
+}
+
+let a = new CreateProject(__dirname, 'taobao')
+a.initProject() */
+
+// create server
+const Port = 3000
+const Host = '127.0.0.1'
+const mime = require('./mime.json')
+const ss = require('./10-StaticServer.js')
+/*Http.createServer((req, res) => {
+  // 通知浏览器返回数据的类型
+  res.writeHead(200, {
+    'Content-Type': 'text/plain;charset=utf-8'
+  })
+  res.end('你好，世界')
+}).listen(Port, () => {
+  console.log('listening port: ' + Port);
+})*/
+
+/*Http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain;charset=utf8'})
+  if (req.url.startsWith('/index')) {
+    res.end('i am Index')
+  } else if (req.url.startsWith('/login')) {
+    res.end('i am Login')
+  }
+  res.end('你好。朋友') // 404
+}).listen(Port, () => {
+  console.log(`Serving is running in: ${Host}:${Port}`)
+})*/
+
+/*Http.createServer((req, res) => {
+  readFile(req, res)
+}).listen(Port, () => {
+  console.log(`${Host}:${Port}`)
+})
+
+function readFile(req, res) {
+  // 文件路径
+  let readPath = Path.join(__dirname, 'www', req.url)
+  // 扩展名
+  const extName = Path.extname(readPath)
+  // 对应数据类型的响应头类型
+  let type = mime[extName]
+  if (type.startsWith('text')) {
+    type += ';charset=utf8'
+  }
+  // 设置响应头
+  res.writeHead(200, {
+    'Content-Type': type
+  })
+  Fs.readFile(readPath, (err, data) => {
+    if (err) {
+      res.end('Serving Error')
+    } else {
+      res.end(data)
+    }
+  })
+}*/
+
+/*Http.createServer((req, res) => {
+  // const rootPath = Path.join(__dirname, 'www')
+  const rootPath = '/Users/vunboyao/Desktop/readBook/CSS'
+  ss.staticServer(req, res, rootPath)
+}).listen(Port, () => {
+  console.log(`${Host}:${Port}`)
+})*/
+
+const Url = require('url')
+const querystring = require('querystring')
+// let str = "http://root:123456@www.vunbo.com:90/index.html?name=yyb&age=26#apple"
+// let obj = Url.parse(str, true)
+// console.log(obj)
+/*Http.createServer((req, res) => {
+  console.log(req.method)
+  let params = ''
+  req.on('data', chunk => {
+    params += chunk
+  })
+  req.on('end', () => {
+    let obj = querystring.parse(params)
+    res.end(`${obj.userName}:${obj.password}`)
+  })
+}).listen(Port)*/
+
+mime['zzzz2'] = 'xiixixix2'
+const path = Path.join(__dirname, 'mime.json')
+Fs.writeFileSync(path, JSON.stringify(mime))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
