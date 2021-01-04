@@ -1,13 +1,8 @@
 #include<stdio.h>
-
-
-int call() {
-  return 0;
-}
+int num = 123;
 
 int main() {
-  call();
-  
-  printf("姚远波");
+  char ch = getchar();
+  putchar(ch);
   return 0;
 }

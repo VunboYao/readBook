@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .wrap {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loading-wrap {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      animation: loading 5.6s ease-in-out infinite;
+    }
+
+    .dot {
+      position: absolute;
+      margin: auto;
+      width: 12px;
+      height: 12px;
+      background: #2077ff;
+      border-radius: 50%;
+    }
+
+    .dot:first-child {
+      top: 0;
+      left: 0;
+      right: 0;
+      opacity: .2;
+      animation: scale 1.4s ease-in-out infinite;
+    }
+
+    .dot:nth-child(2) {
+      top: 0;
+      bottom: 0;
+      right: 0;
+      opacity: .6;
+      animation: scale2 1.4s ease-in-out infinite;
+    }
+
+    .dot:nth-child(3) {
+      bottom: 0;
+      left: 0;
+      right: 0;
+      opacity: .8;
+      animation: scale3 1.4s ease-in-out infinite;
+    }
+
+    .dot:nth-child(4) {
+      top: 0;
+      left: 0;
+      bottom: 0;
+      animation: scale4 1.4s ease-in-out infinite;
+    }
+
+    @keyframes scale {
+      0% {
+        top: 0;
+        left: 0;
+        right: 0;
+      }
+
+      50% {
+        top: 18px;
+        left: 0;
+        right: 0;
+      }
+
+      100% {
+        top: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    @keyframes scale2 {
+      0% {
+        top: 0;
+        bottom: 0;
+        right: 0;
+      }
+
+      50% {
+        top: 0;
+        right: 18px;
+        bottom: 0;
+      }
+
+      100% {
+        top: 0;
+        bottom: 0;
+        right: 0;
+      }
+    }
+
+    @keyframes scale3 {
+      0% {
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+
+      50% {
+        left: 0;
+        right: 0;
+        bottom: 18px;
+      }
+
+      100% {
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    @keyframes scale4 {
+      0% {
+        top: 0;
+        left: 0;
+        bottom: 0;
+      }
+
+      50% {
+        top: 0;
+        left: 18px;
+        bottom: 0;
+      }
+
+      100% {
+        top: 0;
+        left: 0;
+        bottom: 0;
+      }
+    }
+
+    @keyframes loading {
+      0% {
+        transform: rotateZ(0deg);
+      }
+
+      5% {
+        transform: rotateZ(90deg);
+      }
+
+      25% {
+        transform: rotateZ(90deg);
+      }
+
+      30% {
+        transform: rotateZ(180deg);
+      }
+
+      50% {
+        transform: rotateZ(180deg);
+      }
+
+      55% {
+        transform: rotateZ(270deg);
+      }
+
+      75% {
+        transform: rotateZ(270deg);
+      }
+
+      80% {
+        transform: rotateZ(1turn);
+      }
+
+      to {
+        transform: rotateZ(1turn);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="loading-wrap">
+      <span class="lt dot"></span>
+      <span class="rt dot"></span>
+      <span class="rb dot"></span>
+      <span class="lb dot"></span>
+    </div>
+  </div>
+</body>
+
+</html>

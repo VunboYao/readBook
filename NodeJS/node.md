@@ -1,3 +1,24 @@
+# NVM
+
+- nvm list 查看当前安装的Node.JS所有版本
+- nvm install 版本号 安装指定版本的Node.js
+- num uninstall 版本号 卸载指定版本的Node.js
+- num use 版本号 选择指定版本的Node.js
+- nvm list available 查看可下载版本
+
+#  Yarn
+
+- npm install -g yarn 全局安装
+- yarn --version 查看版本
+- yarn init -y 初始化
+- yarn add xx --save 安装生产依赖
+- yarn add xx --dev 安装开发依赖
+- yarn remove xxx 移除包
+- yarn upgrade xxx 更新依赖
+- yarn global add xxx 全局安装
+- yarn global upgrade xxx 全局更新
+- yarn global remove xxx 全局删除
+
 # 环境代码区别
 
 - 浏览器内置提供window 全局对象, this 默认指向window
@@ -5,8 +26,8 @@
 
 # 全局属性和方法
 
-- dirname: 该文件所处的目录
-- filename: 当前文件的绝对路径
+- __dirname: 该文件所处的目录
+- __filename: 当前文件的绝对路径
 
 # 模块暴露的方式
 
@@ -35,16 +56,273 @@
 - npm config list 查看配置
 - npm init -y 初始化 package.json
 - npm install xxx (生产环境包依赖)等同于 npm install xxx --save  
-- npm install xxx --save-dev (开发环境包依赖) 
+- npm install xxx --save-dev (安装开发环境包依赖) 
+- npm install === npm install --development 安装开发依赖
+- npm install --production 安装生产依赖
+- npm update 更新包
+- npm uninstall xxx 卸载包
+- `npm list -g --depth 0` 查看全局安装的包
 - 版本差异:
+    - `x.y.z`
+        - 第一个数字是主版本
+        - 第二个数字是次版本
+        - 第三个数字是补丁版本
+        - `^`，表示更新**补丁版本**、**次版本**
+        - `~`，表示更新**补丁版本**
     - '5.0.3', 表示指定安装的 5.0.3 版本
     - '~5.0.3', 表示安装 5.0.X 中最新的版本
     - '^5.0.3', 表示安装 5.X.X 中最新的版本
 
 # fs
 
-- writeStream 写入流执行完成后. 需要执行 writeStream.end()
+- `stat()`, 文件信息
+
+  ```javascript
+  let fs = require('fs')
+  // 读取文件状态，判断是文件/文件夹
+  fs.stat(__dirname, (err, status) => {
+    if (status.isFile()) {
+      console.log('is a File');
+    } else if (status.isDirectory()) {
+      console.log('is a Directory');
+    }
+  })
+  
+  // 同步
+  let status = fs.statSync(__filename)
+  ```
+
+- `readFile()`，读取文件
+
+  ```javascript
+  // 1.获取读取文件的路径
+  let path = Path.join(__dirname, 'www/index.html')
+  // 2.读取文件
+  fs.readFile(path, 'utf8', (err, data) => {
+    if(err) {
+      throw new Error('readFile error')
+    }
+    console.log(data); // 指定第二个参数
+    // console.log(data.toString()); // 未指定第二个参数，则返回buffer
+  })
+  
+  let data = fs.readFileSync(path, 'utf8')
+  ```
+
+- `writeFile（file，data[, options],callback)`：写入文件
+
+  ```javascript
+  let str = Path.join(__dirname, 'www/demo.txt')
+  fs.writeFile(str, 'some demo txt', 'utf-8', (err) => {
+    if (err) {
+      throw new Error('writeFile error')
+    } else {
+      console.log('success');
+    }
+  })
+  
+  let  res = fs.writeFileSync(str, 'some demo sync txt', 'utf-8')
+  ```
+
+- `appendFile(file, data[,options],callback)`: 追加文件
+
+  ```javascript
+  let str = Path.join(__dirname, 'www/append.txt')
+  let br = '\n'
+  const content = `${'some append.txt'}${br}`
+  fs.appendFile(str, content, 'utf8', err => {
+    if (err) throw err;
+    console.log('success appendFile');
+  })
+  let file = fs.appendFileSync(str, content, 'utf8')
+  ```
+
+- `createReadStream(path[, options])`: 文件读取流
+
+  ```javascript
+  let readStr = Path.join(__dirname, 'www/demo.txt')
+  
+  // 2.Create ReadStream
+  let readStream = fs.createReadStream(readStr, {
+    encoding: 'utf8',
+    highWaterMark: 1
+  })
+  
+  // 3. Open Stream
+  readStream.on('open', () => {
+    console.log('ReadStream Open');
+  })
+  
+  readStream.on('error', () => {
+    console.log('ReadStream error');
+  })
+  
+  readStream.on('data', (data) => {
+    console.log('ReadStream has get Data: ', data);
+  })
+  
+  readStream.on('close', () => {
+    console.log('ReadStream Close');
+  })
+  ```
+
+- `createWriteStream(path[,options])`：文件写入流
+
+  - writeStream 写入流执行完成后. 需要执行 writeStream.end()
+
+  ```javascript
+  // 1.write url
+  let writeStr = Path.join(__dirname, 'www/new.txt')
+  // 2.CreateWriteStream
+  let writeStream = fs.createWriteStream(writeStr, {
+    encoding: 'utf-8'
+  })
+  // 3.Listening Open
+  writeStream.on('open', () => {
+    console.log('writeStream Open');
+  })
+  
+  writeStream.on('error', () => {
+    console.log('writeStream error');
+  })
+  
+  writeStream.on('close', () => {
+    console.log('writeStream Close');
+  })
+  
+  let index = 0
+  let str = 'www.vunbo.com'
+  let timerId = setInterval(() => {
+    writeStream.write(str[index])
+    console.log('writing data: ', str[index]);
+    index++
+    if (index === str.length) {
+      clearInterval(timerId)
+      writeStream.end()
+    }
+  }, 1000)
+  ```
+
+- `mkdir/rmdir/readdir`：目录操作
+
+  ```javascript
+  // Create dir
+  let str = Path.join(__dirname, 'abc')
+  fs.mkdir(str, (err) => {
+    if (err) throw err;
+    console.log('success mkdir');
+  })
+  
+  // delete dir
+  fs.rmdir(str, err => {
+    if (err) throw err;
+    console.log('delete dir success');
+  })
+  
+  fs.readdir(__dirname, (err, files) => {
+    if (err) throw err;
+    files.forEach(file => {
+      let fileStr = Path.join(__dirname, file)
+      let status = fs.statSync(fileStr)
+      if (status.isFile()) {
+        console.log('isFile: ' + file);
+      } else if (status.isDirectory()) {
+        console.log('isDirectory: ' + file);
+      }
+    })
+  })
+  ```
+
+## 生成文件夹
+
+```javascript
+class CreateProject{
+  constructor(projectPath, projectName) {
+    this.projectPath = projectPath
+    this.projectName = projectName
+    this.subFiles = ['js', 'css', 'image', 'index.html']
+  }
+
+  initProject() {
+    // 主文件目录
+    let projectP = Path.join(this.projectPath, this.projectName)
+    // 写入文件
+    fs.mkdirSync(projectP)
+    // 遍历内置文件
+    this.subFiles.forEach(file => {
+      // 子文件目录
+      let subPath = Path.join(projectP, file)
+      // 扩展名检查
+      if (Path.extname(file)) {
+        fs.writeFileSync(subPath, '')
+      } else {
+        fs.mkdirSync(subPath)
+      }
+    })
+  }
+}
+
+let a = new CreateProject(__dirname, 'taobao')
+a.initProject()
+```
+
+
+
+## 读写流实现拷贝
+
 - readStream.pipe(writeStream), 读取流管道方法实现拷贝
+
+```javascript
+// 1.Create url
+let readUrl = Path.join(__dirname, 'www/demo.mp4')
+let writeUrl = Path.join(__dirname, 'www/write.mp4')
+
+// 2.Create ReadStream
+let readStream = fs.createReadStream(readUrl)
+// 3.Create WriteStream
+let writeStream = fs.createWriteStream(writeUrl)
+// 4.Listening ReadStream
+readStream.on('open', () => {
+  console.log('readSteam open');
+})
+readStream.on('error', () => {
+  console.log('readSteam error');
+})
+readStream.on('close', () => {
+  console.log('readSteam close');
+  // 读取结束，写入结束
+  writeStream.end()
+})
+readStream.on('data', (data) => {
+  console.log('readSteam data: ', data);
+  // 写入数据
+  writeStream.write(data)
+})
+
+// 5.Listening WriteStream
+writeStream.on('open', () => {
+  console.log('writeStream open');
+})
+writeStream.on('error', () => {
+  console.log('writeStream error');
+})
+writeStream.on('close', () => {
+  console.log('writeStream close');
+})
+
+
+// pipe() 实现快速拷贝
+let readUrl = Path.join(__dirname, 'www/demo.mp4')
+let writeUrl = Path.join(__dirname, 'www/write2.mp4')
+
+// 2.Create ReadStream
+let readStream = fs.createReadStream(readUrl)
+// 3.Create WriteStream
+let writeStream = fs.createWriteStream(writeUrl)
+readStream.pipe(writeStream)
+```
+
+
 
 # 核心原理
 
@@ -145,3 +423,213 @@ console.log(aModule);
 - test: 可省略为 npm test
 - start: 同 test
 - bin: 添加一个 key/value， 定义全局包
+
+# path
+
+- `require('path')`
+- `basename`(): 获取路径的最后一部分，第二个参数**过滤文件扩展名**
+- `dirname()`: 用于获取路径中的目录，除了最后一部分的内容
+- `extname()`: 获取路径中最后一部分的扩展名
+- `isAbsolute()`: 方法检测 `path` 是否为绝对路径
+  - Linux操作系统中`/`开头就是绝对路径。**`/`左斜杠**
+  - Windows操作系统中盘符开头就是绝对路径。 `\`右斜杠
+- `sep()`: 获取当前系统的路径分隔符
+
+- `delimiter`: 路径定界符。
+  - Windows 上用 `;`
+  - Linux 上用 `：`
+- `parse()`: 用于将路径换成对象
+- `format()`：用于将对象换成路径
+- `join()`: 将所有给定的 `path` 片段连接到一起
+  - 如果参数中有`..`，那么会自动根据前面的参数生成的路径，去到上一个路径
+
+- `normalize()`: 规范化给定的 path
+- `relative()` : 根据当前工作目录返回 `from` 到 `to` 的相对路径
+
+- `resolve()`: 将路径或路径片段的序列解析为绝对路径。后边的绝对路径会覆盖前边的参数。
+
+# CommonJS模块
+
+- `__filename`: 当前的模块文件的绝对路径
+- `__dirname`：当前模块的目录名。相当于 `path.dirname()`
+
+# http
+
+## req, res
+
+- `res.end()`, 只会执行一次
+- `res.write()`, 发送请求主体。不具备结束请求的功能
+- `req.method`, 返回接口请求方式GET/POST
+
+## 服务器建立
+
+```javascript
+const Port = 3000
+const Http = require('http')
+Http.createServer((req,res) => {
+  // 通知浏览器返回数据的类型
+  res.writeHead(200, {
+    'Content-Type': 'text/plain;charset=utf-8'
+  })
+  res.end('你好，世界')
+}).listen(Port, () => {
+  console.log('listening port: ' + Port);
+})
+```
+
+## 路由分发
+
+```javascript
+Http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain;charset=utf8'})
+  if (req.url.startsWith('/index')) {
+    res.end('i am Index')
+  } else if (req.url.startsWith('/login')) {
+    res.end('i am Login')
+  }
+  res.end('你好。朋友') // 404
+}).listen(Port, () => {
+  console.log(`Serving is running in: ${Host}:${Port}`)
+})
+
+// 路由返回页面
+Http.createServer((req, res) => {
+  readFile(req, res)
+}).listen(Port, () => {
+  console.log(`${Host}:${Port}`)
+})
+
+function readFile(req, res) {
+  let readPath = Path.join(__dirname, 'www', req.url)
+  Fs.readFile(readPath, 'utf8', (err, data) => {
+    if (err) {
+      res.end('Serving Error')
+    } else {
+      res.end(data)
+    }
+  })
+}
+```
+
+## 服务返回静态资源
+
+- 加载其他资源不能写`utf-8`
+- 服务器在响应数据时，如果没有设置响应头，在某些浏览器上将不能正常展示数据
+
+```javascript
+Http.createServer((req, res) => {
+  readFile(req, res)
+}).listen(Port, () => {
+  console.log(`${Host}:${Port}`)
+})
+
+function readFile(req, res) {
+  // 文件路径
+  let readPath = Path.join(__dirname, 'www', req.url)
+  // 扩展名
+  const extName = Path.extname(readPath)
+  // 对应数据类型的响应头类型
+  let type = mime[extName]
+  if (type.startsWith('text')) {
+    type += ';charset=utf8'
+  }
+  // 设置响应头
+  res.writeHead(200, {
+    'Content-Type': type
+  })
+  Fs.readFile(readPath, (err, data) => {
+    if (err) {
+      res.end('Serving Error')
+    } else {
+      res.end(data)
+    }
+  })
+}
+```
+
+## 静态资源服务封装
+
+```javascript
+const Path = require('path')
+const Fs = require('fs')
+const mime = require('./mime.json')
+
+function readFile(req, res, rootPath) {
+  // 文件路径
+  let readPath = Path.join(rootPath, req.url)
+  // 扩展名
+  const extName = Path.extname(readPath)
+  // 对应数据类型的响应头类型
+  let type = mime[extName]
+  // 存在文件扩展类型
+  const mimeType = type && type.startsWith('text')
+  if (!mimeType) {
+    res.end('Unavailable mime Type ')
+    return
+  }
+  if (mimeType) {
+    type += ';charset=utf8'
+  }
+  // 设置响应头
+  res.writeHead(200, {
+    'Content-Type': type
+  })
+  Fs.readFile(readPath, (err, data) => {
+    if (err) {
+      res.end('Serving Error')
+    } else {
+      res.end(data)
+    }
+  })
+}
+
+module.exports.staticServer = readFile
+
+
+// 引用资源文件
+const ss = require('./10-StaticServer.js')
+Http.createServer((req, res) => {
+  // const rootPath = Path.join(__dirname, 'www')
+  const rootPath = '/Users/vunboyao/Desktop/readBook/CSS'
+  ss.staticServer(req, res, rootPath)
+}).listen(Port, () => {
+  console.log(`${Host}:${Port}`)
+})
+```
+
+# url
+
+解析url路径信息
+
+```javascript
+const Url = require('url')
+let str = "http://root:123456@www.vunbo.com:90/index.html?name=yyb&age=26#apple"
+let obj = Url.parse(str, true)
+console.log(obj)
+```
+
+# querystring(查询字符串)
+
+用于解析和格式化 URL 查询字符串的实用工具
+
+- `parse(str[,sep[,eq[,options]]])`, 解析字符串
+  - 别名：`decode()`
+- `stringify(obj,[,sep[,eq[,options]]])`：序列化为URL查询字符串的对象
+  - 别名：`encode()`
+
+## 获取post请求数据
+
+```javascript
+Http.createServer((req, res) => {
+  console.log(req.method)
+  let params = ''
+  req.on('data', chunk => {
+    params += chunk
+  })
+  req.on('end', () => {
+    let obj = querystring.parse(params)
+    res.end(`${obj.userName}:${obj.password}`)
+  })
+}).listen(Port)
+```
+
