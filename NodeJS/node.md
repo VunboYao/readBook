@@ -457,7 +457,7 @@ console.log(aModule);
 
 ## req, res
 
-- `res.end()`, 只会执行一次
+- `res.end()`, 只会执行一次,**异常多次执行报错**
 - `res.write()`, 发送请求主体。不具备结束请求的功能
 - `req.method`, 返回接口请求方式GET/POST
 
@@ -600,6 +600,8 @@ Http.createServer((req, res) => {
 # url
 
 解析url路径信息
+
+- **url.parse()解析参数为字符串，传值为`req.url`**
 
 ```javascript
 const Url = require('url')
