@@ -411,19 +411,95 @@ console.log(aModule);
 # EventLoop
 
 - 宏任务， setTimeout, setInterval
+
 - 微任务， promise, MutationObserver, 优先执行
+
+  > *1. 任务队列个数不同*
+  >
+  > *浏览器事件环有2个事件队列（宏任务与微任务）*
+  >
+  > *NodeJS事件环有6个事件队列*
+  >
+  > *2. 微任务队列不同*
+  >
+  > *浏览器事件环中有专门存储微任务的队列*
+  >
+  > *NodeJS事件环中没有专门存储微任务的队列*
+  >
+  > *3. 微任务执行时机不同*
+  >
+  > *浏览器事件环中每执行完一个宏任务都会去清空微任务队列*
+  >
+  > *NodeJS事件环中只有同步代码执行完毕和其他队列之间切换的时候会去清空微任务队列*
+  >
+  > *4. 微任务优先级不同*
+  >
+  > *浏览器事件环中如果多个微任务同时满足执行条件，采用先进先出*
+  >
+  > *NodeJS事件环中如果多个微任务同时满足执行条件，会按照优先级执行*
+
 - **Node中执行完任务队列后，或切换队列时，才会去检查微任务**
+
+- 单独运行setTimeout\setImmediate执行结果随机。若在事件循环中，poll执行完会切换到check，永远先执行setImmediate
+
+  > *NodeJS中的任务队列*
+  >
+  > *timers       执行setTimeout() 和 setInterval() 中到期的 callback*
+  >
+  > *pending callbacks 执行系统操作的回调， 如： TCP, UDP通信的错误callback*
+  >
+  > *idle,prepare    只在内部使用*
+  >
+  > *poll        执行与 I/O 相关的回调。（除了close回调，定时器回调和setImmediate（）之外，几乎所有回调都执行*
+  >
+  > *check       执行 setImmediate的callback*
+  >
+  > *close       执行close事件的callback, 例如socket.on('close', ()=>{})*
+
+ ```javascript
+// 面试题
+const path = require('path')
+const fs = require('fs')
+
+fs.readFile(path.join(__dirname, '07-core.js'), () => {
+    setTimeout(() => {
+        console.log('setTimeout');
+    })
+    setImmediate(() => {
+        console.log('setImmediate');
+    })
+})
+// 先 setImmediate 后 setTimeout.因为 readFile在 poll 事件环中， 再执行 check， 最后 timers
+ ```
+
+
 
 # npm 包发布
 
 - npm addUser
 - npm publish
 
+## package.json核心属性
+
+- main: 指定入口文件
+
 ## script
 
+- 通过设置指令：npm run 'key'，执行特定的命令
+
 - test: 可省略为 npm test
+
 - start: 同 test
-- bin: 添加一个 key/value， 定义全局包
+
+- bin: 添加一个 key/value， 定义全局包，输出特定的指令, 执行特定的文件。
+
+  > 添加 #！/usr/bin/env node 标识环境为node
+  >
+  > `bin:{`
+  >
+  > ​	'demo': 'index.js'
+  >
+  > `}`
 
 # path
 
