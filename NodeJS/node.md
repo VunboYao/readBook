@@ -412,6 +412,7 @@ console.log(aModule);
 
 - 宏任务， setTimeout, setInterval
 - 微任务， promise, MutationObserver, 优先执行
+- **Node中执行完任务队列后，或切换队列时，才会去检查微任务**
 
 # npm 包发布
 
