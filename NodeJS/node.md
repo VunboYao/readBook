@@ -335,8 +335,8 @@ readStream.pipe(writeStream)
 
 ## vm
 
-- vm.runInThisContext: 提供了一个安全的环境执行字符串中的代码。提供的代码不能访问本地的变量， 但是可以访问全局的变量（global上的变量
-- vm.runInNewContext: 提供了一个安全的环境执行字符串中的代码。不能访问本地与 global 上的变量
+- **vm.runInThisContext**: 提供了一个安全的环境执行字符串中的代码。提供的代码不能访问本地的变量， **但是可以访问全局的变量** *global上的变量*
+- **vm.runInNewContext:** 提供了一个安全的环境执行字符串中的代码。**不能访问本地与 global 上的变量**
 
 ## 手写Node模块系统-代码实现
 
@@ -411,8 +411,7 @@ console.log(aModule);
 # EventLoop
 
 - 宏任务， setTimeout, setInterval
-
-- 微任务， promise, MutationObserver, 优先执行
+- 微任务， promise, MutationObserver, process.nextTick(node), 优先执行
 
   > *1. 任务队列个数不同*
   >

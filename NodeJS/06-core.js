@@ -285,15 +285,17 @@ const querystring = require('querystring')
   })
 }).listen(Port)*/
 
-mime['zzzz2'] = 'xiixixix2'
-const path = Path.join(__dirname, 'mime.json')
-Fs.writeFileSync(path, JSON.stringify(mime))
+/*
+1.Node模块
+1.1在CommonJS规范中一个文件是一个模块
+1.2在CommonJS规范中通过exports暴露数据
+1.3在CommonJS规范中通过require()倒入模块
 
 
+*/
 
-
-
-
+const tet = require('./00HelloWorld')
+console.log(tet)
 
 
 

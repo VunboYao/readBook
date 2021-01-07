@@ -14,5 +14,6 @@ server.listen(port, hostname, () => {
 	console.log(`Server is listening http://${hostname}:${port}/`)
 })
 */
-const args = process.argv.slice(2)
-console.log(args)
+exports.name = '123'
+
+
