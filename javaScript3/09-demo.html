@@ -4,47 +4,106 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hello world</title>
+  <title>Document</title>
   <style>
-    .myDiv {
-      width: 100px;
-      height: 100px;
+    body, h1 {
+      margin: 0;
     }
-    header {
-      height: 4002px;
-      background: orange;
+    .box {
+      position: relative;
+      height: 100vh;
+      background: #00ff00;
     }
-    main {
-      height: 9002px;
-      background: palegoldenrod;
+    .move {
+      position: absolute;
+      top: 100px;
+      left: calc(50% - 200px);
+      widtH: 400px;
+      height: 400px;
+      background: #fff;
     }
-    footer {
-      height: 200px;
-      background: gold;
-    }
-    .go {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      border: 1px solid #09bb0c;
+    h1 {
+      height: 60px;
+      line-height: 60px;
+      cursor: move;
+      background: #1b3650;
+      color: #fff;
+      user-select: none;
+      border: 5px solid #ec1c1c;
     }
   </style>
 </head>
 
-<body class="demo">
-<div class="go">GoTop</div>
-<header tabindex="1" data-demo="123">I am title</header>
-<main>
-  <ul>
-    <li>apple</li>
-    <li>apple</li>
-    <li>apple</li>
-  </ul>
-</main>
-<footer>i am footer</footer>
-<script>
-  document.querySelector('header').innerText = 'input<ol>'
-</script>
+<body>
+<div class="box">
+  <div class="move">
+    <h1>i can move</h1>
+  </div>
+</div>
 </body>
+<script>
+  // 获取拖动的整体元素
+  const dragDom = document.querySelector('.move')
+  // 获取拖动元素的点击部分
+  const dialogHeaderEl = document.querySelector('h1')
+  // 获取原有属性
+  const getStyle = (function (){
+  	return (dom, attr) => getComputedStyle(dom, null)[attr]
+  })()
+  dialogHeaderEl.onmousedown = (e) => {
+  	// 鼠标按下，计算当前点击处距离可视区的距离
+    // 存储初始值
+  	const disX = e.clientX;
+		const disY = e.clientY;
+		// 计算拖动元素的宽高
+    const dragDomWidth = dragDom.offsetWidth
+    const dragDomHeight = dragDom.offsetHeight
+    // 计算客户端尺寸
+    const screenWidth = document.body.clientWidth
+    const screenHeight = document.body.clientHeight
 
+    // 计算处最小/最大移动距离
+    const minDragDomLeft = dragDom.offsetLeft
+		const maxDragDomLeft = screenWidth - dragDom.offsetLeft - dragDomWidth
+
+    const minDragDomTop = dragDom.offsetTop
+    const maxDragDomTop = screenHeight - dragDom.offsetTop - dragDomHeight
+
+    // 获取到的值带px 正则匹配替换
+    let styL = getStyle(dragDom, 'left')
+    let styT = getStyle(dragDom, 'top')
+
+    if (styL.includes('%')) {
+    	styL = +document.body.clientWidth * (+styL.replace(/\%/g, '') / 100)
+      styT = +document.body.clientHeight * (+styT.replace(/\%/g, '') / 100)
+    } else {
+    	// 字符串转为正数
+    	styL = +styL.replace(/px/g, '')
+			styT = +styT.replace(/px/g, '')
+    }
+    document.onmousemove = function (e) {
+    	// 计算其移动的距离
+    	let moveLeft = e.clientX - disX
+      let moveTop = e.clientY - disY
+      // 移动距离大于最小可移动距离
+			if (-(moveLeft) > minDragDomLeft) {
+				moveLeft = -minDragDomLeft
+      } else if(moveLeft > maxDragDomLeft) {
+				moveLeft = maxDragDomLeft
+      }
+			// 移动距离大于最小可移动距离
+			if (-(moveTop) > minDragDomTop) {
+				moveTop = -minDragDomTop
+      } else if (moveTop > maxDragDomTop) {
+				moveTop = maxDragDomTop
+      }
+
+      dragDom.style.cssText = `left:${moveLeft + styL}px;top:${moveTop + styT}px;`
+		}
+		document.onmouseup = function () {
+    	document.onmousemove = null
+      document.onmouseup = null
+    }
+	}
+</script>
 </html>
