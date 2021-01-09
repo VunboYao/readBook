@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DragDemo</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .box {
+      position: relative;
+      height: 100%;
+      padding: 10px;
+      background: #a8c0ff;
+      /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #3f2b96, #a8c0ff);
+      /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #3f2b96, #a8c0ff);
+      /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+
+    .innerBox {
+      position: absolute;
+      top: 120px;
+      left: calc(50% - 200px);
+      width: 400px;
+      height: 400px;
+      border: 2px solid green;
+      user-select: none;
+    }
+
+    h1 {
+      margin: 0;
+      text-align: center;
+      height: 60px;
+      line-height: 60px;
+      background: orange;
+      cursor: move;
+    }
+  </style>
+</head>
+
+<body>
+<div class="box">
+  <div class="innerBox">
+    <h1>i can move</h1>
+  </div>
+</div>
+<script>
+	const dragDom = document.querySelector('.innerBox')
+	const dragHeaderEl = document.querySelector('h1')
+
+	// 计算属性样式方法
+	const getStyle = (function () {
+		return (dom, attr) => getComputedStyle(dom, null)[attr]
+	})()
+
+	dragHeaderEl.onmousedown = function (ev) {
+		// 获取目标元素初始偏移距离
+		let disX = ev.clientX
+		let disY = ev.clientY
+		// 获取拖拽区域宽高
+		const ScreenW = document.body.clientWidth
+		const ScreenH = document.body.clientHeight
+		// 获取拖拽元素的宽高
+		const dragDomW = dragDom.offsetWidth
+		const dragDomH = dragDom.offsetHeight
+
+		// 左侧偏移量
+		const minDragLeft = dragDom.offsetLeft
+		const maxDragLeft = ScreenW - dragDomW - minDragLeft
+
+		const minDragTop = dragDom.offsetTop
+		const maxDragTop = ScreenH - dragDomH - minDragTop
+
+		// 计算目标元素的左、上位置
+		let styL = getStyle(dragDom, 'left')
+		let styT = getStyle(dragDom, 'top')
+		if (styT.includes('%')) {
+			styL = +document.body.clientWidth * (+styL.replace(/\%/g, '') / 100)
+			styT = +document.body.clientHeight * (+styT.replace(/\%/g, '') / 100)
+		} else {
+			styL = +styL.replace(/px/g, '')
+			styT = +styT.replace(/px/g, '')
+		}
+
+		document.onmousemove = function (e) {
+			// 获取元素移动的距离
+			let moveLeft = e.clientX - disX
+			let moveTop = e.clientY - disY
+
+			// 左移动，负值大于最小可移动距离时
+			if (-moveLeft > minDragLeft) {
+				moveLeft = -minDragLeft
+			} else if (moveLeft > maxDragLeft) {
+				moveLeft = maxDragLeft
+			}
+			if (-moveTop > minDragTop) {
+				moveTop = -minDragTop
+			} else if (moveTop > maxDragTop) {
+				moveTop = maxDragTop
+			}
+
+			dragDom.style.cssText = `left:${styL + moveLeft}px;top:${styT + moveTop}px;`
+		}
+
+		document.onmouseup = function () {
+			document.onmousedown = null
+			document.onmousemove = null
+		}
+	}
+</script>
+</body>
+
+</html>
