@@ -10,11 +10,39 @@
 
 `offsetHeight`：元素垂直方向尺寸，包含：高度、水平滚动条高度、上下边框的宽度
 
+- 判断一个元素在页面中的偏移量，可以把它的`offsetLeft`和`offsetTop`属性分别与`offsetParent`的相同属性相加。
+
+  ```js
+    function getElementLeft(element) {
+    	let actualLeft = element.offsetLeft
+      let current = element.offsetParent
+      while (current !== null) {
+    		actualLeft += current.offsetLeft
+        current = current.offsetParent
+      }
+      return actualLeft
+    }
+  ```
+
+- **所有偏移尺寸属性都是只读的，每次访问会重新计算**
+
 ## 客户端尺寸
 
-`clientWidth`、`clientHeight`
+`clientWidth`、`clientHeight`。**等于视口的大小**
 
 元素的宽度加左、右内边距宽度。不包含滚动条占用的空间。常用于确认浏览器视口尺寸。
+
+## 滚动尺寸
+
+`scrollHeight`，没有滚动条出现时，元素内容的总高度。**等于文档内容的高度**
+
+`scrollLeft`，内容左侧隐藏的像素数，设置这个属性可以改变元素的滚动位置
+
+`scrollTop`, 内容区顶部隐藏的像素数，设置这个属性可以改变元素的滚动位置
+
+`scrollWidth`，没有滚动条出现时，元素的内容的总宽度。**等于文档内容的宽度**
+
+- `document.documentElement.scrollHeight`，是整个页面垂直方向的总高度
 
 # DOM
 
@@ -131,3 +159,33 @@
 
 ## 元素遍历
 
+# DOM2和DOM3
+
+## 样式
+
+- Dom2 Style规定 float 在 style 对象中对应的属性是 cssFloat
+- JS 中 CSS 属性必须使用**驼峰大小写**形式
+
+## DOM 样式属性和方法
+
+- **cssText**， 存取样式的 CSS 代码。**是一次性修改元素多个样式最快捷的方式**
+- length, 应用给元素的 CSS 属性数量
+- `getPropertyPriority(propertyName)`, 如果 CSS 属性 `propertyName` 使用了 !important 则返回 “important", 否则返回空字符串
+- `getPropertyValue(propertyName)`， 返回属性 *propertyName* 的字符串值
+
+## 计算样式
+
+- `document.defaultView`, 该属性返回当前 `document `对象所关联的 `window` 对象，如果没有，会返回 `null`。只读
+- **`getComputedStyle()`**方法返回一个 CSSStyleDeclaration对象，包含元素的计算样式。**只读**。包含自身style属性的样式与`<style></style>`表中样式，以及`<link>`引入的样式
+
+## 操作样式表
+
+`document.styleSheets`属性
+
+- `disabled`， 布尔值，表示样式表是否被禁用。**可读写**
+- `href`， 如果是使用`<link>`包含的样式表，则返回样式表的 `URL`，否则返回 **null**
+- `ownerNode`, 指向拥有当前样式表的节点。在HTML中要么是`<link>`元素要么是`<style>`元素
+
+## 确定元素的尺寸
+
+`element.getBoundingClientRect()`, 返回6个属性：`left, top, right, bottom, height, width`。**只读**

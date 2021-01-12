@@ -6,6 +6,14 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <link rel="stylesheet" href="012CSS.css">
+  <style>
+    .box {
+      width:200px;
+      height: 200px;
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
 <div class="box">
@@ -37,23 +45,11 @@
       </li>
     </ul>
   </fieldset>
-  <button onclick="showValue()">showValue</button>
   <footer>i am footer</footer>
 </div>
 <script>
   const el = document.querySelector('.box')
   const li = document.querySelector('li')
-	console.log(document.images)
-	console.log(document.body.childNodes[1].matches('.box'))
-
-	function showValue() {
-		let radios = document.getElementsByName("color")
-    for (let i = 0; i < radios.length; i++) {
-    	if (radios[i].checked) {
-				console.log(radios[i].value)
-      }
-    }
-  }
 </script>
 </body>
 </html>
