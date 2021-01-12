@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<!--<script>
+	class Person {
+		constructor() {
+			this.name = 'yyb'
+			this.score = [89, 22, 12]
+			this.animal = {
+				number: 3
+			}
+		}
+	}
+
+	const p1 = new Person()
+  const p2 = {}
+  depCopy(p2,p1)
+  p2.score.push(123)
+	console.log(p1)
+	console.log(p2)
+
+	function depCopy(target, source) {
+		// 遍历拿到source中所有属性
+		for (let key in source) {
+			// 取出当前所有遍历到的属性对应的取值
+			let sourceValue = source[key]
+			// 判断当前的取值是否是引用数据类型
+			if (sourceValue instanceof Object) {
+				let subTarget = new sourceValue.constructor()
+				target[key] = subTarget
+				depCopy(subTarget, sourceValue)
+			} else {
+				target[key] = sourceValue
+			}
+		}
+	}
+
+</script>-->
+<script>
+	console.log([12, 23, [3, 1]].toString())
+</script>
+</body>
+</html>
