@@ -9,11 +9,13 @@
     body, h1 {
       margin: 0;
     }
+
     .box {
       position: relative;
       height: 100vh;
-      background: #00ff00;
+      background: #48b06a;
     }
+
     .move {
       position: absolute;
       top: 100px;
@@ -22,6 +24,7 @@
       height: 400px;
       background: #fff;
     }
+
     h1 {
       height: 60px;
       line-height: 60px;
@@ -42,68 +45,60 @@
 </div>
 </body>
 <script>
-  // 获取拖动的整体元素
-  const dragDom = document.querySelector('.move')
-  // 获取拖动元素的点击部分
-  const dialogHeaderEl = document.querySelector('h1')
-  // 获取原有属性
-  const getStyle = (function (){
-  	return (dom, attr) => getComputedStyle(dom, null)[attr]
-  })()
-  dialogHeaderEl.onmousedown = (e) => {
-  	// 鼠标按下，计算当前点击处距离可视区的距离
-    // 存储初始值
-  	const disX = e.clientX;
-		const disY = e.clientY;
-		// 计算拖动元素的宽高
-    const dragDomWidth = dragDom.offsetWidth
-    const dragDomHeight = dragDom.offsetHeight
-    // 计算客户端尺寸
-    const screenWidth = document.body.clientWidth
-    const screenHeight = document.body.clientHeight
+	const dragDom = document.querySelector('.move')
+	const dragHeaderEl = document.querySelector('h1')
+	const getStyle = (function () {
+		return (dom, attr) => getComputedStyle(dom, null)[attr]
+	})()
+	dragHeaderEl.onmousedown = function (e) {
+		const disX = e.clientX
+		const dixY = e.clientY
 
-    // 计算处最小/最大移动距离
-    const minDragDomLeft = dragDom.offsetLeft
-		const maxDragDomLeft = screenWidth - dragDom.offsetLeft - dragDomWidth
+		const dragDomW = dragDom.offsetWidth
+		const dragDomH = dragDom.offsetHeight
 
-    const minDragDomTop = dragDom.offsetTop
-    const maxDragDomTop = screenHeight - dragDom.offsetTop - dragDomHeight
+		const screenX = document.body.clientWidth
+		const screenY = document.body.clientHeight
 
-    // 获取到的值带px 正则匹配替换
-    let styL = getStyle(dragDom, 'left')
-    let styT = getStyle(dragDom, 'top')
+		const minDragLeft = dragDom.offsetLeft
+		const maxDragLeft = screenX - minDragLeft - dragDomW
 
-    if (styL.includes('%')) {
-    	styL = +document.body.clientWidth * (+styL.replace(/\%/g, '') / 100)
-      styT = +document.body.clientHeight * (+styT.replace(/\%/g, '') / 100)
-    } else {
-    	// 字符串转为正数
-    	styL = +styL.replace(/px/g, '')
-			styT = +styT.replace(/px/g, '')
-    }
-    document.onmousemove = function (e) {
-    	// 计算其移动的距离
-    	let moveLeft = e.clientX - disX
-      let moveTop = e.clientY - disY
-      // 移动距离大于最小可移动距离
-			if (-(moveLeft) > minDragDomLeft) {
-				moveLeft = -minDragDomLeft
-      } else if(moveLeft > maxDragDomLeft) {
-				moveLeft = maxDragDomLeft
-      }
-			// 移动距离大于最小可移动距离
-			if (-(moveTop) > minDragDomTop) {
-				moveTop = -minDragDomTop
-      } else if (moveTop > maxDragDomTop) {
-				moveTop = maxDragDomTop
-      }
+		const minDragTop = dragDom.offsetTop
+		const maxDragTop = screenY - minDragTop - dragDomH
 
-      dragDom.style.cssText = `left:${moveLeft + styL}px;top:${moveTop + styT}px;`
+		let Left = getStyle(dragDom, 'left')
+		let Top = getStyle(dragDom, 'top')
+
+		if (Left.includes('%')) {
+			Left = +document.body.clientWidth * (+Left.replace(/\%/g, '') / 100)
+			Top = +document.body.clientHeight * (+Left.replace(/\%/g, '') / 100)
+		} else {
+			Left = +Left.replace(/px/g, '')
+			Top = +Top.replace(/px/g, '')
 		}
-		document.onmouseup = function () {
-    	document.onmousemove = null
-      document.onmouseup = null
-    }
+		document.onmousemove = function (e) {
+			let moveLeft = e.clientX - disX
+			let moveTop = e.clientY - dixY
+
+			if (-moveLeft > minDragLeft) {
+				moveLeft = -minDragLeft
+			} else if (moveLeft > maxDragLeft) {
+				moveLeft = maxDragLeft
+			}
+
+			if (-moveTop > minDragTop) {
+				moveTop = -minDragTop
+			} else if (moveTop > maxDragTop) {
+				moveTop = maxDragTop
+			}
+
+			dragDom.style.cssText = `left:${moveLeft + Left}px;top:${moveTop + Top}px`
+		}
+
+		document.onmouseup = function (e) {
+			document.onmousemove = null
+			document.onmousedown = null
+		}
 	}
 </script>
 </html>

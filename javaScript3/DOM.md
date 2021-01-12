@@ -201,19 +201,21 @@ Element Traversal API 为 DOM 元素添加了 5 个属性**IE9及以上，现代
 ### 自定义数据属性
 
 - HTML5允许使用前缀 **`data-`** 为元素指定非标准的属性。
-- 可通过元素的 **`dataset`** 属性访问，data-my-name 需要 myName 来访问
+- 可通过元素的 **`dataset`** 属性访问，data-my-name 需要 `myName` 来访问
 
 ### 插入标记
 
-- innerHTML属性。根据提供的字符串值以新的 DOM 子树**替代元素中原来包含的所有节点**
+- `innerHTML`属性。根据提供的字符串值以新的 DOM 子树**替代元素中原来包含的所有节点**
 
-- outerHTML 属性，**调用它的元素**会被传入的 HTML 字符串经解释之后生成的 DOM 子树取代
+- `outerHTML` 属性，**调用它的元素**会被传入的 HTML 字符串经解释之后生成的 DOM 子树取代
 
 - `insertAdjacentHTML()`与`insertAdjacentText()`: 接收两个参数：要插入标记的位置和要插入的 HTML 或文本
-  - "beforebegin" ，插入当前元素前面，作为前一个同胞节点
-  - "afterbegin" ，插入当前元素内部，作为新的子节点或放在第一个子节点前面
-  - "beforeend" ，插入当前元素内部，作为新的子节点或放在最后一个子节点后面
-  - "afterend" ，插入当前元素后面，作为下一个同胞节点
+  - "`beforebegin`" ，插入当前元素前面，作为前一个同胞节点
+  - "`afterbegin`" ，插入当前元素内部，作为新的子节点或放在第一个子节点前面
+  - "`beforeend`" ，插入当前元素内部，作为新的子节点或放在最后一个子节点后面
+  - "`afterend`" ，插入当前元素后面，作为下一个同胞节点
+
+### `scrollIntoView`
 
 # DOM2和DOM3
 
