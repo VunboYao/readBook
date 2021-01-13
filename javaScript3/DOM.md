@@ -46,7 +46,7 @@
 
 # DOM
 
-- 根节点的唯一子节点是`<html>`元素， 称为**文档元素（documentElement）**
+- 根节点的唯一子节点是`<html>`元素， 称为**文档元素（`documentElement`）**
 
 ## 节点关系
 
@@ -55,43 +55,43 @@
 - `childNodes`中每个节点都是同一列表中其他节点的同胞节点。`previousSibling`和`nextSibling`
 
 -  `firstChild` 和 `lastChild` 分别指向`childNodes` 中的第一个和最后一个子节点
-- **hasChildNodes（）**，如果方法返回true, 说明有一个或多个子节点。
+- **`hasChildNodes（）`**，如果方法返回true, 说明有一个或多个子节点。
 
-- **ownerDocument** 每个节点都有该属性。指向代表整个文档的文档节点的指针。
+- **`ownerDocument`** 每个节点都有该属性。指向代表整个文档的文档节点的指针。
 
 ## 操纵节点
 
--  **appendChild()** 方法用于在 childNodes 列表末尾添加节点，并**返回新添加的节点**
+-  **`appendChild()`** 方法用于在 `childNodes `列表末尾添加节点，并**返回新添加的节点**
 
-- **insertBefore**() 方法接收两个参数：要插入的节点和参照节点，**要插入的节点会变成参照节点的**
+- **`insertBefore()`** 方法接收两个参数：要插入的节点和参照节点，**要插入的节点会变成参照节点的**
   **前一个同胞节点，并被返回**
 
-- **replaceChild()** 方法接收两个参数：要插入的节点和要替换的节点。**要替换的节点会被返回并从文档**
+- **`replaceChild()`** 方法接收两个参数：要插入的节点和要替换的节点。**要替换的节点会被返回并从文档**
   **树中完全移除。**
-- **removeChild()** 方法。这个方法接收一个参数，即要移除的节点。被移除的节点会被返回
+- **`removeChild()`** 方法。这个方法接收一个参数，即要移除的节点。被移除的节点会被返回
 
 - **上面介绍的 4 个方法都用于操纵某个节点的子元素，也就是说使用它们之前必须先取得父节点**
 
-- cloneNode() ，会返回与调用它的节点一模一样的节点。 cloneNode() 方法接收一个布尔值参数，表示是否深复制。**尚未指定父节点，只复制HTML属性，不会复制JS属性**
+- `cloneNode()` ，会返回与调用它的节点一模一样的节点。 `cloneNode()` 方法接收一个布尔值参数，表示是否深复制。**尚未指定父节点，只复制HTML属性，不会复制JS属性**
 - **normalize()** ，处理文档子树中的文本节点。
 
 ## Document类型
 
-文档对象 document 是 HTMLDocument 的实例（HTMLDocument继承自Document），表示整个页面。document是 window对象的属性，因此是一个全局对象
+文档对象 document 是 `HTMLDocument` 的实例（`HTMLDocument`继承自Document），表示整个页面。document是 window对象的属性，因此是一个全局对象
 
-- nodeType 等于9
+- `nodeType` 等于9
 - `document.documentElement`属性，始终指向HTML页面中的<html>元素
 - `document.body`属性，直接指向<body>元素
 
-- 其他可读属性：title、Url、domain、referrer（来源）
+- 其他可读属性：`title、Url、domain、referrer`（来源）
 
 ## 定位元素
 
 - `document.getElementById()`， 获取ID
 
-- `document.getElementsByTagName()`, 获取元素标签名，返回零个或多个元素的NodeList。在 HTML 文档中，这个方法返回一个HTMLCollection 对象。
+- `document.getElementsByTagName()`, 获取元素标签名，返回零个或多个元素的`NodeList`。在 HTML 文档中，这个方法返回一个`HTMLCollection` 对象。
 
-- **HTMLCollection** 对象还有一个额外的方法 **namedItem()** ，可通过标签的 name 属性取得某一项的引用
+- **`HTMLCollection`** 对象还有一个额外的方法 **`namedItem()`** ，可通过标签的 name 属性取得某一项的引用
 
   ```js
   <img src="myimage.gif" name="myImage">
@@ -101,14 +101,14 @@
   // 数值索引会调用 item() ，字符串索引会调用 namedItem() 。
   ```
 
-- `document. getElementsByName()`， 返回具有给定 name 属性的所有元素。
+- `document.getElementsByName()`，返回具有给定 name 属性的所有元素。
 
   ```javascript
   let radios = document.getElementsByName("color")
       for (let i = 0; i < radios.length; i++) {
-      	if (radios[i].checked) {
-  				console.log(radios[i].value)
-        }
+          if (radios[i].checked) {
+              console.log(radios[i].value)
+          }
       }
   // 获取单选框并获取其中的值
   ```
@@ -154,10 +154,66 @@
 
 - `querySelector()`，接收 CSS 选择符参数，返回匹配该模式的第一个后代元素，如果没有匹配
   项则返回 `null`
-- ` querySelectorAll()`.接收一个用于查询的参数，但它会返回所有匹配的节点，而不止一个**.这个方法返回的是一个 NodeList 的静态实例。非“实时”的查询**
-- `matches`，使用这个方法可以方便地检测某个元素会不会被 querySelector() 或 querySelectorAll() 方法返回。匹配则返回true, 否则返回 false
+- ` querySelectorAll()`.接收一个用于查询的参数，但它会返回所有匹配的节点，而不止一个**.这个方法返回的是一个 `NodeList` 的静态实例。非“实时”的查询**
+- `matches`，使用这个方法可以方便地检测某个元素会不会被 `querySelector()` 或 `querySelectorAll() `方法返回。匹配则返回true, 否则返回 false
 
 ## 元素遍历
+
+Element Traversal API 为 DOM 元素添加了 5 个属性**IE9及以上，现代浏览器都支持该属性**
+
+- `childElementCount`, 返回子元素数量（不包含文本节点和注释）
+- `firstElementChild`，指向第一个 Element 类型的子元素（ `Element 版 firstChild` ）
+- `lastElementChild`，指向最后一个 Element 类型的子元素（ `Element 版 lastChild` ）；
+- `previousElementSibling` ， 指 向 前 一 个 Element 类 型 的 同 胞 元 素
+- `nextElementSibling` ，指向后一个 Element 类型的同胞元素
+
+## HTML5
+
+### CSS类扩展
+
+- **`getElementsByClassName()`**，接收一个参数，即包含一个或**多个类名**的字符串，返回类名中包含相应类的元素的 `NodeList` 。如果提供了多个类名，则顺序无关紧要。
+
+- **`classList属性`**: 是一个新的集合类型 `DOMTokenList` 的实例。与其他 DOM 集合类型一样.`DOMTokenList`也有 length 属性表示自己包含多少项，也可以通过 **`item()` 或中括号**取得个别的元素
+  - add(value):向类名列表中添加指定的字符串值 value 。如果这个值已经存在，则什么也不做
+  - contains(value) ，返回布尔值，表示给定的 value 是否存在
+  - remove(value) ，从类名列表中删除指定的字符串值 value
+  - toggle(value) ，如果类名列表中已经存在指定的 value ，则删除；如果不存在，则添加
+
+### 焦点管理
+
+- `document.activeElement`，始终包含当前拥有焦点的**DOM**元素。默认情况下, 在页面刚加载完之后会设置为 `document.body` 。而在页面完全加载之前， `document.activeElement` 的值为 null 。
+
+- `document.hasFocus()` 方法, 该方法返回布尔值，表示文档是否拥有焦点。*确定文档是否获得了焦点，就可以帮助确定用户是否在操作页面。*
+
+### `HTMLDocument`扩展
+
+- `document.readyState属性`
+  - `loading`， 表示文档正在加载
+  - `complete`， 表示文档加载完成
+- `document.compatMode`属性
+  - `CSS1Compat`， 标准模式
+  - `BackCompat`， 混合模式
+
+### 字符集属性
+
+`document.characterSet`属性表示文档实际使用的字符集，也可以指定新字符集。
+
+### 自定义数据属性
+
+- HTML5允许使用前缀 **`data-`** 为元素指定非标准的属性。
+- 可通过元素的 **`dataset`** 属性访问，data-my-name 需要 myName 来访问
+
+### 插入标记
+
+- innerHTML属性。根据提供的字符串值以新的 DOM 子树**替代元素中原来包含的所有节点**
+
+- outerHTML 属性，**调用它的元素**会被传入的 HTML 字符串经解释之后生成的 DOM 子树取代
+
+- `insertAdjacentHTML()`与`insertAdjacentText()`: 接收两个参数：要插入标记的位置和要插入的 HTML 或文本
+  - "beforebegin" ，插入当前元素前面，作为前一个同胞节点
+  - "afterbegin" ，插入当前元素内部，作为新的子节点或放在第一个子节点前面
+  - "beforeend" ，插入当前元素内部，作为新的子节点或放在最后一个子节点后面
+  - "afterend" ，插入当前元素后面，作为下一个同胞节点
 
 # DOM2和DOM3
 
