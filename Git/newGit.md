@@ -198,6 +198,11 @@
 
 - **应用标签**：`git checkout -b <branchName> <tagName>`。
 
+  ```javascript
+  $ git checkout -b version2 v2.0.0
+  Switched to a new branch 'version2'
+  ```
+
   > :1st_place_medal:`tag` 相当于一个快照，不能更改它的代码。如果要在 `tag` 代码的基础上做修改，需要创建一个分支。
 
 # 暂存
@@ -255,3 +260,14 @@
 ```shell
 git remote add origin https://github.com/user/repo.git
 ```
+
+# Git别名
+
+`git config --global alias.ci commit`
+
+```js
+git commit 
+// 等价于
+git ci
+```
+
