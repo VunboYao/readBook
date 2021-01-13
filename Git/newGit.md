@@ -173,7 +173,7 @@
 
 - 查看标签信息：`git show v1.1`
 
-- 创建带有说明的标签：`git tag -a <tagname> -m 'somebalaba' `。 `-a`指定标签名， `-m`指定说明文字
+- **创建带有说明的标签：`git tag -a <tagname> -m 'somebalaba' `。 `-a`指定标签名， `-m`指定说明文字**
 
 - 删除标签：`git tag -d v1.1`
 
