@@ -535,3 +535,27 @@ const $ = function(...args) {
 let oDiv = $('#box')[0];
  ```
 
+# 查漏补缺
+
+- if `===` 比对时，**常量在前**
+
+- `switch`
+
+  ```JS
+  const a = 1;
+  swicth(a){
+      case 1:
+      	console.log('1')
+      	break;
+      default:
+      	console.log('2')
+      	break;
+  }
+  ```
+
+  > - case 判断的是===
+  > - （）中可以是常量也可以是变量还可以是表达式
+  > - case 后面可以是常量也可以是变量还可以是表达式
+  > - break的作用是立即结束整个switch语句
+  > - default不一定要写在最后
+  > - default 可以省略
