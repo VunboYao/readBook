@@ -186,7 +186,7 @@
 
 - 删除标签：`git tag -d v1.1`
 
-- 推送标签至远程：`git push origin <tagname>`
+- **推送标签至远程：`git push origin <tagname>`**
 
   - 一次性推送到远程：`git push origin --tags`
 
