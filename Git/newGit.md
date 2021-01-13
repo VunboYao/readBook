@@ -101,6 +101,9 @@
 - 重新提交
   - `git commit --amend` 修改提交信息。
 
+- `git revert`
+  - 本质上是一个逆向的`git cherry-pick`。将提交中的变更以完全相反的方式应用到一个新创建的提交中，**本质上是撤销、倒转**
+
 # 查看历史
 
 - `git log --all` 查看所有分支的历史
@@ -112,11 +115,17 @@
 
 # 回滚历史版本
 
-:1st_place_medal: `git reset --soft HEAD~`。*撤销上一次提交 `git commit` 命令*
+:1st_place_medal: `git reset --soft HEAD~`。*撤销上一次提交 `git commit` 命令*，**undo commit**
+
+- 此时文件恢复至暂存区，待`git commit`
 
 :2nd_place_medal: `git reset [--mixed] HEAD~`。撤销上一次**提交**， 但还会**取消暂存** 所有的东西**
 
-:3rd_place_medal: `git reset --hard HEAD~`。撤销上一次提交、`git add` 和 `git commit `命令 以及 工作目录中的所有工作。
+- 此时文件恢复至初始修改状态，未暂存，需要重新执行`git add .`
+
+:3rd_place_medal: `git reset --hard HEAD~`。撤销上一次提交、`git add` 和 `git commit `命令 以及 工作目录中的所有工作。 
+
+- **危险操作，此操作会清空当前目录中所有记录**
 
 # Git删除与恢复
 
