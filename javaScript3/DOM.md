@@ -221,20 +221,20 @@ Element Traversal API 为 DOM 元素添加了 5 个属性**IE9及以上，现代
 
 ## 样式
 
-- Dom2 Style规定 float 在 style 对象中对应的属性是 cssFloat
+- Dom2 Style规定 float 在 style 对象中对应的属性是 `cssFloat`
 - JS 中 CSS 属性必须使用**驼峰大小写**形式
 
 ## DOM 样式属性和方法
 
-- **cssText**， 存取样式的 CSS 代码。**是一次性修改元素多个样式最快捷的方式**
+- **`cssText`**， 存取样式的 CSS 代码。**是一次性修改元素多个样式最快捷的方式**
 - length, 应用给元素的 CSS 属性数量
 - `getPropertyPriority(propertyName)`, 如果 CSS 属性 `propertyName` 使用了 !important 则返回 “important", 否则返回空字符串
-- `getPropertyValue(propertyName)`， 返回属性 *propertyName* 的字符串值
+- `getPropertyValue(propertyName)`， 返回属性 *`propertyName`* 的字符串值
 
 ## 计算样式
 
 - `document.defaultView`, 该属性返回当前 `document `对象所关联的 `window` 对象，如果没有，会返回 `null`。只读
-- **`getComputedStyle()`**方法返回一个 CSSStyleDeclaration对象，包含元素的计算样式。**只读**。包含自身style属性的样式与`<style></style>`表中样式，以及`<link>`引入的样式
+- **`getComputedStyle()`**方法返回一个 `CSSStyleDeclaration`对象，包含元素的计算样式。**只读**。包含自身style属性的样式与`<style></style>`表中样式，以及`<link>`引入的样式
 
 ## 操作样式表
 
@@ -247,3 +247,6 @@ Element Traversal API 为 DOM 元素添加了 5 个属性**IE9及以上，现代
 ## 确定元素的尺寸
 
 `element.getBoundingClientRect()`, 返回6个属性：`left, top, right, bottom, height, width`。**只读**
+
+
+
