@@ -75,12 +75,38 @@
 	console.log(Object.prototype.toString.call(document)) // "[object HTMLDocument]"
 	console.log(Object.prototype.toString.call(window)) // "[object Window]"*/
 
-	function getType(obj) {
+	/*function getType(obj) {
 		const type = typeof obj
+		// 判断如果是基础数据类型，则直接返回
 		if (type !== 'object') {
 			return type
 		}
-	}
+		// 正则捕获非空白字符，转换为小写返回
+		return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, (match, $1) => {
+			return $1.toLocaleLowerCase()
+		})
+	}*/
 
+	let obj = {
+		value: 1,
+		valueOf() {
+			return 2
+		},
+		toString() {
+			return '3'
+		},
+		[Symbol.toPrimitive]() {
+			return 4
+		}
+	}
+	console.log(obj + 1) // 5
+	// 因为有Symbol.toPrimitive，就优先执行这个；如果Symbol.toPrimitive这段代码删掉，则执行valueOf打印结果为3；如果valueOf也去掉，则调用toString返回'31'(字符串拼接)
+
+	console.log(10 + {})
+	// {} 默认会调用 valueOf 是{},不是基础数据类型，调用toString, 返回"[object Object]"
+
+	console.log([1, 2, undefined, 4, 5] + 10) // 1,2,,4,510
+	// [1,2,undefined,4,5]会默认先调用valueOf结果还是这个数组，不是基础数据类型继续转换，也还是调用toString，返回"1,2,,4,5"，然后再和10进行运算
 }
+
 
