@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "npx webpack --config yyb.js",
     "test": "npx webpack",
     "start": "webpack-dev-server"
   },

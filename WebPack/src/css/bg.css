@@ -1,7 +1,0 @@
-body {
-    background: #30681a;
-}
-
-li:nth-of-type(even) {
-    color: red;
-}

@@ -55,7 +55,7 @@
     - 若图片地址报错，需要在对应的 options 选项中，配置打包后的 publicPath 文件目录。
     - 默认情况下， 打包后的图片名称为文件内容的 MD5 哈希值
     - `name:'[name].[ext]'`属性，控制打包后图片名
-    - `publicPath: 'dist/images'`, 配置文件 public 发布目录
+    - `publicPath: 'dist/images'`, 配置文件 public 发布目录（上线后图片地址路径）
     - `outputPath: './images/'`, **配置文件输出目录，务必使用相对目录，热更新时会导致路径错误**
 - 打包字体图标。若字体图标列名失效，css-loader中模块化关闭
 
@@ -78,7 +78,7 @@
 
 通过`limit`参数将文件加载为`base64`编码的url，如果超出该限制，则打包成独立文件
 
-- limit（byte）: 限制图片的大小。小于该数值的以`base64`格式显示。1kb = 1024
+- limit（byte）: 限制图片的大小。小于该数值的以`base64`格式显示。1kb = 1024，**默认4KB大小**
 - 同 file-loader 可设置文件名称，打包路径等。
 - mac 环境下，打包时需要设置 `publicPath`，否则路径无效
 
