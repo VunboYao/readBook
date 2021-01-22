@@ -87,6 +87,7 @@
 
 - 解析 CSS 文件中 @import 和 URL（）, 会 import/require() 后再解析(resolve)它们。
 - 分离 CSS 导致的图片解析问题， url 参数为 false
+- CSS 模块化，引入的CSS文件必须通过 **`文件名.类名`** 才能生效
 
 ```js
 {
