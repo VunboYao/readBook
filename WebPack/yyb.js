@@ -1,5 +1,8 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
 	devtool: 'cheap-module-source-map', // 生产：cheap-module-source-map 开发：cheap-module-eval-source-map
@@ -11,7 +14,7 @@ module.exports = {
 	},
 	module: {
 		rules: [
-				// 图片解析loader
+			// 图片解析loader
 			{
 				test: /\.(png|jpg|gif)$/,
 				use: [
@@ -27,13 +30,14 @@ module.exports = {
 					}
 				]
 			},
-				// CSS解析loader
+			// CSS解析loader
 			{
 				test: /\.css$/,
 				// use: ['style-loader', 'css-loader']
 				use: [
 					{
-						loader: 'style-loader' // 将webpack处理之后的内容插入到HTML的HEAD代码种
+						// loader: 'style-loader' // 将webpack处理之后的内容插入到HTML的HEAD代码种
+						loader: MiniCssExtractPlugin.loader
 					},
 					{
 						loader: 'css-loader', // 解析CSS文件中的@import依赖关系
@@ -46,7 +50,7 @@ module.exports = {
 					}
 				]
 			},
-				// 解析less
+			// 解析less
 			{
 				test: /\.less$/,
 				use: [
@@ -63,22 +67,22 @@ module.exports = {
 						loader: 'postcss-loader',
 						options: {
 							plugins: [
-									require('autoprefixer')(['chrome >= 3']),
-									require('postcss-pxtorem')({
-										rootValue: 100,
-										propList: ['*']
-									})
+								require('autoprefixer')(['chrome >= 3']),
+								require('postcss-pxtorem')({
+									rootValue: 100,
+									propList: ['*']
+								})
 							]
 						}
 					}
 				]
 			},
-				// 解析scss
+			// 解析scss
 			{
 				test: /\.scss/,
 				use: ['style-loader', 'css-loader', 'sass-loader', 'postcss-loader']
 			},
-				// 解析字体图标
+			// 解析字体图标
 			{
 				test: /\.(eot|json|ttf|woff|woff2|svg)$/,
 				use: [
@@ -94,13 +98,26 @@ module.exports = {
 		]
 	},
 	plugins: [
-			// 自动生成包的index.html
-			new HtmlWebpackPlugin({
-				title: 'My Webpack', // 需要在模板中对应设置
-				minify: {
-					collapseWhitespace: true // 压缩代码
-				},
-				template: './index.html'
-			})
+		// 自动生成包的index.html
+		new HtmlWebpackPlugin({
+			title: 'My Webpack', // 需要在模板中对应设置
+			minify: {
+				collapseWhitespace: true // 压缩代码
+			},
+			template: './src/index.html'
+		}),
+		// 清除历史打包文件
+		new CleanWebpackPlugin(),
+		// 拷贝固定的文件
+		new CopyWebpackPlugin([
+			{
+				from: './src/doc',
+				to: 'doc'
+			}
+		]),
+		// CSS提取到单独的文件
+		new MiniCssExtractPlugin({
+			filename: "css/[name].[hash].css"
+		})
 	]
 }
