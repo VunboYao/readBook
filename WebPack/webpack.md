@@ -55,7 +55,8 @@
     - 若图片地址报错，需要在对应的 options 选项中，配置打包后的 publicPath 文件目录。
     - 默认情况下， 打包后的图片名称为文件内容的 MD5 哈希值
     - `name:'[name].[ext]'`属性，控制打包后图片名
-    - `publicPath: 'dist/images'`, 配置文件 public 发布目录（上线后图片地址路径）
+    - **`publicPath: 'dist/images'`, 配置文件 public 发布目录（上线后图片地址路径）**
+      - devServer时不设置此值
     - `outputPath: './images/'`, **配置文件输出目录，务必使用相对目录，热更新时会导致路径错误**
 - 打包字体图标。若字体图标列名失效，css-loader中模块化关闭
 
@@ -300,17 +301,31 @@ watchOptions: {
 
 - `npm install --save-dev webpack-dev-server`
 
+    > publicPath: 假设服务器运行在 `http://localhost:8080` 并且 [`output.filename`](https://v4.webpack.docschina.org/configuration/output/#output-filename) 被设置为 `bundle.js`。默认 `devServer.publicPath` 是 `'/'`，所以你的包(bundle)可以通过 `http://localhost:8080/bundle.js` 访问
+    >
+    > ```js
+    > module.exports = {
+    >       //...
+    >       devServer: {
+    >         publicPath: '/assets/'
+    >       }
+    > };
+    > ```
+    >
+    > 现在可以通过 http://localhost:8080/assets/bundle.js 访问 bundle。
+
     ```js
     devServer: {
-        publicPath: './dist/images',
-        contentBase: './dist', // 告诉webpack-dev-server， dist目录下的文件，可以作为访问文件
+        publicPath: './assets', // 用于确定应该从哪里提供入口文件，并且此选项优先
+        contentBase: path.join(__dirname, 'public'), // 告诉webpack-dev-server，告诉服务器从哪个目录中提供内容。只有在你想要提供静态文件时才需要
         port: 2020,
-        open: true, // 是否自动打开页面
+        open: true, // 是否自动打开页面 或者指令中webpack-dev-server --open
         compress: false, // 是否启用压缩
     }
     ```
 
 - 跨越代理 proxy
+
 - 使用方式一
 
     ```js

@@ -3,14 +3,37 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const TerserJSPlugin = require('terser-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 module.exports = {
 	devtool: 'cheap-module-source-map', // 生产：cheap-module-source-map 开发：cheap-module-eval-source-map
 	mode: 'development', // production | none
+	// webpack优化项
+	optimization: {
+		// 压缩JS、CSS
+		minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
+	},
 	entry: './src/entry.js', // 入口文件
 	output: {
 		filename: "yybWebpack.js", // 输出文件名
 		path: path.resolve(__dirname, 'dist') // 输出文件路径
+	},
+	// 监听器
+	/*watch: true,
+	watchOptions: {
+		// 防抖
+		aggregateTimeout: 300,
+		// 忽略大文件
+		ignored: /node_modules/,
+		// 轮询时间
+		poll: 1000
+	},*/
+	// devServer
+	devServer: {
+		contentBase: './dist', // 默认情况下，将使用当前工作目录作为提供内容的目录
+		open: true, // 在启动server后打开浏览器。默认禁用。或者指令中webpack-dev-server --open
+		port: 2021, // 指定请求端口
 	},
 	module: {
 		rules: [
@@ -23,7 +46,7 @@ module.exports = {
 						loader: 'url-loader', // 同file-loader，增加了limit限制
 						options: {
 							limit: 1024 * 2,
-							publicPath: '../dist/img', // 自定义输出文件路径（上线后图片地址更换）
+							// publicPath: './img', // 自定义输出文件路径（上线后图片地址更换）。devServer时不设置此路径。设置则只能是./img
 							name: '[name].[ext]',
 							outputPath: './img/' // 指定图片打包到特定的目录下
 						}
