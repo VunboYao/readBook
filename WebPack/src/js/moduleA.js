@@ -6,4 +6,11 @@ function addImg() {
 	oImg.classList.add(css.size)
 	document.body.appendChild(oImg)
 }
-export default addImg
+function add() {
+	document.getElementById('btn').addEventListener('click', (e) => {
+		const p = document.createElement('p')
+		p.innerHTML = 'hello webpack12'
+		document.body.appendChild(p)
+	})
+}
+export default {addImg, add}

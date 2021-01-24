@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserJSPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const webpack = require('webpack')
 
 module.exports = {
 	devtool: 'cheap-module-source-map', // 生产：cheap-module-source-map 开发：cheap-module-eval-source-map
@@ -34,6 +35,8 @@ module.exports = {
 		contentBase: './dist', // 默认情况下，将使用当前工作目录作为提供内容的目录
 		open: true, // 在启动server后打开浏览器。默认禁用。或者指令中webpack-dev-server --open
 		port: 2021, // 指定请求端口
+		hot: true, // 开启热更新，就不会自动刷新网页
+		hotOnly: true  // 即使不支持热更新，也不刷新网页
 	},
 	module: {
 		rules: [
@@ -60,7 +63,11 @@ module.exports = {
 				use: [
 					{
 						// loader: 'style-loader' // 将webpack处理之后的内容插入到HTML的HEAD代码种
-						loader: MiniCssExtractPlugin.loader
+						loader: MiniCssExtractPlugin.loader,
+						// 热更新时分离文件不生效，增加此配置
+						options: {
+							hmr: true
+						}
 					},
 					{
 						loader: 'css-loader', // 解析CSS文件中的@import依赖关系
@@ -140,7 +147,9 @@ module.exports = {
 		]),
 		// CSS提取到单独的文件
 		new MiniCssExtractPlugin({
-			filename: "css/[name].[hash].css"
-		})
+			filename: "css/[name].css"
+		}),
+		// 热更新插件
+		new webpack.HotModuleReplacementPlugin(),
 	]
 }

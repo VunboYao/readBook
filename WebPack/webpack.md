@@ -228,12 +228,15 @@ npm install sass-loader node-sass --save-dev
 ## MiniCssExtractPlugin
 
 - 提取独立css文件
+
 - `npm install --save-dev mini-css-extract-plugin`
+
+- **插件中options里如果名称带有hash,则热更新会失败**
 
     ```js
     const MiniCssExtractPlugin = require('mini-css-extract-plugin');
     module.exports = {
-        plugins: [new MiniCssExtractPlugin()],
+        plugins: [new MiniCssExtractPlugin()], // 提取css文件名称时，如果有hash,导致热更新失败
         module: {
             rules: [
                 {
@@ -332,9 +335,9 @@ watchOptions: {
     proxy: {
         // 请求到 /api/users 现在会被代理到请求 http://localhost:3000/api/users
         "/api": {
-        "target": "http://localhost:3000",
-        "secure": false, // HTTPS跨域
-        "changeOrigin": true, // 域名跨域
+            "target": "http://localhost:3000",
+            "secure": false, // HTTPS跨域
+            "changeOrigin": true, // 域名跨域
         },
         "/login": {
             ...
@@ -357,8 +360,12 @@ watchOptions: {
 # webpack热更新
 
 1. 通过webpack-dev-server自动打包并没有真正的放到指定的目录中。因为读写磁盘是非常耗时和消耗性能的，所以为了提升性能， webpack-dev-server将转换好的内容放到了内存中
+
 2. 通过webpack-dev-server可以实时监听打包内容的变化，每次打包之后都会自动刷新网页，因此带了有很多不便，这时就需要通过HMR插件来优化调试开发
+
 3. HMR（HotModuleReplacementPlugin）热更新插件会在内容发生变化的时候更新修改的内容并不会重新刷新网站  
+
+4. **如果分离css下热更新失败，检查分离css的文件名称是否包含hash**
 
     ```js
     const Webpack = require('webpack')
@@ -374,9 +381,11 @@ watchOptions: {
         hot: true, // 开启热更新，就不会自动刷新网页
         hotOnly: true // 即使不支持热更新，也不刷新网页
     }
+    
+    // 如果CSS使用分离模块方式，需要增加options
     ```
 
-4. 热更新JS模块
+5. 热更新JS模块
 
     ```js   
     // demo.js
@@ -386,7 +395,7 @@ watchOptions: {
         document.body.appendChild(li)
     }
     export default add
-
+    
     // entry.js
     // 判断当前是否开启热更新
     if (module.hot) {

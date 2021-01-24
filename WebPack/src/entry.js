@@ -13,9 +13,18 @@ console.log(avatar)
 oImg.src = avatar
 oImg.classList.add('size')
 document.body.appendChild(oImg)
-addImg()
+addImg.addImg()
+addImg.add()
 
 // 字体图标
 const icon = document.createElement('h1')
 icon.innerHTML =  `<h1 class="iconfont icon-hanbao-01" style="font-size: 100px;"></h1>`
 document.body.appendChild(icon)
+
+// JS热更新
+if (module.hot) {
+	module.hot.accept('./js/moduleA', () => {
+		console.log('yes')
+		addImg.add()
+	})
+}
