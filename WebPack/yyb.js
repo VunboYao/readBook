@@ -124,6 +124,23 @@ module.exports = {
 						}
 					}
 				]
+			},
+			// 解析ES678高级语法
+			{
+				test: /\.m?js$/,
+				exclude: /node_modules/,
+				use: {
+					loader: "babel-loader",
+					options: {
+						presets: [
+							['@babel/preset-env', {
+								targets: {
+									"chrome": "58"
+								}
+							}]
+						]
+					}
+				}
 			}
 		]
 	},

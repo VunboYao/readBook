@@ -28,3 +28,9 @@ if (module.hot) {
 		addImg.add()
 	})
 }
+
+// ES678高级语法
+let say = () => {
+	console.log('hello')
+}
+say()
