@@ -244,6 +244,7 @@ npm install sass-loader node-sass --save-dev
                     use: [{
                         loader: MiniCssExtractPlugin.loader,
                         options: {
+                            publicPath: '../'， // 修复分离背景图片问题
                             hmr: true // 热更新时生效
                         }
                     }, 'css-loader'],
@@ -434,7 +435,7 @@ watchOptions: {
 
 ## 实现方式一
 
-- `npm install --save-dev @babel/core`
+- `npm install --save @babel/polyfill`
 
     ```js
     // import "@babel/polyfill"; // webpack中配置了useBuiltIns: usage，不用该选项

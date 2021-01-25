@@ -2,6 +2,7 @@ import avatar from './images/demo.jpg' // 使用ES6模块化提代NodeJs的requi
 import './css/index.css'
 import './font/iconfont.css'
 import addImg from './js/moduleA'
+// import '@babel/polyfill'
 // import less from './css/less.less'
 // import scss from './css/sass.scss'
 
@@ -34,3 +35,7 @@ let say = () => {
 	console.log('hello')
 }
 say()
+
+Promise.resolve().then(res => {
+	console.log('yyb')
+})

@@ -66,7 +66,8 @@ module.exports = {
 						loader: MiniCssExtractPlugin.loader,
 						// 热更新时分离文件不生效，增加此配置
 						options: {
-							hmr: true
+							hmr: true,
+							publicPath: '../'
 						}
 					},
 					{
@@ -135,8 +136,9 @@ module.exports = {
 						presets: [
 							['@babel/preset-env', {
 								targets: {
-									"chrome": "58"
-								}
+									"chrome": "25"
+								},
+								"useBuiltIns": "usage"
 							}]
 						]
 					}

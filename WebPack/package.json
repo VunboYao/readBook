@@ -38,9 +38,10 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.8.7",
+    "@babel/polyfill": "^7.12.1",
     "@babel/runtime": "^7.8.7",
     "@babel/runtime-corejs2": "^7.8.7",
+    "core-js": "^2.6.12",
     "html-withimg-loader": "^0.1.16"
   }
 }
