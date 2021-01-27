@@ -48,6 +48,7 @@ module.exports = {
 						// loader: 'file-loader', // 将文件打包后，并提供路径访问
 						loader: 'url-loader', // 同file-loader，增加了limit限制
 						options: {
+							esModule: false,
 							limit: 1024 * 2,
 							// publicPath: './img', // 自定义输出文件路径（上线后图片地址更换）。devServer时不设置此路径。设置则只能是./img
 							name: '[name].[ext]',
@@ -138,11 +139,17 @@ module.exports = {
 								targets: {
 									"chrome": "25"
 								},
+								"corejs": '2',
 								"useBuiltIns": "usage"
 							}]
 						]
 					}
 				}
+			},
+			// 解析html中的图片
+			{
+				test: /\.(htm|html)$/i,
+				loader: 'html-withimg-loader'
 			}
 		]
 	},

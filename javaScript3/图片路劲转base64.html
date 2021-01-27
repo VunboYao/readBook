@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script>
+  function getBase64Image(img) {
+  	const canvas = document.createElement('canvas')
+    canvas.width = img.width
+    canvas.height = img.height
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(img, 0, 0, img.width, img.height)
+		return canvas.toDataURL('image/png')
+	}
+	const img = 'https://bkimg.cdn.bcebos.com/pic/bd3eb13533fa828b56571042f51f4134970a5a1f?x-bce-process=image/resize,m_lfit,w_268,limit_1/format,f_jpg'
+  const image = new Image()
+	image.crossOrigin = 'Anonymous';
+	image.src = img
+  image.onload = function () {
+  	const base64 = getBase64Image(image)
+		console.log(base64)
+	}
+</script>
+</body>
+</html>
