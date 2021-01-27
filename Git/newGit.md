@@ -170,6 +170,11 @@
 
   :last_quarter_moon_with_face:`bug` 分支只在本地修复，不用推送到远程。
 
+- 分支改名
+  - 本地分支改名: `git branch -m old_branch new_branch`
+  - 删除远程分支的老分支名称： `git push origin :old_branch`
+  - 将改名后的分支名称push到远程：`git push origin  new_branch`
+
 # 标签
 
 标签是版本库的一个快照。本质是指向某个`commit`的指针。**分支可以移动, 标签不能移动**
