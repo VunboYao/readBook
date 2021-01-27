@@ -175,6 +175,9 @@
   - 删除远程分支的老分支名称： `git push origin :old_branch`
   - 将改名后的分支名称push到远程：`git push origin  new_branch`
 
+- **:point_up_2:撤销分支合并**
+  - `git revert version_name -m 1`: 撤销上次分支合并，并设置第一个分支为主依赖
+
 # 标签
 
 标签是版本库的一个快照。本质是指向某个`commit`的指针。**分支可以移动, 标签不能移动**
