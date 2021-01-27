@@ -2,7 +2,6 @@
 
 ## 工作区(Working Directory)
 
-仓库文件夹里面, 除了`.git`以外的内容
 
 ## 版本库(Repository)
 
