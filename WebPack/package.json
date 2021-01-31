@@ -22,6 +22,9 @@
     "css-loader": "^3.6.0",
     "file-loader": "^5.1.0",
     "html-webpack-plugin": "^3.2.0",
+    "html-withimg-loader": "^0.1.16",
+    "image-webpack-loader": "^7.0.1",
+    "imagemin": "^7.0.1",
     "less": "^3.13.1",
     "less-loader": "^5.0.0",
     "mini-css-extract-plugin": "^0.9.0",
@@ -41,7 +44,6 @@
     "@babel/polyfill": "^7.12.1",
     "@babel/runtime": "^7.8.7",
     "@babel/runtime-corejs2": "^7.8.7",
-    "core-js": "^2.6.12",
-    "html-withimg-loader": "^0.1.16"
+    "core-js": "^2.6.12"
   }
 }
