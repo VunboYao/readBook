@@ -6,7 +6,24 @@
   transform: translate(200px, 200px);
 }
 
-p:nth-of-type(odd) {
-  background: #d0559d;
-}
+/*p:nth-of-type(odd) {*/
+/*  background: #d0559d;*/
+/*}*/
 
+.animal {
+  width: 128px;
+  height: 128px;
+  display: block;
+}
+.animal1 {
+  background: url("../images/animal/animal1.png") no-repeat;
+}
+.animal2 {
+  background: url("../images/animal/animal2.png") no-repeat;
+}
+.animal3 {
+  background: url("../images/animal/animal3.jpg") no-repeat;
+}
+.animal4 {
+  background: url("../images/animal/animal4.png") no-repeat;
+}

@@ -49,7 +49,7 @@ module.exports = {
 						loader: 'url-loader', // 同file-loader，增加了limit限制
 						options: {
 							esModule: false,
-							limit: 1024 * 2,
+							limit: 1024, // 限制图片大小，小于此值会转为base64
 							// publicPath: './img', // 自定义输出文件路径（上线后图片地址更换）。devServer时不设置此路径。设置则只能是./img
 							name: '[name].[ext]',
 							outputPath: './img/' // 指定图片打包到特定的目录下
@@ -59,7 +59,7 @@ module.exports = {
 						loader: 'image-webpack-loader',
 						options: {
 							mozjpeg: {
-								progressive: true,
+								progressive: true
 							},
 							// optipng.enabled: false will disable optipng
 							optipng: {
@@ -181,7 +181,7 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			title: 'My Webpack', // 需要在模板中对应设置
 			minify: {
-				collapseWhitespace: true // 压缩代码
+				collapseWhitespace: false // 压缩代码
 			},
 			template: './src/index.html'
 		}),
