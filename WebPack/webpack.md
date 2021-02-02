@@ -83,6 +83,22 @@
 - 同 file-loader 可设置文件名称，打包路径等。
 - mac 环境下，打包时需要设置 `publicPath`，否则路径无效
 
+```js
+{
+    // loader: 'file-loader', // 将文件打包后，并提供路径访问
+    loader: 'url-loader', // 同file-loader，增加了limit限制
+        options: {
+            esModule: false,
+            limit: 1024, // 限制图片大小，小于此值会转为base64
+            // publicPath: 'http://127.0.0.1:2021/img', // 自定义输出文件路径（上线后图片地址更换）。devServer时不设置此路径。设置则只能是./img
+            name: '[name].[ext]',
+            outputPath: './img/' // 指定图片打包到特定的目录下
+        }
+}
+```
+
+
+
 
 ## css-loader
 

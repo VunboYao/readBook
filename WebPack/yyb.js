@@ -50,7 +50,7 @@ module.exports = {
 						options: {
 							esModule: false,
 							limit: 1024, // 限制图片大小，小于此值会转为base64
-							// publicPath: './img', // 自定义输出文件路径（上线后图片地址更换）。devServer时不设置此路径。设置则只能是./img
+							// publicPath: 'http://127.0.0.1:2021/img', // 自定义输出文件路径（上线后图片地址更换）。devServer时不设置此路径。设置则只能是./img
 							name: '[name].[ext]',
 							outputPath: './img/' // 指定图片打包到特定的目录下
 						}
