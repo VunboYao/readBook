@@ -6,11 +6,9 @@ import addImg from './js/moduleA'
 // import less from './css/less.less'
 // import scss from './css/sass.scss'
 
-
-
 // CSS模块化测试
 const oImg = document.createElement('img') // 获取file-loader处理后的文件路径
-console.log(avatar)
+console.warn(avatar)
 oImg.src = avatar
 oImg.classList.add('size')
 document.body.appendChild(oImg)
@@ -19,23 +17,23 @@ addImg.add()
 
 // 字体图标
 const icon = document.createElement('h1')
-icon.innerHTML =  `<h1 class="iconfont icon-hanbao-01" style="font-size: 100px;"></h1>`
+icon.innerHTML = '<h1 class="iconfont icon-hanbao-01" style="font-size: 100px;"></h1>'
 document.body.appendChild(icon)
 
 // JS热更新
 if (module.hot) {
-	module.hot.accept('./js/moduleA', () => {
-		console.log('yes')
-		addImg.add()
-	})
+  module.hot.accept('./js/moduleA', () => {
+    console.warn('yes')
+    addImg.add()
+  })
 }
 
 // ES678高级语法
-let say = () => {
-	console.log('hello')
+const say = () => {
+  console.warn('hello')
 }
 say()
 
 Promise.resolve().then(res => {
-	console.log('yyb')
+  console.warn('yyb2')
 })
