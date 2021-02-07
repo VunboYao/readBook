@@ -676,3 +676,17 @@ module.exports = {
 }
 ```
 
+# 进阶
+
+## TreeShaking
+
+```js
+// 告诉webpack只打包导入模块中用到的内容
+  optimization: {
+    usedExports: true
+  }
+
+// package.json文件中
+"sideEffects": ["*.css", "*.less", "*.scss"] // 遇到此类文件不过滤
+```
+

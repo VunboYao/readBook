@@ -8,6 +8,8 @@ const Prod = {
   mode: 'production', // production | none
   // webpack优化项
   optimization: {
+    // 告诉webpack只打包导入模块中用到的内容
+    usedExports: true,
     // 压缩JS、CSS
     minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
   },

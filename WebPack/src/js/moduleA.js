@@ -13,4 +13,6 @@ function add () {
     document.body.appendChild(p)
   })
 }
-export default { addImg, add }
+export {
+  addImg, add
+}

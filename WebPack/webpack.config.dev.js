@@ -3,6 +3,10 @@ const { merge } = require('webpack-merge')
 const CommonConfig = require('./webpack.config.common')
 
 const Dev = {
+  // 告诉webpack只打包导入模块中用到的内容
+  optimization: {
+    usedExports: true
+  },
   devtool: 'cheap-module-eval-source-map', // 生产：cheap-module-source-map 开发：cheap-module-eval-source-map
   mode: 'development', // production | none
   // devServer

@@ -1,7 +1,7 @@
 import avatar from './images/demo.jpg' // 使用ES6模块化提代NodeJs的require方式
 import './css/index.css'
 import './font/iconfont.css'
-import addImg from './js/moduleA'
+import { addImg } from './js/moduleA'
 // import '@babel/polyfill'
 // import less from './css/less.less'
 // import scss from './css/sass.scss'
@@ -12,8 +12,8 @@ console.warn(avatar)
 oImg.src = avatar
 oImg.classList.add('size')
 document.body.appendChild(oImg)
-addImg.addImg()
-addImg.add()
+addImg()
+// addImg.add()
 
 // 字体图标
 const icon = document.createElement('h1')
@@ -24,7 +24,7 @@ document.body.appendChild(icon)
 if (module.hot) {
   module.hot.accept('./js/moduleA', () => {
     console.warn('yes')
-    addImg.add()
+    // addImg.add()
   })
 }
 
