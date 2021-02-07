@@ -3,40 +3,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const TerserJSPlugin = require('terser-webpack-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const webpack = require('webpack')
 
 module.exports = {
-  devtool: 'cheap-module-source-map', // 生产：cheap-module-source-map 开发：cheap-module-eval-source-map
-  mode: 'development', // production | none
-  // webpack优化项
-  optimization: {
-    // 压缩JS、CSS
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
-  },
   entry: './src/entry.js', // 入口文件
   output: {
     filename: 'yybWebpack.js', // 输出文件名
     path: path.resolve(__dirname, 'dist') // 输出文件路径
-  },
-  // 监听器
-  /*  watch: true,
-  watchOptions: {
-    // 防抖
-    aggregateTimeout: 300,
-    // 忽略大文件
-    ignored: /node_modules/,
-    // 轮询时间
-    poll: 1000
-  }, */
-  // devServer
-  devServer: {
-    contentBase: './dist', // 默认情况下，将使用当前工作目录作为提供内容的目录
-    open: true, // 在启动server后打开浏览器。默认禁用。或者指令中webpack-dev-server --open
-    port: 2021, // 指定请求端口
-    hot: true, // 开启热更新，就不会自动刷新网页
-    hotOnly: true // 即使不支持热更新，也不刷新网页
   },
   module: {
     rules: [
@@ -190,7 +162,6 @@ module.exports = {
   plugins: [
     // 自动生成包的index.html
     new HtmlWebpackPlugin({
-      title: 'My Webpack', // 需要在模板中对应设置
       minify: {
         collapseWhitespace: false // 压缩代码
       },
@@ -208,8 +179,6 @@ module.exports = {
     // CSS提取到单独的文件
     new MiniCssExtractPlugin({
       filename: 'css/[name].css'
-    }),
-    // 热更新插件
-    new webpack.HotModuleReplacementPlugin()
+    })
   ]
 }

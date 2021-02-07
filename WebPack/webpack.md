@@ -396,6 +396,23 @@ module.exports = {
     };
     ```
 
+## 配置文件优化
+
+- 公共的配置文件: `webpack.config.common.js`
+
+- 开发的配置文件：`webpack.config.dev.js`
+
+- 生产的配置文件: `webpack.config.prod.js`
+
+- 插件安装：`npm i -D webpack-merge`
+
+  ```js
+  const { merge } = require('webpack-merge')
+  const CommonConfig = require('./webpack.config.common')
+  const config = {}
+  module.exports = merge(CommonConfig, config)
+  ```
+
 # watch
 
 监听文件变化， 当文件修改后会重新编译
