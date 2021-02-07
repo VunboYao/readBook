@@ -690,3 +690,20 @@ module.exports = {
 "sideEffects": ["*.css", "*.less", "*.scss"] // 遇到此类文件不过滤
 ```
 
+## CSSTreeShaking
+
+- `npm i -D purifycss-webpack purify-css glob-all`
+
+```js
+const PurifyCSSPlugin = require('purifycss-webpack')
+const glob = require('glob-all')
+
+// 提取使用的CSS
+new PurifyCSSPlugin({
+    paths: glob.sync([
+        path.join(__dirname, 'src/*.html'),
+        path.join(__dirname, 'src/js/*.js')
+    ])
+})
+```
+

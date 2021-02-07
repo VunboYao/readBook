@@ -5,7 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
-  entry: './src/entry.js', // 入口文件
+  entry: './src/js/entry.js', // 入口文件
   output: {
     filename: 'yybWebpack.js', // 输出文件名
     path: path.resolve(__dirname, 'dist') // 输出文件路径

@@ -2,6 +2,9 @@ const TerserJSPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const { merge } = require('webpack-merge')
 const CommonConfig = require('./webpack.config.common')
+const PurifyCSSPlugin = require('purifycss-webpack')
+const glob = require('glob-all')
+const path = require('path')
 
 const Prod = {
   devtool: 'cheap-module-source-map', // 生产：cheap-module-source-map 开发：cheap-module-eval-source-map
@@ -13,6 +16,14 @@ const Prod = {
     // 压缩JS、CSS
     minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
   },
-  plugins: []
+  plugins: [
+    // 提取使用的CSS
+    new PurifyCSSPlugin({
+      paths: glob.sync([
+        path.join(__dirname, 'src/*.html'),
+        path.join(__dirname, 'src/js/*.js')
+      ])
+    })
+  ]
 }
 module.exports = merge(CommonConfig, Prod)

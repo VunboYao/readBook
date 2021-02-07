@@ -1,7 +1,7 @@
-import avatar from './images/demo.jpg' // 使用ES6模块化提代NodeJs的require方式
-import './css/index.css'
-import './font/iconfont.css'
-import { addImg } from './js/moduleA'
+import avatar from '../images/demo.jpg' // 使用ES6模块化提代NodeJs的require方式
+import '../css/index.css'
+import '../font/iconfont.css'
+import { addImg } from './moduleA'
 // import '@babel/polyfill'
 // import less from './css/less.less'
 // import scss from './css/sass.scss'
@@ -22,7 +22,7 @@ document.body.appendChild(icon)
 
 // JS热更新
 if (module.hot) {
-  module.hot.accept('./js/moduleA', () => {
+  module.hot.accept('./moduleA', () => {
     console.warn('yes')
     // addImg.add()
   })
