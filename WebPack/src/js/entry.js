@@ -2,7 +2,7 @@ import avatar from '../images/demo.jpg' // 使用ES6模块化提代NodeJs的requ
 import '../css/index.css'
 import '../font/iconfont.css'
 import { addImg } from './moduleA'
-import $ from 'jquery'
+// import $ from 'jquery'
 // import '@babel/polyfill'
 // import less from './css/less.less'
 // import scss from './css/sass.scss'
@@ -15,12 +15,30 @@ oImg.classList.add('size')
 document.body.appendChild(oImg)
 addImg()
 // addImg.add()
-
-$('img').css({
-  width: '444px',
-  height: '444px',
-  border: '2px solid #456'
-})
+// document.getElementById('btn').onclick = function () {
+//   const oDiv = getComponent()
+//   document.body.appendChild(oDiv)
+// }
+// function getComponent () {
+//   const oDiv = $('<div>I am Div</div>')
+//   return oDiv
+// }
+function getComponent () {
+  return import('jquery').then(({ default: $ }) => {
+    const oDiv = $('<div>i am Div</div>')
+    return oDiv
+  })
+}
+document.getElementById('btn').onclick = function () {
+  getComponent().then(res => {
+    document.body.appendChild(res[0])
+  })
+}
+// $('img').css({
+//   width: '444px',
+//   height: '444px',
+//   border: '2px solid #456'
+// })
 // 字体图标
 const icon = document.createElement('h1')
 icon.innerHTML = '<h1 class="iconfont icon-hanbao-01" style="font-size: 100px;"></h1>'

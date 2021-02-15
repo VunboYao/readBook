@@ -1,7 +1,7 @@
 module.exports = {
   root: true, // ESLint 一旦发现配置文件中有 "root": true，它就会停止在父级目录中寻找。
   parserOptions: {
-    ecmaVersion: 10, // 默认设置为 3，5（默认）， 你可以使用 6、7、8、9 或 10 来指定你想要使用的 ECMAScript 版本
+    ecmaVersion: 11, // 默认设置为 3，5（默认）， 你可以使用 6、7、8、9 或 10 来指定你想要使用的 ECMAScript 版本
     sourceType: 'module' //  设置为 "script" (默认) 或 "module"（如果你的代码是 ECMAScript 模块)
   },
   // 继承规则
@@ -22,6 +22,11 @@ module.exports = {
         allow: ['warn', 'error']
       }
     ],
+    'space-before-function-paren': ['error', {
+      anonymous: 'always',
+      named: 'always',
+      asyncArrow: 'always'
+    }],
     quotes: ['error', 'single'] // 单引号
   },
   env: { // 环境定义

@@ -721,3 +721,19 @@ optimization: {
 }
 ```
 
+## 异步加载模块
+
+```js
+function getComponent () {
+  return import('jquery').then(({ default: $ }) => {
+    const oDiv = $('<div>i am Div</div>')
+    return oDiv
+  })
+}
+document.getElementById('btn').onclick = function () {
+  getComponent().then(res => {
+    document.body.appendChild(res[0])
+  })
+}
+```
+
