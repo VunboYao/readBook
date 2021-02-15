@@ -701,6 +701,7 @@ const glob = require('glob-all')
 // 提取使用的CSS
 new PurifyCSSPlugin({
     paths: glob.sync([
+     		// 告诉需要过滤哪些文件
         path.join(__dirname, 'src/*.html'),
         path.join(__dirname, 'src/js/*.js')
     ])
