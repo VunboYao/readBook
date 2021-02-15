@@ -708,3 +708,16 @@ new PurifyCSSPlugin({
 })
 ```
 
+## 代码分割(code-splitting)
+
+新增配置
+
+```js
+// 告诉webpack启动代码分割
+optimization: {
+  splitChunks: {
+    chunks: 'all'
+  }
+}
+```
+

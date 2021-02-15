@@ -5,6 +5,12 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
+  // 告诉webpack启动代码分割
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  },
   entry: './src/js/entry.js', // 入口文件
   output: {
     filename: 'yybWebpack.js', // 输出文件名
