@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const Webpack = require('webpack')
 
 module.exports = {
   // 告诉webpack启动代码分割
@@ -196,6 +197,12 @@ module.exports = {
           }
         }
       },
+      // imports-loader处理全局导入
+      {
+        test: /\.js$/,
+        exclude: /node_modules/, // 排除文件
+        loader: 'imports-loader?$=jquery' // 在JS中用到了$就去自动加载jQuery
+      },
       // 解析html中的图片
       {
         test: /\.(htm|html)$/i,
@@ -223,6 +230,10 @@ module.exports = {
     // CSS提取到单独的文件
     new MiniCssExtractPlugin({
       filename: 'css/[name].[contenthash:8].css'
+    }),
+    // 全局导入
+    new Webpack.ProgressPlugin({
+      $: 'jquery'
     })
   ]
 }

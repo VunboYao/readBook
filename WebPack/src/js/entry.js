@@ -26,8 +26,8 @@ addImg()
 //   return oDiv
 // }
 /* 异步加载 */
-function getComponent () {
-  return import(/* webpackPrefetch: true *//* webpackChunkName: "jquery" */'jquery').then(({ default: $ }) => {
+/* function getComponent () {
+  return import(/!* webpackPrefetch: true *!//!* webpackChunkName: "jquery" *!/'jquery').then(({ default: $ }) => {
     return $('<div>i am Div</div>')
   })
 }
@@ -35,7 +35,7 @@ document.getElementById('btn').onclick = function () {
   getComponent().then(res => {
     document.body.appendChild(res[0])
   })
-}
+} */
 // $('img').css({
 //   width: '444px',
 //   height: '444px',
@@ -63,4 +63,12 @@ say()
 
 Promise.resolve().then(res => {
   console.warn('yyb2')
+})
+
+/* imports-loader测试jQuery的引用 */
+// eslint-disable-next-line no-undef
+$('.demo-box').css({
+  width: '200px',
+  height: '200px',
+  border: '4px solid #ddd'
 })

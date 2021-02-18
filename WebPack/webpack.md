@@ -831,3 +831,13 @@ new MiniCssExtractPlugin({
   }
 ```
 
+## webpack-Provide-Plugin
+
+自动加载模块，不必到处 import 或 require。默认情况下模块中的数据都是私有的，所以想要使用模块必须先导入模块。
+
+```js
+new Webpack.ProgressPlugin({
+    $: 'jquery'
+})
+```
+
