@@ -2,6 +2,8 @@ import avatar from '../images/demo.jpg' // 使用ES6模块化提代NodeJs的requ
 import '../css/index.css'
 import '../font/iconfont.css'
 import { addImg } from './moduleA'
+
+// 同步加载
 // import $ from 'jquery'
 // import '@babel/polyfill'
 // import less from './css/less.less'
@@ -23,6 +25,7 @@ addImg()
 //   const oDiv = $('<div>I am Div</div>')
 //   return oDiv
 // }
+/* 异步加载 */
 function getComponent () {
   return import(/* webpackPrefetch: true *//* webpackChunkName: "jquery" */'jquery').then(({ default: $ }) => {
     return $('<div>i am Div</div>')
@@ -38,6 +41,7 @@ document.getElementById('btn').onclick = function () {
 //   height: '444px',
 //   border: '2px solid #456'
 // })
+
 // 字体图标
 const icon = document.createElement('h1')
 icon.innerHTML = '<h1 class="iconfont icon-hanbao-01" style="font-size: 100px;"></h1>'
