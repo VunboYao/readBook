@@ -2,7 +2,7 @@ import avatar from '../images/demo.jpg' // 使用ES6模块化提代NodeJs的requ
 import '../css/index.css'
 import '../font/iconfont.css'
 import { addImg } from './moduleA'
-
+import 'bootstrap'
 // 同步加载
 // import $ from 'jquery'
 // import '@babel/polyfill'
@@ -72,4 +72,3 @@ $('.demo-box').css({
   height: '200px',
   border: '4px solid #ddd'
 })
-console.warn(this, 'this')

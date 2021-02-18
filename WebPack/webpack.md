@@ -841,3 +841,20 @@ new Webpack.ProvidePlugin({
 })
 ```
 
+## resolve配置，解析文件
+
+```js
+// 配置模块如何解析
+  resolve: {
+    /* alias: {
+      // 创建 import 或 require 的别名，来确保模块引入变得简单
+      bootStrap: 'bootstrap/dist/css/bootstrap.css'
+    }, */
+    // 指定模块入口的查找顺序
+    // mainFields: ['style', 'main'],
+    // 指定导入模块查找顺序
+    extensions: ['.css', '.js']
+  }
+
+// modules:告诉 webpack 解析模块时应该搜索的目录
+```
