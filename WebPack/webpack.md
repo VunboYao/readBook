@@ -782,7 +782,7 @@ new MiniCssExtractPlugin({
 })
 ```
 
-## SplitChunksPlugin
+## SplitChunksPlugin代码分割
 
 ```js
   // 告诉webpack启动代码分割
@@ -831,12 +831,12 @@ new MiniCssExtractPlugin({
   }
 ```
 
-## webpack-Provide-Plugin
+## webpack-Provide-Plugin空闲预加载
 
 自动加载模块，不必到处 import 或 require。默认情况下模块中的数据都是私有的，所以想要使用模块必须先导入模块。
 
 ```js
-new Webpack.ProgressPlugin({
+new Webpack.ProvidePlugin({
     $: 'jquery'
 })
 ```

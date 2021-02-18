@@ -9,13 +9,13 @@ module.exports = {
   // 告诉webpack启动代码分割
   optimization: {
     splitChunks: {
-      chunks: 'async', // 对哪些代码进行分割 async（只分割异步加载模块）、all(所有导入模块)
+      chunks: 'all', // 对哪些代码进行分割 async（只分割异步加载模块）、all(所有导入模块)
       minSize: 30000, // 表示被分割的代码体积至少有多大才可以分割（单位字节）
       maxSize: 0,
       minChunks: 1, // 表示至少被引用多少次才可以分割，默认1
       maxAsyncRequests: 5, // 异步加载并发最大请求数
       maxInitialRequests: 3, // 最大初始化请求数
-      automaticNameDelimiter: '+', // 指定被分割的文件名称的连接符
+      automaticNameDelimiter: '~', // 指定被分割的文件名称的连接符
       name: true, // 拆分出来的名字使用0/1/2，还是指定名称
       /*
       * 缓存组：将当前文件中导入的所有模块都缓存起来统一处理
@@ -68,6 +68,15 @@ module.exports = {
           fix: false // 打包时自动修复
         }
       },
+      // imports-loader处理全局导入
+      /* {
+        test: /\.js$/,
+        exclude: /node_modules/, // 排除文件
+        loader: 'imports-loader?$=jquery,this=>window', // 在JS中用到了$就去自动加载jQuery
+         options:{
+          imports: 'avatar'
+         }
+      }, */
       // 图片解析loader
       {
         test: /\.(png|jpg|gif)$/,
@@ -197,12 +206,6 @@ module.exports = {
           }
         }
       },
-      // imports-loader处理全局导入
-      {
-        test: /\.js$/,
-        exclude: /node_modules/, // 排除文件
-        loader: 'imports-loader?$=jquery' // 在JS中用到了$就去自动加载jQuery
-      },
       // 解析html中的图片
       {
         test: /\.(htm|html)$/i,
@@ -232,7 +235,7 @@ module.exports = {
       filename: 'css/[name].[contenthash:8].css'
     }),
     // 全局导入
-    new Webpack.ProgressPlugin({
+    new Webpack.ProvidePlugin({
       $: 'jquery'
     })
   ]
