@@ -701,9 +701,133 @@ const glob = require('glob-all')
 // 提取使用的CSS
 new PurifyCSSPlugin({
     paths: glob.sync([
+     		// 告诉需要过滤哪些文件
         path.join(__dirname, 'src/*.html'),
         path.join(__dirname, 'src/js/*.js')
     ])
 })
+```
+
+## 代码分割(code-splitting)
+
+新增配置
+
+```js
+// 告诉webpack启动代码分割
+optimization: {
+  splitChunks: {
+    chunks: 'all'
+  }
+}
+```
+
+## 异步加载模块
+
+```js
+function getComponent () {
+  return import('jquery').then(({ default: $ }) => {
+    const oDiv = $('<div>i am Div</div>')
+    return oDiv
+  })
+}
+document.getElementById('btn').onclick = function () {
+  getComponent().then(res => {
+    document.body.appendChild(res[0])
+  })
+}
+```
+
+## 异步模块预加载prefetch
+
+- prefetch(预取)：将来某些导航下可能需要的资源
+- preload(预加载)：当前导航下可能需要资源
+
+```js
+// 预加载jquery, 同时打包名称更改
+import(/* webpackPrefetch: true *//* webpackChunkName: "jquery" */'jquery')
+```
+
+## 浏览器长缓存优化
+
+浏览器会自动缓存网页上的资源，以便于提升下次访问的速度。
+
+**`hash/chunkhash/contenthash`**
+
+- **hash**: 根据每次编译打包的内容生成的哈希值，每次打包都不一样，不能很好利用缓存，不推荐
+- **chunkhash**: 根据不同的入口文件（Entry）进行依赖文件解析、构建对应的chunk，生成对应的哈希值。在生产环境里把一些公共库和程序入口文件区分开，单独打包构建，接着采用chunkhash的方式生成哈希值，那么只要不改动公共库的代码，就可以保证哈希值不受影响。**只支持css和js,不支持img等其他资源**
+- **contenthash（推荐）**：根据某个文件内容生成的哈希值，只要某个文件内容发生改变，该文件的contenthash就会发生变化
+- **开发模式下：热更新插件与长缓存优化存在冲突，需要关闭热更新**
+
+```js
+// JS打包文件名中添加hash值
+output: {
+    filename: 'js/[name].[contenthash:8].js', // 输出文件名
+    path: path.resolve(__dirname, 'dist') // 输出文件路径
+},
+// 图片解析
+{
+    // loader: 'file-loader', // 将文件打包后，并提供路径访问
+    loader: 'url-loader', // 同file-loader，增加了limit限制
+    options: {
+       esModule: false,
+       limit: 1024, // 限制图片大小，小于此值会转为base64
+       // publicPath: 'http://127.0.0.1:2021/img', // 自定义输出文件路径（上线后图片地址更换）。devServer时不设置此路径。设置则只能是./img
+       name: '[name].[contenthash:8].[ext]',
+       outputPath: './img/' // 指定图片打包到特定的目录下
+    }
+},
+// 提取CSS到单独的文件
+new MiniCssExtractPlugin({
+    filename: 'css/[name].[contenthash:8].css'
+})
+```
+
+## SplitChunksPlugin
+
+```js
+  // 告诉webpack启动代码分割
+  optimization: {
+    splitChunks: {
+      chunks: 'async', // 对哪些代码进行分割 async（只分割异步加载模块）、all(所有导入模块)
+      minSize: 30000, // 表示被分割的代码体积至少有多大才可以分割（单位字节）
+      maxSize: 0,
+      minChunks: 1, // 表示至少被引用多少次才可以分割，默认1
+      maxAsyncRequests: 5, // 异步加载并发最大请求数
+      maxInitialRequests: 3, // 最大初始化请求数
+      automaticNameDelimiter: '+', // 指定被分割的文件名称的连接符
+      name: true, // 拆分出来的名字使用0/1/2，还是指定名称
+      /*
+      * 缓存组：将当前文件中导入的所有模块都缓存起来统一处理
+      * */
+      cacheGroups: {
+        /*
+        * 1.默认情况下，如果所有的模块都是从node_modules中导入的，那么会将所有从node_modules中导入的模块打包到同一个文件中
+        * 2.默认情况下，如果所有的模块都不是从node_modules中导入的，那么会将所有不是从node_modules中导入的模块打包到同一个文件中
+        * 3.如果当前文件中导入的模块有的是从node_modules中导入的，有的不是从node_modules中导入的，那么会将所有从node_modules中导入的打包到一个文件，不是从node_modules中导入的打包到一个文件
+        * */
+        /*
+        * vendors: 专门用户处理从node_modules中导入的模块
+        *           将所有从node_modules中导入的模块写入到一个文件中
+        * */
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10 // 优先级加强
+        },
+        /*
+        * default: 专门用于处理从任意位置导入的模块
+        *           会将所有从任意位置导入的模块写入到一个文件中
+        * */
+        /*
+        * 注意点：如果导入的模块同时满足了两个条件。通过priority优先级控制，只写入高优先级
+        *
+        * */
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true // 是否复用分割的代码
+        }
+      }
+    }
+  }
 ```
 

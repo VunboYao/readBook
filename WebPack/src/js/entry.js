@@ -2,6 +2,9 @@ import avatar from '../images/demo.jpg' // 使用ES6模块化提代NodeJs的requ
 import '../css/index.css'
 import '../font/iconfont.css'
 import { addImg } from './moduleA'
+
+// 同步加载
+// import $ from 'jquery'
 // import '@babel/polyfill'
 // import less from './css/less.less'
 // import scss from './css/sass.scss'
@@ -14,6 +17,30 @@ oImg.classList.add('size')
 document.body.appendChild(oImg)
 addImg()
 // addImg.add()
+// document.getElementById('btn').onclick = function () {
+//   const oDiv = getComponent()
+//   document.body.appendChild(oDiv)
+// }
+// function getComponent () {
+//   const oDiv = $('<div>I am Div</div>')
+//   return oDiv
+// }
+/* 异步加载 */
+function getComponent () {
+  return import(/* webpackPrefetch: true *//* webpackChunkName: "jquery" */'jquery').then(({ default: $ }) => {
+    return $('<div>i am Div</div>')
+  })
+}
+document.getElementById('btn').onclick = function () {
+  getComponent().then(res => {
+    document.body.appendChild(res[0])
+  })
+}
+// $('img').css({
+//   width: '444px',
+//   height: '444px',
+//   border: '2px solid #456'
+// })
 
 // 字体图标
 const icon = document.createElement('h1')

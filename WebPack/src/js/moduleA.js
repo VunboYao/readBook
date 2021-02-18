@@ -1,5 +1,6 @@
 import avatar from '../images/demo.jpg'
 import css from '../css/index.css'
+
 function addImg () {
   const oImg = document.createElement('img') // 获取file-loader处理后的文件路径
   oImg.src = avatar
