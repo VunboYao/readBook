@@ -24,9 +24,8 @@ addImg()
 //   return oDiv
 // }
 function getComponent () {
-  return import('jquery').then(({ default: $ }) => {
-    const oDiv = $('<div>i am Div</div>')
-    return oDiv
+  return import(/* webpackPrefetch: true *//* webpackChunkName: "jquery" */'jquery').then(({ default: $ }) => {
+    return $('<div>i am Div</div>')
   })
 }
 document.getElementById('btn').onclick = function () {

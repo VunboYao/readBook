@@ -737,3 +737,15 @@ document.getElementById('btn').onclick = function () {
 }
 ```
 
+## 异步模块预加载prefetch
+
+- prefetch(预取)：将来某些导航下可能需要的资源
+- preload(预加载)：当前导航下可能需要资源
+
+```js
+// 预加载jquery, 同时打包名称更改
+import(/* webpackPrefetch: true *//* webpackChunkName: "jquery" */'jquery')
+```
+
+
+
