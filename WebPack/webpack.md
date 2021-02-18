@@ -747,5 +747,38 @@ document.getElementById('btn').onclick = function () {
 import(/* webpackPrefetch: true *//* webpackChunkName: "jquery" */'jquery')
 ```
 
+## 浏览器长缓存优化
 
+浏览器会自动缓存网页上的资源，以便于提升下次访问的速度。
+
+**`hash/chunkhash/contenthash`**
+
+- **hash**: 根据每次编译打包的内容生成的哈希值，每次打包都不一样，不能很好利用缓存，不推荐
+- **chunkhash**: 根据不同的入口文件（Entry）进行依赖文件解析、构建对应的chunk，生成对应的哈希值。在生产环境里把一些公共库和程序入口文件区分开，单独打包构建，接着采用chunkhash的方式生成哈希值，那么只要不改动公共库的代码，就可以保证哈希值不受影响。**只支持css和js,不支持img等其他资源**
+- **contenthash（推荐）**：根据某个文件内容生成的哈希值，只要某个文件内容发生改变，该文件的contenthash就会发生变化
+- **开发模式下：热更新插件与长缓存优化存在冲突，需要关闭热更新**
+
+```js
+// JS打包文件名中添加hash值
+output: {
+    filename: 'js/[name].[contenthash:8].js', // 输出文件名
+    path: path.resolve(__dirname, 'dist') // 输出文件路径
+},
+// 图片解析
+{
+    // loader: 'file-loader', // 将文件打包后，并提供路径访问
+    loader: 'url-loader', // 同file-loader，增加了limit限制
+    options: {
+       esModule: false,
+       limit: 1024, // 限制图片大小，小于此值会转为base64
+       // publicPath: 'http://127.0.0.1:2021/img', // 自定义输出文件路径（上线后图片地址更换）。devServer时不设置此路径。设置则只能是./img
+       name: '[name].[contenthash:8].[ext]',
+       outputPath: './img/' // 指定图片打包到特定的目录下
+    }
+},
+// 提取CSS到单独的文件
+new MiniCssExtractPlugin({
+    filename: 'css/[name].[contenthash:8].css'
+})
+```
 

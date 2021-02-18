@@ -13,7 +13,7 @@ module.exports = {
   },
   entry: './src/js/entry.js', // 入口文件
   output: {
-    filename: 'yybWebpack.js', // 输出文件名
+    filename: 'js/[name].[contenthash:8].js', // 输出文件名
     path: path.resolve(__dirname, 'dist') // 输出文件路径
   },
   module: {
@@ -40,7 +40,7 @@ module.exports = {
               esModule: false,
               limit: 1024, // 限制图片大小，小于此值会转为base64
               // publicPath: 'http://127.0.0.1:2021/img', // 自定义输出文件路径（上线后图片地址更换）。devServer时不设置此路径。设置则只能是./img
-              name: '[name].[ext]',
+              name: '[name].[contenthash:8].[ext]',
               outputPath: './img/' // 指定图片打包到特定的目录下
             }
           },
@@ -184,7 +184,7 @@ module.exports = {
     ]),
     // CSS提取到单独的文件
     new MiniCssExtractPlugin({
-      filename: 'css/[name].css'
+      filename: 'css/[name].[contenthash:8].css'
     })
   ]
 }
