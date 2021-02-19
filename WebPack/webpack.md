@@ -858,3 +858,65 @@ new Webpack.ProvidePlugin({
 
 // modules:告诉 webpack 解析模块时应该搜索的目录
 ```
+
+## DllPlugin动态链接库
+
+动态链接库，防止重复打包不会发生变化的第三方模块
+
+```js
+// 1.文件中引入了2个库
+import $ from 'jquery'
+import _ from 'lodash'
+
+const $div = $('<div></div>')
+$div.text(_.join(['1', '2', '3'], '+'))
+$('body').append($div)
+
+// 2.新增配置文件webpack.config.dll.js 将两个库打包到一个文件中
+// 并通过DllPlugin生成一个清单文件，未来打包时判断此清单后不再打包相同的文件
+const path = require('path')
+const Webpack = require('webpack')
+module.exports = {
+  mode: 'production',
+  entry: {
+    vendors: ['jquery', 'lodash']
+  },
+  output: {
+    filename: '[name].dll.js',
+    path: path.resolve(__dirname, 'dll'),
+    library: '[name]'
+  },
+  plugins: [
+    /*
+      DllPlugin作用：
+      在打包第三方库的时候生成一个清单文件
+    */
+    new Webpack.DllPlugin({
+      name: '[name]',
+      path: path.resolve(__dirname, 'dll/[name].manifest.json')
+    })
+  ]
+}
+
+// 3.webpack.config.common.js配置
+module.exports = {
+    plugins:［
+    	// 自动生成包的index.html
+        new HtmlWebpackPlugin({
+          minify: {
+            collapseWhitespace: false // 压缩代码
+          },
+          template: './src/index.html'
+        }),
+        // 将需要用到的全局文件自动带入至index.html文件中
+        new AddAssetHtmlPlugin({
+          filepath: path.resolve(__dirname, 'dll/vendors.dll.js')
+        }),
+        // 加载清单，如果已经打包了对应的文件，则不再打包文件
+        new Webpack.DllReferencePlugin({
+          manifest: path.resolve(__dirname, 'dll/vendors.manifest.json')
+        })
+    ］
+}
+```
+
