@@ -8,14 +8,14 @@ const Webpack = require('webpack')
 module.exports = {
   // 配置模块如何解析
   resolve: {
-    alias: {
+    /* alias: {
       // 创建 import 或 require 的别名，来确保模块引入变得简单
       bootStrap: 'bootstrap/dist/css/bootstrap.css'
-    }
+    }, */
     // 指定模块入口的查找顺序
-    // mainFields: ['style', 'main'],
+    mainFields: ['style', 'main']
     // 指定导入模块查找顺序
-    // extensions: ['.css', '.js'],
+    // extensions: ['.css', '.js']
   },
   // 告诉webpack启动代码分割
   optimization: {
@@ -67,6 +67,8 @@ module.exports = {
     path: path.resolve(__dirname, 'dist') // 输出文件路径
   },
   module: {
+    // 忽略解析文件
+    // noParse: /jquery/,
     rules: [
       // eslint编码规范检查
       {
@@ -248,6 +250,8 @@ module.exports = {
     // 全局导入
     new Webpack.ProvidePlugin({
       $: 'jquery'
-    })
+    }),
+    // 在打包moment这个库的时候，将整个locale目录都忽略掉
+    new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
   ]
 }

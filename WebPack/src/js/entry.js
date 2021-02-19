@@ -3,6 +3,14 @@ import '../css/index.css'
 import '../font/iconfont.css'
 import { addImg } from './moduleA'
 import 'bootstrap'
+import moment from 'moment'
+import 'moment/locale/zh-cn'
+
+// IgnorePlugin
+moment.locale('zh-cn')
+const time = moment('20111031', 'YYYYMMDD').fromNow()
+console.error(time)
+
 // 同步加载
 // import $ from 'jquery'
 // import '@babel/polyfill'

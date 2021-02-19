@@ -858,3 +858,20 @@ new Webpack.ProvidePlugin({
 
 // modules:告诉 webpack 解析模块时应该搜索的目录
 ```
+
+## noParse忽略解析文件
+
+防止 webpack 解析那些任何与给定正则表达式相匹配的文件。忽略的文件中**不应该含有** `import`, `require`, `define` 的调用，或任何其他导入机制。忽略大型的 library 可以提高构建性能。
+
+```js
+module.exports = {
+  //...
+  module: {
+    noParse: /jquery|lodash/,
+  }
+}
+```
+
+## IgnorePlugin插件
+
+`IgnorePlugin`是`webpack`的一个内置插件。`IgnorePlugin`用于忽略第三方包指定目录，让指定目录不被打包进去
