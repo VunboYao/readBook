@@ -6,3 +6,6 @@ html,body {
   background: url("../images/bg.jpg");
 }
 
+h2 {
+  color: red;
+}
