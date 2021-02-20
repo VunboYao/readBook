@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const Webpack = require('webpack')
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 const fs = require('fs')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const config = {
   // 配置模块如何解析
@@ -248,6 +249,7 @@ config.plugins = makePlugins(config)
 
 function makePlugins (config) {
   const plugins = [
+    new BundleAnalyzerPlugin(),
     // 清除历史打包文件
     new CleanWebpackPlugin(),
     // 拷贝固定的文件

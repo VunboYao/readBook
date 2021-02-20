@@ -1032,3 +1032,68 @@ module.exports = {
 }
 ```
 
+## 打包多页应用
+
+- 配置动态生成HtmlWebpackPlugin
+
+  ```js
+  config.plugins = makePlugins(config)
+  
+  function makePlugins (config) {
+    const plugins = [
+      // 清除历史打包文件
+      new CleanWebpackPlugin(),
+      // 拷贝固定的文件
+      new CopyWebpackPlugin([
+        {
+          from: './src/doc',
+          to: 'doc'
+        }
+      ]),
+      // CSS提取到单独的文件
+      new MiniCssExtractPlugin({
+        filename: 'css/[name].[hash:8].css'
+      }),
+      // 全局导入
+      new Webpack.ProvidePlugin({
+        $: 'jquery'
+      }),
+      // 在打包moment这个库的时候，将整个locale目录都忽略掉
+      new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    ]
+    /* 动态链接库，动态添加dll中的文件 */
+    const dllPath = path.resolve(__dirname, 'dll')
+    /* 同步读取所有的文件 */
+    const files = fs.readdirSync(dllPath)
+    files.forEach(item => {
+      /* JS结尾的文件，统一自动添加至index.html */
+      if (item.endsWith('.js')) {
+        plugins.push(new AddAssetHtmlPlugin({
+          filepath: path.resolve(__dirname, 'dll', item)
+        }))
+        /* 动态遍历json清单文件 */
+      } else if (item.endsWith('.json')) {
+        plugins.push(new Webpack.DllReferencePlugin({
+          manifest: path.resolve(__dirname, 'dll', item)
+        }))
+      }
+    })
+    // 自动生成包的index.html
+    Object.keys(config.entry).forEach(key => {
+      plugins.push(new HtmlWebpackPlugin({
+        minify: {
+          collapseWhitespace: false // 压缩代码
+        },
+        filename: key + '.html',
+        chunks: [key, 'vendors~' + key]
+      }))
+    })
+    return plugins
+  }
+  module.exports = config
+  ```
+
+  
+
+## weback-bundle-analyzer打包可视化
+
