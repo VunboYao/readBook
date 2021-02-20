@@ -25,7 +25,7 @@ module.exports = {
 	/*
 	* entry: 指定入口需要打包的文件
 	* */
-	entry: './src/js/00-index.ts',
+	entry: './src/js/index.ts',
 	/*
 	* output: 指定打包之后输出的路径和输出的文件名称
 	* */
@@ -42,10 +42,16 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js']
   },
+	watch: true,
+	watchOptions: {
+		ignored: /node_modules/,
+		aggregateTimeout: 300,
+		poll: 1000
+	},
 	module: {
     rules: [
       {
-        test: '/\.tsx?$/',
+        test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/
       }
@@ -61,6 +67,6 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin(),
 		// 热更新插件
-		new Webpack.HotModuleReplacementPlugin()
+		// new Webpack.HotModuleReplacementPlugin()
 	]
 }
