@@ -4,18 +4,19 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const Webpack = require('webpack')
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 
 module.exports = {
   // 配置模块如何解析
   resolve: {
-    /* alias: {
-      // 创建 import 或 require 的别名，来确保模块引入变得简单
-      bootStrap: 'bootstrap/dist/css/bootstrap.css'
-    }, */
+    // alias: {
+    //   // 创建 import 或 require 的别名，来确保模块引入变得简单
+    //   bootStrap: 'bootstrap/dist/css/bootstrap.css'
+    // }
     // 指定模块入口的查找顺序
     mainFields: ['style', 'main']
     // 指定导入模块查找顺序
-    // extensions: ['.css', '.js']
+    // extensions: ['.css', '.js'],
   },
   // 告诉webpack启动代码分割
   optimization: {
@@ -63,7 +64,7 @@ module.exports = {
   },
   entry: './src/js/entry.js', // 入口文件
   output: {
-    filename: 'js/[name].[contenthash:8].js', // 输出文件名
+    filename: 'js/[name].[hash:8].js', // 输出文件名
     path: path.resolve(__dirname, 'dist') // 输出文件路径
   },
   module: {
@@ -101,7 +102,7 @@ module.exports = {
               esModule: false,
               limit: 1024, // 限制图片大小，小于此值会转为base64
               // publicPath: 'http://127.0.0.1:2021/img', // 自定义输出文件路径（上线后图片地址更换）。devServer时不设置此路径。设置则只能是./img
-              name: '[name].[contenthash:8].[ext]',
+              name: '[name].[hash:8].[ext]',
               outputPath: './img/' // 指定图片打包到特定的目录下
             }
           },
@@ -234,6 +235,14 @@ module.exports = {
       },
       template: './src/index.html'
     }),
+    // 将需要用到的全局文件自动带入至index.html文件中
+    new AddAssetHtmlPlugin({
+      filepath: path.resolve(__dirname, 'dll/vendors.dll.js')
+    }),
+    // 加载清单，如果已经打包了对应的文件，则不再打包文件
+    new Webpack.DllReferencePlugin({
+      manifest: path.resolve(__dirname, 'dll/vendors.manifest.json')
+    }),
     // 清除历史打包文件
     new CleanWebpackPlugin(),
     // 拷贝固定的文件
@@ -245,7 +254,7 @@ module.exports = {
     ]),
     // CSS提取到单独的文件
     new MiniCssExtractPlugin({
-      filename: 'css/[name].[contenthash:8].css'
+      filename: 'css/[name].[hash:8].css'
     }),
     // 全局导入
     new Webpack.ProvidePlugin({
