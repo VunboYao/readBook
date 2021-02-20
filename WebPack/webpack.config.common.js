@@ -5,6 +5,54 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const Webpack = require('webpack')
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
+const fs = require('fs')
+
+const plugins = [
+  // 自动生成包的index.html
+  new HtmlWebpackPlugin({
+    minify: {
+      collapseWhitespace: false // 压缩代码
+    },
+    template: './src/index.html'
+  }),
+  // 清除历史打包文件
+  new CleanWebpackPlugin(),
+  // 拷贝固定的文件
+  new CopyWebpackPlugin([
+    {
+      from: './src/doc',
+      to: 'doc'
+    }
+  ]),
+  // CSS提取到单独的文件
+  new MiniCssExtractPlugin({
+    filename: 'css/[name].[hash:8].css'
+  }),
+  // 全局导入
+  new Webpack.ProvidePlugin({
+    $: 'jquery'
+  }),
+  // 在打包moment这个库的时候，将整个locale目录都忽略掉
+  new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+]
+
+/* 动态链接库，动态添加dll中的文件 */
+const dllPath = path.resolve(__dirname, 'dll')
+/* 同步读取所有的文件 */
+const files = fs.readdirSync(dllPath)
+files.forEach(item => {
+  /* JS结尾的文件，统一自动添加至index.html */
+  if (item.endsWith('.js')) {
+    plugins.push(new AddAssetHtmlPlugin({
+      filepath: path.resolve(__dirname, 'dll', item)
+    }))
+    /* 动态遍历json清单文件 */
+  } else if (item.endsWith('.json')) {
+    plugins.push(new Webpack.DllReferencePlugin({
+      manifest: path.resolve(__dirname, 'dll', item)
+    }))
+  }
+})
 
 module.exports = {
   // 配置模块如何解析
@@ -71,6 +119,18 @@ module.exports = {
     // 忽略解析文件
     // noParse: /jquery/,
     rules: [
+      {
+        test: /\.js$/,
+        include: path.resolve('src'),
+        use: [
+          {
+            loader: 'thread-loader',
+            options: {
+              workers: 2
+            }
+          }
+        ]
+      },
       // eslint编码规范检查
       {
         test: /\.js$/,
@@ -227,40 +287,5 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    // 自动生成包的index.html
-    new HtmlWebpackPlugin({
-      minify: {
-        collapseWhitespace: false // 压缩代码
-      },
-      template: './src/index.html'
-    }),
-    // 将需要用到的全局文件自动带入至index.html文件中
-    new AddAssetHtmlPlugin({
-      filepath: path.resolve(__dirname, 'dll/vendors.dll.js')
-    }),
-    // 加载清单，如果已经打包了对应的文件，则不再打包文件
-    new Webpack.DllReferencePlugin({
-      manifest: path.resolve(__dirname, 'dll/vendors.manifest.json')
-    }),
-    // 清除历史打包文件
-    new CleanWebpackPlugin(),
-    // 拷贝固定的文件
-    new CopyWebpackPlugin([
-      {
-        from: './src/doc',
-        to: 'doc'
-      }
-    ]),
-    // CSS提取到单独的文件
-    new MiniCssExtractPlugin({
-      filename: 'css/[name].[hash:8].css'
-    }),
-    // 全局导入
-    new Webpack.ProvidePlugin({
-      $: 'jquery'
-    }),
-    // 在打包moment这个库的时候，将整个locale目录都忽略掉
-    new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
-  ]
+  plugins: plugins
 }

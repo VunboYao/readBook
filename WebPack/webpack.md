@@ -883,9 +883,19 @@ new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
 
 
 
-## DllPlugin动态链接库
+## DllPlugin动态链接库（1）
 
 动态链接库，防止重复打包不会发生变化的第三方模块
+
+- 新建一个配置文件，专门用于打包不会变化的第三方库
+- 在打包项目的配置文件中，通过`add-asset-html-webpack-plugin`将提前打包好的库插入到html中
+- 在专门打包第三方的配置文件中添加生成清单配置
+- 在打包项目的配置文件中，告诉webpack打包第三方库的时候先从哪个清单文件中查询，如果清单包含当前用到的第三方库就不打包了。因为已经在html中手动引入
+
+**优势**
+
+- 不用手动插入
+- 所有第三方库只会被打包一次
 
 ```js
 // 1.文件中引入了2个库
@@ -941,6 +951,84 @@ module.exports = {
           manifest: path.resolve(__dirname, 'dll/vendors.manifest.json')
         })
     ］
+}
+```
+
+## DllPlugin动态链接库（2）
+
+- 当存在多个第三库需要打包的不同的文件时，入口设置不同的文件
+- 将`plugins`模块单独封装，动态插入插件
+- 遍历所有的`dll`文件，动态添加至`html`与清单查询
+
+```js
+// 1.动态封装plugins模块
+const plugins = [
+  // 自动生成包的index.html
+  new HtmlWebpackPlugin({
+    minify: {
+      collapseWhitespace: false // 压缩代码
+    },
+    template: './src/index.html'
+  }),
+  // 清除历史打包文件
+  new CleanWebpackPlugin(),
+  // 拷贝固定的文件
+  new CopyWebpackPlugin([
+    {
+      from: './src/doc',
+      to: 'doc'
+    }
+  ]),
+  // CSS提取到单独的文件
+  new MiniCssExtractPlugin({
+    filename: 'css/[name].[hash:8].css'
+  }),
+  // 全局导入
+  new Webpack.ProvidePlugin({
+    $: 'jquery'
+  }),
+  // 在打包moment这个库的时候，将整个locale目录都忽略掉
+  new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+]
+
+// 2.动态提取文件并插入插件
+/* 动态链接库，动态添加dll中的文件 */
+const dllPath = path.resolve(__dirname, 'dll')
+/* 同步读取所有的文件 */
+const files = fs.readdirSync(dllPath)
+files.forEach(item => {
+  /* JS结尾的文件，统一自动添加至index.html */
+  if (item.endsWith('.js')) {
+    plugins.push(new AddAssetHtmlPlugin({
+      filepath: path.resolve(__dirname, 'dll', item)
+    }))
+    /* 动态遍历json清单文件 */
+  } else if (item.endsWith('.json')) {
+    plugins.push(new Webpack.DllReferencePlugin({
+      manifest: path.resolve(__dirname, 'dll', item)
+    }))
+  }
+})
+```
+
+## thread-loader提升打包性能
+
+把这个 loader 放置在其他 loader 之前， 放置在这个 loader 之后的 loader 就会在一个单独的 worker 池(worker pool)中运行
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include: path.resolve("src"),
+        use: [
+          "thread-loader",
+          // your expensive loader (e.g babel-loader)
+        ]
+      }
+    ]
+  }
 }
 ```
 
