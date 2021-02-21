@@ -71,11 +71,11 @@
 ## 指令
 
 - `v-once`，一次性的插值，内容不会再改变
+- `v-cloak`，配合`[v-cloak]:{dispaly: none}`默认先隐藏未渲染的界面，等到生成HTML渲染之后再重新显示
 - `v-html`, 输出html
 - `v-bind`, 用于 HTML 特性， 简写**`:href`**
 - `v-on`， 用户监听 DOM 事件， 简写**`@click`**
 - `v-if`,  指令的表达式返回 truthy 值时被渲染， `v-else-if`, `v-else`
-
 - `v-show`， 根据条件渲染， 简单的切换 CSS 属性 `display`
   - **`v-show`不支持`template`元素， 也不支持`v-else`**
 - `v-for`， 列表渲染， **优先级高于`v-if`**
