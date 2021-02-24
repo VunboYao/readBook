@@ -39,12 +39,12 @@
 ## 优先级C：推荐
 
 - 组件/事例的选项的顺序
-  - el 
+  - el
   - name/parent
-  - functional 
+  - functional
   - delimiters/comments
   - components/directives/filters
-  - extends/mixins 
+  - extends/mixins
   - inheritAttrs/model/props/propsData
   - watch
   - 生命周期
@@ -64,7 +64,7 @@
   9. 事件， `v-on / @`
   10. 内容, `v-html`, `v-text`
 
-  
+
 
 # 基础语法
 
@@ -419,7 +419,7 @@ new Vue({
 
 ### prop向子组件传递数据
 
-```vue	
+```vue
 Vue.component('blog-post', {
   props: ['title'],
   template: '<h3>{{ title }}</h3>'
@@ -552,9 +552,9 @@ Vue.component('custom-input', {
       >
     `
   })
-  
+
   <base-checkbox v-model="lovingVue"></base-checkbox>
-  
+
   这里的 lovingVue 的值将会传入这个名为 checked 的 prop。同时当 <base-checkbox> 触发一个 change 事件并附带一个新的值的时候，这个 lovingVue 的属性将会被更新。
   ```
 
@@ -656,7 +656,7 @@ this.$emit('update:title', newTitle)
 
 现在 `<template>` 元素中的所有内容都将会被传入相应的插槽。任何没有被包裹在带有 `v-slot` 的 `<template>` 中的内容都会被视为默认插槽的内容。
 
-注意 **v-slot 只能添加在一个 `<template> `上** 
+注意 **v-slot 只能添加在一个 `<template> `上**
 
 ### 作用域插槽
 
@@ -796,7 +796,7 @@ inject: ['getMap']
 
   ```html
   <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
-  
+
   <div id="example-3">
     <button @click="show = !show">
       Toggle render
@@ -1026,11 +1026,11 @@ createElement(
     // {String | Object | Function}
     // 一个 HTML 标签名, 组件选项对象, 或者 resolve 了上述任何一种的一个 async 函数.必填项
     'div',
-    
+
     // {Object}
     // 一个与模板中属性对应的数据对象.可选
     {},
-    
+
     // {String | Array}
     // 子级虚拟节点(VNodes), 由 `createElement()` 构建而成, 也可以使用字符串来生成"文本虚拟节点". 可选
     [
@@ -1257,4 +1257,3 @@ vue create --help // 帮助命令
 ```
 vue ui
 ```
-

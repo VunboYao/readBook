@@ -113,3 +113,24 @@
 # 解决 vue 动态设置 img 的 src 不生效问题
 
 - 动态添加 src 被当作静态资源处理，没有进行编译， 需要加上 require
+
+# MVVM设计模式
+
+- M:Model          数据模型（保存数据，处理数据业务逻辑）
+- V: View             视图（展示数据，与用户交互）
+- VM：VIew Model 数据模型和视图的桥梁
+- 特点：数据的双向传递
+  - M => VM => V
+  - V => VM => M
+
+- Vue中的MVVM划分
+  - Vue其实是基于MVVM设计模式
+  - 被控制的区域是： View
+  - Vue实例对象： View Model
+  - 实例对象中的data: Model
+
+- Vue中的单向传递
+  - 把 ”数据“（Model）交给 ”Vue实例对象“（View Model）， Vue实例对象将数据交给”界面“（View）
+
+- Vue中的双向传递：v-model
+
