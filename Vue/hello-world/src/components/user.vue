@@ -5,6 +5,9 @@
     <el-input type="text" :self-data="demo2" v-model="demo2" />
     <el-button @click="PUSH">PUSH</el-button>
     <div class="text">{{tableData}}</div>
+    <li v-for="(item,index) in tableData" :key="index">{{item}} - {{index}}</li>
+    <input type="text" :value="demo">
+    {{demo}}
   </div>
 </template>
 
@@ -15,11 +18,11 @@
 			return {
 				demo: '123',
 				demo2: '123',
-				tableData: [{
+				tableData: {
 					date: '2016-05-02',
 					name: '王小虎',
 					address: '上海市普陀区金沙江路 1518 弄'
-				}]
+				}
       }
 		},
     mounted() {
