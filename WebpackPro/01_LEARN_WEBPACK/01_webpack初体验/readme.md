@@ -1,0 +1,6 @@
+- webpack-cli不是必须安装的，webpack执行时依赖webpack-cli
+- type="module", ES6模块化
+- webpack默认解析src/index.js文件
+- 浏览器无法识别commonJS, webpack可执行代码打包转换
+- 开发中，使用本地webpack
+- 局部webpack配置，package.json中配置script脚本，优先选择本地的node_modules，进行命令执行
