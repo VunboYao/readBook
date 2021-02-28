@@ -1,8 +1,8 @@
-const dateFormate = () => {
+const dateFormat = () => {
   return '2020-12-12'
 }
 
-const priceFormate = () => {
+const priceFormat = () => {
   return '100.00'
 }
 
