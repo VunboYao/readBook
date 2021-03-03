@@ -1,3 +1,7 @@
 .content {
-  color: red;
+  color: #12345678;
+}
+
+.content {
+  user-select: none;
 }

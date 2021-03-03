@@ -59,8 +59,9 @@
         {
           test: /\.css$/i,
           // 使用方式一： 单例使用，二的简写
-          loader: 'css-loader'
-            
+          loader: 'css-loader',
+        use: 'css-loader'
+  
           // 使用方式二
          	use: [
             {
@@ -73,7 +74,7 @@
         }
       ]
     }
-  }
+}
   
   ```
 
@@ -92,7 +93,7 @@
 
 ## 浏览器兼容性
 
-通过`browserslist`工具，共享目标浏览器合Node.js版本的设置
+通过`browserslist`工具，共享目标浏览器和Node.js版本的设置
 
 - 如何配置`browserslist`呢？两种方案：
   - 方案一：在`package.json`中配置；
@@ -115,6 +116,3 @@
   not dead
   > 0.2%
   ```
-
-  
-

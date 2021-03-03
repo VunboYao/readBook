@@ -13,7 +13,7 @@ module.exports = {
         test: /\.css$/i,
         // 使用方式一： 单例使用，二的简写
         // loader: 'css-loader'
-
+        // use: 'css-loader'
         // 使用方式二
        /*  use: [
           {
@@ -23,7 +23,11 @@ module.exports = {
         ] */
 
         // 使用方式三： 二的简写
-        use: ['style-loader', 'css-loader']
+        use: [
+          'style-loader',
+          'css-loader',
+          'postcss-loader'
+        ]
       },
       {
         test: /\.less$/i,
