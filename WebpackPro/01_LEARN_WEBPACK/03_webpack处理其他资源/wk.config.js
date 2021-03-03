@@ -35,6 +35,18 @@ module.exports = {
           { loader: 'postcss-loader' },
           { loader: 'less-loader' }
         ]
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        use: {
+          // loader: 'file-loader',
+          loader: 'url-loader',
+          options: {
+            name: "img/[name].[hash:8].[ext]",
+            // outputPath: 'img',
+            limit: 10 * 1024
+          }
+        }
       }
     ]
   }

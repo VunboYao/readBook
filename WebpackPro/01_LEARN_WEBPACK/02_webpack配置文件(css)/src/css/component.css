@@ -1,3 +1,5 @@
+@import "./test";
+
 .content {
-  color: red;
+  color: #12345678;
 }
