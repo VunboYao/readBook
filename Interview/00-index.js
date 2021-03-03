@@ -149,10 +149,37 @@
 	newArr[1] = 100
 	console.log(arr) // [ 1, 2, 3 ]
 	console.log(newArr) // [ 1, 100, 3 ]*/
-	let arr = [1,2,{val:  4}]
+	/*let arr = [1,2,{val:  4}]
 	let newArr = arr.slice()
 	newArr[2].val = 100
-	console.log(arr) // [ 1, 2, { val: 100 } ]
+	console.log(arr) // [ 1, 2, { val: 100 } ]*/
+
+	// TODO:手工实现一个浅拷贝
+	const shallowClone = target => {
+		// 判断是否是一个对象
+		if (typeof target === 'object' && target !== null) {
+			const cloneTarget = Array.isArray(target) ? [] : {}
+			// 循环遍历对象中所有的key值
+			for (let prop in target) {
+				// 判断是否对象key值（非继承）为自身所有
+				if (target.hasOwnProperty(prop)) {
+					cloneTarget[prop] = target[prop]
+				}
+			}
+			return cloneTarget
+		} else {
+			return target
+		}
+	}
+
+	function Person() {
+		this.age = 18
+	}
+	Person.prototype.name = 'yyb'
+	const a = new Person()
+	a.score = 100
+	const b = shallowClone(a)
+	console.log(b)
 }
 
 
