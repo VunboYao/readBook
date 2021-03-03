@@ -1,7 +1,5 @@
-.content {
-  color: #12345678;
-}
+@import "./test";
 
 .content {
-  user-select: none;
+  color: #12345678;
 }
