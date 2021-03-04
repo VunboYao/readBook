@@ -1,0 +1,16 @@
+@import "./test";
+@import '../font/iconfont';
+
+.content {
+  color: #27041b78;
+}
+
+.bg-image {
+  background-image: url('../img/demo.png');
+  background-size: contain;
+}
+
+
+.car-image {
+  width: 400px;
+}
