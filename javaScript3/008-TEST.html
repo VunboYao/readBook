@@ -6,24 +6,95 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <!--<style>
+    * {
+      box-sizing: border-box;
+    }
+  .box {
+    width: 800px;
+    height: 500px;
+    border: 1px solid sienna;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    align-items: baseline;
+  }
+  .item {
+    width: calc(19px * var(&#45;&#45;var));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(15px * var(&#45;&#45;var));
+    font-size: calc(12px * var(&#45;&#45;var));
+    border: 1px dashed darkblue;
+  }
+  .item:first-child {
+    align-self: center;
+  }
+  </style>-->
   <style>
-    body {
-      height: 100vh;
-      width: 100vh;
+    * {
       margin: 0;
       padding: 0;
     }
+    .box {
+      display: flex;
+      width: 150px;
+      height: 100px;
+      flex-wrap: nowrap;
+      background: #011609;
+    }
+    .box div {
+      word-break: break-all;
+    }
+    .x-1 {
+      /*flex: 0.5;*/
+      /*flex-grow: 0.5;*/
+      /*width: 100px;*/
+      flex: 3;
+      background: rgba(236,28,28,.5);
+    }
+    .x-2 {
+      /*flex: 0.5;*/
+      /*flex-grow: 0.5;*/
+      /*width: 100px;*/
+      flex: 3;
+      background: rgba(171,58,58,.5);
+    }
+    .x-3 {
+      /*flex: 1.5;*/
+      /*flex-grow: 1.5;*/
+      flex: 3;
+      background: rgba(122,72,72,.5);
+    }
   </style>
 </head>
-<body>
-<div>
-  <a href="http://www.baidu.com/">BaiDu</a>
+<!--<body class="container">
+<div class="box">
+  <div class="item" style="&#45;&#45;var: 1">1</div>
+  <div class="item" style="&#45;&#45;var: 3">2</div>
+  <div class="item" style="&#45;&#45;var: 6">3</div>
+  <div class="item" style="&#45;&#45;var: 12">4</div>
+  <div class="item" style="&#45;&#45;var: 2">5</div>
+  <div class="item" style="&#45;&#45;var: 9">6</div>
+  <div class="item" style="&#45;&#45;var: 3">7</div>
+  <div class="item" style="&#45;&#45;var: 3">8</div>
+  <div class="item" style="&#45;&#45;var: 6">9</div>
+  <div class="item" style="&#45;&#45;var: 1">10</div>
+  <div class="item" style="&#45;&#45;var: 2">11</div>
+  <div class="item" style="&#45;&#45;var: 9">12</div>
+  <div class="item" style="&#45;&#45;var: 3">13</div>
+  <div class="item" style="&#45;&#45;var: 12">14</div>
+  <div class="item" style="&#45;&#45;var: 29">15</div>
 </div>
 <script>
-
-  document.body.addEventListener('keydown', (e) => {
-    console.log(e.key);
-  })
+	console.log('1'.charCodeAt().toString(16))
 </script>
-</body>
+</body>-->
+<div class="box">
+  <div class="x-1">1222222222222222222
+  </div>
+  <div class="x-2">12</div>
+  <div class="x-3">12</div>
+</div>
 </html>
