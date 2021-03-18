@@ -1,6 +1,6 @@
 const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const HtmlWebapckPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { DefinePlugin } = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
@@ -75,7 +75,7 @@ module.exports = {
     /* 清除历史打包文件 */
     new CleanWebpackPlugin(),
     /* 利用特定的模板生成HTML文件 */
-    new HtmlWebapckPlugin({
+    new HtmlWebpackPlugin({
       title: 'VunboYao',
       template: path.resolve(__dirname, 'public/index.html')
     }),
