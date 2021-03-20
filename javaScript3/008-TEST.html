@@ -97,4 +97,16 @@
   <div class="x-2">12</div>
   <div class="x-3">12</div>
 </div>
+<script>
+  const demo = {
+    'add': function () {
+      console.log('1223');
+      return add;
+    }
+  }
+  const add = () => {
+    console.log('123');
+  }
+  demo.add()()
+</script>
 </html>
