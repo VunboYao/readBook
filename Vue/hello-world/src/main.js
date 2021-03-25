@@ -11,3 +11,21 @@ new Vue({
   router,
   render: h => h(App),
 }).$mount('#app')
+
+
+router.beforeEach((to, from, next) => {
+  console.log('to :>> ', to);
+  console.log('from :>> ', from);
+  next()
+})
+
+router.beforeResolve((to, from, next) => {
+  console.log('to :>> beforeResolve', to);
+  console.log('from :>> beforeResolve ', from);
+  next()
+})
+
+router.afterEach((to, from) => {
+  console.log('to :>> afterEach', to);
+  console.log('from :>> afterEach', from);
+})
