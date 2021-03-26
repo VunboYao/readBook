@@ -15,7 +15,9 @@
     </transition-group>
   </div>
   <div v-else>
-    <router-view></router-view>
+    <transition name="fade" mode="out-in">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -35,11 +37,6 @@ export default {
     };
   },
   watch: {},
-  beforeRouteUpdate(to, from, next) {
-    console.log("to :>> ", to);
-    console.log("from :>> ", from);
-    next();
-  },
   methods: {
     push() {
       if (this.name && this.age) {
@@ -65,5 +62,17 @@ export default {
 .v-enter,
 .v-leave-to {
   opacity: 0;
+}
+.fade-enter {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: all .5s;
 }
 </style>
