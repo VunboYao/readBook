@@ -4,18 +4,15 @@
 
 <script>
 export default {
-  name: 'subUser',
-  beforeRouteLeave (to, from, next) {
-  const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
-  if (answer) {
-    next()
-  } else {
-    next(false)
-  }
-}
+  name: 'subUser'
 }
 </script>
 
-<style>
-
+<style scoped>
+div {
+  color: #fff;
+  width: 100%;
+  height: 100%;
+  background: rgb(6, 47, 124);
+}
 </style>

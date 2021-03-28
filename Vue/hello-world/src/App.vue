@@ -1,29 +1,21 @@
 <template>
   <div id="app">
-    <div class="options">
-      <el-button type="primary">
-        <router-link :to="{path: '/user/foobar/foo' }">FOO</router-link>
-      </el-button>
-      <el-button type="warning">
-        <router-link :to="{path: '/user/foobar/bar' }">BAR</router-link>
-      </el-button>
-      <el-button type="error">
-        <router-link to="/error">ERROR</router-link>
-      </el-button>
-       <el-button type="error">
-        <router-link to="/">Root</router-link>
-      </el-button>
-       <el-button type="error">
-        <router-link to="/user/subUser">subUser</router-link>
-      </el-button>
-      <el-button type="error">
-        <router-link to="/redirect">redirect</router-link>
-      </el-button>
+    <div class="box">
+      <router-view class="sidebar" name="sidebar" />
+      <router-view class="main" name="main" />
     </div>
-   <div class="box">
-    <router-view class="sidebar" name="sidebar" />
-    <router-view class="main" name="main"/>
-   </div>
+    <div class="options">
+      <router-link class="link" :to="{ path: '/user/foobar/foo#100' }"
+        >FOO</router-link
+      >
+      <router-link class="link" :to="{ path: '/user/foobar/bar' }"
+        >BAR</router-link
+      >
+      <router-link class="link" to="/error">ERROR</router-link>
+      <router-link class="link" to="/">Root</router-link>
+      <router-link class="link" to="/user/subUser">subUser</router-link>
+      <router-link class="link" to="/redirect">redirect</router-link>
+    </div>
   </div>
 </template>
 
@@ -31,9 +23,9 @@
 export default {
   name: "App",
   beforeRouteUpdate(to, from, next) {
-    console.log('to :>> ', to);
-    console.log('from :>> ', from);
-    next()
+    console.log("to :>> ", to);
+    console.log("from :>> ", from);
+    next();
   },
   methods: {},
 };
@@ -65,7 +57,21 @@ export default {
 }
 .main {
   width: 60vw;
-  height: 60vh;
+  height: 200vh;
   background: steelblue;
+}
+.el-button span {
+  display: flex;
+}
+.link {
+  padding: 8px 14px;
+  border-radius: 4px;
+  background: coral;
+  text-decoration: none;
+  margin: 0 20px;
+}
+.router-link-active {
+  color: aliceblue;
+  background: aqua;
 }
 </style>

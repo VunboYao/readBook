@@ -48,5 +48,11 @@ export default new VueRouter({
         main: E404
       }
     }
-  ]
+  ],
+  scrollBehavior() {
+    return {
+      x: 0, y: 0,
+      behavior: 'smooth',
+    }
+  }
 })
