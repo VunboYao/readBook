@@ -1,7 +1,11 @@
-const msg = 'Hello Webpack'
+// import 'core-js/stable'
+// import 'regenerator-runtime/runtime'
+const msg = "Hello Webpack";
 
 const Fun = () => {
   console.log(msg);
-}
+};
 
-Fun()
+const p = new Promise((resolve, reject) => {});
+
+Fun();
