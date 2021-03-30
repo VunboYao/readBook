@@ -3,7 +3,12 @@ const { merge } = require('webpack-merge')
 const commonConfig = require('./webpack.config.common')
 
 const Dev = {
-  mode: 'development'
+  target: 'web', // 默认值：browserslist，存在.browserslistrc时热更新失效
+  mode: 'development',
+  devServer: {
+    hot: true,
+    open: true,
+  },
 }
 
 module.exports = merge(commonConfig, Dev)

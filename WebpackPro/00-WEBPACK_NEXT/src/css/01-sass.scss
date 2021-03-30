@@ -1,0 +1,12 @@
+$color: #eee;
+$radius: 6px;
+
+.name {
+  padding: 6px 14px;
+  display: inline-block;
+  background-color: $color;
+  border-radius: $radius;
+  transform: translateX(30px);
+  user-select: none;
+  box-shadow: 0 0 6px 6px #ceb10f;
+}
