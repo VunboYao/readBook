@@ -1,5 +1,7 @@
 <template>
-  <div>{{ id }}</div>
+  <div>
+    <p>{{ id }}</p>
+  </div>
 </template>
 
 <script>
