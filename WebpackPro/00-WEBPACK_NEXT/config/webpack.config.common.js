@@ -91,6 +91,25 @@ const config = {
         generator: {
           filename: 'font/[name].[hash:6][ext]'
         }
+      },
+      // JS文件处理
+      {
+        test: /\.js$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            /*options: {
+              presets: [
+                ['@babel/preset-env', {
+                  /!*targets: {
+                    'chrome': 88
+                  }*!/
+                  targets: 'defaults'
+                }]
+              ]
+            }*/
+          }
+        ]
       }
     ],
   },

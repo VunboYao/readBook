@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .title {
+      background-color: aqua;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script src="./js/react.development.js"></script>
+  <script src="./js/react-dom.development.js"></script>
+  <script src="./js/babel.min.js"></script>
+  <script type="text/babel">
+    const ID = 'tiTle'
+    const msg = 'Hello React'
+    const VDOM = (
+      <div>
+        <h1 className="title" id={ID.toLocaleLowerCase()}>
+        <span style={{ fontSize: '40px', color: '#fff' }}>{msg.toLocaleUpperCase()}</span>
+      </h1>
+      <h1 className="title" id={ID.toLocaleLowerCase()}>
+          <span style={{ fontSize: '40px', color: '#fff' }}>{msg.toLocaleLowerCase()}</span>
+        </h1>
+      </div>
+    )
+    ReactDOM.render(VDOM, document.getElementById('root'))
+
+      /*
+          jsx语法规则：
+              1.定义虚拟DOM时，不要写引号。
+              2.标签中混入JS表达式时要用{}。
+              3.样式的类名指定不要用class，要用className。
+              4.内联样式，要用style={{key:value}}的形式去写。
+              5.只有一个根标签
+              6.标签必须闭合
+              7.标签首字母
+                  (1).若小写字母开头，则将该标签转为html中同名元素，若html中无该标签对应的同名元素，则报错。
+                  (2).若大写字母开头，react就去渲染对应的组件，若组件没有定义，则报错。
+
+       */
+  </script>
+</body>
+
+</html>
