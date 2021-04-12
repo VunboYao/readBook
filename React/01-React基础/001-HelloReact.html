@@ -1,22 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-
-<body>
-  <div id="root"></div>
-  <script src="./js/react.development.js"></script>
-  <script src="./js/react-dom.development.js"></script>
-  <script src="./js/babel.min.js"></script>
-  <script type="text/babel">
-    const VDOM = <h1>Hello React</h1>
-    ReactDOM.render(VDOM, document.getElementById('root'))
-  </script>
-</body>
-
+  <body>
+    <div id="root"></div>
+    <script src="./js/react.development.js"></script>
+    <script src="./js/react-dom.development.js"></script>
+    <script src="./js/babel.min.js"></script>
+    <script type="text/babel">
+      class Welcome extends React.Component {
+        render() {
+          return <h1>Hello, {this.props.name}</h1>;
+        }
+      }
+      function Person(props) {
+        return <h1>Hello, {props.name}</h1>;
+      }
+      class Clock extends React.Component {
+        constructor(props) {
+          console.log(props);
+          super(props)
+          this.state = { date: new Date() }
+        }
+        render() {
+          return (
+            <div>
+              <Welcome name="welcome VunboYao" />
+              <Person name="Yao" />
+              <h2>It is {this.state.date.toLocaleTimeString()}</h2>
+            </div>
+          );
+        }
+        componentDidMount() {
+          this.timerId = setInterval(() => {
+            this.tick()
+          }, 1000)
+        }
+        componentWillUnmount(){
+          clearInterval(this.timerId)
+        }
+        tick() {
+          this.setState({
+            date: new Date()
+          })
+        }
+      }
+      ReactDOM.render(
+          <Clock />,
+          document.getElementById("root")
+        );
+    </script>
+  </body>
 </html>
