@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    {
+      class Person {
+        constructor(name, age) {
+          this.name = name
+          this.age = age
+        }
+      }
+      const p1 = new Person('yyb', 18)
+      console.log(p1);
+      class Person2 {
+        name = 'name'
+        age = 'age'
+      }
+      const p2 = new Person2('yyb', 18)
+      console.log(p2);
+    }
+    {
+      const obj = {
+        name: 'ttb',
+        age: 12,
+        inner: {
+          name: 'innher'
+        }
+      }
+      const o2 = {...obj}
+      obj.inner.name = '666'
+      console.log(obj);
+      console.log('o2 :>> ', o2);
+    }
+  </script>
+</body>
+
+</html>

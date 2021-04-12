@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+<div id="root"></div>
+<div id="root2"></div>
+<div id="root3"></div>
+<script src="./js/react.development.js"></script>
+<script src="./js/react-dom.development.js"></script>
+<script src="./js/babel.min.js"></script>
+<script src="./js/prop-types.js"></script>
+<script type="text/babel">
+  function Person(props) {
+    console.log(props)
+    const {name, age, sex} = props
+    return (
+        <ul>
+          <li>name: {name}</li>
+          <li>age: {age + 1}</li>
+          <li>sex: {sex}</li>
+        </ul>
+    )
+  }
+
+  Person.propTypes = {
+    name: PropTypes.string.isRequired, // 字符串：必输
+    sex: PropTypes.string, // 字符串
+    age: PropTypes.number, // 数字
+    speak: PropTypes.func // 函数
+  }
+  Person.defaultProps = {
+    sex: 'female',
+    name: 'Andi'
+  }
+
+  // 渲染页面
+  ReactDOM.render(<Person name='yyb' age={12} sex='male'/>, document.getElementById('root'))
+  // 批量传递：react+babel独有的语法
+  const obj = {name: 'vunbo', age: 28, sex: 'male'}
+  ReactDOM.render(<Person {...obj} />, document.getElementById('root2'))
+
+  function demo() {
+    console.log('say somethings');
+  }
+
+  const obj2 = {age: 10, speak: demo}
+  ReactDOM.render(<Person {...obj2} />, document.getElementById('root3'))
+</script>
+</body>
+
+</html>
