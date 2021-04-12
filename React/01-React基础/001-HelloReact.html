@@ -1,131 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Document</title>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
 
-<body>
-<div id="root"></div>
-<script src="./js/react.development.js"></script>
-<script src="./js/react-dom.development.js"></script>
-<script src="./js/babel.min.js"></script>
-<script type="text/babel">
-	function UserGreeting(props) {
-		return <h1>Welcome back!</h1>
-	}
-
-	function GuestGreeting(props) {
-		return <h1>Please sign up</h1>
-	}
-
-	function Greeting(props) {
-		const isLoggedIn = props.isLoggedIn
-		if (isLoggedIn) {
-			return <UserGreeting/>
-		}
-		return <GuestGreeting/>
-	}
-
-	function LoginButton(props) {
-		return (
-				<button onClick={props.onClick}>
-					Login
-				</button>
-		)
-	}
-
-	function LogoutButton(props) {
-		return (
-				<button onClick={props.onClick}>
-					Logout
-				</button>
-		)
-	}
-
-	class LoginControl extends React.Component {
-		state = {isLoggedIn: false}
-
-		handleLoginClick = () => {
-			this.setState({isLoggedIn: true})
-		}
-
-		handleLogoutClick = () => {
-			this.setState({isLoggedIn: false})
-		}
-
-		render() {
-			const isLoggedIn = this.state.isLoggedIn
-			let button
-			if (isLoggedIn) {
-				button = <LogoutButton onClick={() => {
-					this.setState({isLoggedIn: false})
-				}}/>
-			} else {
-				button = <LoginButton onClick={this.handleLoginClick}/>
-			}
-			return (
-					<div>
-						<Greeting isLoggedIn={isLoggedIn}/>
-						{button}
-					</div>
-			)
-		}
-	}
-
-	function Mailbox(props) {
-		const unreadMessages = props.unreadMessages
-		return (
-				<div>
-					<h1>Hello</h1>
-					{unreadMessages.length > 0 &&
-					<h2>
-						You have {unreadMessages.length} unread messages.
-					</h2>
-					}
-				</div>
-		)
-	}
-
-	function WarningBanner(props) {
-		if (!props.warn) {
-			return null
-		}
-
-		return (
-				<div className="warning">
-					Warning
-				</div>
-		)
-	}
-
-	class Page extends React.Component {
-		constructor(props) {
-			super(props)
-			this.state = {showWarning: true}
-		}
-
-		handleToggleClick = () => {
-			this.setState({showWarning: !this.state.showWarning})
-		}
-
-		render() {
-			return (
-					<div>
-						<WarningBanner warn={this.state.showWarning}/>
-						<button onClick={this.handleToggleClick}>
-							{this.state.showWarning ? 'Hide' : 'Show'}
-						</button>
-					</div>
-			)
-		}
-	}
-
-	const messages = ['React', 'Re: React', 'Re:Re: React']
-
-	ReactDOM.render(<Page/>, document.getElementById('root'))
-</script>
-</body>
+  <body>
+    <div id="root"></div>
+    <script src="./js/react.development.js"></script>
+    <script src="./js/react-dom.development.js"></script>
+    <script src="./js/babel.min.js"></script>
+    <script type="text/babel">
+      class Welcome extends React.Component {
+        render() {
+          return <h1>Hello, {this.props.name}</h1>;
+        }
+      }
+      function Person(props) {
+        return <h1>Hello, {props.name}</h1>;
+      }
+      class Toggle extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = { isToggleOn: true }
+          // this.handleClick = this.handleClick.bind(this)
+        }
+        handleClick = (id,e) => {
+          console.log(id, e);
+          // this.setState({isToggleOn: this.state.isToggleOn})
+          this.setState(state => ({
+            isToggleOn: !state.isToggleOn
+          }))
+        }
+        render() {
+          return (
+              <button onClick={this.handleClick.bind(this, '123')}>
+                {this.state.isToggleOn ? 'ON':'OFF'}
+              </button>
+          )
+        }
+      }
+      ReactDOM.render(
+          <Toggle/>,
+          document.getElementById('root')
+      )
+    </script>
+  </body>
 </html>
