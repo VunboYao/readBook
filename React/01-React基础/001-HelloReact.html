@@ -21,39 +21,31 @@
       function Person(props) {
         return <h1>Hello, {props.name}</h1>;
       }
-      class Clock extends React.Component {
+      class Toggle extends React.Component {
         constructor(props) {
-          console.log(props);
-          super(props)
-          this.state = { date: new Date() }
+          super(props);
+          this.state = { isToggleOn: true }
+          // this.handleClick = this.handleClick.bind(this)
+        }
+        handleClick = (id,e) => {
+          console.log(id, e);
+          // this.setState({isToggleOn: this.state.isToggleOn})
+          this.setState(state => ({
+            isToggleOn: !state.isToggleOn
+          }))
         }
         render() {
           return (
-            <div>
-              <Welcome name="welcome VunboYao" />
-              <Person name="Yao" />
-              <h2>It is {this.state.date.toLocaleTimeString()}</h2>
-            </div>
-          );
-        }
-        componentDidMount() {
-          this.timerId = setInterval(() => {
-            this.tick()
-          }, 1000)
-        }
-        componentWillUnmount(){
-          clearInterval(this.timerId)
-        }
-        tick() {
-          this.setState({
-            date: new Date()
-          })
+              <button onClick={this.handleClick.bind(this, '123')}>
+                {this.state.isToggleOn ? 'ON':'OFF'}
+              </button>
+          )
         }
       }
       ReactDOM.render(
-          <Clock />,
-          document.getElementById("root")
-        );
+          <Toggle/>,
+          document.getElementById('root')
+      )
     </script>
   </body>
 </html>
