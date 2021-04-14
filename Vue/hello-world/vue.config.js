@@ -7,5 +7,9 @@ module.exports = {
         banner: 'VunboYao'
       })
     ]
+  },
+  runtimeCompiler: true,
+  devServer: {
+    open: true
   }
 }
