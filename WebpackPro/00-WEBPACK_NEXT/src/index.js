@@ -14,3 +14,6 @@ import './js/01-img';
 
 // 处理字体文件
 import './js/02-font';
+
+// polyfill
+import './js/03-polyfill';
