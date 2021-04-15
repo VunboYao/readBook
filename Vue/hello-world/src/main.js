@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import {Button} from 'element-ui'
-import Loading from './plugin/loading/index';
+import Loading from './plugin/loading/index_plugin';
 // Vue.component(Loading.name, Loading)
 Vue.component(Button.name, Button)
 Vue.use(Loading, {
