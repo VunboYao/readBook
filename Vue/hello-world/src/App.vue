@@ -16,18 +16,32 @@
       <router-link class="link" to="/user/subUser">subUser</router-link>
       <router-link class="link" to="/redirect">redirect</router-link>
     </div>
+    <component-a />
+    <el-button @click="show">show</el-button>
+    <el-button @click="hide">hide</el-button>
   </div>
 </template>
 
 <script>
+const componentA = {
+  name: "tplA",
+  template: `<h2>Hello World</h2>`,
+};
+
 export default {
   name: "App",
-  beforeRouteUpdate(to, from, next) {
-    console.log("to :>> ", to);
-    console.log("from :>> ", from);
-    next();
+  components: {
+    componentA: componentA,
   },
-  methods: {},
+  mounted() {},
+  methods: {
+    hide() {
+      this.$closeLoading();
+    },
+    show() {
+      this.$showLoading();
+    },
+  },
 };
 </script>
 
@@ -37,6 +51,7 @@ export default {
   margin: 0;
 }
 #app {
+  position: relative;
   width: 100%;
   height: 100vh;
   background: pink;
@@ -57,7 +72,7 @@ export default {
 }
 .main {
   width: 60vw;
-  height: 200vh;
+  height: 80vh;
   background: steelblue;
 }
 .el-button span {
