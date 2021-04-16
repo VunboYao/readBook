@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script src="./js/react.development.js"></script>
+    <script src="./js/react-dom.development.js"></script>
+    <script src="./js/babel.min.js"></script>
+    <script src="./js/prop-types.js"></script>
+    <script type="text/babel">
+     // refs字符串形式，放弃使用
+      /*class Demo extends React.Component {
+        showData = () => {
+          console.log(this.refs.input1.value);
+        };
+        blurData = () => {
+          console.log(this.refs.input2.value);
+        };
+        render() {
+          return (
+            <div>
+              <input ref="input1" type="text" placeholder="确认按钮输出值" />
+              <button onClick={this.showData}>确认输出值</button>
+              <input
+                onBlur={this.blurData}
+                ref="input2"
+                type="text"
+                placeholder="失去焦点输出值"
+              />
+            </div>
+          );
+        }
+      }*/
+      ReactDOM.render(<Demo />, document.getElementById("root"));
+    </script>
+  </body>
+</html>
