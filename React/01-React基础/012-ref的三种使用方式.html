@@ -1,43 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
 
-  <body>
-    <div id="root"></div>
-    <script src="./js/react.development.js"></script>
-    <script src="./js/react-dom.development.js"></script>
-    <script src="./js/babel.min.js"></script>
-    <script src="./js/prop-types.js"></script>
-    <script type="text/babel">
-     // refs字符串形式，放弃使用
-      /*class Demo extends React.Component {
-        showData = () => {
-          console.log(this.refs.input1.value);
-        };
-        blurData = () => {
-          console.log(this.refs.input2.value);
-        };
-        render() {
-          return (
-            <div>
-              <input ref="input1" type="text" placeholder="确认按钮输出值" />
-              <button onClick={this.showData}>确认输出值</button>
-              <input
-                onBlur={this.blurData}
-                ref="input2"
-                type="text"
-                placeholder="失去焦点输出值"
-              />
-            </div>
-          );
-        }
-      }*/
-      ReactDOM.render(<Demo />, document.getElementById("root"));
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script src="./js/react.development.js"></script>
+  <script src="./js/react-dom.development.js"></script>
+  <script src="./js/babel.min.js"></script>
+  <script src="./js/prop-types.js"></script>
+  <script type="text/babel">
+    // refs字符串形式，放弃使用
+    /*class Demo extends React.Component {
+      showData = () => {
+        console.log(this.refs.input1.value);
+      };
+      blurData = () => {
+        console.log(this.refs.input2.value);
+      };
+      render() {
+        return (
+          <div>
+            <input ref="input1" type="text" placeholder="确认按钮输出值" />
+            <button onClick={this.showData}>确认输出值</button>
+            <input
+              onBlur={this.blurData}
+              ref="input2"
+              type="text"
+              placeholder="失去焦点输出值"
+            />
+          </div>
+        );
+      }
+    }*/
+
+    // 2. 回调函数形式
+    class Demo extends React.Component {
+      state = {
+        isHot: true
+      }
+      handleShowData = (params) => {
+        console.log(this.input1.value);
+      }
+      handleBlurData = (params) => {
+        console.log(this.input2.value);
+      }
+      ToggleWeather = (params) => {
+        this.setState({ isHot: !this.state.isHot })
+      }
+      handleClickData = (params) => {
+        // 回调绑定只会执行一次
+        // 将 ref 的回调函数定义成 class 的绑定函数的方式可以避免上述问题，但是大多数情况下它是无关紧要的。
+        this.input1 = params
+        console.log('params :>> ', params);
+      }
+      /* 内联形式调用：更新过程中会被执行两次，第一次传入参数null, 然后第二次会传入参数DOM元素
+        因为在每次渲染时会创建一个新的函数实例，所以 React 清空旧的 ref 并且设置新的。
+      */
+      render() {
+        return (
+          <div>
+            <h1>Today is {this.state.isHot ? 'Hot' : 'Cold'}</h1>
+            <button onClick={this.ToggleWeather}>Button</button>
+            {/* <input
+            ref={c => { this.input1 = c; console.log('c :>> ', c); }}
+            type="text"
+            placeholder="onClick show Data" /> */}
+            <input
+              ref={this.handleClickData}
+              type="text"
+              placeholder="onClick show Data" />
+            <button onClick={this.handleShowData}>Button</button>
+            <input
+              ref={c => this.input2 = c}
+              onBlur={this.handleBlurData}
+              type="text"
+              placeholder="onBlur show Data" />
+          </div>
+        )
+      }
+    }
+
+    // 3. createRef（）API
+    /* class Demo extends React.Component {
+      state = {
+        isHot: true
+      }
+      myRef = React.createRef()
+      myRef2 = React.createRef()
+
+      handleShowData = () => {
+        console.log(this.myRef.current.value);
+      }
+      handleBlurData = () => {
+        console.log(this.myRef2.current.value)
+      }
+      toggleWeather = () => {
+        this.setState({ isHot: !this.state.isHot })
+      }
+      render() {
+        return (
+          <div>
+            <h2>today is {this.state.isHot ? 'Hot' : 'Cold'}</h2>
+            <button onClick={this.toggleWeather}>Toggle</button>
+            <input ref={this.myRef} type="text" placeholder="onClick show Data" />
+            <button onClick={this.handleShowData}>Button</button>
+            <input ref={this.myRef2} onBlur={this.handleBlurData} type="text" placeholder="onBlur show Data" />
+          </div>
+        )
+      }
+    } */
+    ReactDOM.render(<Demo />, document.getElementById("root"));
+  </script>
+</body>
+
 </html>
