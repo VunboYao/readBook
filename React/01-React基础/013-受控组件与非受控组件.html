@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Document</title>
+</head>
+
+<body>
+<div id="root"></div>
+<script src="./js/react.development.js"></script>
+<script src="./js/react-dom.development.js"></script>
+<script src="./js/babel.min.js"></script>
+<script src="./js/prop-types.js"></script>
+<script type="text/babel">
+  class Demo extends React.Component {
+    state = {
+      userName: '',
+      password: ''
+    }
+    handleSubmit = (e) => {
+      e.preventDefault()
+      console.log(this.state.userName, this.state.password)
+    }
+
+    handleUsername = (e) => {
+      this.setState({userName: e.target.value})
+    }
+
+    handlePassword = (e) => {
+      this.setState({password: e.target.value})
+    }
+
+    render() {
+      return (
+          <form onSubmit={this.handleSubmit}>
+            <label>userName:
+              <input onChange={this.handleUsername} type="text" name='userName'/>
+            </label>
+            <label>password:
+              <input onChange={this.handlePassword} type="password" name='password'/>
+            </label>
+            <button>Confirm</button>
+          </form>
+      )
+    }
+  }
+
+  ReactDOM.render(<Demo/>, document.getElementById("root"));
+</script>
+</body>
+
+</html>

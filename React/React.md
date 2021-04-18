@@ -122,3 +122,32 @@ class Person extends React.Component {
 
 - props是只读的
 
+# 事件绑定
+
+- 组件的render(), 在组件的原型对象上，供实例使用
+- 组件中的render方法中的this为组件实例对象
+- class式组件中的方法注册在组件的原型上
+
+## 类中方法this的指向
+
+- 实例调用，则方法中的this指向类的实例
+- 若无`fun()`调用，赋值语句给第三方变量，则属于直接调用
+- 类中默认开启严格模式，直接调用方法则返回undefined。
+- **react中的`{this.onClick=handleClick}`方法赋值语句就是直接调用**.提取出来单独使用，this 会指向该方法运行时所在的环境
+
+```js
+class Person {
+  constructor(name, age) {
+    this.name = name
+    this.age = age
+  }
+  speak () {
+    console.log(this)
+  }
+}
+const student = new Person('Yao', 20)
+student.speak() // Person {name: "Yao", age: 20} 实例调用
+const x = student.speak // 方法指向到x， class中默认开启严格模式
+x() // undefined
+```
+

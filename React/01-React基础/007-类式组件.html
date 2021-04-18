@@ -9,29 +9,44 @@
 </head>
 
 <body>
-  <div id="root"></div>
-  <script src="./js/react.development.js"></script>
-  <script src="./js/react-dom.development.js"></script>
-  <script src="./js/babel.min.js"></script>
-  <script type="text/babel">
-    class Weather extends React.Component{
-      constructor(props) {
-        super(props)
-        this.state = { isHot: false }
-        this.changeWeather = this.changeWeather.bind(this)
-      }
-      render() {
-        const {isHot} = this.state
-        return <h1 onClick={this.changeWeather}>Today is {isHot ? 'hot' : 'cold'}</h1>
-      }
-      changeWeather() {
-         // 直接调用
-         const isHot = this.state.isHot
-         this.setState({isHot: !isHot})
-      }
+<div id="root"></div>
+<script src="./js/react.development.js"></script>
+<script src="./js/react-dom.development.js"></script>
+<script src="./js/babel.min.js"></script>
+<script type="text/babel">
+  /*class Weather extends React.Component{
+    constructor(props) {
+      super(props)
+      this.state = { isHot: false }
+      this.changeWeather = this.changeWeather.bind(this)
     }
-    ReactDOM.render(<Weather/>, document.getElementById('root'))
-  </script>
+    render() {
+      const {isHot} = this.state
+      return <h1 onClick={this.changeWeather}>Today is {isHot ? 'hot' : 'cold'}</h1>
+    }
+    changeWeather() {
+       // 直接调用
+       const isHot = this.state.isHot
+       this.setState({isHot: !isHot})
+    }
+  }
+  ReactDOM.render(<Weather/>, document.getElementById('root'))*/
+  class Person {
+    constructor(name, age) {
+      this.name = name
+      this.age = age
+    }
+
+    speak() {
+      console.log(this)
+    }
+  }
+
+  const student = new Person('Yao', 20)
+  student.speak() // Person {name: "Yao", age: 20} 实例调用
+  const x = student.speak // 方法指向到x， class中默认开启严格模式
+  x() // undefined
+</script>
 </body>
 
 </html>
