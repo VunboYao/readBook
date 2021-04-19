@@ -2,77 +2,77 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
 </head>
 
 <body>
-<div id="root"></div>
-<script src="./js/react.development.js"></script>
-<script src="./js/react-dom.development.js"></script>
-<script src="./js/babel.min.js"></script>
-<script src="./js/prop-types.js"></script>
-<script type="text/babel">
-  class Demo extends React.Component {
-    state = {
-      userName: '',
-      password: ''
-    }
-    handleSubmit = (e) => {
-      e.preventDefault()
-      console.log(this.state.userName, this.state.password)
-    }
+  <div id="root"></div>
+  <script src="./js/react.development.js"></script>
+  <script src="./js/react-dom.development.js"></script>
+  <script src="./js/babel.min.js"></script>
+  <script src="./js/prop-types.js"></script>
+  <script type="text/babel">
+    class Demo extends React.Component {
+      state = {
+        userName: '',
+        password: ''
+      }
+      handleSubmit = (e) => {
+        e.preventDefault()
+        console.log(this.state.userName, this.state.password)
+      }
 
 
-    /*
-    * 高阶函数：函数的参数是一个函数，或者返回值是一个函数，就是高阶函数。Promise、setTimeout、Array.map()
-    * 函数柯里化：通过函数调用，通过多次返回函数，最终统一处理的函数编码形式
-    * */
-    handleFormData(type) {
-      return (e) => {
+      /*
+      * 高阶函数：函数的参数是一个函数，或者返回值是一个函数，就是高阶函数。Promise、setTimeout、Array.map()
+      * 函数柯里化：通过函数调用，通过多次返回函数，最终统一处理的函数编码形式
+      * */
+      handleFormData(type) {
+        return (e) => {
+          this.setState({ [type]: e.target.value })
+          console.log(e.target.value, type)
+        }
+      }
+      render() {
+        return (
+          <form onSubmit={this.handleSubmit}>
+            <label>userName:
+              <input onChange={this.handleFormData('userName')} type="text" name='userName' />
+            </label>
+            <label>password:
+              <input onChange={this.handleFormData('password')} type="password" name='password' />
+            </label>
+            <button>Confirm</button>
+          </form>
+        )
+      }
+
+      // 回调函数形式
+      /*
+      handleFormData = (e, type) => {
         this.setState({[type]: e.target.value})
         console.log(e.target.value, type)
       }
-    }
-    render() {
-      return (
-          <form onSubmit={this.handleSubmit}>
-            <label>userName:
-              <input onChange={this.handleFormData('userName')} type="text" name='userName'/>
-            </label>
-            <label>password:
-              <input onChange={this.handleFormData('password')} type="password" name='password'/>
-            </label>
-            <button>Confirm</button>
-          </form>
-      )
+      render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+              <label>userName:
+                <input onChange={e => this.handleFormData(e, 'userName')} type="text" name='userName'/>
+              </label>
+              <label>password:
+                <input onChange={e => this.handleFormData(e, 'password')} type="password" name='password'/>
+              </label>
+              <button>Confirm</button>
+            </form>
+        )
+      }*/
     }
 
-    // 回调函数形式
-    /*
-    handleFormData = (e, type) => {
-      this.setState({[type]: e.target.value})
-      console.log(e.target.value, type)
-    }
-    render() {
-      return (
-          <form onSubmit={this.handleSubmit}>
-            <label>userName:
-              <input onChange={e => this.handleFormData(e, 'userName')} type="text" name='userName'/>
-            </label>
-            <label>password:
-              <input onChange={e => this.handleFormData(e, 'password')} type="password" name='password'/>
-            </label>
-            <button>Confirm</button>
-          </form>
-      )
-    }*/
-  }
-
-  ReactDOM.render(<Demo/>, document.getElementById("root"));
-</script>
+    ReactDOM.render(<Demo />, document.getElementById("root"));
+  </script>
 </body>
 
 </html>
