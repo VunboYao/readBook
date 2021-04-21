@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+      .list {
+          width: 200px;
+          height: 150px;
+          overflow-y: scroll;
+          background: antiquewhite;
+      }
+
+      .news {
+          width: 100%;
+          height: 30px;
+          color: #135d9e;
+      }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script src="js/17.0.1/react.development.js"></script>
+<script src="js/17.0.1/react-dom.development.js"></script>
+<script src="js/17.0.1/babel.min.js"></script>
+<script src="js/17.0.1/prop-types.js"></script>
+<script type="text/babel">
+
+  class NewList extends React.Component {
+    state = {
+      newArr: []
+    }
+
+    // 获取快照，配合componentDidUpdate()，需要返回一个值或null
+    getSnapshotBeforeUpdate() {
+      return this.pos.scrollHeight
+    }
+
+    componentDidUpdate(preProps, preState, height) {
+      this.pos.scrollTop += this.pos.scrollHeight - height
+    }
+
+    // 组件挂载
+    componentDidMount() {
+      setInterval(() => {
+        const {newArr} = this.state
+        const news = `new${newArr.length + 1}`
+        this.setState({newArr: [news, ...newArr]})
+      }, 1000)
+    }
+
+
+    render() {
+      return (
+          <div className="list" ref={e => this.pos = e}>
+            {
+              this.state.newArr.map((item, index) => {
+                return <div className="news" key={index}>{item}</div>
+              })
+            }
+          </div>
+      )
+    }
+  }
+
+  ReactDOM.render(<NewList height={30}/>, document.getElementById('root'))
+</script>
+</body>
+</html>
