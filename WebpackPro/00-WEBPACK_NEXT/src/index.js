@@ -27,3 +27,12 @@ import './js/04-reactJSX'
 // typeScript
 import {foo, message} from './js/05-typeScript.ts'
 foo(message)
+
+// Vue
+
+import Vue from 'vue'
+import App from './js/06-app.vue'
+
+new Vue({
+  render: h => h(App)
+}).$mount('#app')

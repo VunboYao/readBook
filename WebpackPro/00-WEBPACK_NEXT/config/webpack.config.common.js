@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { DefinePlugin } = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const config = {
   entry: './src/index.js',
   output: {
@@ -43,7 +44,7 @@ const config = {
           {
             loader: 'css-loader',
             options: {
-              importLoaders: 1,
+              importLoaders: 2,
             },
           },
           'postcss-loader',
@@ -58,7 +59,7 @@ const config = {
           {
             loader: 'css-loader',
             options: {
-              importLoaders: 1,
+              importLoaders: 2,
             },
           },
           'postcss-loader',
@@ -76,21 +77,21 @@ const config = {
         test: /\.(png|jpe?g|gif|svg)$/i,
         type: 'asset',
         generator: {
-          filename: 'img/[name].[hash:6][ext]'
+          filename: 'img/[name].[hash:6][ext]',
         },
         parser: {
           dataUrlCondition: {
-            maxSize: 15 * 1024
-          }
-        }
+            maxSize: 15 * 1024,
+          },
+        },
       },
       // 字体文件
       {
         test: /\.(woff2?|eot|ttf)$/,
         type: 'asset/resource',
         generator: {
-          filename: 'font/[name].[hash:6][ext]'
-        }
+          filename: 'font/[name].[hash:6][ext]',
+        },
       },
       // JS文件处理
       {
@@ -109,39 +110,46 @@ const config = {
                 }]
               ]
             }*/
-          }
-        ]
+          },
+          {
+            loader: 'eslint-loader',
+          },
+        ],
       },
       // TS
       {
         test: /\.ts$/,
         exclude: /node_modules/,
-        use: 'babel-loader' // ts-loader
-      }
+        use: 'babel-loader', // ts-loader
+      },
+      // Vue
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+      },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       title: 'VunboPack',
-      template: resolveApp('./public/index.html')
+      template: resolveApp('./public/index.html'),
     }),
     new CleanWebpackPlugin(),
     // 全局常量配置
     new DefinePlugin({
-      BASE_URL: '"./"'
+      BASE_URL: '"./"',
     }),
     new CopyWebpackPlugin({
       patterns: [
         {
           from: 'public',
           globOptions: {
-            ignore: [
-              '**/index.html'
-            ]
-          }
-        }
-      ]
-    })
+            ignore: ['**/index.html'],
+          },
+        },
+      ],
+    }),
+    new VueLoaderPlugin()
   ],
 }
 
