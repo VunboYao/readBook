@@ -20,3 +20,10 @@ import './js/03-polyfill';
 // babel.config.js中 useBuiltIns: 'entry'
  import 'core-js/stable';
  import 'regenerator-runtime/runtime';
+
+ // react JSX
+import './js/04-reactJSX'
+
+// typeScript
+import {foo, message} from './js/05-typeScript.ts'
+foo(message)

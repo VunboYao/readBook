@@ -19,10 +19,12 @@
     <component-a />
     <el-button @click="show">show</el-button>
     <el-button @click="hide">hide</el-button>
+    <el-button @click="showMsg">showMsg</el-button>
   </div>
 </template>
 
 <script>
+import {FilterData} from './plugin/FilterData/main'
 const componentA = {
   name: "tplA",
   template: `<h2>Hello World</h2>`,
@@ -35,6 +37,18 @@ export default {
   },
   mounted() {},
   methods: {
+    showMsg() {
+      const data = [{
+        code: '1102'
+      }, {
+        code: '1009'
+      }]
+      FilterData({
+        originData: data
+      }, res => {
+        console.log(res,'callback Data')
+      })
+    },
     hide() {
       this.$closeLoading();
     },

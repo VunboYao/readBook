@@ -111,6 +111,12 @@ const config = {
             }*/
           }
         ]
+      },
+      // TS
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: 'ts-loader'
       }
     ],
   },

@@ -25,7 +25,6 @@ export default {
     let LoadingConstructor = Vue.extend(Loading)
     // 2.根据构造函数创建实例对象
     let LoadingInstance = new LoadingConstructor()
-    console.log(LoadingInstance);
     // 3.创建一个容器
     let oDiv = document.createElement('div')
     // 4.添加到body上
