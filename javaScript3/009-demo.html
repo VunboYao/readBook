@@ -45,29 +45,31 @@
 </div>
 </body>
 <script>
+  // 获取拖拽元素
 	const dragDom = document.querySelector('.move')
 	const dragHeaderEl = document.querySelector('h1')
+  // 获取元素计算样式
 	const getStyle = (function () {
 		return (dom, attr) => getComputedStyle(dom, null)[attr]
 	})()
 	dragHeaderEl.onmousedown = function (e) {
-		const disX = e.clientX
+		const disX = e.clientX // 视口中的x坐标
 		const dixY = e.clientY
 
-		const dragDomW = dragDom.offsetWidth
+		const dragDomW = dragDom.offsetWidth // 拖拽的元素的宽高
 		const dragDomH = dragDom.offsetHeight
 
-		const screenX = document.body.clientWidth
+		const screenX = document.body.clientWidth // 获取屏幕的宽高
 		const screenY = document.body.clientHeight
 
-		const minDragLeft = dragDom.offsetLeft
-		const maxDragLeft = screenX - minDragLeft - dragDomW
+		const minDragLeft = dragDom.offsetLeft // 左侧可移动的距离
+		const maxDragLeft = screenX - minDragLeft - dragDomW // 右侧可移动的距离
 
-		const minDragTop = dragDom.offsetTop
+		const minDragTop = dragDom.offsetTop // 顶部可移动的距离
 		const maxDragTop = screenY - minDragTop - dragDomH
 
-		let Left = getStyle(dragDom, 'left')
-		let Top = getStyle(dragDom, 'top')
+		let Left = getStyle(dragDom, 'left') // 获取左侧距离
+		let Top = getStyle(dragDom, 'top') // 获取顶部距离
 
 		if (Left.includes('%')) {
 			Left = +document.body.clientWidth * (+Left.replace(/\%/g, '') / 100)
