@@ -7,8 +7,11 @@ const Dev = {
   mode: 'development',
   devtool: 'cheap-module-source-map',
   devServer: {
-    hot: true,
+    hot: true, // webpack-dev-serve启动
     open: true,
+    hotOnly: true,
+    port: 2021,
+    compress: true
   },
 }
 

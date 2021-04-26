@@ -1,6 +1,6 @@
 const FIRSTNAME = 'Vunbo'
 const LASTNAME = 'Yao'
-const AGE = 27
+const AGE = 29
 
 const getFullName = () => {
 	return `${FIRSTNAME} ${LASTNAME} ${AGE}`

@@ -8,7 +8,7 @@ const config = {
   entry: './src/index.js',
   output: {
     filename: 'bundle.js',
-    path: resolveApp('./dist'),
+    path: resolveApp('./dist')
     // assetModuleFilename: 'img/[name].[hash:6][ext]'
   },
   module: {

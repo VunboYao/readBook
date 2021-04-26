@@ -5,6 +5,13 @@ const name = js0.getFullName()
 const element = js0.component(name)
 document.body.appendChild(element)
 
+// 热更新
+if (module.hot) {
+  module.hot.accept('./js/00-test', () => {
+    console.log('模块热更新了')
+  })
+}
+
 // 处理less scss
 import './css/01-less.less';
 import './css/01-sass.scss';
