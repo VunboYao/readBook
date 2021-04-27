@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+/* import logo from './logo.svg';
 import './App.css';
 
 function App() {
@@ -23,3 +23,20 @@ function App() {
 }
 
 export default App;
+ */
+
+import {Component} from 'react'
+import Hello from './components/Hello'
+import Welcome from './components/Welcome'
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <Hello/>
+        <Welcome/>
+      </div>
+    )
+  }
+}
+
+export default App
