@@ -6,6 +6,12 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const config = {
   entry: './src/index.js',
+  resolve: {
+    extensions: ['.js', '.json', '.wasm', '.ts', '.jsx'], // 扩展名解析
+    alias: {
+      '@': resolveApp('./src/js') // 别名
+    }
+  },
   output: {
     filename: 'bundle.js',
     path: resolveApp('./dist')

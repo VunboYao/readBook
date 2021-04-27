@@ -17,10 +17,10 @@ import './css/01-less.less';
 import './css/01-sass.scss';
 
 // JS中图片处理
-import './js/01-img';
+import '@/01-img';
 
 // 处理字体文件
-import './js/02-font';
+import '@/02-font';
 
 // polyfill
 import './js/03-polyfill';
@@ -32,7 +32,7 @@ import './js/03-polyfill';
 import './js/04-reactJSX'
 
 // typeScript
-import {foo, message} from './js/05-typeScript.ts'
+import {foo, message} from './js/05-typeScript'
 foo(message)
 
 // Vue
