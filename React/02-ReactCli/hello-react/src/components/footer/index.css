@@ -1,0 +1,21 @@
+.div {
+  padding: 4px 8px;
+  line-height: 40px;
+}
+.span {
+  font-size: 14px;
+}
+.close-all {
+  margin-top: 3px;
+  float: right;
+  color: #fff;
+  background: orangered;
+  border: none;
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.close-hide {
+  display: none;
+}
