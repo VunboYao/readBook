@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import './index.css'
-import Footer from './../footer'
+import Footer from '../footer'
 
 export default class Main extends Component {
   static propTypes = {
