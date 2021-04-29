@@ -32,8 +32,10 @@ export default {
     },
     /* 单例删除 */
     handleDelete(id) {
-      const index = this.list.findIndex((item) => item.id === id);
-      this.list.splice(index, 1);
+      if (confirm("confirm delete the task?")) {
+        const index = this.list.findIndex((item) => item.id === id);
+        this.list.splice(index, 1);
+      }
     },
     /* 全部清除，更新数据 */
     refresh(list) {

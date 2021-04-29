@@ -2,8 +2,8 @@
   <div>
     <input
       type="checkbox"
-      v-model="completedStatus"
-      :disabled="total === 0"
+      :checked="total && total === completed"
+      @change="toggleStatus"
     />
     <span>已完成{{ completed }} / 全部 {{ total }} </span>
     <button
@@ -33,21 +33,13 @@ export default {
     completed() {
       return this.list.filter((item) => item.checked).length;
     },
-    /* 完成状态 */
-    completedStatus: {
-      /* 都选择时 */
-      get() {
-        const bool = this.list.length > 0 ? this.list.every(item => item.checked) : false
-        return bool
-      },
-      /* v-model触发数据变化，触发父级监听事件 */
-      set(val) {
-        this.$emit("toggle", val);
-        return val;
-      }
-    },
   },
   methods: {
+    // 切换全选状态
+    toggleStatus(e) {
+      const bool = e.target.checked;
+      this.$emit("toggle", bool);
+    },
     /* 删除全部 */
     handleDeleteAll() {
       const newList = [];
