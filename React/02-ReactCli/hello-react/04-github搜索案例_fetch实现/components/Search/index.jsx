@@ -1,18 +1,16 @@
 import React, { Component } from "react";
 import PubSub from "pubsub-js";
-import Axios from "axios";
+// import Axios from "axios";
 export default class Search extends Component {
   handleSearch = (params) => {
-    const { value: keyword } = this.keywordElement;
     PubSub.publish("Search", { isLoading: true, isFirst: false });
-    Axios.get("https://api.github.com/search/users?q=" + keyword).then(
-      (res) => {
-        PubSub.publish("Search", { isLoading: false, users: res.data.items });
-      },
-      (error) => {
-        PubSub.publish("Search", { isLoading: false, err: error });
-      }
-    );
+    fetch("/api2/search/users2").then(
+      res => res.json()
+    ).then(res => {
+      PubSub.publish("Search", { isLoading: false, users: res.items });
+    }).catch(err => {
+      PubSub.publish("Search", { isLoading: false, err });
+    })
   };
   render() {
     return (

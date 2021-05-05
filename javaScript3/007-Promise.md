@@ -60,6 +60,40 @@ Promise 对象三种状态
 
 - 返回一个状态为 `pending` 的新的 Promise 对象
 
+# resolve注意点
+
+- Promise.resolve(...)会将传入的真正的Promise直接返回，对传入的thenable则会展开。如果这个thenable展开得到一个拒绝状态，那么从Promise.resolve(...)返回的Promise实际上就是这同一个拒绝状态。
+- Promise.resolve(...)是一个精确的名字，实际上的结果可能是完成或拒绝
+
+- Promise(...)构造器的第一个参数回调会直接展开thenable（和Promise.resolve(...)一样）或真正的Promise
+
+  ```js
+  // 1
+  let rejectTh = {
+    then: function(resolve,reject) {
+      reject('Oops')
+    }
+  }
+  let rejectT = Promise.resolve(rejectTh)
+  rejectT.then(res=> {
+    console.log(res);
+  }).catch(err => {
+    console.log(err, 'err'); // 输出
+  })
+  
+  // 2
+  const rejectPr = new Promise((resolve,reject) => {
+    resolve(Promise.reject('error'))
+  })
+  rejectPr.then(res => {
+    console.log(res);
+  }, err => {
+    console.log(err, 'err'); // 输出
+  })
+  ```
+
+  
+
 # 手写 Promise
 
 ```javascript
