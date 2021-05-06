@@ -1,16 +1,19 @@
 import { Component } from 'react'
-import { Route } from 'react-router-dom'
+import { NavLink, Route } from 'react-router-dom'
 import About from './pages/About'
 import Home from './pages/Home'
-import MyNavLink from './components/MyNavLink'
 import './App.css'
 export default class App extends Component {
   render() {
     return (
       <div className='wrap'>
         <div className='left'>
-            <MyNavLink to="/about" children="About" />
-            <MyNavLink to="/home" children="Home" />
+          <NavLink activeClassName='test-active' to='/about'>
+            关于
+          </NavLink>
+          <NavLink activeClassName='test-active' to='/home'>
+            主页
+          </NavLink>
         </div>
         <div className='right'>
           <Route path='/about' component={About} />
