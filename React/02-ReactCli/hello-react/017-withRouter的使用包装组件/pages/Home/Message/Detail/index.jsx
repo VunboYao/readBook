@@ -23,7 +23,7 @@ export default class Detail extends Component {
     // console.log(this.props.match.params);
 
     const obj = data.find(item => item.id === id) || {}
-    console.log('obj', obj);
+    console.log('obj', obj)
     return (
       <div>
         <ul>

@@ -1,27 +1,22 @@
-import React, { Component } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import React, { Component } from 'react'
+import { Button, Steps } from 'antd'
+import 'antd/dist/antd.less'
 
-import MyNavLink from './components/MyNavLink'
-import About from "./pages/About";
-import Home from "./pages/Home";
-import Test from "./pages/Test";
+const { Step } = Steps
+
+
 export default class App extends Component {
   render() {
     return (
-      <div className='wrap'>
-        <div className='left'>
-          <MyNavLink to='/about' children='About' className='nav' />
-          <MyNavLink to='/home' children='Home' className='nav' />
-          <MyNavLink to='/test' children='Test' className='nav' />
-        </div>
-        <div className='right'>
-          <Switch>
-            <Route path='/about' component={About} />
-            <Route path='/home' component={Home} />
-            <Route path='/test' component={Test} />
-            <Redirect to='/home' />
-          </Switch>
-        </div>
+      <div>
+        <h2>Hello React</h2>
+        <Button type='primary'>Primary Button</Button>
+        <Button type='danger'>Primary Button</Button>
+        <Steps current={1}>
+          <Step title='Finished' description='This is a description.' />
+          <Step title='In Progress' subTitle='Left 00:00:08' description='This is a description.' />
+          <Step title='Waiting' description='This is a description.' />
+        </Steps>
       </div>
     )
   }
