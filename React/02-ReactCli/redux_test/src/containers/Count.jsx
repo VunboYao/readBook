@@ -1,25 +1,18 @@
 // 引入核心库
-import React, { Component } from 'react'
-
-// 引入connect用于连接UI组件与redux
+import { Component } from 'react' 
+// 通过connect生成一个容器组件
 import { connect } from 'react-redux'
 
-// 引入常量
-import { INCREMENT, DECREMENT } from '../../redux/constant'
+// 引入常量和actions
+import { INCREMENT, DECREMENT } from '../redux/constant'
+import { createIncrementAction, createDecrementAction } from '../redux/actions'
 
-// 引入action
-import {
-  createDecrementAction,
-  createIncrementAsyncAction,
-  createIncrementAction,
-} from '../../redux/action'
-
-// 引入AntD
-import { Button, Space, Select } from 'antd'
+// antd组件库
+import { Space, Select, Button } from 'antd'
 import 'antd/dist/antd.css'
-const { Option } = Select
+const {Option} = Select
 
-// 注册UI组件
+// 创建UI组件
 class Count extends Component {
   state = {
     select: 2,
@@ -32,17 +25,6 @@ class Count extends Component {
   decrement = () => {
     const { select } = this.state
     this.props[DECREMENT](select)
-  }
-
-  addIfOdd = () => {
-    const { select } = this.state
-    if (this.props.count % 2 === 0) return
-    this.props[INCREMENT](select)
-  }
-
-  addIfAsync = () => {
-    const { select } = this.state
-    this.props.addOfAsync(select, 500)
   }
 
   toggleSelect = val => {
@@ -69,25 +51,19 @@ class Count extends Component {
           <Button onClick={this.decrement} type='primary'>
             -
           </Button>
-          <Button onClick={this.addIfOdd} type='primary'>
-            addIfOdd
-          </Button>
-          <Button onClick={this.addIfAsync} type='primary'>
-            asyncOdd
-          </Button>
         </Space>
       </div>
     )
   }
 }
 
+// 暴露方法
 export default connect(
-  // 映射状态
-  state => ({ count: state }),
-  // 映射操作状态方法
+  // 映射状态 mapStateToProps
+  state => ({count: state}),
+  // 映射操作方法 mapDispatchToProps
   {
     [INCREMENT]: createIncrementAction,
-    [DECREMENT]: createDecrementAction,
-    addOfAsync: createIncrementAsyncAction,
+    [DECREMENT]: createDecrementAction
   }
 )(Count)
