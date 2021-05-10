@@ -1,47 +1,64 @@
+// 引入核心库
 import React, { Component } from 'react'
-import store from '../../redux/store'
+
+// 引入connect用于连接UI组件与redux
+import { connect } from 'react-redux'
+
+// 引入常量
+import { INCREMENT, DECREMENT } from '../../redux/constant'
+
+// 引入action
+import {
+  createDecrementAction,
+  createIncrementAsyncAction,
+  createIncrementAction,
+} from '../../redux/action'
+
+// 引入AntD
 import { Button, Space, Select } from 'antd'
 import 'antd/dist/antd.css'
-
 const { Option } = Select
 
-export default class Count extends Component {
+// 注册UI组件
+class Count extends Component {
   state = {
     select: 2,
   }
 
   add = () => {
     const { select } = this.state
-    store.dispatch({ type: 'add', data: select })
+    this.props[INCREMENT](select)
   }
   decrement = () => {
     const { select } = this.state
-    store.dispatch({ type: 'down', data: select })
+    this.props[DECREMENT](select)
   }
 
   addIfOdd = () => {
     const { select } = this.state
-    const total = store.getState()
-    if (total % 2 === 0) return
-    store.dispatch({ type: 'add', data: select })
+    if (this.props.count % 2 === 0) return
+    this.props[INCREMENT](select)
   }
 
   addIfAsync = () => {
     const { select } = this.state
-    setTimeout(() => {
-      store.dispatch({ type: 'add', data: select })
-    }, 500)
+    this.props.addOfAsync(select, 500)
   }
 
   toggleSelect = val => {
     this.setState({ select: val * 1 })
   }
   render() {
+    console.log(this.props, '>>>>>>>>')
     return (
       <div>
-        <h2>now total is {store.getState()}</h2>
+        <h2>now total is {this.props.count}</h2>
         <Space>
-          <Select defaultValue='2' style={{ width: 120 }} onChange={this.toggleSelect}>
+          <Select
+            defaultValue='2'
+            style={{ width: 120 }}
+            onChange={this.toggleSelect}
+          >
             <Option value='1'>1</Option>
             <Option value='2'>2</Option>
             <Option value='3'>3</Option>
@@ -63,3 +80,14 @@ export default class Count extends Component {
     )
   }
 }
+
+export default connect(
+  // 映射状态
+  state => ({ count: state }),
+  // 映射操作状态方法
+  {
+    [INCREMENT]: createIncrementAction,
+    [DECREMENT]: createDecrementAction,
+    addOfAsync: createIncrementAsyncAction,
+  }
+)(Count)
