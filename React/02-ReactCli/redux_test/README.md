@@ -85,3 +85,7 @@
 ## 8.求和案例_react-redux最终版
 			(1).所有变量名字要规范，尽量触发对象的简写形式。
 			(2).reducers文件夹中，编写index.js专门用于汇总并暴露所有的reducer
+
+## 9.React-redux
+      (1).reducer负责初始化数据，处理数据 => 在store中通过redux中的{createStore(reducer)}建立连接
+      (2).actions负责触发操作，变更数据。 在容器组件中通过react-redux的{connect}建立连接，映射mapDispatchToProps
