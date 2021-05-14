@@ -1,16 +1,18 @@
 # HelloReact
 
 ```react
+// JSX创建虚拟DOM
 const VDOM = (
     <h1 id="title">
         <span>Hello, React</span>
     </h1>
 )
 
+// JS虚拟DOM创建
+// React.createElement(标签名，{属性id,class}, 内容[标签级则React.createElement(标签名,{属性}, 内容)])
+const VDOM = React.createElement('h1', { id: 'title' }, React.createElement('span', {}, 'Hello React'))
 ReactDOM.render(VDOM, document.getElementById('APP'))
 ```
-
-
 
 # 虚拟DOM
 
@@ -21,11 +23,13 @@ ReactDOM.render(VDOM, document.getElementById('APP'))
 # JSX语法规则
 
 1. 定义虚拟DOM时，不要写引号
-2. 标签中混入JS表达式时要用{}
-3. 样式的类名指定不要用class, 要用className
-4. 内联样式，要用 style={{key:value}}的形式去写
-5. 只有一个根标签
-6. 标签必须闭合
+2. 标签中混入JS表达式时要用**`{}`**
+3. 样式的类名指定不要用`class`, 要用**`className`**
+4. 内联样式，要用 **`style={{key:value}}`**的形式去写
+5. 只有一个根标签。
+   1. 代码片段元素**`<React.Fragment key={item.id}></React.Fragment>`， 目前唯一支持key属性**
+   2. 短语法：**`<></>`, 但不支持key或属性**
+6. 标签必须闭合或者自闭合
 7. 标签首字母
    1. 若小写字母开头，则将该标签转为html中同名元素。若html中无该标签对应的同名元素，则报错
    2. 若大写字母开头， react就去渲染对应的组件，若组件没有定义，则报错
@@ -44,6 +48,19 @@ ReactDOM.render(VDOM, document.getElementById('APP'))
    - if（）{}
    - for（）{}
    - switch（）{}
+3. **JSX中只能写js表达式**
+
+## for循环语句
+
+```react
+<ul>
+    {
+        arr.map(item => {
+            return <li key={item.id}>{item}</li>
+        })
+    }
+</ul>
+```
 
 # 组件
 
@@ -68,10 +85,26 @@ ReactDOM.render(VDOM, document.getElementById('APP'))
 state是组件对象最重要的属性，值是对象（可包含多个key-value的组合）
 
 - 组件中render方法中的this为组件实例对象
+
 - 组件中自定义的方法中this为undefined，如何解决？
   - 强制绑定this: 通过函数对象的bind()
-  - 箭头函数
+  - **箭头函数**
+  
 - 状态数据，不能直接修改或更新
+
+- **对象式状态改变，setState是异步的**
+
+- 更改方式：
+
+  - 直接修改：`this.setState({ stateVariable: value }, [callback])`
+
+  - 返回一个状态改变对象 : `this.setState(updater(state, props), [callback])`
+
+    ```react
+    this.setState((state,props) => {
+        return {count: state.count + 1}
+    })
+    ```
 
 ## props
 
