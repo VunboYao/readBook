@@ -1,4 +1,4 @@
-# HelloReact
+HelloReact
 
 ```react
 // JSX创建虚拟DOM
@@ -108,6 +108,8 @@ state是组件对象最重要的属性，值是对象（可包含多个key-value
 
 ## props
 
+**`array、bool、func、number、object、string、symbol`**
+
 ```react
 // 限制属性
 Person.propTypes = {
@@ -123,6 +125,7 @@ Person.defaultProps = {
 }
 
 // ============================简写方式===============================
+import PropTypes from 'prop-types'
 class Person extends React.Component {
     // 限制属性
     static propTypes = {
@@ -153,12 +156,12 @@ class Person extends React.Component {
 }
 ```
 
-- props是只读的
+- **`props`**是只读的
 
 # 事件绑定
 
-- 组件的render(), 在组件的原型对象上，供实例使用
-- 组件中的render方法中的this为组件实例对象
+- 组件的`render()`, 在组件的原型对象上，供实例使用
+- 组件中的`render`方法中的this为组件实例对象
 - class式组件中的方法注册在组件的原型上
 
 ## 类中方法this的指向
@@ -183,4 +186,366 @@ student.speak() // Person {name: "Yao", age: 20} 实例调用
 const x = student.speak // 方法指向到x， class中默认开启严格模式
 x() // undefined
 ```
+
+# ref
+
+## 字符串形式(废弃)
+
+```react
+class Person extends React.Component {
+    showData = () => {
+        console.log(this.refs.inputNode.value)
+    }
+    render(){
+        return (
+            <>
+            	<input ref="inputNode" placeholder="Please input your value" />
+            	<button onClick={this.showData}>Confirm</button>
+            </>
+        )
+    }
+}
+```
+
+## 回调函数形式
+
+```react
+// 内联回调形式
+class Person extends React.Component {
+    showData = () => {
+        console.log(this.inputNode.value)
+    }
+    render() {
+        return (
+            <div>
+                <input
+                    ref={c => (this.inputNode = c)}
+                    placeholder='Please input your value'
+                    />
+                <button onClick={this.showData}>Confirm</button>
+            </div>
+        )
+    }
+}
+
+// 回调函数的问题
+class Person extends React.Component {
+    state = {
+        isHot: false,
+    }
+    showData = () => {
+        this.setState({ isHot: !this.state.isHot })
+    }
+    render() {
+        return (
+            <div>
+                <h2>Today is {this.state.isHot ? 'hot' : 'cold'}</h2>
+                <input
+                    ref={c => {
+                        this.inputNode = c
+                        console.log('这里会被执行更新2次', c)
+                    }}
+                    placeholder='Please input your value'
+                    />
+                <button onClick={this.showData}>Confirm</button>
+            </div>
+        )
+    }
+}
+
+/*
+第一次挂载：这里会被执行2次 <input placeholder="Please input your value">
+点击Confirm更新时：
+第一次打印：这里会被执行更新2次 null
+第二次打印：这里会被执行更新2次 <input placeholder="Please input your value">
+*/
+
+// 内联形式调用：更新过程中会被执行两次，第一次传入参数null, 然后第二次会传入参数DOM元素。因为在每次渲染时会创建一个新的函数实例，所以 React 清空旧的 ref (设置为null) 并且设置新的。
+
+// 回调绑定只会执行一次
+// 将 ref 的回调函数定义成 class 的绑定函数的方式可以避免上述问题，但是大多数情况下它是无关紧要的。
+```
+
+## createRef()
+
+```react
+class Person extends React.Component {
+    state = {
+        isHot: false,
+    }
+    /* 设置ref值 */
+    inputNode = React.createRef()
+    showData = () => {
+        this.setState({ isHot: !this.state.isHot })
+        console.log(this.inputNode.current.value) // 取ref中的值
+    }
+    render() {
+        return (
+            <div>
+                <h2>Today is {this.state.isHot ? 'hot' : 'cold'}</h2>
+                {/*引用ref值*/}
+                <input
+                    ref={this.inputNode}
+                    placeholder='Please input your value'
+                    />
+                <button onClick={this.showData}>Confirm</button>
+            </div>
+        )
+    }
+}
+```
+
+# 事件对象
+
+- 通过`onXxx`属性指定事件处理函数（**大小写问题**）
+  - React使用的是自定义（合成）事件，而不是使用原生的DOM事件——为了更好的兼容性
+  - React中的事件是通过委托方式处理的（委托给组件最外层的元素）——为了高效
+- 通过`event.target`得到发生事件的DOM元素对象——**不要过度使用Ref**
+
+# 生命周期(旧)
+
+![1621051906478](..\React\react生命周期(旧).png)
+
+## 初次挂载
+
+**`ReactDOM.render()`触发， 挂载**
+
+1. `constructor`，执行构造器
+2. `componentWillMount()`，组件将要挂载
+3. `render()`，初始化
+4. **`componentDidMount()`，组件挂载后**
+
+## 组件更新
+
+**setState触发**
+
+1. `shouldComponentUpdate(nextProps, nextState)`，是否组件更新 ? 必须返回true/false
+2. `componentWillUpdate(nextProps, nextState)`,  组件将要更新
+3. `render()`，执行渲染
+4. `componentDidUpdate(nextProps, nextState)`，组件更新完成。**禁止套娃**
+
+## 强制更新
+
+**`forceUpdate()`触发**
+
+1. `componentWillUpdate(nextProps, nextState)`,  组件将要更新
+2. `render()`，执行渲染
+3. `componentDidUpdate(nextProps, nextState)`，组件更新完成
+
+## 卸载组件
+
+**`ReactDOM.unmountComponentAtNode(document.getElementById('root'))`触发**
+
+- **`componentWillUnmount()`**, 组件即将卸载。**清理定时器，收集数据通知后端系统等。**
+
+# 父子组件
+
+## 初次挂载
+
+1. A-`constructor`，执行构造器
+2. A-`componentWillMount()`，组件将要挂载
+3. A-`render()`，初始化
+4. B-`constructor`，执行构造器
+5. B-`componentWillMount()`，组件将要挂载
+6. B-`render()`，初始化
+7. **B-`componentDidMount()`，组件挂载后**
+8. **A-`componentDidMount()`，组件挂载后**
+
+## 组件更新
+
+1. A-`shouldComponentUpdate(nextProps, nextState)`，组件更新 ? 必须返回true/false
+2. A-`componentWillUpdate(nextProps, nextState)`,  组件将要更新
+3. A-`render()`，执行渲染
+4. B-`componentWillReceiveProps()`, 从父组件接收到的Props
+   - **在第二次触发变更时才会触发该钩子**
+5. B-`shouldComponentUpdate(nextProps, nextState)`，组件更新 ? 必须返回true/false
+6. B-`componentWillUpdate(nextProps, nextState)`,  组件将要更新
+7. B-`render()`，执行渲染
+8. B-`componentDidUpdate(nextProps, nextState)`，组件更新完成。**禁止套娃**
+9. A-`componentDidUpdate(nextProps, nextState)`，组件更新完成。**禁止套娃**
+
+## 卸载组件
+
+- A-`componentWillUnmount()`
+- B-`componentWillUnmount()`
+
+# 生命周期（新）
+
+![1621051906478](..\React\react生命周期(新).png)
+
+## 将要过期的API
+
+- `componentWillMount`
+- `componentWillReceiveProps`
+- `componentWillUpdate`
+- 新版本中需要增加前缀: `UNSAFE_`
+
+## 新的API
+
+**`getDerivedStateFromProps(props, state)`**
+
+- **静态方法： `static getDerivedStateFromProps(props, state){}`**
+- 返回一个`state`对象或`null`
+  - 返回一个固定的`state`对象， 则后续无法更改状态对象。
+
+**`getSnapshotBeforeUpdate(preProps, preState)`**
+
+- 返回一个`value`或`null`
+- 返回值传递给`componentDidUpdate(preProps,preState,SnapshotValue )`
+
+## 初次挂载
+
+**ReactDOM.render()触发，初次渲染**
+
+1. `constructor`
+2. `getDerivedStateFromProps(props, state)`
+3. `render()`
+4. `componentDidMount()`
+
+## 更新阶段
+
+**由组件内部this.setState()或父组件重新render触发**
+
+1. `getDerivedStateFromProps(props, state)`
+2. `shouldComponentUpdate(nextProps, nextState)`，组件更新 ? 必须返回true/false
+3. `render()`
+4. `getSnapshotBeforeUpdate(prevProps, prevState)`
+5. `componentDidUpdate(prevProps, prevState, snapshot)`
+
+## 卸载组件
+
+**由ReactDOM.unmountComponentAtNode()触发**
+
+- `componentWillUnmount()`
+
+# 路由
+
+## 路由基本使用
+
+- 导航区: `<Link to='/xxxx'>主页<Link>`
+- 展示区写`Route`标签进行路径匹配：`<Route path='/xxx' component={Home}/>`
+- `<App>`的最外层包裹一个`<BrowserRouter`或`<HashRouter>`
+
+## 路由组件与一般组件
+
+1. 写法不同
+   - 一般组件: `<Demo />`
+   -  路由组件: `<Route path="/demo" component={Demo}/>`
+
+2. 存放位置不同
+   - 一般组件：components
+   - 路由组件：pages
+
+3. 接收到的props不同：
+   - 一般组件： 写组件标签时传递了什么，就能收到什么
+   - 路由组件：接收三个固定的属性
+     - history:
+       - go: f go(n)
+       - goBack: f goBack()
+       - goForward: f goForward()
+       - push: f push(path, state)
+       - replace: f replace(path, state)
+     - location:
+       - pathName: '/about',
+       - search: '',
+       - state: undefined
+     - match: 
+       - params: {},
+       - path: '/about',
+       - url: '/about'
+
+## NavLink
+
+NavLink可以实现路由链接的高亮，通过activeClassName指定样式名
+
+## Switch的使用
+
+- 通常情况下，path和component是一一对应的关系。
+
+- Switch可以提高路由匹配效率(单一匹配)。
+
+## **多级路径刷新页面样式丢失**
+
+- public/index.html 中 引入样式时不写 ./ 写 / （常用）
+- public/index.html 中 引入样式时不写 ./ 写 %PUBLIC_URL% （常用）
+- 使用HashRouter
+
+## 路由的匹配
+
+- 默认使用的是模糊匹配（简单记：【输入的路径】必须包含要【匹配的路径】，且顺序要一致）
+- 开启严格匹配：`<Route exact={true} path="/about" component={About}/>`
+- 严格匹配不要随便开启，需要再开，有些时候开启会导致无法继续匹配二级路由
+
+## Redirect的使用
+
+1. 一般写在所有路由注册的最下方，当所有路由都无法匹配时，跳转到Redirect指定的路由
+
+2. 具体编码
+
+   ```react
+   <SWitch>
+       <Route path="/about" component={About}/>
+       <Route path="/home" component={Home}/>
+       <Redirect to="/about"/>
+   </SWitch>
+   ```
+
+## 嵌套路由
+
+1. 注册子路由时要写上父路由的path值
+2. 路由的匹配是按照注册路由的顺序进行的
+
+## 路由组件传参
+
+1. params参数
+   - 路由链接(携带参数)：`<Link to='/demo/test/tom/18'}>详情</Link>`
+   - 注册路由(声明接收)：`<Route path="/demo/test/:name/:age" component={Test}/>`
+   - 接收参数：**`this.props.match.params`**
+
+2. search参数
+
+   - 路由链接(携带参数)：`<Link to='/demo/test?name=tom&age=18'}>详情</Link>`
+
+   - 注册路由(无需声明，正常注册即可)：`<Route path="/demo/test" component={Test}/>`
+
+   - 接收参数：**`this.props.location.search`**
+
+   - 备注：获取到的search是urlencoded编码字符串，需要借助querystring解析
+
+     ```react
+     import qs from 'querystring'
+     const search = this.props.location.search
+     const {id, title} = qs.parse(search.slice(1))
+     console.log(search, id, title)
+     ```
+
+3. state参数
+   - 路由链接(携带参数)：`<Link to={{pathname:'/demo/test',state:{name:'tom',age:18}}}>详情</Link>`
+   - 注册路由(无需声明，正常注册即可)：`<Route path="/demo/test" component={Test}/>`
+   - 接收参数：**`this.props.location.state`**
+   - 备注：**刷新也可以保留住参数**
+
+## 编程式路由导航
+
+**借助this.prosp.history对象上的API对操作路由跳转、前进、后退**
+
+- `this.prosp.history.push()`
+- `this.prosp.history.replace()`
+- `this.prosp.history.goBack()`
+- `this.prosp.history.goForward()`
+- `this.prosp.history.go()`
+
+## BrowserRouter与HashRouter的区别
+
+1. 底层原理不一样:
+   - BrowserRouter使用的是H5的history API，不兼容IE9及以下版本
+   - HashRouter使用的是URL的哈希值
+2. path表现形式不一样
+   - BrowserRouter的路径中没有#,例如：localhost:3000/demo/test
+   - HashRouter的路径包含#,例如：localhost:3000/#/demo/test
+3. 刷新后对路由state参数的影响
+   - BrowserRouter没有任何影响，因为state保存在history对象中
+   - HashRouter刷新后会导致路由state参数的丢失！！！
+
+4. 备注：HashRouter可以用于解决一些路径错误相关的问题
 

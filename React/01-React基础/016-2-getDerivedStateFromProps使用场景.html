@@ -22,8 +22,8 @@
     }
     // 静态方法：状态对象
     // state值任何时候都取决于props时才用到
-    static getDerivedStateFromProps(props) {
-      console.log('getDerivedStateFromProps', props)
+    static getDerivedStateFromProps(props, state) {
+      console.log('getDerivedStateFromProps', props, state)
       return {
         count: props.num
       }
@@ -34,12 +34,23 @@
     handleAdd = () => {
         this.setState({count: ++this.state.count})
     }
+    shouldComponentUpdate(props, state) {
+      console.log('shouldComponentUpdate :>> ', props, state);
+      return true
+    }
+    componentDidUpdate(props, state) {
+      console.log('componentDidUpdate :>> ', props, state);
+    }
+    Updata = () => {
+      this.forceUpdate()
+    }
     render() {
       console.log('Count>>>render')
       return (
           <div>
             <h2>Hello world {this.state.count}</h2>
             <button onClick={this.handleAdd}>Button ADD</button>
+            <button onClick={this.Updata}>Force Update</button>
           </div>
       )
     }

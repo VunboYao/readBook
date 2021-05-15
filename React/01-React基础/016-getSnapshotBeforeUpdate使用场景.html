@@ -32,11 +32,13 @@
     }
 
     // 获取快照，配合componentDidUpdate()，需要返回一个值或null
-    getSnapshotBeforeUpdate() {
+    getSnapshotBeforeUpdate(props, state) {
+      console.log(props, state);
       return this.pos.scrollHeight
     }
 
     componentDidUpdate(preProps, preState, height) {
+      // 新高度 - 旧的高度
       this.pos.scrollTop += this.pos.scrollHeight - height
     }
 
