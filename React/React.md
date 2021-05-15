@@ -549,3 +549,495 @@ NavLink可以实现路由链接的高亮，通过activeClassName指定样式名
 
 4. 备注：HashRouter可以用于解决一些路径错误相关的问题
 
+# redux
+
+![1621051906478](..\React\redux原理图.png)
+
+## 基础介绍
+
+**store.js:**
+
+- 引入redux中的createStore函数，创建一个store
+- createStore调用时要传入一个为其服务的reducer，并暴露store对象
+
+**reducer.js:**
+
+- reducer的本质是一个函数，接收：preState,action，返回加工后的状态
+- reducer有两个作用：初始化状态，加工状态
+- reducer被第一次调用时，是store自动触发的
+  - 传递的preState是undefined
+  - 传递的action是:{type:'@@REDUX/INIT_a.2.b.4}
+
+**constant.js：**
+
+- 定义redux中全局常量
+
+**action.js：**
+
+- 明确：延迟的动作不想交给组件自身，想交给action
+- 何时需要异步action：想要对状态进行操作，但是具体的数据靠异步任务返回。
+- 具体编码：
+  - `npm i redux-thunk`，并配置在store中
+  - 创建action的函数不再返回一般对象，而是一个函数，该函数中写异步任务
+  - 异步任务有结果后，分发一个同步的action去真正操作数据
+  - 备注：**异步action不是必须要写的，完全可以自己等待异步任务的结果了再去分发同步action。**
+
+## react-redux介绍
+
+![1621051906478](..\React\react-redux模型图.png)
+
+1. 明确两个概念
+   1. UI组件:不能使用任何redux的api，只负责页面的呈现、交互等
+   2. 器组件：负责和redux通信，将结果交给UI组件。
+2. 如何创建一个容器组件————靠react-redux 的 connect函数
+   1. **`connect(mapStateToProps,mapDispatchToProps)(UI组件)`**
+   2. **`mapStateToProps`**:映射状态，返回值是一个对象
+   3. **`mapDispatchToProps`**:映射操作状态的方法，返回值是一个对象
+
+3. 备注1：容器组件中的store是靠props传进去的，而不是在容器组件中直接引入
+4. 备注2：mapDispatchToProps，也可以是一个对象
+
+## react-redux优化
+
+1. 容器组件和UI组件整合一个文件
+
+2. 无需自己给容器组件传递store，给`<App/>`包裹一个`<Provider store={store}>`即可。
+
+3. **使用了react-redux后也不用再自己检测redux中状态的改变了，容器组件可以自动完成这个工作。**
+
+   ```react
+   // 原始方式。订阅App的更新
+   store.subscribe(() => {
+     ReactDOM.render(<App/>, document.getElementById('root'))
+   })
+   ```
+
+4. `mapDispatchToProps`也可以简单的写成一个对象
+
+5. 一个组件要和redux“打交道”要经过哪几步？
+
+   1. 定义好UI组件---不暴露
+
+   2. 引入connect生成一个容器组件，并暴露，写法如下：
+
+      ```react
+      connect(
+          state => ({...state}), //映射状态
+          {key:xxxxxAction} //映射操作状态的方法
+      )(UI组件)
+      ```
+
+   3. 在UI组件中通过this.props.xxxxxxx读取和操作状态
+
+## react-redux开发者工具的使用
+
+1. `npm i redux-devtools-extension`
+
+2. store中进行配置
+
+   ```react
+   // 引入redux中的核心方法
+   import { createStore, applyMiddleware } from 'redux'
+   
+   // 获取redux异步action处理器
+   import thunk from 'redux-thunk'
+   
+   // 引入redux-devtools-extension
+   import { composeWithDevTools } from 'redux-devtools-extension'
+   
+   // 引入汇总后的reducer
+   import Reducer from './reducers'
+   
+   export default createStore(Reducer, composeWithDevTools(applyMiddleware(thunk)))
+   ```
+
+## 终极奥义
+
+**1.入口文件中通过Provider为所有的容器组件注册Store**
+
+```react
+// index.js 入口文件
+import ReactDOM from 'react-dom' // 引入DOM依赖库
+import App from './App'
+import { Provider } from 'react-redux' // 引入react-redux中核心方法，Provider
+import Store from './redux/store'
+
+ReactDOM.render(
+  /* 用Provider包裹App, 让App的所有后代容器组件都能接收到store */
+  <Provider store={Store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
+```
+
+**2.App.js中引入相应的容器组件**
+
+**3.redux下store.js文件的初始化**
+
+```react
+// redux/store.js
+// 引入redux中的核心方法
+import { createStore, applyMiddleware } from 'redux'
+
+// 获取redux异步action处理器
+import thunk from 'redux-thunk'
+
+// 引入redux-devtools-extension
+import { composeWithDevTools } from 'redux-devtools-extension'
+
+// 引入汇总后的reducer
+import Reducer from './reducers'
+
+export default createStore(Reducer, composeWithDevTools(applyMiddleware(thunk)
+```
+
+**4.constant.js文件下定义常量名称并暴露供给reduer与action使用**
+
+**5.reducers的建立**
+
+- 多个共享数据状态，则使用多个文件；**通过`redux`中的`combineReducers`方法合并为一个对象并暴露**
+
+  ```react
+  // redux/reducers/index.js
+  import { combineReducers } from 'redux'
+  // 引入reducer
+  import Count from './Count'
+  import Person from './Person'
+  
+  export default combineReducers({ Count, Person })
+  ```
+
+- reducer.js初始化。引入常量，定义初始化数据，处理action
+
+  ```react
+  // redux/reducers/Count.js
+  
+  import { INCREMENT, DECREMENT } from '../constant'
+  const initState = 0 // 声明初始化数据
+  
+  /* TODO: 纯函数，不能改写preState */
+  export default function CountReducer(preState=initState, action) {
+    const {type, data} = action
+    switch (type) {
+      case INCREMENT:
+        return preState + data
+      case DECREMENT:
+        return preState - data
+      default:
+        return preState
+    }
+  }
+  ```
+
+**6.actions中引入常量，触发（dispatch）操作，变更数据**
+
+```react
+//redux/actions/Count.js
+
+import { INCREMENT, DECREMENT } from '../constant'
+
+export const increment = data => ({type: INCREMENT, data})
+export const decrement = data => ({type: DECREMENT, data})
+```
+
+**7.引入connect生成一个容器组件，并声明一个UI组件，最终暴露connect(state, action)(UI组件)**
+
+```react
+// 引入核心库
+import { Component } from 'react'
+
+// 通过connect生成一个容器组件
+import { connect } from 'react-redux'
+
+// 引入actions
+import { increment, decrement } from '../redux/actions/Count'
+
+// 创建UI组件
+class Count extends Component {
+    // 通过this.props可获取connect方法中传入的state与action
+    // this.props.increment(select) ...
+    // this.props.Count
+}
+
+// 暴露方法
+export default connect(
+  // 映射状态 mapStateToProps
+  state => ({ ...state }),
+  // 映射操作方法 mapDispatchToProps
+  {
+    increment,
+    decrement,
+  }
+)(Count)
+
+
+
+// connect原始方式
+/*
+1.mapStateToProps函数返回一个对象
+2.返回的对象中的key就作为传递给UI组件的props的key,value就作为传递给UI组件的props的value
+3.mapStateToProps用于传递状态
+*/
+const mapStateToProps = state => ({ count: state })
+
+/*
+1.mapDispatchToProps函数返回的是一个对象
+2.返回的对象中的key就作为传递给UI组件的props的key,value就作为传递给UI组件的props的value
+3.mapStateToProps用于传递操作状态的方法
+*/
+const mapDispatchToProps = dispatch => {
+  return {
+    [INCREMENT]: num => dispatch(createIncrementAction(num)),
+    [DECREMENT]: num => dispatch(createDecrementAction(num)),
+    addOfAsync: (num, time) => dispatch(createIncrementAsyncAction(num, time)),
+  }
+}
+
+// 暴露一个Count的容器组件
+export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
+```
+
+# 扩展
+
+## setState
+
+1. setState(stateChange, [callback])------对象式的setState
+   - stateChange为状态改变对象(该对象可以体现出状态的更改)
+   - callback是可选的回调函数, 它在状态更新完毕、界面也更新后(render调用后)才被调用
+2. setState(updater, [callback])------函数式的setState
+   - updater为返回stateChange对象的函数
+   - updater可以接收到state和props
+   - callback是可选的回调函数, 它在状态更新、界面也更新后(render调用后)才被调用
+3. 总结：
+   - 对象式的setState是函数式的setState的简写方式(语法糖)
+   - 使用原则：
+     1. 如果新状态不依赖于原状态 ===> 使用对象方式
+     2. 如果新状态依赖于原状态 ===> 使用函数方式
+     3. 如果需要在setState()执行后获取最新的状态数据, 要在第二个callback函数中读取
+
+## lazyLoad
+
+- 通过React的lazy函数配合import()函数动态加载路由组件 ===> 路由组件代码会被分开打包
+
+  ```react
+  const Login = lazy(()=>import('@/pages/Login'))
+  ```
+
+- 通过`<Suspense>`指定在加载得到路由打包文件前显示一个自定义`loading`界面
+
+  ```react
+  <Suspense fallback={<h1>loading.....</h1>}>
+      <Switch>
+          <Route path="/xxx" component={Xxxx}/>
+          <Redirect to="/login"/>
+      </Switch>
+  </Suspense>
+  ```
+
+## Hooks
+
+- State Hook: React.useState()
+- Effect Hook: React.useEffect()
+- Ref Hook: React.useRef()
+
+### State Hook
+
+1. State Hook让函数组件也可以有state状态, 并进行状态数据的读写操作
+2. 语法: `const [xxx, setXxx] = React.useState(initValue)`
+3. useState()说明:
+   1. 参数: 第一次初始化指定的值在内部作缓存
+   2. 返回值: 包含2个元素的数组, 第1个为内部当前状态值, 第2个为更新状态值的函数
+4. setXxx()2种写法:
+   1. setXxx(newValue): 参数为非函数值, 直接指定新的状态值, 内部用其覆盖原来的状态值
+   2. setXxx(value => newValue): 参数为函数, 接收原本的状态值, 返回新的状态值, 内部用其覆盖原来的状态值
+
+### Effect Hook
+
+1. Effect Hook 可以让你在函数组件中执行副作用操作(用于模拟类组件中的生命周期钩子)
+
+2. React中的副作用操作
+
+   1. 发ajax请求数据获取
+   2. 设置订阅 / 启动定时器
+   3. 手动更改真实DOM
+
+3. 语法和说明:
+
+   ```react
+   useEffect(() => {
+       // 在此可以执行任何带副作用操作
+       return () => { // 在组件卸载前执行
+           // 在此做一些收尾工作, 比如清除定时器/取消订阅等
+       }
+   }, [stateValue]) // 如果指定的是[], 回调函数只会在第一次render()后执行
+   ```
+
+4. 可以把 useEffect Hook 看做如下三个函数的组合
+
+   ```react
+   componentDidMount()
+   componentDidUpdate()
+   componentWillUnmount()
+   ```
+
+### Ref Hook
+
+1. Ref Hook可以在函数组件中存储/查找组件内的标签或任意其它数据
+2. 语法: `const refContainer = React.useRef()`
+3. 作用:保存标签对象,功能与`React.createRef()`一样
+
+## Fragment
+
+```react
+<Fragment><Fragment>
+<></>
+// 可以不用必须有一个真实的DOM根标签了
+```
+
+## Context
+
+一种组件间通信方式, 常用于【祖组件】与【后代组件】间通信
+
+1. 创建Context容器对象
+
+   ```react
+   const XxxContext = React.createContext()
+   ```
+
+2. 渲染子组时，外面包裹xxxContext.Provider, 通过value属性给后代组件传递数据
+
+   ```react
+   <xxxContext.Provider value={数据}>
+       子组件
+   </xxxContext.Provider>
+   ```
+
+3. 后代组件读取数据
+
+   ```react
+   //第一种方式:仅适用于类组件
+   static contextType = xxxContext  // 声明接收context
+   this.context // 读取context中的value数据
+   
+   //第二种方式: 函数组件与类组件都可以
+   <xxxContext.Consumer>
+       {
+           value => ( // value就是context中的value数据
+           	要显示的内容
+           )
+   	}
+   </xxxContext.Consumer>
+   ```
+
+4. 在应用开发中一般不用context, 一般都它的封装react插件
+
+## 组件优化
+
+### Component的2个问题
+
+1. 只要执行setState(),即使不改变状态数据, 组件也会重新render()
+2. 只当前组件重新render(), 就会自动重新render子组件 ==> 效率低
+
+**解决**
+
+- 使用PureComponent： PureComponent重写了shouldComponentUpdate(), 只有state或props数据有变化才返回true
+- 注意：**只是进行state和props数据的浅比较, 如果只是数据对象内部数据变了, 返回false。不要直接修改state数据, 而是要产生新数据**
+
+## render props
+
+- Vue: 使用slot技术, 也就是通过组件标签体传入结构  `<AA><BB/></AA>`
+
+- React
+  - 使用children props: 通过组件标签体传入结构
+  - 使用render props: 通过组件标签属性传入结构, 一般用render函数属性
+
+```react
+// render props
+export default class Demo extends PureComponent {
+  render() {
+    return (
+      <div className="parent">
+        <h2>我是父亲组件</h2>
+        {/* 需要提供插槽的组件，传入子组件时，通过render返回一个函数调用。传入需要插入的组件和属性 */}
+        <A age={2} render={data => <B name={data}/>}/>
+      </div>
+    )
+  }
+}
+
+
+class A extends PureComponent {
+  render() {
+    const {age} = this.props
+    const tip = age > 18 ? 'adult' : 'baby'
+    return (
+      <div className="son">
+        <h3>我是子组件</h3>
+        {/* 默认执行函数调用，传入暴露给子组件的参数 */}
+        {this.props.render(tip)}
+      </div>
+    )
+  }
+}
+
+class B extends PureComponent {
+  render() {
+    console.log(this);
+    return (
+      <div className='grandson'>
+        {/* 接收props传入的参数 */}
+        <h3>我是孙组件, i am {this.props.name}</h3>
+      </div>
+    )
+  }
+}
+```
+
+## 错误边界
+
+错误边界：用来捕获后代组件错误，渲染出备用页面
+
+- 只能捕获后代组件生命周期产生的错误，不能捕获自己组件产生的错误和其他组件在合成事件、定时器中产生的错误
+
+- 使用方式： getDerivedStateFromError配合componentDidCatch
+
+```react
+// 生命周期函数，一旦后台组件报错，就会触发
+static getDerivedStateFromError(error) {
+    console.log(error);
+    // 在render之前触发
+    // 返回新的state
+    return {
+        hasError: true,
+    };
+}
+
+componentDidCatch(error, info) {
+    // 统计页面的错误。发送请求发送到后台去
+    console.log(error, info);
+}
+```
+
+## 组件通信方式
+
+- props：
+
+  ​    (1).children props
+
+  ​    (2).render props
+
+- 消息订阅-发布
+  - pubs-sub、event等等
+
+- 集中式管理：
+  - redux、dva等等
+- conText： 生产者-消费者模式
+
+**组件之间的关系**
+
+- 父子组件：props
+
+- 兄弟组件(非嵌套组件)：消息订阅-发布、集中式管理
+- 祖孙组件(跨级组件)：消息订阅-发布、集中式管理、conText(用的少)
+
