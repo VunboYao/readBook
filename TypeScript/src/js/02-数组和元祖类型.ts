@@ -17,14 +17,14 @@ arr2 = ['a', 'b', 'c']
 console.log(arr2)
 
 // 联合类型
-let arr3:(number | string)[] // 表示定义了一个名称叫做arr3的数组，这个数组中将来只能够存储字符串类型或数值类型的的数据
-arr3 = [1, '12', 'b']
+let arr3:(number | string | boolean)[] // 表示定义了一个名称叫做arr3的数组，这个数组中将来只能够存储字符串类型或数值类型的的数据
+arr3 = [1, '12', 'b', true]
 // arr3 = [1, '12', 'b', true]
 console.log(arr3)
 
 // 任意类型
 let arr4:any[] // 表示定义了一个名称叫做arr4的数组，存储任意类型的数据
-arr4 = [1, 'b', false]
+arr4 = [1, 'b', false,[]]
 // arr4 = 123
 console.log(arr4)
 

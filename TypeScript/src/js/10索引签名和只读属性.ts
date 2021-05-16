@@ -25,12 +25,12 @@
     interface stringArray{
         [propName: number]: string
     }
-    // let arr10:stringArray = {
-    //     0: 'a',
-    //     1: 'b',
-    //     2: 'c'
-    // }
-    let arr10:stringArray = ['d', 'e', 'f']
+    let arr10:stringArray = {
+        0: 'a',
+        1: 'b',
+        2: 'c'
+    }
+    // let arr10:stringArray = ['d', 'e', 'f']
     console.log(arr10[0])
     console.log(arr10[1])
     console.log(arr10[2])

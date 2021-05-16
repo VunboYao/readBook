@@ -5,18 +5,18 @@
 * */
 
 // 定义接口类型
-interface FullName {
-    firstName: string,
-    lastName: string
+interface FullName2 {
+  firstName: string,
+  lastName: string
 }
 
-let obj8 = {
-    firstName: 'Vunbo',
-    // lastName: 13,
-    lastName: 'Yao'
+// let obj8 = {
+//   firstName: 'Vunbo',
+//   age: 20,
+//   lastName: 'Yao'
+// }
+// 输出一个人的全名，参数必须都是字符串
+function say8({ firstName, lastName }: FullName2): void {
+  console.log(`My Name is ${firstName}_${lastName}`)
 }
-// 需求：要求给一个函数输出一个人完整的姓名，这个人的姓必须是字符串，名也必须是一个字符串
-function say({firstName, lastName}:FullName):void {
-    console.log(`My Name is ${firstName}_${lastName}`)
-}
-say(obj8)
+say8({ firstName: 'Vunbo', lastName: 'Yao' })
