@@ -1,14 +1,12 @@
-import { Component } from 'react'
-
-// 引入容器组件
+import React, { PureComponent } from 'react'
 import Count from './containers/Count'
-import Person from './containers/Person';
-export default class App extends Component {
+import Person from './containers/Person'
+export default class App extends PureComponent {
   render() {
     return (
       <div>
         <Count/>
-        <hr />
+        <hr/>
         <Person/>
       </div>
     )

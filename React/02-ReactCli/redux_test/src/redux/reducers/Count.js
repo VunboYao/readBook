@@ -1,14 +1,13 @@
-import { INCREMENT, DECREMENT } from '../constant'
-const initState = 0 // 声明初始化数据
+import {ADD_COUNT} from '../constant'
 
-/* TODO: 纯函数，不能改写preState */
-export default function CountReducer(preState=initState, action) {
+const initState = 1
+
+export default function CountReducer(preState = initState, action) {
   const {type, data} = action
+  console.log(type, data);
   switch (type) {
-    case INCREMENT:
-      return preState + data
-    case DECREMENT:
-      return preState - data
+    case ADD_COUNT:
+      return data + preState
     default:
       return preState
   }
