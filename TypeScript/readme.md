@@ -272,7 +272,7 @@ console.log(arr10[2])
 
 ## 只读属性
 
-让对象属性只能在对象刚刚创建的时候修改
+让对象属性只能在对象刚刚创建的时候修改。**接口定义时，属性前增加readonly**
 
 ```typescript
 interface FullName {
@@ -287,7 +287,7 @@ MyName.firstName = 'vunbo' // error 只读，禁止修改
 console.log(MyName) // {firstName: "Vunbo", lastName: "Yao"}
 ```
 
-TS 内部对只读属性进行了扩展，扩展出来一个只读数组
+TS 内部对只读属性进行了扩展，扩展出来一个只读数组**ReadonlyArray**
 
 ```typescript
 // let arr10:Array<string> = ['a1', 'b1', 'c1']
@@ -371,3 +371,123 @@ let obj12: rectInterface = {
   border: '1',
 }
 ```
+
+## 函数
+
+```typescript
+// 命名函数
+function demo13t(name: string): void {
+  console.log(name)
+}
+
+// 匿名函数
+const a = function (name: string): void {
+  console.log(name)
+}
+
+// 箭头函数：name可选参数
+let arrowF = (name?:string): void => {
+  console.log(name);
+}
+
+// 剩余参数：定义一个name字符串，剩余参数为字符串，并放到一个数组中
+let argument13 = (name:string, ...argument:string[]): string =>{
+  console.log(name, argument);
+  return 'string'
+}
+argument13('yao', '123', '4444', '122')
+```
+
+## 函数声明
+
+TS中函数的完整格式应该是由函数的定义和实现两个部分组成
+
+```typescript
+// 定义一个函数
+let AddFun:(a: number, b: number) => number
+// 根据定义实现函数
+AddFun = function (x: number, y: number):number {
+  return x + y
+}
+let res14 = AddFun(100, 200)
+console.log(res14);
+
+
+// 一步到位写法
+let AddFun: (a: number, b: number) => number = function (x:number, y: number): number {
+  return x * y
+}
+// 精简版本，根据函数定义，自动推导对应的数据类型
+let AddFun: (a: number, b: number) => number = (x, y) => {
+  return x * y
+}
+console.log(AddFun(10, 20))
+```
+
+函数的先声明，再使用
+```typescript
+// TS函数声明
+// 声明一个函数
+type AddFun = (a: number, b: number) => number
+let add14:AddFun = function (x:number, y: number): number {
+  return x + y
+}
+console.log(add14(10, 30))
+
+// 简写
+type AddFun = (a: number, b: number) => number
+let add14:AddFun = function (x, y) {
+  return x + y
+}
+console.log(add14(10, 30))
+```
+
+## 重载
+
+TS函数重载: 函数的重载就是同名的函数可以根据不同的参数实现不同的功能
+
+```typescript
+// 定义函数的重载
+function getArray(x: number): number[]
+function getArray(x: string): string[]
+// 实现函数的重载
+function getArray(value:any): any {
+  if (typeof value === 'number') {
+    let arr = []
+    for (let i = 0; i < value; i++) {
+      arr.push(i)
+    }
+    return arr
+  } else {
+    return value.split('')
+  }
+}
+console.log(`getArray(10)`, getArray(10))
+console.log(`getArray`, getArray('11231232'))
+```
+
+## 可选参数
+
+**可选参数后面只能跟可选参数**
+
+```typescript
+// 可选参数
+// 需求：要求定义一个函数可以实现2个数或者3个数的加法
+
+function add15(x:number, y?:number, z?: number): number {
+  return x + (y ? y : 0) + (z ? z : 0)
+}
+
+console.log(`add15(10, 20)`, add15(10))
+```
+
+## 默认参数
+
+```typescript
+function add15(x:number, y:number=30, z?: number): number {
+  return x + (y ? y : 0) + (z ? z : 0)
+}
+
+console.log(add15(10))
+```
+
