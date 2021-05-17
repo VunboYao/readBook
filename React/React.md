@@ -89,7 +89,7 @@ state是组件对象最重要的属性，值是对象（可包含多个key-value
 - 组件中自定义的方法中this为undefined，如何解决？
   - 强制绑定this: 通过函数对象的bind()
   - **箭头函数**
-  
+
 - 状态数据，不能直接修改或更新
 
 - **对象式状态改变，setState是异步的**
@@ -449,14 +449,30 @@ class Person extends React.Component {
        - pathName: '/about',
        - search: '',
        - state: undefined
-     - match: 
+     - match:
        - params: {},
        - path: '/about',
        - url: '/about'
 
 ## NavLink
 
-NavLink可以实现路由链接的高亮，通过activeClassName指定样式名
+NavLink可以实现路由链接的高亮，通过activeClassName指定样式名，默认`active`
+
+```react
+// NavLink封装
+import React, { PureComponent } from 'react'
+import { NavLink } from 'react-router-dom';
+export default class MyNavLink extends PureComponent {
+  render() {
+    console.log(this.props);
+    return (
+      <div>
+        <NavLink {...this.props} />
+      </div>
+    )
+  }
+}
+```
 
 ## Switch的使用
 
@@ -527,13 +543,56 @@ NavLink可以实现路由链接的高亮，通过activeClassName指定样式名
 
 ## 编程式路由导航
 
-**借助this.prosp.history对象上的API对操作路由跳转、前进、后退**
+**借助this.props.history对象上的API对操作路由跳转、前进、后退**
 
-- `this.prosp.history.push()`
-- `this.prosp.history.replace()`
-- `this.prosp.history.goBack()`
-- `this.prosp.history.goForward()`
-- `this.prosp.history.go()`
+- `this.props.history.push()`
+  - params方式: this.props.history.push(`/home/message/detail/${id}/${title}`)
+  - search方式：this.props.history.push(`/home/message/detail?id=${id}&title=${title}`)
+  - state 方式：this.props.history.push(`/home/message/detail`, { id, title })
+- `this.props.history.replace()`
+- `this.props.history.goBack()`
+- `this.props.history.goForward()`
+- `this.props.history.go()`
+
+## withRouter
+
+当某一个组件不是一个`Router`，但是需要去调用`react-router`的三个对象`history，location，match`, 通过编程式去跳转路由。利用`WithRouter`包装并暴露
+
+```react
+import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
+
+class Header extends Component {
+  goBack = () => {
+    this.props.history.goBack()
+  }
+
+  goForward = () => {
+    this.props.history.goForward()
+  }
+
+  goTarget = () => {
+    this.props.history.go(-2)
+  }
+  render() {
+    return (
+      <div>
+        <h2>Hello React</h2>
+        <button onClick={this.goBack}>GoBack</button>
+        <button onClick={this.goForward}>GoForward</button>
+        <button onClick={this.goTarget}>Go</button>
+      </div>
+    )
+  }
+}
+
+export default withRouter(Header)
+
+// withRouter加工一般组件，使其具有路由组件的属性
+// withRouter返回一个新的组件
+```
+
+
 
 ## BrowserRouter与HashRouter的区别
 
@@ -638,16 +697,16 @@ NavLink可以实现路由链接的高亮，通过activeClassName指定样式名
    ```react
    // 引入redux中的核心方法
    import { createStore, applyMiddleware } from 'redux'
-   
+
    // 获取redux异步action处理器
    import thunk from 'redux-thunk'
-   
+
    // 引入redux-devtools-extension
    import { composeWithDevTools } from 'redux-devtools-extension'
-   
+
    // 引入汇总后的reducer
    import Reducer from './reducers'
-   
+
    export default createStore(Reducer, composeWithDevTools(applyMiddleware(thunk)))
    ```
 
@@ -704,7 +763,7 @@ export default createStore(Reducer, composeWithDevTools(applyMiddleware(thunk)
   // 引入reducer
   import Count from './Count'
   import Person from './Person'
-  
+
   export default combineReducers({ Count, Person })
   ```
 
@@ -712,10 +771,10 @@ export default createStore(Reducer, composeWithDevTools(applyMiddleware(thunk)
 
   ```react
   // redux/reducers/Count.js
-  
+
   import { INCREMENT, DECREMENT } from '../constant'
   const initState = 0 // 声明初始化数据
-  
+
   /* TODO: 纯函数，不能改写preState */
   export default function CountReducer(preState=initState, action) {
     const {type, data} = action
@@ -919,7 +978,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
    //第一种方式:仅适用于类组件
    static contextType = xxxContext  // 声明接收context
    this.context // 读取context中的value数据
-   
+
    //第二种方式: 函数组件与类组件都可以
    <xxxContext.Consumer>
        {
@@ -1028,9 +1087,11 @@ componentDidCatch(error, info) {
   ​    (2).render props
 
 - 消息订阅-发布
-  - pubs-sub、event等等
-
+  
+- pubs-sub、event等等
+  
 - 集中式管理：
+  
   - redux、dva等等
 - conText： 生产者-消费者模式
 
@@ -1040,4 +1101,3 @@ componentDidCatch(error, info) {
 
 - 兄弟组件(非嵌套组件)：消息订阅-发布、集中式管理
 - 祖孙组件(跨级组件)：消息订阅-发布、集中式管理、conText(用的少)
-

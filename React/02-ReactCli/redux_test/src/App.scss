@@ -1,0 +1,36 @@
+.route {
+  display: flex;
+
+  .left {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    div {
+      margin: 10px;
+      display: flex;
+      a {
+        padding: 6px 10px;
+        background-color: #cdd;
+        color: #fff;
+        border-radius: 4px;
+        text-decoration: none;
+      }
+      .active {
+        color: red;
+      }
+    }
+  }
+  .right {
+    flex: 1;
+  }
+}
+
+.home {
+  .home-nav {
+    display: flex;
+    a {
+      text-decoration: none;
+      margin: 10px;
+    }
+  }
+}
