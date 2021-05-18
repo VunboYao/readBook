@@ -8,13 +8,20 @@
 
 ## 数组和元素类型
 
-- 定义数组
-  - `let arr:Array<number>`, 只能存储数值类型的数组
-  - `let arr2:string[]`, 只能存储字符串类型的数组
-  - `let arr3:(number|string)[]`, 只能存储字符串类型和数值类型的数组
-  - `let arr4:any[]`, 存储任意类型的数据
-- 元祖类型: 保存定长定数据类型的数据
-  - `let arr5:[string, boolean, number]`, 表示一个可以存放三个元素的数组。分别是字符串、布尔值、数值
+1. `[]`定义数组
+
+- `let arr2:string[]`, 只能存储字符串类型的数组
+- `let arr3:(number|string)[]`, 只能存储字符串类型和数值类型的数组
+- `let arr4:any[]`, 存储任意类型的数据
+
+2. `Array`泛型建立数组
+
+- `let arr:Array<number>`, 只能存储数值类型的数组
+- **推荐使用`[]`，一方面可以避免与 JSX 的语法冲突，另一方面可以减少不少代码量**
+
+3. 元祖类型: 保存定长定数据类型的数据
+
+- `let arr5:[string, boolean, number]`, 表示一个可以存放三个元素的数组。分别是字符串、布尔值、数值
 
 ## 枚举类型
 
@@ -121,6 +128,16 @@ let variable: void
 variable = 1 // error
 variable = 'yao' // error
 variable = null
+```
+
+## unknown
+
+与 any 不同的是，unknown 在类型上更安全。比如我们可以将任意类型的值赋值给 unknown，但 unknown 类型的值只能赋值给 unknown 或 any
+
+```typescript
+let result: unknown;
+let num: number = result; // 提示 ts(2322)
+let anything: any = result; // 不会提示错误
 ```
 
 ## never 类型与 object 类型
@@ -291,7 +308,7 @@ TS 内部对只读属性进行了扩展，扩展出来一个只读数组**Readon
 
 ```typescript
 // let arr10:Array<string> = ['a1', 'b1', 'c1']
-let arr10: ReadonlyArray<string> = ['a1', 'b1', 'c1']
+let arr10: ReadonlyArray<string|number> = ['a1', 'b1', 'c1']
 console.log(arr10[1])
 // arr10[1] = '666' // error
 console.log(arr10[1])
@@ -489,5 +506,176 @@ function add15(x:number, y:number=30, z?: number): number {
 }
 
 console.log(add15(10))
+```
+
+# 泛型
+
+定义一个数组，固定长度，可用任意值填充
+
+```typescript
+let getArray15 = <T>(value: T, items: number = 5): T[] => {
+  return new Array(items).fill(value)
+}
+
+// let arr15 = getArray15<string>('abc')
+let arr15 = getArray15('abc')
+// 泛型具体的类型可以不指定， 如果没有指定，那么就会根据传递的泛型参数自动推导出来
+// let arr15 = getArray15(5, 3) // [5, 5, 5]
+let res15 = arr15.map(item => item.length)
+console.log(res15)
+```
+
+## 泛型约束
+
+默认情况下我们可以指定泛型为任意类型
+
+但是有些情况下我们需要指定的类型满足特定条件后才能指定
+
+那么这个时候我们就使用泛型约束
+
+```typescript
+// 需求：要求指定的泛型类型必须有length属性才可以
+interface LengthInterface {
+  length: number
+}
+let getArray16 = <T extends LengthInterface>(value: T, items: number = 5): T[] => {
+  return new Array(items).fill(value)
+}
+
+let arr16 = getArray16<string>('abc')
+// let arr16 = getArray16<number>(12) // 泛型约束，number类型不满足
+// 泛型具体的类型可以不指定， 如果没有指定，那么就会根据传递的泛型参数自动推导出来
+// let arr16 = getArray16(5, 3) // [5, 5, 5]
+let res16 = arr16.map(item => item.length)
+console.log(res16)
+```
+
+## 泛型约束中使用类型参数
+
+一个泛型被另一个泛型约束，就叫做泛型约束中使用类型参数
+
+```typescript
+// 需求：定义一个函数用于根据指定的key获取对象的value
+
+// let getProps18 = (obj: object, key: string): any => {
+//   return obj[key]
+// }
+
+// 指定 K 继承自 T 中存在的 key 值
+let getProps18 = <T, K extends keyof T>(obj: T, key: K): any => {
+  return obj[key]
+}
+
+let obj18 = {
+  a: '123',
+  b: '456'
+}
+
+let res = getProps18(obj18, 'a') // 123
+// 代码不够健壮，obj中没有c但这个key没有报错
+// let res = getProps18(obj18, 'c') // undefined
+```
+
+## 泛型中的类
+
+```typescript
+class Person {
+  name: string // 和 ES6 的区别，需要先定义实例属性， 才能够使用实例属性
+  age: number
+  constructor(name: string, age: number) {
+    this.name = name
+    this.age = age
+  }
+
+  // instance method
+  say():void {
+    console.log(`my name is ${this.name}, my age is ${this.age}`);
+  }
+
+  // static key
+  static food:string
+  static eat():void {
+    // this 指向当前类
+    console.log(`i am eating ${this.food}`);
+  }
+}
+```
+
+## 类属性修饰符
+
+- `public`：在类中、子类、外部均可使用。默认模式
+- `protected`：只能在类的内部使用和子类中使用
+- `private`：私有的，只能在类的内部使用，不能在外部和子类使用
+- `readonly`：只读的。**不能用在static上**
+
+## 类方法修饰符
+
+- `public`:  该方法能在类的内部、子类、外部使用。默认模式
+- `protected`： 只能在类的内部使用和子类中使用
+- `private`：私有的，只能在类的内部使用。不能在外部和子类使用
+
+```typescript
+// 有一个基类，所有的子类都需要继承自这个基类，但是不希望别人能够通过基类来创建对象
+
+class Person21 {
+  name: string
+  age: number
+  gender: string
+  protected constructor(name: string, age: number, gender: string) {
+    this.name = name
+    this.age = age
+    this.gender = gender
+  }
+  say():void {
+    console.log(`My name is ${this.name}, age is ${this.age}, gender is ${this.gender}`);
+  }
+}
+
+class Student21 extends Person21 {
+  constructor(name, age, gender) {
+    super(name, age, gender)
+  }
+}
+
+// const p21 = new Person21('yao', 28, 'man') // 不可使用new构建
+```
+
+## 类可选属性和参数属性
+
+可选属性同可选参数
+
+```typescript
+class Person22 {
+  name: string
+  age: number
+  gender?: string
+  say(name: string, age: number, gender?: string) {
+    this.name = name
+    this.age = age
+    this.gender = gender
+  }
+}
+```
+
+```typescript
+class Person22 {
+  name: string
+  age: number
+  gender: string
+  say(name: string, age: number, gender: string) {
+    this.name = name
+    this.age = age
+    this.gender = gender
+  }
+}
+
+// 简写
+class Person22 {
+    // 参数属性
+  constructor(public name:string,  public age: number, public gender: string) {}
+}
+
+let p22 = new Person22('yao', 22, 'man')
+console.log(p22);
 ```
 
