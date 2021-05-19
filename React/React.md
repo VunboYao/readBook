@@ -310,19 +310,19 @@ class Person extends React.Component {
 
 **`ReactDOM.render()`触发， 挂载**
 
-1. `constructor`，执行构造器
-2. `componentWillMount()`，组件将要挂载
+1. `constructor`，执行构造器。**仅在挂载时执行一次**
+2. `componentWillMount()`，组件将要挂载。**仅在挂载时执行一次**
 3. `render()`，初始化
-4. **`componentDidMount()`，组件挂载后**
+4. **`componentDidMount()`，组件挂载后**。**仅在挂载时执行一次**
 
 ## 组件更新
 
-**setState触发**
+**setState触发、父组件更新触发的更新**
 
 1. `shouldComponentUpdate(nextProps, nextState)`，是否组件更新 ? 必须返回true/false
-2. `componentWillUpdate(nextProps, nextState)`,  组件将要更新
+2. `componentWillUpdate(nextProps, nextState)`,  组件将要更新. 可处理不涉及真实 DOM 的操作
 3. `render()`，执行渲染
-4. `componentDidUpdate(nextProps, nextState)`，组件更新完成。**禁止套娃**
+4. `componentDidUpdate(nextProps, nextState)`，组件更新完成。**禁止套娃**。可处理真实 DOM 操作。**也可执行作为子组件更新完毕的标志通知父组件**
 
 ## 强制更新
 
@@ -337,6 +337,7 @@ class Person extends React.Component {
 **`ReactDOM.unmountComponentAtNode(document.getElementById('root'))`触发**
 
 - **`componentWillUnmount()`**, 组件即将卸载。**清理定时器，收集数据通知后端系统等。**
+- 也可通过父级移除子组件，进行子组件卸载
 
 # 父子组件
 
@@ -356,8 +357,9 @@ class Person extends React.Component {
 1. A-`shouldComponentUpdate(nextProps, nextState)`，组件更新 ? 必须返回true/false
 2. A-`componentWillUpdate(nextProps, nextState)`,  组件将要更新
 3. A-`render()`，执行渲染
-4. B-`componentWillReceiveProps()`, 从父组件接收到的Props
+4. **B-`componentWillReceiveProps(nextProps)`, 从父组件接收到的Props**
    - **在第二次触发变更时才会触发该钩子**
+   - **不是由 props 的变化触发的，而是由父组件的更新触发的**
 5. B-`shouldComponentUpdate(nextProps, nextState)`，组件更新 ? 必须返回true/false
 6. B-`componentWillUpdate(nextProps, nextState)`,  组件将要更新
 7. B-`render()`，执行渲染
@@ -1101,3 +1103,39 @@ componentDidCatch(error, info) {
 
 - 兄弟组件(非嵌套组件)：消息订阅-发布、集中式管理
 - 祖孙组件(跨级组件)：消息订阅-发布、集中式管理、conText(用的少)
+
+# 原理
+
+`JSX` 的本质： `JavaScript` 的语法扩展
+
+- 通过 `Babel ` 将 `JSX` 语法转换为 `JavaScript` 代码。`JSX => React.createElement`
+- **JSX 的本质是** `React.createElement` **这个JavaScript 调用的语法糖**
+
+**React 选用 JSX 语法的动机**
+
+- **JSX 语法糖允许前端开发者使用我们最为熟悉的类 HTML 标签语法来创建虚拟 DOM，在降低学习成本的同时，也提升了研发效率与研发体验**
+
+**React.createElement**
+
+- createElement 源码最终返回一个调用`ReactElement`执行方法，并传入相关参数
+
+- createElement 就像是开发者和 `ReactElement` 调用之间的一个**“转换器”、一个数据处理层**
+- `ReactElement` 本质是**组装**，把传入的参数按照一定的规范组装，再返回 `React.createElement`， 即返回“ 虚拟DOM”。最终由`ReactDOM.render`来渲染为真的DOM
+
+`JSX => Babel => React.createElement<retrun ReactElement< return 虚拟DOM>> => ReactDOM.render()`
+
+------
+
+**虚拟DOM：核心算法的基石**
+
+- 组件初始化时，通过调用生命周期中的 render 方法，**生成虚拟 DOM**，再通过调用 ReactDOM.render 方法，实现虚拟 DOM 到真实 DOM 的转换
+- 组件更新时，再次调用 render 方法**生成新的虚拟 DOM，借助 diff 算法定位出两次虚拟 DOM 的差异**，从而实现更新
+
+**生命周期方法的本质：组件的“灵魂”与“躯干”**
+
+- render(非 ReactDOM.render)，**灵魂**
+  - 生成虚拟 DOM
+  - 渲染工作流：组件数据改变到组件实际更新发生的过程
+  - **render 在执行过程中不会去操作真实 DOM， 它的职能时把需要渲染的内容返回出来**， 真实 DOM 的渲染工作在挂载阶段由 ReactDOM.render 来承接
+- 生命周期方法：“躯干”
+

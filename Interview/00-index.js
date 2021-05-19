@@ -155,7 +155,7 @@
 	console.log(arr) // [ 1, 2, { val: 100 } ]*/
 
 	// TODO:手工实现一个浅拷贝
-	const shallowClone = target => {
+/* 	const shallowClone = target => {
 		// 判断是否是一个对象
 		if (typeof target === 'object' && target !== null) {
 			const cloneTarget = Array.isArray(target) ? [] : {}
@@ -179,7 +179,5 @@
 	const a = new Person()
 	a.score = 100
 	const b = shallowClone(a)
-	console.log(b)
+	console.log(b) */
 }
-
-
