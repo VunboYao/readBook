@@ -1,5 +1,5 @@
 {
-	/*let a = {
+  /*let a = {
 		name: 'lee',
 		age: 18
 	}
@@ -9,7 +9,7 @@
 	console.log(a.name)
 	console.log(b.name)*/
 
-	/*let a= {
+  /*let a= {
 		name: 'linda',
 		age: 20
 	}
@@ -25,7 +25,7 @@
 	console.log(b.age)
 	console.log(a.age)*/
 
-	/*console.log(typeof 1) // 'number'
+  /*console.log(typeof 1) // 'number'
 	console.log(typeof '1') // 'string'
 	console.log(typeof undefined) // 'undefined'
 	console.log(typeof true) // 'boolean'
@@ -40,7 +40,7 @@
 	let demo = null
 	console.log(demo === null)*/
 
-	/*function myInstanceof(left, right) {
+  /*function myInstanceof(left, right) {
 		// typeof 判断基础数据类型，如果是， 直接返回 false
 		if (typeof left !== 'object' || left === null) return false
 		// 获取传入值的原型对象
@@ -58,7 +58,7 @@
 	console.log(myInstanceof(a, Person)) // true
 	console.log(myInstanceof(new Number(123), Number)) // true
 	console.log(myInstanceof(123, Number)) // false*/
-	/*function Person(){}
+  /*function Person(){}
 	console.log(Object.prototype.toString({})) // "[object Object]"
 	console.log(Object.prototype.toString.call(Person)) // "[object Function]"
 	console.log(Object.prototype.toString.call(1)) // "[object Number]"
@@ -75,7 +75,7 @@
 	console.log(Object.prototype.toString.call(document)) // "[object HTMLDocument]"
 	console.log(Object.prototype.toString.call(window)) // "[object Window]"*/
 
-	/*function getType(obj) {
+  /*function getType(obj) {
 		const type = typeof obj
 		// 判断如果是基础数据类型，则直接返回
 		if (type !== 'object') {
@@ -87,7 +87,7 @@
 		})
 	}*/
 
-	/*let obj = {
+  /*let obj = {
 		value: 1,
 		valueOf() {
 			return 2
@@ -108,7 +108,7 @@
 	console.log([1, 2, undefined, 4, 5] + 10) // 1,2,,4,510
 	// [1,2,undefined,4,5]会默认先调用valueOf结果还是这个数组，不是基础数据类型继续转换，也还是调用toString，返回"1,2,,4,5"，然后再和10进行运算*/
 
-/*	let target = {}
+  /*	let target = {}
 	let source = { a: { b: 1 }}
 	Object.assign(target, source)
 	console.log(target) // { a: { b: 1 } }
@@ -116,7 +116,7 @@
 	console.log(source) // { a: { b: 10 } }
 	console.log(target) // { a: { b: 10 } }*/
 
-/*	let obj1 = {
+  /*	let obj1 = {
 		a: {
 			b: 1
 		},
@@ -131,7 +131,7 @@
 	obj1.a.b = 2
 	console.log(obj1)
 	console.log(obj2)*/
-/*	let obj1 = {
+  /*	let obj1 = {
 		a: 1,
 		b: {
 			c: 1
@@ -143,19 +143,18 @@
 	console.log(obj1) // { a: 1, b: { c: 2 } }
 	console.log(obj2) // { a: 2, b: { c: 2 } }*/
 
-
-/*	let arr = [1,2,3]
+  /*	let arr = [1,2,3]
 	let newArr = arr.concat()
 	newArr[1] = 100
 	console.log(arr) // [ 1, 2, 3 ]
 	console.log(newArr) // [ 1, 100, 3 ]*/
-	/*let arr = [1,2,{val:  4}]
+  /*let arr = [1,2,{val:  4}]
 	let newArr = arr.slice()
 	newArr[2].val = 100
 	console.log(arr) // [ 1, 2, { val: 100 } ]*/
 
-	// TODO:手工实现一个浅拷贝
-/* 	const shallowClone = target => {
+  // TODO:手工实现一个浅拷贝
+  /* 	const shallowClone = target => {
 		// 判断是否是一个对象
 		if (typeof target === 'object' && target !== null) {
 			const cloneTarget = Array.isArray(target) ? [] : {}
@@ -180,4 +179,57 @@
 	a.score = 100
 	const b = shallowClone(a)
 	console.log(b) */
+  const isComplexDataType = obj => (typeof obj === 'object' || typeof obj === 'function') && obj !== null
+  const deepClone = function (obj, hash = new WeakMap()) {
+    if (obj.constructor === Date) return new Date(obj) // 日期对象直接返回一个新的日期对象
+    if (obj.constructor === RegExp) return new RegExp(obj) // 正则对象直接返回一个新的正则对象
+    // 如果循环引用了就用 weakMap 来解决
+    if (hash.has(obj)) return hash.get(obj)
+    /*
+    ES2017 新增 API:返回对象中所有属性的属性描述符对象
+    当数据类型为数组、对象时，执行二次遍历
+    */
+    let allDesc = Object.getOwnPropertyDescriptors(obj)
+    /*
+    遍历传入参数所有键的特性
+    1. getPrototypeOf 返回obj的__proto__（指向prototype）。克隆原型
+    2. allDesc 传入对应的属性描述对象
+    cloneObj.__proto__ === obj.__proto__ // true
+    */
+    let cloneObj = Object.create(Object.getPrototypeOf(obj), allDesc)
+    // 继承原型链：WeakMap的key值只能存储对象
+    hash.set(obj, cloneObj)
+    // Reflect.ownKeys: 遍历对象的所有属性。基本等同于Object.getOwnPropertyNames 与 Object.getOwnPropertySymbols之和
+    for (let key of Reflect.ownKeys(obj)) {
+      // 对象类型 && 非函数 ？ 继续递归遍历 ：赋值
+      cloneObj[key] = isComplexDataType(obj[key]) && typeof obj[key] !== 'function' ? deepClone(obj[key], hash) : obj[key]
+    }
+    return cloneObj
+  }
+
+  let obj = {
+    num: 0,
+    str: '',
+    boolean: true,
+    unf: undefined,
+    nul: null,
+    obj: { name: '我是一个对象', id: 1 },
+    arr: [0, 1, 2],
+    func: function () {
+      console.log('我是一个函数')
+    },
+    date: new Date(0),
+    reg: new RegExp('/我是一个正则/ig'),
+    [Symbol('1')]: 1,
+  }
+  Object.defineProperty(obj, 'innumerable', {
+    enumerable: false,
+    value: '不可枚举属性',
+  })
+  obj = Object.create(obj, Object.getOwnPropertyDescriptors(obj))
+  obj.loop = obj
+  let cloneObj = deepClone(obj)
+  cloneObj.arr.push(4)
+  console.log('obj', obj)
+  console.log('cloneObj', cloneObj)
 }
