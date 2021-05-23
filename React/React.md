@@ -384,9 +384,9 @@ class Person extends React.Component {
 
 ## 新的API
 
-**`getDerivedStateFromProps(props, state)`**
+**`getDerivedStateFromProps(props, currentState)`**
 
-- **静态方法： `static getDerivedStateFromProps(props, state){}`**
+- **静态方法： `static getDerivedStateFromProps(props, currentState){}`**
 - 返回一个`state`对象或`null`
   - 返回一个固定的`state`对象， 则后续无法更改状态对象。
 
@@ -699,16 +699,16 @@ export default withRouter(Header)
    ```react
    // 引入redux中的核心方法
    import { createStore, applyMiddleware } from 'redux'
-
+   
    // 获取redux异步action处理器
    import thunk from 'redux-thunk'
-
+   
    // 引入redux-devtools-extension
    import { composeWithDevTools } from 'redux-devtools-extension'
-
+   
    // 引入汇总后的reducer
    import Reducer from './reducers'
-
+   
    export default createStore(Reducer, composeWithDevTools(applyMiddleware(thunk)))
    ```
 
@@ -773,10 +773,10 @@ export default createStore(Reducer, composeWithDevTools(applyMiddleware(thunk)
 
   ```react
   // redux/reducers/Count.js
-
+  
   import { INCREMENT, DECREMENT } from '../constant'
   const initState = 0 // 声明初始化数据
-
+  
   /* TODO: 纯函数，不能改写preState */
   export default function CountReducer(preState=initState, action) {
     const {type, data} = action
@@ -1106,7 +1106,7 @@ componentDidCatch(error, info) {
 
 # 原理
 
-`JSX` 的本质： `JavaScript` 的语法扩展
+## `JSX` 的本质： `JavaScript` 的语法扩展
 
 - 通过 `Babel ` 将 `JSX` 语法转换为 `JavaScript` 代码。`JSX => React.createElement`
 - **JSX 的本质是** `React.createElement` **这个JavaScript 调用的语法糖**
@@ -1126,7 +1126,7 @@ componentDidCatch(error, info) {
 
 ------
 
-**虚拟DOM：核心算法的基石**
+## **虚拟DOM：核心算法的基石**
 
 - 组件初始化时，通过调用生命周期中的 render 方法，**生成虚拟 DOM**，再通过调用 ReactDOM.render 方法，实现虚拟 DOM 到真实 DOM 的转换
 - 组件更新时，再次调用 render 方法**生成新的虚拟 DOM，借助 diff 算法定位出两次虚拟 DOM 的差异**，从而实现更新
@@ -1138,4 +1138,54 @@ componentDidCatch(error, info) {
   - 渲染工作流：组件数据改变到组件实际更新发生的过程
   - **render 在执行过程中不会去操作真实 DOM， 它的职能时把需要渲染的内容返回出来**， 真实 DOM 的渲染工作在挂载阶段由 ReactDOM.render 来承接
 - 生命周期方法：“躯干”
+
+------
+
+## **生命周期新API**
+
+- **`getDerivedStateFromProps` **不是 `componentWillMount`的替代品
+- 初衷不是试图替换掉 `componentWillMount`, 而是试图替换掉 `componentWillReceiveProps`, 唯一目的**使用props来派生/更新state**
+- **getDerivedStateFromProps 是一个静态方法**。静态方法不依赖组件实例而存在，因此在这个方法内部是**访问不到this**的。
+- 接收两个参数：props 和 state, 分别代表当前组件接收到的来自父组件的 props 和当前组件自身的 state；返回一个对象 或 `null`
+
+**为什么要用getDerivedStateFromProps代替componentWillReceiveProps？**
+
+- getDerivedStateFromProps 是作为一个试图代替 componentWillReceiveProps 的 API 而出现的
+- getDerivedStateFromProps不能完全和 componentWillReceiveProps 画等号，其特性决定了我们曾经在 componentWillReceiveProps 里面做的事情，不能够百分百迁移到getDerivedStateFromProps 里
+
+- **getDerivedStateFromProps是一个static方法，无法拿到组件实例的this，无法执行this.fetch()、不合理的 this.setState（会导致死循环的那种）这类可能会产生副作用的操作**
+
+## **Fiber架构解析**
+
+- Fiber 会使原本同步的渲染过程变成异步的。
+- **16之前的同步渲染的递归调用栈是非常深的，无法中途打断，导致浏览器没有办法处理任何渲染之外的事情，会进入一种无法处理用户交互的状态**。最终导致卡顿甚至卡死
+- **Fiber 会将一个大的更新任务拆解为许多个小任务**。每当执行完一个小任务时，**渲染线程都会把主线程交回去**，看看有没有优先级更高的工作要处理，确保不会出现其他任务被“饿死”的情况，进而避免同步渲染带来的卡顿
+
+- 渲染线程不再“一去不回头”，而是**可以被打断**的，这就是所谓的“异步渲染”
+
+**生命周期工作流**
+
+![1621051906478](..\React\lifecycle.png)
+
+- render阶段：纯净且没有副作用，可能会被 React 暂停、终止或重新启动
+- pre-commit阶段：可以读取DOM
+- commit 阶段：可以使用 DOM，运行副作用，安排更新
+
+**总的来说，render 阶段在执行过程中允许被打断，而 commit 阶段则总是同步执行的**
+
+- 在 Fiber 机制下，**render阶段是允许暂停、终止和重启的， 因此 render 阶段的生命周期都是有可能被重复执行的**
+  - componentWillMount
+  - componentWillUpdate
+  - componentWillReceiveProps
+  - **以上生命周期都处于 render 阶段，都可能重复被执行**
+
+- 在 componentWill 开头的生命周期里，可能做的事情包括不限于：
+  - setState()
+  - Fetch 发起的异步请求
+  - 操作真是DOM
+- **完全可以转移到其他生命周期（尤其是 componentDidxxx）里去做**
+  - 异步请求再怎么快也快不过（React 15 下）同步的生命周期。componentWillMount 结束后，render 会迅速地被触发，所以说首次渲染依然会在数据返回之前执行
+
+- **在 Fiber 带来的异步渲染机制下，可能会导致非常严重的 Bug。**
+  - 由于 render 阶段里的生命周期都可以重复执行，在 componentWillxxx 被打断 + 重启多次后，就会发出多个付款请求
 
