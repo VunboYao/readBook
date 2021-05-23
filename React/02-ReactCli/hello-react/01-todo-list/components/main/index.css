@@ -1,0 +1,40 @@
+.main {
+  width: 100%;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+ul {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  list-style: none;
+  border-radius: 2px;
+  overflow: hidden;
+}
+li {
+  padding: 4px 8px;
+  line-height: 30px;
+  border-bottom: 1px solid #eee;
+}
+.input {
+  vertical-align: middle;
+}
+li:hover {
+  background: #eee;
+  cursor: pointer;
+}
+.button {
+  margin-top: 3px;
+  display: none;
+  float: right;
+  color: #fff;
+  background: orangered;
+  border: none;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+li:hover .button {
+  display: block;
+}

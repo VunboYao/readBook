@@ -9,11 +9,10 @@
 * */
 
 
-let str:any = 'it666'
-
+let str:any = 'VunboYao'
 // 方式一
-let len = (<string>str).padStart(6, '0')
-console.log(len);
+let len: number = (<string>str).length
+console.log(len)
 
 // 方式二：在企业开发中推荐使用as来进行类型转换（类型断言）。
 // 第一种在使用到了JSX的时候存在兼容性问题

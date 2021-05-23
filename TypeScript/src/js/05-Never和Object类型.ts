@@ -4,10 +4,10 @@
 * 一般用于抛出异常或根本不可能有返回值的函数
 * */
 function Demo():never {
-    throw new Error('error')
+    throw new Error('has some error')
 }
 
-Demo()
+// Demo()
 
 function demo2():never {
     while (true){}

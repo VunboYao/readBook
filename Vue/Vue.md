@@ -1257,3 +1257,10 @@ vue create --help // 帮助命令
 ```
 vue ui
 ```
+
+**升级vue/cli**
+
+```bash
+npm update -g @vue/cli
+```
+

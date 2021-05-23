@@ -11,8 +11,8 @@ module.exports = {
 		// contentBase: path.join(__dirname, 'public'),
 		open: true, // 自动打开页面
 		port: 2021,
-		hot: true, // 开启热更新
-		hotOnly: true // 如果热更新失败，也不刷新网页
+		hot: false, // 开启热更新
+		hotOnly: false // 如果热更新失败，也不刷新网页
 	},
 	/*
 	* 配置sourcemap
@@ -67,6 +67,6 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin(),
 		// 热更新插件
-		// new Webpack.HotModuleReplacementPlugin()
+		new Webpack.HotModuleReplacementPlugin()
 	]
 }

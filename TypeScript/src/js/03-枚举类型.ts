@@ -17,8 +17,8 @@
 
 // TODO：TS中的枚举底层实现的本质其实就是数值类型， 所以赋值一个数值不会报错
     val = 123 // 不会报错
-    console.log(Gender.Male); // 0
-    console.log(Gender.Female); // 1
+    console.log(Gender.Male, '.>>'); // 0
+    console.log(Gender.Female, '>>>'); // 1
 }
 
 
@@ -30,7 +30,7 @@
 
 {
     enum Size {
-        small = 2,
+        small = 3,
         medium = 5
     }
 
@@ -42,8 +42,8 @@
     // console.log(Size.medium); // 5
 
     // TODO: 同时修改了多个枚举值的取值，那么修改的是什么最后就是什么
-    console.log(Size.small); // 2
-    console.log(Size.medium); // 5
+    console.log(Size.small, '>>>'); // 3
+    console.log(Size.medium, '666'); // 5
 
 }
 
@@ -69,7 +69,7 @@
 
     let Size = {}
     Size['small'] = 2
-    Size[0] = 'small'
+    Size[2] = 'small'
     Size['medium'] = 5
     Size[5] = 'medium'
     * */

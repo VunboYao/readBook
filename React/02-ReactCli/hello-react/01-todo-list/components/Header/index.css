@@ -1,0 +1,13 @@
+.header {
+  width: 100%;
+  padding: 2px;
+}
+.input {
+  border: 1px solid #eee;
+  width: 100%;
+  border-radius: 4px;
+  height: 40px;
+  padding: 2px 8px;
+  outline: none;
+  box-sizing: border-box;
+}

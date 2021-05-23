@@ -27,5 +27,5 @@ let demo:void // 定义了一个不可以保存任意类型数据的变量，只
 // demo = true // error
 // TODO： null 和 undefined 是所有类型的子类型，所以可以将null和undefined赋值给任意类型
 // demo = undefined
-demo = null
+demo = undefined
 console.log(demo)

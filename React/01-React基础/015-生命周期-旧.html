@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script src="./js/react.development.js"></script>
+    <script src="./js/react-dom.development.js"></script>
+    <script src="./js/babel.min.js"></script>
+    <script src="./js/prop-types.js"></script>
+    <script type="text/babel">
+      /*
+    // 初始化阶段：ReactDOM.render()触发
+    // 挂载
+    constructor
+    componentWillMount() // 将要挂载
+    render
+    componentDidMount() // 挂载后
+    componentWillUnmount() // 将要卸载
+
+    // 卸载组件
+    ReactDOM.unmountComponentAtNode(document.getElementById(node))
+
+    // 组件更新阶段
+    // setState触发
+    shouldComponentUpdate() // 是否组件更新 必须返回true/false
+    componentWillUPdate() // 组件将要更新
+    render()
+    componentDidUpdate() // 组件更新完成
+
+
+    // forceUpdate 组件强制更新
+    componentWillUPdate() // 组件将要更新
+    render()
+    componentDidUpdate() // 组件更新完成
+
+
+    // 父组件更新阶段
+    componentWillReceiveProps() // 将要接受新的props
+    shouldComponentUpdate() // 是否组件更新 必须返回true/false
+    componentWillUPdate() // 组件将要更新
+    render()
+    componentDidUpdate() // 组件更新完成
+  */
+     class Count extends React.Component {
+    constructor(props) {
+      super(props);
+      console.log('Count>>>constructor')
+      this.state = {
+        count: 0
+      }
+    }
+
+    // 触发setState
+    addNumber = () => {
+      this.setState({count: this.state.count += 1})
+    }
+
+    // removeComponent
+    removeComponent = () => {
+      ReactDOM.unmountComponentAtNode(document.getElementById('root'))
+    }
+
+    // 主动强制更新
+    drivingUpdate = () => {
+      this.forceUpdate()
+    }
+
+    // 组件将要挂载
+    componentWillMount() {
+      console.log('Count>>>componentWillMount')
+    }
+
+    // 组件挂载后
+    componentDidMount() {
+      console.log('Count>>>componentDidMount')
+    }
+
+    // 组件将要卸载
+    componentWillUnmount() {
+      console.log('Count>>>componentWillUnmount')
+    }
+
+    // TODO: 组件是否应该更新=>必须返回ture/false
+    shouldComponentUpdate(nextProps, nextState) {
+      console.log('Count>>>shouldComponentUpdate', nextProps,nextState)
+      return this.state.count % 2 === 0
+    }
+
+    // 组件将要更新
+    componentWillUpdate(a, b) {
+      console.log('Count>>>componentWillUpdate', a, b)
+      return false
+    }
+
+    // 组件更新完成
+    componentDidUpdate(a, b) {
+      console.log('Count>>>componentDidUpdate', a, b)
+    }
+
+    // 初始化
+    render(a, b) {
+      console.log('Count>>>render')
+      return (
+          <div>
+            <h2>当前和是{this.state.count}</h2>
+            <button onClick={this.addNumber}>Click+1</button>
+            <button onClick={this.removeComponent}>UnmountComponent</button>
+            <button onClick={this.drivingUpdate}>ForceUpdate</button>
+          </div>
+      )
+    }
+  }
+  ReactDOM.render(<Count name={'li'}/>, document.getElementById('root'))
+
+    /*   class A extends React.Component {
+        constructor(props) {
+          console.log('A-constructor')
+          super(props)
+          this.state = {
+            car: 'AaoDi',
+          }
+        }
+
+        handleChangeCar = () => {
+          this.setState({ car: 'BWM' })
+        }
+        componentWillMount() {
+          console.log('A-componentWillMount')
+        }
+        shouldComponentUpdate(props, state) {
+          console.log('A-shouldComponentUpdate', props, state)
+          return true
+        }
+        componentWillUpdate(props, state) {
+          console.log('A-componentWillUpdate', props, state)
+        }
+        componentDidUpdate(props, state) {
+          console.log('A-componentDidUpdate', props, state)
+        }
+        componentDidMount() {
+          console.log('A-componentDidMount')
+        }
+        componentWillUnmount() {
+          console.log('A-组件将要卸载')
+        }
+        ForceUpdate = () => {
+          this.forceUpdate()
+        }
+        render() {
+          console.log('A-render')
+          return (
+            <div>
+              <B car={this.state.car} />
+              <h2>I am FatherComponent</h2>
+              <button onClick={this.handleChangeCar}>changeCar</button>
+              <button onClick={this.ForceUpdate}>ForceUpdate</button>
+              <button
+                onClick={() =>
+                  ReactDOM.unmountComponentAtNode(
+                    document.getElementById('root')
+                  )
+                }
+              >
+                UnMount
+              </button>
+            </div>
+          )
+        }
+      }
+
+      class B extends React.Component {
+        constructor(props) {
+          super(props)
+          console.log('B-constructor')
+        }
+        componentWillReceiveProps(props, state) {
+          console.log('B-componentWillReceiveProps', props, state)
+        }
+        componentWillMount() {
+          console.log('B-componentWillMount')
+        }
+        shouldComponentUpdate() {
+          console.log('B-shouldComponentUpdate')
+          return true
+        }
+        componentWillUnmount() {
+          console.log('B-组件将要卸载')
+        }
+        componentWillUpdate() {
+          console.log('B-componentWillUpdate')
+        }
+        componentDidUpdate() {
+          console.log('B-componentDidUpdate')
+        }
+        componentDidMount() {
+          console.log('B-componentDidMount')
+        }
+        render() {
+          console.log('B-render')
+          return <div>My car is {this.props.car}</div>
+        }
+      }
+
+      ReactDOM.render(<A />, document.getElementById('root')) */
+
+      /*
+       * 1.父子组件首次加载，父组件等子组件全部挂载完成后，再执行componentDidUpdate
+       * 2.componentWillReceiveProps在第二次触发变更时才会触发该钩子
+       * */
+    </script>
+  </body>
+</html>

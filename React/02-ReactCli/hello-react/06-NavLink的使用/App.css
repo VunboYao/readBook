@@ -1,0 +1,22 @@
+a {
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.wrap {
+  display: flex;
+}
+
+.left {
+  height: 60px;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+  background-color: #eee;
+  border-radius: 4px;
+}
+.test-active {
+  color: azure;
+  background-color: orange;
+}

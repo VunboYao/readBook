@@ -1,12 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <!--<style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!--  <meta http-equiv="Refresh" content="5; URL=./009-demo.html">-->
+    <title>Document</title>
+    <!--<style>
     * {
       box-sizing: border-box;
     }
@@ -32,44 +35,49 @@
     align-self: center;
   }
   </style>-->
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-    .box {
-      display: flex;
-      width: 150px;
-      height: 100px;
-      flex-wrap: nowrap;
-      background: #011609;
-    }
-    .box div {
-      word-break: break-all;
-    }
-    .x-1 {
-      /*flex: 0.5;*/
-      /*flex-grow: 0.5;*/
-      /*width: 100px;*/
-      flex: 3;
-      background: rgba(236,28,28,.5);
-    }
-    .x-2 {
-      /*flex: 0.5;*/
-      /*flex-grow: 0.5;*/
-      /*width: 100px;*/
-      flex: 3;
-      background: rgba(171,58,58,.5);
-    }
-    .x-3 {
-      /*flex: 1.5;*/
-      /*flex-grow: 1.5;*/
-      flex: 3;
-      background: rgba(122,72,72,.5);
-    }
-  </style>
-</head>
-<!--<body class="container">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      .box {
+        display: flex;
+        width: 150px;
+        height: 100px;
+        flex-wrap: nowrap;
+        background: #011609;
+      }
+
+      .box div {
+        word-break: break-all;
+      }
+
+      .x-1 {
+        /*flex: 0.5;*/
+        /*flex-grow: 0.5;*/
+        /*width: 100px;*/
+        flex: 3;
+        background: rgba(236, 28, 28, 0.5);
+      }
+
+      .x-2 {
+        /*flex: 0.5;*/
+        /*flex-grow: 0.5;*/
+        /*width: 100px;*/
+        flex: 3;
+        background: rgba(171, 58, 58, 0.5);
+      }
+
+      .x-3 {
+        /*flex: 1.5;*/
+        /*flex-grow: 1.5;*/
+        flex: 3;
+        background: rgba(122, 72, 72, 0.5);
+      }
+    </style>
+  </head>
+  <!--<body class="container">
 <div class="box">
   <div class="item" style="&#45;&#45;var: 1">1</div>
   <div class="item" style="&#45;&#45;var: 3">2</div>
@@ -91,22 +99,25 @@
 	console.log('1'.charCodeAt().toString(16))
 </script>
 </body>-->
-<div class="box">
-  <div class="x-1">1222222222222222222
+  <div class="box">
+    <div class="x-1">1222222222222222222</div>
+    <div class="x-2">12</div>
+    <div class="x-3">12</div>
   </div>
-  <div class="x-2">12</div>
-  <div class="x-3">12</div>
-</div>
-<script>
-  const demo = {
-    'add': function () {
-      console.log('1223');
-      return add;
+  <script>
+    const person = {
+      a: 1
     }
-  }
-  const add = () => {
-    console.log('123');
-  }
-  demo.add()()
-</script>
+    Object.defineProperty(person, 'a', {
+      get() {
+        return this._a || 1
+      },
+      set(val) {
+        this._a = val
+      }
+    })
+    console.log(person.a);
+    person.a = 2
+    console.log(person.a);
+  </script>
 </html>

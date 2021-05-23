@@ -1,0 +1,17 @@
+.wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+.wrap .li {
+  margin: 10px 20px 0;
+  width: 300px;
+  height: 310px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+img {
+  width: 100%;
+  display: block;
+}
