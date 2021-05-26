@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+<script>
+  let a = [1,2,3]
+  const index = a.indexOf(4) >>> 0 // 找不到该值，返回-1，-1的绝对大值 4294967295
+  console.log(index);
+  const c = a.splice(index, 1) //绝对大的值删除，没有此值，不变原数组
+  console.log(c);
+  console.log(a);
+  // this.eventMap[type].splice(this.eventMap[type].indexOf(handler)>>>0,1)
+  let demo = -1 >>> 0
+  console.log(demo.toString(2));
+</script>
+</body>
+</html>
