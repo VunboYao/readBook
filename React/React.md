@@ -1189,3 +1189,5 @@ componentDidCatch(error, info) {
 - **在 Fiber 带来的异步渲染机制下，可能会导致非常严重的 Bug。**
   - 由于 render 阶段里的生命周期都可以重复执行，在 componentWillxxx 被打断 + 重启多次后，就会发出多个付款请求
 
+------
+
