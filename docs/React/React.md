@@ -36,7 +36,7 @@ ReactDOM.render(VDOM, document.getElementById('APP'))
 
 ## 注意点
 
-## 区分 js 表达式与 js 语句(代码)
+### 区分 js 表达式与 js 语句(代码)
 
 1. 表达式：一个表达式会产生一个值，可以放在任何一个需要值的地方
    - a
@@ -52,7 +52,7 @@ ReactDOM.render(VDOM, document.getElementById('APP'))
 
 3. **JSX 中只能写 js 表达式**
 
-## for 循环语句
+### for 循环语句
 
 ```react
 <ul>
@@ -66,13 +66,13 @@ ReactDOM.render(VDOM, document.getElementById('APP'))
 
 ## 组件
 
-## 函数式组件
+### 函数式组件
 
 - this 指向 undefined.默认指向严格模式
 - 需要 return 虚拟 dom
 - 注册组册时，需要首字母大写，同时自闭合
 
-## 类式组件
+### 类式组件
 
 - constructor 中原型方法通过 bind 绑定 this
 
@@ -161,13 +161,13 @@ class Person extends React.Component {
 
 - **`props`**是只读的
 
-# 事件绑定
+## 事件绑定
 
 - 组件的`render()`, 在组件的原型对象上，供实例使用
 - 组件中的`render`方法中的 this 为组件实例对象
 - class 式组件中的方法注册在组件的原型上
 
-## 类中方法 this 的指向
+### 类中方法 this 的指向
 
 - 实例调用，则方法中的 this 指向类的实例
 - 若无`fun()`调用，赋值语句给第三方变量，则属于直接调用
@@ -190,9 +190,9 @@ const x = student.speak // 方法指向到x， class中默认开启严格模式
 x() // undefined
 ```
 
-# ref
+## ref
 
-## 字符串形式(废弃)
+### 字符串形式(废弃)
 
 ```react
 class Person extends React.Component {
@@ -210,7 +210,7 @@ class Person extends React.Component {
 }
 ```
 
-## 回调函数形式
+### 回调函数形式
 
 ```react
 // 内联回调形式
@@ -269,7 +269,7 @@ class Person extends React.Component {
 // 将 ref 的回调函数定义成 class 的绑定函数的方式可以避免上述问题，但是大多数情况下它是无关紧要的。
 ```
 
-## createRef()
+### createRef()
 
 ```react
 class Person extends React.Component {
@@ -298,7 +298,7 @@ class Person extends React.Component {
 }
 ```
 
-# 事件对象
+## 事件对象
 
 - 通过`onXxx`属性指定事件处理函数（**大小写问题**）
   - React 使用的是自定义（合成）事件，而不是使用原生的 DOM 事件——为了更好的兼容性
@@ -423,15 +423,15 @@ class Person extends React.Component {
 
 - `componentWillUnmount()`
 
-# 路由
+## 路由
 
-## 路由基本使用
+### 路由基本使用
 
 - 导航区: `<Link to='/xxxx'>主页<Link>`
 - 展示区写`Route`标签进行路径匹配：`<Route path='/xxx' component={Home}/>`
 - `<App>`的最外层包裹一个`<BrowserRouter`或`<HashRouter>`
 
-## 路由组件与一般组件
+### 路由组件与一般组件
 
 1. 写法不同
 
@@ -461,7 +461,7 @@ class Person extends React.Component {
        - path: '/about',
        - url: '/about'
 
-## NavLink
+### NavLink
 
 NavLink 可以实现路由链接的高亮，通过 activeClassName 指定样式名，默认`active`
 
@@ -481,25 +481,25 @@ export default class MyNavLink extends PureComponent {
 }
 ```
 
-## Switch 的使用
+### Switch 的使用
 
 - 通常情况下，path 和 component 是一一对应的关系。
 
 - Switch 可以提高路由匹配效率(单一匹配)。
 
-## **多级路径刷新页面样式丢失**
+### **多级路径刷新页面样式丢失**
 
-- public/index.html 中 引入样式时不写 ./ 写 / （常用）
-- public/index.html 中 引入样式时不写 ./ 写 %PUBLIC_URL% （常用）
+- public/index.html 中 引入样式时不写 `./` 写` /` （常用）
+- public/index.html 中 引入样式时不写 `./` 写 `%PUBLIC_URL%` （常用）
 - 使用 HashRouter
 
-## 路由的匹配
+### 路由的匹配
 
 - 默认使用的是模糊匹配（简单记：【输入的路径】必须包含要【匹配的路径】，且顺序要一致）
 - 开启严格匹配：`<Route exact={true} path="/about" component={About}/>`
 - 严格匹配不要随便开启，需要再开，有些时候开启会导致无法继续匹配二级路由
 
-## Redirect 的使用
+### Redirect 的使用
 
 1. 一般写在所有路由注册的最下方，当所有路由都无法匹配时，跳转到 Redirect 指定的路由
 
@@ -513,12 +513,12 @@ export default class MyNavLink extends PureComponent {
    </SWitch>
    ```
 
-## 嵌套路由
+### 嵌套路由
 
 1. 注册子路由时要写上父路由的 path 值
 2. 路由的匹配是按照注册路由的顺序进行的
 
-## 路由组件传参
+### 路由组件传参
 
 1. params 参数
 
@@ -549,7 +549,7 @@ export default class MyNavLink extends PureComponent {
    - 接收参数：**`this.props.location.state`**
    - 备注：**刷新也可以保留住参数**
 
-## 编程式路由导航
+### 编程式路由导航
 
 **借助 this.props.history 对象上的 API 对操作路由跳转、前进、后退**
 
@@ -562,7 +562,7 @@ export default class MyNavLink extends PureComponent {
 - `this.props.history.goForward()`
 - `this.props.history.go()`
 
-## withRouter
+### withRouter
 
 当某一个组件不是一个`Router`，但是需要去调用`react-router`的三个对象`history，location，match`, 通过编程式去跳转路由。利用`WithRouter`包装并暴露
 
@@ -600,7 +600,7 @@ export default withRouter(Header)
 // withRouter返回一个新的组件
 ```
 
-## BrowserRouter 与 HashRouter 的区别
+### BrowserRouter 与 HashRouter 的区别
 
 1. 底层原理不一样:
    - BrowserRouter 使用的是 H5 的 history API，不兼容 IE9 及以下版本
@@ -615,11 +615,11 @@ export default withRouter(Header)
 
 4. 备注：HashRouter 可以用于解决一些路径错误相关的问题
 
-# redux
+## redux
 
 ![1621051906478](./redux.png)
 
-## 基础介绍
+### 基础介绍
 
 **store.js:**
 
@@ -648,7 +648,7 @@ export default withRouter(Header)
   - 异步任务有结果后，分发一个同步的 action 去真正操作数据
   - 备注：**异步 action 不是必须要写的，完全可以自己等待异步任务的结果了再去分发同步 action。**
 
-## react-redux 介绍
+### react-redux 介绍
 
 ![1621051906478](./react-redux.png)
 
@@ -664,7 +664,7 @@ export default withRouter(Header)
 3. 备注 1：容器组件中的 store 是靠 props 传进去的，而不是在容器组件中直接引入
 4. 备注 2：mapDispatchToProps，也可以是一个对象
 
-## react-redux 优化
+### react-redux 优化
 
 1. 容器组件和 UI 组件整合一个文件
 
@@ -696,7 +696,7 @@ export default withRouter(Header)
 
    3. 在 UI 组件中通过 this.props.xxxxxxx 读取和操作状态
 
-## react-redux 开发者工具的使用
+### react-redux 开发者工具的使用
 
 1. `npm i redux-devtools-extension`
 
@@ -718,7 +718,7 @@ export default withRouter(Header)
    export default createStore(Reducer, composeWithDevTools(applyMiddleware(thunk)))
    ```
 
-## 终极奥义
+### 终极奥义
 
 **1.入口文件中通过 Provider 为所有的容器组件注册 Store**
 
@@ -865,9 +865,9 @@ const mapDispatchToProps = dispatch => {
 export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
 ```
 
-# 扩展
+## 扩展
 
-## setState
+### setState
 
 1. setState(stateChange, [callback])------对象式的 setState
    - stateChange 为状态改变对象(该对象可以体现出状态的更改)
@@ -883,7 +883,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
      2. 如果新状态依赖于原状态 ===> 使用函数方式
      3. 如果需要在 setState()执行后获取最新的状态数据, 要在第二个 callback 函数中读取
 
-## lazyLoad
+### lazyLoad
 
 - 通过 React 的 lazy 函数配合 import()函数动态加载路由组件 ===> 路由组件代码会被分开打包
 
@@ -902,13 +902,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
   </Suspense>
   ```
 
-## Hooks
+### Hooks
 
 - State Hook: React.useState()
 - Effect Hook: React.useEffect()
 - Ref Hook: React.useRef()
 
-### State Hook
+#### State Hook
 
 1. State Hook 让函数组件也可以有 state 状态, 并进行状态数据的读写操作
 2. 语法: `const [xxx, setXxx] = React.useState(initValue)`
@@ -919,7 +919,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
    1. setXxx(newValue): 参数为非函数值, 直接指定新的状态值, 内部用其覆盖原来的状态值
    2. setXxx(value => newValue): 参数为函数, 接收原本的状态值, 返回新的状态值, 内部用其覆盖原来的状态值
 
-### Effect Hook
+#### Effect Hook
 
 1. Effect Hook 可以让你在函数组件中执行副作用操作(用于模拟类组件中的生命周期钩子)
 
@@ -948,13 +948,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
    componentWillUnmount()
    ```
 
-### Ref Hook
+#### Ref Hook
 
 1. Ref Hook 可以在函数组件中存储/查找组件内的标签或任意其它数据
 2. 语法: `const refContainer = React.useRef()`
 3. 作用:保存标签对象,功能与`React.createRef()`一样
 
-## Fragment
+### Fragment
 
 ```react
 <Fragment><Fragment>
@@ -962,7 +962,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
 // 可以不用必须有一个真实的DOM根标签了
 ```
 
-## Context
+### Context
 
 一种组件间通信方式, 常用于【祖组件】与【后代组件】间通信
 
@@ -999,9 +999,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
 
 4. 在应用开发中一般不用 context, 一般都它的封装 react 插件
 
-## 组件优化
+### 组件优化
 
-### Component 的 2 个问题
+#### Component 的 2 个问题
 
 1. 只要执行 setState(),即使不改变状态数据, 组件也会重新 render()
 2. 只当前组件重新 render(), 就会自动重新 render 子组件 ==> 效率低
@@ -1011,7 +1011,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
 - 使用 PureComponent： PureComponent 重写了 shouldComponentUpdate(), 只有 state 或 props 数据有变化才返回 true
 - 注意：**只是进行 state 和 props 数据的浅比较, 如果只是数据对象内部数据变了, 返回 false。不要直接修改 state 数据, 而是要产生新数据**
 
-## render props
+### render props
 
 - Vue: 使用 slot 技术, 也就是通过组件标签体传入结构 `<AA><BB/></AA>`
 
@@ -1061,7 +1061,7 @@ class B extends PureComponent {
 }
 ```
 
-## 错误边界
+### 错误边界
 
 错误边界：用来捕获后代组件错误，渲染出备用页面
 
@@ -1086,13 +1086,13 @@ componentDidCatch(error, info) {
 }
 ```
 
-## 组件通信方式
+### 组件通信方式
 
 - props：
 
-  ​ (1).children props
+   (1).children props
 
-  ​ (2).render props
+   (2).render props
 
 - 消息订阅-发布
 
@@ -1111,9 +1111,9 @@ componentDidCatch(error, info) {
 - 兄弟组件(非嵌套组件)：消息订阅-发布、集中式管理
 - 祖孙组件(跨级组件)：消息订阅-发布、集中式管理、conText(用的少)
 
-# 原理
+## 原理
 
-## `JSX` 的本质： `JavaScript` 的语法扩展
+### `JSX` 的本质： `JavaScript` 的语法扩展
 
 - 通过 `Babel` 将 `JSX` 语法转换为 `JavaScript` 代码。`JSX => React.createElement`
 - **JSX 的本质是** `React.createElement` **这个 JavaScript 调用的语法糖**
@@ -1133,7 +1133,7 @@ componentDidCatch(error, info) {
 
 ---
 
-## **虚拟 DOM：核心算法的基石**
+### **虚拟 DOM：核心算法的基石**
 
 - 组件初始化时，通过调用生命周期中的 render 方法，**生成虚拟 DOM**，再通过调用 ReactDOM.render 方法，实现虚拟 DOM 到真实 DOM 的转换
 - 组件更新时，再次调用 render 方法**生成新的虚拟 DOM，借助 diff 算法定位出两次虚拟 DOM 的差异**，从而实现更新
@@ -1148,7 +1148,7 @@ componentDidCatch(error, info) {
 
 ---
 
-## **生命周期新 API**
+### **生命周期新 API**
 
 - **`getDerivedStateFromProps` **不是 `componentWillMount`的替代品
 - 初衷不是试图替换掉 `componentWillMount`, 而是试图替换掉 `componentWillReceiveProps`, 唯一目的**使用 props 来派生/更新 state**
@@ -1162,7 +1162,7 @@ componentDidCatch(error, info) {
 
 - **getDerivedStateFromProps 是一个 static 方法，无法拿到组件实例的 this，无法执行 this.fetch()、不合理的 this.setState（会导致死循环的那种）这类可能会产生副作用的操作**
 
-## **Fiber 架构解析**
+### **Fiber 架构解析**
 
 - Fiber 会使原本同步的渲染过程变成异步的。
 - **16 之前的同步渲染的递归调用栈是非常深的，无法中途打断，导致浏览器没有办法处理任何渲染之外的事情，会进入一种无法处理用户交互的状态**。最终导致卡顿甚至卡死
@@ -1200,7 +1200,7 @@ componentDidCatch(error, info) {
 
 ---
 
-## 发布订阅模型实现
+### 发布订阅模型实现
 
 **发布-订阅模型 API 涉及思路**
 
