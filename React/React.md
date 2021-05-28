@@ -1189,3 +1189,61 @@ componentDidCatch(error, info) {
 - **在 Fiber 带来的异步渲染机制下，可能会导致非常严重的 Bug。**
   - 由于 render 阶段里的生命周期都可以重复执行，在 componentWillxxx 被打断 + 重启多次后，就会发出多个付款请求
 
+------
+
+## 发布订阅模型实现
+
+**发布-订阅模型API涉及思路**
+
+- **事件的监听（订阅）和事件的触发（发布）**
+- `on()`: 负责注册事件的监听器，指定事件触发时的回调函数
+- `emit()`: 负责触发事件，可以通过传参使其在触发的时候携带数据
+- `off()`: 负责监听器的删除
+
+```react
+class MyEventEmitter {
+  constructor() {
+    // eventMap 用来存储事件和监听函数之间的关系
+    this.eventMap = {}
+  }
+
+  // 订阅
+  on(type, handler) {
+    // 非函数则报错
+    if (!handler instanceof Function) {
+      throw new Error('please enter a function')
+    }
+    // 若不存在，新建该队列
+    if (!this.eventMap[type]) {
+      this.eventMap[type] = []
+    }
+    // 若存在，直接往队列推入 handler
+    this.eventMap[type].push(handler)
+  }
+
+  // 发布
+  emit(type, params) {
+    // 若事件已订阅
+    if (this.eventMap[type]) {
+      // 依次执行出队
+      this.eventMap[type].forEach(handler => {
+        handler(params)
+      })
+    }
+  }
+
+  // 销毁
+  off(type, handler) {
+    if (this.eventMap[type]) {
+      // 无符号右移：当-1无符号右移时，会变成32位为1的二进制数，巨大的索引找不到就不删除
+      this.eventMap[type].splice(this.eventMap[type].indexOf(handler) >>> 0, 1)
+    }
+  }
+}
+
+export default MyEventEmitter
+
+// 在B组件中执行事件订阅，以及销毁阶段的关闭
+// A组件中执行事件更新
+```
+
