@@ -17,6 +17,12 @@
   // this.eventMap[type].splice(this.eventMap[type].indexOf(handler)>>>0,1)
   let demo = -1 >>> 0
   console.log(demo.toString(2));
+  function CustomError(message) {
+    this.name = 'CustomError'
+    this.message = message;
+}
+CustomError.prototype = new Error();
+
 </script>
 </body>
 </html>

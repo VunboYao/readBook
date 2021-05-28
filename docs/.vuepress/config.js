@@ -9,6 +9,10 @@ module.exports = {
     displayAllHeaders: false,
     sidebar: [
       {
+        title: '工具函数',
+        children: ['/utils.md'],
+      },
+      {
         title: 'C语言',
         children: ['C/C.md'],
       },
@@ -18,7 +22,7 @@ module.exports = {
         children: [
           {
             title: '面试系列',
-            children: ['JS/000-面试系列', 'JS/01-JS数据类型', 'JS/02-JS深浅拷贝'],
+            children: ['JS/interview/000-面试系列', 'JS/interview/01-JS数据类型', 'JS/interview/02-JS深浅拷贝'],
           },
         ],
       },
@@ -78,6 +82,10 @@ module.exports = {
       {
         title: 'WebPack',
         children: ['WebPack/webpack.md'],
+      },
+      {
+        title: '正则表达式',
+        children: ['JS/正则表达式.md'],
       },
     ],
   },
