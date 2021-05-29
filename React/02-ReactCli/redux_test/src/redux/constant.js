@@ -1,1 +1,2 @@
-export const ADD_NUM = 'add_num'
+export const ADD_PERSON = 'addPerson'
+export const ADD_COUNT = 'addCount'

@@ -1,33 +1,24 @@
 import React, { PureComponent } from 'react'
-import { Add } from '../redux/action'
-import { connect } from 'react-redux'
+import { increment } from '../redux/actions/Count'
+import {connect} from 'react-redux'
 class Count extends PureComponent {
-  Add = params => {
-    this.props.Add({ id: 111, name: 'yyb', age: 20 })
+  add = () => {
+    this.props.increment(1)
   }
   render() {
-    console.log(this.props)
     return (
-      <div>
-        <h2>我是组件</h2>
-        <ul>
-          {this.props.Count.map((item, index) => {
-            return (
-              <li key={index}>
-                {item.name}-{item.age}
-              </li>
-            )
-          })}
-        </ul>
-        <button onClick={this.Add}>add</button>
-      </div>
+      <>
+        <h2>now total is {this.props.Count}</h2>
+        <h3>i ma component Person. has {this.props.Person.length} info</h3>
+        <button onClick={this.add}> + </button>
+      </>
     )
   }
 }
 
 export default connect(
-  state => {
-    return { Count: state }
-  },
-  { Add }
+  state => ({...state}),
+  {
+    increment
+  }
 )(Count)
