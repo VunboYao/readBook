@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function clone(parent, child) {
+        // 减少组合继承中多进行一次构造的过程
+        child.prototype = Object.create(parent.prototype)
+        child.prototype.constructor = child
+      }
+
+      function Parent() {
+        this.name = 'parent'
+        this.play = [1, 2, 3]
+      }
+      Parent.prototype.getName = function () {
+        return this.name
+      }
+
+      function Child() {
+        // 继承实例属性
+        Parent.call(this)
+        this.friends = 'child'
+      }
+      // 原型clone
+      clone(Parent, Child)
+      // Child原型加强
+      Child.prototype.getFriends = function () {
+        return this.friends
+      }
+      let person = new Child()
+      console.log(person)
+      console.log(person.getName()) // parent
+      console.log(person.getFriends()) // child
+    </script>
+  </body>
+</html>
