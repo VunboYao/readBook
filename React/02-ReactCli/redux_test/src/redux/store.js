@@ -1,7 +1,4 @@
-import { createStore, applyMiddleware } from 'redux'
+import { createStore } from 'redux'
+import Count from './reducer'
 
-// 获取redux异步action处理器
-import thunk from 'redux-thunk'
-import reducer from './reducers'
-
-export default createStore(reducer, applyMiddleware(thunk))
+export default createStore(Count, [{ id: 100, name: 'nb', age: 10 }])
