@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function Parent1() {
+        this.name = 'parent1'
+        this.play = [1, 2, 3]
+      }
+      Parent1.prototype.getName = function () {
+        return this.name
+      }
+      function Child1() {
+        // 第二次调用Parent1()
+        Parent1.call(this)
+        this.type = 'child1'
+      }
+      // 第一次调用 Parent1()
+      Child1.prototype = Object.create(Parent1.prototype)
+      Child1.prototype.constructor = Child1
+      Child1.prototype.getFriends = function () {
+        return 'child friends'
+      }
+      let s1 = new Child1()
+      let p1 = new Parent1()
+      console.log(s1, p1)
+    </script>
+  </body>
+</html>
