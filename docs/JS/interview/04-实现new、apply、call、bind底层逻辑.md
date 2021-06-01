@@ -9,3 +9,45 @@ new 生成实例的过程
 
 **不使用new关键词，返回结果则是undefined**
 
+**new 关键词执行之后总是会返回一个对象，要么是实例对象，要么是 return 语句指定的对象**
+
+## call & apply & bind 原理介绍
+
+```js
+func.call(thisArg, param1, param2, ...)
+func.apply(thisArg, [param1, param2, ...])
+func.bind(thisArg, param1, param2, ....)
+```
+
+- 三个方法均改变 `this` 的指向
+- `call`和`apply`的区别在于，传入的参数写法不同：`apply`的第二个参数为数组。`call`则是从第二个到第`N`个都是给`func`的传参
+- `bind`不是马上执行，而`call`和`apply`是改变`this`指向之后立即执行
+
+```js
+let arr = [13, 6, 10, 11, 16];
+const max = Math.max.apply(Math, arr); // Math.max(arg1, arg2, arg3)
+const min = Math.min.apply(Math, arr);
+console.log(max);  // 16
+console.log(min);  // 6
+```
+
+## new 的实现
+
+- 让实例可以访问到私有属性
+- 让实例可以访问构造函数原型(constructor.prototype)所在原型链上的属性
+- 构造函数返回的最后结果是引用数据类型
+
+```js
+function _new(ctor, ...args) {
+  if(typeof ctor !== 'function') {
+    throw 'ctor must be a function'
+  }
+  let obj = new Object()
+  obj.__proto__ = Object.create(ctor.prototype)
+  let res = ctor.apply(obj, [...args]) // Date、RegExp、Array等有返回值
+  let isObject = typeof res === 'object' && res !== null
+  let isFunction = typeof res === 'function'
+  return isObject || isFunction ? res : obj
+}
+```
+
