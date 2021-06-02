@@ -38,7 +38,7 @@ foo(message)
 // Vue
 
 import Vue from 'vue'
-import App from './js/06-app.vue'
+import App from './js/06-app'
 
 new Vue({
   render: h => h(App)
