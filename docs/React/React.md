@@ -617,6 +617,8 @@ export default withRouter(Header)
 
 ## redux
 
+**在 Redux 的整个工作过程中，数据流是严格单向的**
+
 ![1621051906478](./redux.png)
 
 ### 基础介绍
@@ -624,7 +626,7 @@ export default withRouter(Header)
 **store.js:**
 
 - 引入 redux 中的 createStore 函数，创建一个 store
-- createStore 调用时要传入一个为其服务的 reducer，并暴露 store 对象
+- createStore 调用时要传入一个为其服务的 reducer，并暴露 store 对象.**第二个参数为可选初始化数据**
 
 **reducer.js:**
 
@@ -640,12 +642,14 @@ export default withRouter(Header)
 
 **action.js：**
 
+- 作用：**通知reducer “让改变发生“ **
+
 - 明确：延迟的动作不想交给组件自身，想交给 action
 - 何时需要异步 action：想要对状态进行操作，但是具体的数据靠异步任务返回。
 - 具体编码：
   - `npm i redux-thunk`，并配置在 store 中
   - 创建 action 的函数不再返回一般对象，而是一个函数，该函数中写异步任务
-  - 异步任务有结果后，分发一个同步的 action 去真正操作数据
+  - 异步任务有结果后，分发一个同步的 action 去真正操作数据。**通过store.dispatch触发**
   - 备注：**异步 action 不是必须要写的，完全可以自己等待异步任务的结果了再去分发同步 action。**
 
 ### react-redux 介绍
@@ -705,16 +709,16 @@ export default withRouter(Header)
    ```react
    // 引入redux中的核心方法
    import { createStore, applyMiddleware } from 'redux'
-
+   
    // 获取redux异步action处理器
    import thunk from 'redux-thunk'
-
+   
    // 引入redux-devtools-extension
    import { composeWithDevTools } from 'redux-devtools-extension'
-
+   
    // 引入汇总后的reducer
    import Reducer from './reducers'
-
+   
    export default createStore(Reducer, composeWithDevTools(applyMiddleware(thunk)))
    ```
 
@@ -779,10 +783,10 @@ export default createStore(Reducer, composeWithDevTools(applyMiddleware(thunk)
 
   ```react
   // redux/reducers/Count.js
-
+  
   import { INCREMENT, DECREMENT } from '../constant'
   const initState = 0 // 声明初始化数据
-
+  
   /* TODO: 纯函数，不能改写preState */
   export default function CountReducer(preState=initState, action) {
     const {type, data} = action
@@ -964,6 +968,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
 
 ### Context
 
+**即便组件的 shouldComponentUpdate 返回 false，它仍然可以“穿透”组件继续向后代组件进行传播，进而确保了数据生产者和数据消费者之间数据的一致性**
+
 一种组件间通信方式, 常用于【祖组件】与【后代组件】间通信
 
 1. 创建 Context 容器对象
@@ -984,8 +990,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
 
    ```react
    //第一种方式:仅适用于类组件
-   static contextType = xxxContext  // 声明接收context
-   this.context // 读取context中的value数据
+   static contextType = xxxContext  // 后代组件声明接收context
+   this.context // 组件中读取context中的value数据
 
    //第二种方式: 函数组件与类组件都可以
    <xxxContext.Consumer>
@@ -997,7 +1003,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
    </xxxContext.Consumer>
    ```
 
-4. 在应用开发中一般不用 context, 一般都它的封装 react 插件
+4. 在应用开发中一般不用 context, 一般都用它封装 react 插件
 
 ### 组件优化
 
