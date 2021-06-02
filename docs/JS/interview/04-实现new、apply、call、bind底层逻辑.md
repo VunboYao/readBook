@@ -34,7 +34,7 @@ console.log(min);  // 6
 ## new 的实现
 
 - 让实例可以访问到私有属性
-- 让实例可以访问构造函数原型(constructor.prototype)所在原型链上的属性
+- 让实例可以访问构造函数原型`(constructor.prototype)`所在原型链上的属性
 - 构造函数返回的最后结果是引用数据类型
 
 ```js
@@ -50,4 +50,49 @@ function _new(ctor, ...args) {
   return isObject || isFunction ? res : obj
 }
 ```
+
+## call 和 apply 的实现
+
+```js
+Function.prototype.call = function(context, ...args) {
+  let context = context || window
+  context.fn = this
+  let result = eval('context.fn(...args)')
+  delete context.fn
+  return result
+}
+
+Function.prototype.apply = function(context, args) {
+  let context = context || window
+  context.fn = this
+  let result = eval('context.fn(...args)')
+  delete context.fn
+  return result
+}
+```
+
+## bind 的实现
+
+```JS
+Function.prototype.bind = function(context, ...args) {
+  if (typeof this !== 'function') {
+    throw new Error('this must be a function')
+  }
+  let self = this
+  let fbound = function() {
+    self.apply(this instanceof self ? this : context, args.concat(Array.prototype.slice.call(arguments)))
+  }
+  if (this.prototype) {
+    fbound.prototype = Object.create(this.prototype)
+  }
+  return fbound
+}
+```
+
+| 方法/特征 |       call       |      apply       |       bind       |
+| :-------: | :--------------: | :--------------: | :--------------: |
+| 方法参数  |       多个       |     单个数组     |       多个       |
+| 方法功能  | 函数调用改变this | 函数调用改变this | 函数调用改变this |
+| 返回结果  |     直接执行     |     直接执行     |  返回待执行函数  |
+| 底层实现  |    通过`eval`    |    通过`eval`    | 间接调用`apply`  |
 
