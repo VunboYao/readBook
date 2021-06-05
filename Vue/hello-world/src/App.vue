@@ -16,6 +16,7 @@
       <router-link class="link" to="/user/subUser">subUser</router-link>
       <router-link class="link" to="/redirect">redirect</router-link>
     </div>
+    <jsx-demo v-for="n in 4" :level="n" :key="n">我是标标题{{n}}</jsx-demo>
     <component-a />
     <el-button @click="show">show</el-button>
     <el-button @click="hide">hide</el-button>
@@ -24,6 +25,7 @@
 </template>
 
 <script>
+import jsxDemo from './components/jsxDemo'
 import {FilterData} from './plugin/FilterData/main'
 const componentA = {
   name: "tplA",
@@ -34,6 +36,7 @@ export default {
   name: "App",
   components: {
     componentA: componentA,
+    jsxDemo
   },
   mounted() {},
   methods: {
