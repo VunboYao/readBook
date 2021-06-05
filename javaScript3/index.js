@@ -1,13 +1,5 @@
-/* for (var i = 0; i <= 5; i++) {
-  ;(function(j) {
-    setTimeout(() => {
-      console.log(j)
-    }, 0)
-  })(i)
-}
- */
-for (var i = 0; i <= 5; i++) {
-  setTimeout((J) => {
-    console.log(J)
-  }, 0, i)
-}
+let c = JSON.parse('{"p": 5}', (k, v) => {
+  if (k === '') return v
+  return v * 2
+})
+console.log(c); // { p: 10 }
