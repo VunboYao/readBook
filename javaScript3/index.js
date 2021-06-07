@@ -1,8 +1,11 @@
-function foo() {
-  bar.apply(this, arguments)
+let arr = [1, [2, [3, 4, 5]]]
+function flatten(arr) {
+  let str = JSON.stringify(arr)
+  str = str.replace(/(\[|\])/g, '')
+  str = '[' + str + ']'
+  return JSON.parse(str)
 }
-function bar(a, b, c) {
-  const d = Array.from(arguments)
-  console.log(d);
-}
-foo(1, 2, 3) // 1 2 3
+console.log(flatten(arr)) // [ 1, 2, 3, 4, 5 ]
+// set
+// find
+// includes
