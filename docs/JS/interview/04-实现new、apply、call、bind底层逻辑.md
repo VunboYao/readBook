@@ -44,7 +44,7 @@ function _new(ctor, ...args) {
   }
   let obj = new Object()
   obj.__proto__ = Object.create(ctor.prototype)
-  let res = ctor.apply(obj, [...args]) // Date、RegExp、Array等有返回值
+  let res = ctor.apply(obj, [...args]) // 若构造函数返回对象，则有对应返回值
   let isObject = typeof res === 'object' && res !== null
   let isFunction = typeof res === 'function'
   return isObject || isFunction ? res : obj
