@@ -148,10 +148,10 @@
     },
   }
   for (let c of a) {
-    console.log(c);
+    // console.log(c);
   }
   setTimeout(() => {
-    window.close()
+    // window.close()
   }, 3000);
 /*   class Test {
     constructor(limit) {
@@ -182,4 +182,43 @@
     }
     console.log(i);
   } */
+}
+
+{
+  function demo() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('123')
+      }, 1000)
+    })
+  }
+  function test() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        reject('456')
+      }, 1000)
+    })
+  }
+  function foo() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('789')
+      }, 1000)
+    })
+  }
+  const arr = [demo, test, foo]
+  // const subArr = arr.map(item => {
+  //   return item()
+  //     .then(res => {
+  //       return res
+  //     })
+  //     .catch(err => {
+  //       return err
+  //     })
+  // })
+  Promise.any([demo(), test(), foo()]).then(res => {
+      console.log(res, 'ok')
+    }).catch(err => {
+      console.log(err)
+    })
 }

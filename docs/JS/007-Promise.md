@@ -535,39 +535,39 @@ class YPromise {
 # 如何在Promise.all（）中捕获错误
 
 ```javascript
-	function demo() {
-		return new Promise((resolve, reject) => {
-			setTimeout(() => {
-        resolve('123')
-			}, 1000)
-		})
-	}
-	function test() {
-		return new Promise((resolve, reject) => {
-			setTimeout(() => {
-        reject('456')
-			}, 1000)
-		})
-	}
-	function foo() {
-		return new Promise((resolve, reject) => {
-			setTimeout(() => {
-				resolve('789')
-			}, 1000)
-		})
-	}
-	const arr = [demo,test, foo]
-  const subArr = arr.map(item => {
-  	return item().then(res => {
-  		return res
-    }).catch(err => {
-  		return err
+function demo() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve('123')
+        }, 1000)
     })
-  })
-  Promise.all(subArr).then(res => {
-		console.log(res,'ok')
-	}).catch(err => {
-		console.log(err)
-	})
+}
+function test() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            reject('456')
+        }, 1000)
+    })
+}
+function foo() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve('789')
+        }, 1000)
+    })
+}
+const arr = [demo,test, foo]
+const subArr = arr.map(item => {
+    return item().then(res => {
+        return res
+    }).catch(err => {
+        return err
+    })
+})
+Promise.all(subArr).then(res => {
+    console.log(res,'ok')
+}).catch(err => {
+    console.log(err)
+})
 ```
 
