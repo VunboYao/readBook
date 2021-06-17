@@ -152,8 +152,8 @@
   }
   setTimeout(() => {
     // window.close()
-  }, 3000);
-/*   class Test {
+  }, 3000)
+  /*   class Test {
     constructor(limit) {
       this.limit = limit
     }
@@ -216,9 +216,106 @@
   //       return err
   //     })
   // })
-  Promise.any([demo(), test(), foo()]).then(res => {
-      console.log(res, 'ok')
-    }).catch(err => {
-      console.log(err)
+  Promise.any([demo(), test(), foo()])
+    .then(res => {
+      // console.log(res, 'ok')
     })
+    .catch(err => {
+      // console.log(err)
+    })
+}
+
+{
+  function EventEmitter() {
+    // 存储自定义事件及回调函数
+    this._events = {}
+  }
+  EventEmitter.VERSION = '1.0.0'
+
+  EventEmitter.prototype.on = function(eventName, listener) {
+    if (!eventName || !listener) return
+    // 判断回调的 listener 是否为函数
+    if (!isValidListener(listener)) {
+      throw new TypeError('listener must be a function')
+    }
+    // 获取调度中心
+    let events = this._events
+    // 获取对应事件名的回调
+    let listeners = (events[eventName] = events[eventName] || [])
+    listeners.push({
+      listener: listener,
+      once: false,
+    })
+    return this
+  }
+
+  EventEmitter.prototype.emit = function(eventName, args) {
+    // 直接通过内部对象获取对应自定义事件的回调函数
+    let listeners = this._events[eventName]
+    if (!listeners) return
+    for (let i = 0, len = listeners.length; i < len; i++) {
+      let listener = listeners[i]
+      if (listener) {
+        listener.listener.call(this, args || '')
+        if (listener.once) {
+          debugger
+          this.off(eventName, listener.listener)
+        }
+      }
+    }
+    // return this
+  }
+
+  EventEmitter.prototype.off = function(eventName, listener) {
+    let listeners = this._events[eventName]
+    if (!listeners) return
+    let index
+    for (let i = 0, len = listeners.length; i < len; i++) {
+      // 存入listeners中的是一个数组，比对listener是否是同一个
+      if (listeners[i] && listeners[i].listener === listener) {
+        index = i
+        break
+      }
+    }
+    if (typeof index !== 'undefined') {
+      listeners.splice(index, 1, null)
+    }
+    return this
+  }
+
+  EventEmitter.prototype.once = function(eventName, listener) {
+    return this.on(eventName, {
+      listener: listener,
+      once: true,
+    })
+  }
+
+  EventEmitter.prototype.allOff = function(eventName) {
+    if (eventName && this._events[eventName]) {
+      this._events[eventName] = []
+    } else {
+      this._events = {}
+    }
+  }
+
+  // 判断是否是合法的 listener
+  function isValidListener(listener) {
+    if (typeof listener === 'function') {
+      return true
+    } else if (listener && typeof listener === 'object') {
+      return isValidListener(listener.listener)
+    } else {
+      return false
+    }
+  }
+
+  let ET = new EventEmitter()
+  function sayName(names) {
+    console.log('sayName', names)
+  }
+
+  ET.once('say', sayName)
+  // ET.off('say', sayName)
+  ET.emit('say', '666')
+  ET.emit('say', '666')
 }
