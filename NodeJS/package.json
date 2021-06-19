@@ -4,8 +4,9 @@
   "description": "",
   "main": "01-Node创建目录.js",
   "dependencies": {
-    "vunbo": "^1.0.0",
-    "progress": "^2.0.3"
+    "progress": "^2.0.3",
+    "promises-aplus-tests": "^2.1.2",
+    "vunbo": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {
