@@ -5,8 +5,60 @@
     <title></title>
   </head>
   <body>
-    <script src="./index.js"></script>
+<!--    <script src="./index.js"></script>-->
     <script>
+      const throttle = (func, wait = 0, execFirstCall) => {
+      	let timeout = null, args, firstCallTimestamp
+
+        function throttled(...arg) {
+          if (!firstCallTimestamp) firstCallTimestamp = new Date().getTime()
+          if (!execFirstCall || !args) {
+						console.log('set args: ', arg)
+            args = arg
+          }
+          if (timeout) {
+          	clearTimeout(timeout)
+            timeout = null
+          }
+          return new Promise(async (resolve, reject) => {
+          	if (new Date().getTime() - firstCallTimestamp >= wait) {
+          		try {
+          			const result = await func.apply(this, arg)
+                resolve(result)
+              } catch(e) {
+          			reject(e)
+              } finally {
+                cancel()
+							}
+            } else {
+          		timeout = setTimeout(async () => {
+          			try {
+          				const result = await func.apply(this, args)
+                  resolve(result)
+                } catch(e) {
+          				reject(e)
+                } finally {
+                  cancel()
+								}
+              }, firstCallTimestamp + wait - new Date().getTime())
+            }
+          })
+        }
+        function cancel() {
+      		clearTimeout(timeout)
+          args = null
+          timeout = null
+          firstCallTimestamp = null
+        }
+        function flush() {
+      		cancel()
+          return func.apply(this, args)
+        }
+
+        throttled.cancel = cancel
+        throttled.flush = flush
+        return throttled
+      }
     </script>
   </body>
 </html>
