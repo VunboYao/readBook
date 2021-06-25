@@ -17,7 +17,7 @@ ReactDOM.render(VDOM, document.getElementById('APP'))
 ## 虚拟 DOM
 
 1. 本质是 Object 类型的对象（一般对象）
-2. 虚拟 DOM 比较“轻”，真是 DOM 比较“重”, 因为虚拟 DOM 是 React 内部使用，无需真实 DOM 上那么多的属性
+2. 虚拟 DOM 比较“轻”，真实 DOM 比较“重”, 因为虚拟 DOM 是 React 内部使用，无需真实 DOM 上那么多的属性
 3. 虚拟 DOM 最终会被 React 转化为真实 DOM，呈现在页面上
 
 ## JSX 语法规则
@@ -46,9 +46,11 @@ ReactDOM.render(VDOM, document.getElementById('APP'))
    - Function test (){}
 2. 语句（代码）
 
-- if（）{}
-- for（）{}
-- switch（）{}
+   - if（）{}	
+
+   - for（）{}
+
+   - switch（）{}
 
 3. **JSX 中只能写 js 表达式**
 
@@ -429,7 +431,7 @@ class Person extends React.Component {
 
 - 导航区: `<Link to='/xxxx'>主页<Link>`
 - 展示区写`Route`标签进行路径匹配：`<Route path='/xxx' component={Home}/>`
-- `<App>`的最外层包裹一个`<BrowserRouter`或`<HashRouter>`
+- 入口文件`index.js`注册：`<App>`的最外层包裹一个`<BrowserRouter`或`<HashRouter>`
 
 ### 路由组件与一般组件
 
