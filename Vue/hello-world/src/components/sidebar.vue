@@ -27,5 +27,8 @@ export default {
 </script>
 
 <style scoped>
-
+h2 {
+  color: skyblue;
+  font-weight: bold;
+}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>{{ id }}</p>
+    <p class="text">{{ id }}>>>>>>>>>>>>>>></p>
   </div>
 </template>
 
@@ -20,5 +20,8 @@ div {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.text {
+  color: red;
 }
 </style>
