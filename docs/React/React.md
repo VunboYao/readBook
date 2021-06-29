@@ -978,7 +978,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
 
    ```react
    const XxxContext = React.createContext()
+   
+   // 可选择性的传入一个 defaultValue
+   const XxxContext = React.createContext(defaultValue)
    ```
+
+   1. **只有**当组件所处的树中没有匹配到 Provider 时，其 defaultValue 参数才会生效 
+   2. 将 `undefined`传递给 `Provider` 的 value 时，消费组件的 **`defaultValue`** 不会生效
 
 2. 渲染子组时，外面包裹 xxxContext.Provider, 通过 value 属性给后代组件传递数据
 
@@ -994,7 +1000,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
    //第一种方式:仅适用于类组件
    static contextType = xxxContext  // 后代组件声明接收context
    this.context // 组件中读取context中的value数据
-
+   
    //第二种方式: 函数组件与类组件都可以
    <xxxContext.Consumer>
        {
