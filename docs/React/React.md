@@ -632,7 +632,7 @@ export default withRouter(Header)
 
 **reducer.js:**
 
-- reducer 的本质是一个函数，接收：preState,action，返回加工后的状态
+- reducer 的本质是一个函数，接收：preState，action，返回加工后的状态
 - reducer 有两个作用：初始化状态，加工状态
 - reducer 被第一次调用时，是 store 自动触发的
   - 传递的 preState 是 undefined
@@ -660,8 +660,8 @@ export default withRouter(Header)
 
 1. 明确两个概念
    1. UI 组件:不能使用任何 redux 的 api，只负责页面的呈现、交互等
-   2. 器组件：负责和 redux 通信，将结果交给 UI 组件。
-2. 如何创建一个容器组件————靠 react-redux 的 connect 函数
+   2. 容器组件：负责和 redux 通信，将结果交给 UI 组件。
+2. 如何创建一个容器组件——依靠 react-redux 的 connect 函数
 
    1. **`connect(mapStateToProps,mapDispatchToProps)(UI组件)`**
    2. **`mapStateToProps`**:映射状态，返回值是一个对象
@@ -1012,7 +1012,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
 #### Component 的 2 个问题
 
 1. 只要执行 setState(),即使不改变状态数据, 组件也会重新 render()
-2. 只当前组件重新 render(), 就会自动重新 render 子组件 ==> 效率低
+2. 只要当前组件重新 render(), 就会自动重新 render 子组件 ==> 效率低
 
 **解决**
 
@@ -1117,7 +1117,7 @@ componentDidCatch(error, info) {
 - 父子组件：props
 
 - 兄弟组件(非嵌套组件)：消息订阅-发布、集中式管理
-- 祖孙组件(跨级组件)：消息订阅-发布、集中式管理、conText(用的少)
+- 祖孙组件(跨级组件)：消息订阅-发布、集中式管理、Context(用的少)
 
 ## 原理
 
@@ -1151,7 +1151,7 @@ componentDidCatch(error, info) {
 - render(非 ReactDOM.render)，**灵魂**
   - 生成虚拟 DOM
   - 渲染工作流：组件数据改变到组件实际更新发生的过程
-  - **render 在执行过程中不会去操作真实 DOM， 它的职能时把需要渲染的内容返回出来**， 真实 DOM 的渲染工作在挂载阶段由 ReactDOM.render 来承接
+  - **render 在执行过程中不会去操作真实 DOM， 它的职能是把需要渲染的内容返回出来**， 真实 DOM 的渲染工作在挂载阶段由 ReactDOM.render 来承接
 - 生命周期方法：“躯干”
 
 ---

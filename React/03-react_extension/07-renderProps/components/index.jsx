@@ -6,7 +6,7 @@ export default class Demo extends PureComponent {
       <div className="parent">
         <h2>我是父亲组件</h2>
         {/* 需要提供插槽的组件，传入子组件时，通过render返回一个函数调用。传入需要插入的组件和属性 */}
-        <A age={2} render={data => <B name={data}/>}/>
+        <A age={2} render={data => <B type={data}/>}/>
       </div>
     )
   }
@@ -19,7 +19,7 @@ class A extends PureComponent {
     const tip = age > 18 ? 'adult' : 'baby'
     return (
       <div className="son">
-        <h3>我是子组件</h3>
+        <h3>我是子组件{tip}</h3>
         {/* 默认执行函数调用，传入暴露给子组件的参数 */}
         {this.props.render(tip)}
       </div>
@@ -33,7 +33,7 @@ class B extends PureComponent {
     return (
       <div className='grandson'>
         {/* 接收props传入的参数 */}
-        <h3>我是孙组件, i am {this.props.name}</h3>
+        <h3>我是孙组件, i am {this.props.type}</h3>
       </div>
     )
   }
