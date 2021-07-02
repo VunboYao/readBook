@@ -50,13 +50,14 @@
 3. 修改数据库
 
    `alter database 数据库名称 charset=字符集`
-
-- 只能修改字符集：`alter database person  charset=utf8`
-
+   
+   - 只能修改字符集：`alter database person  charset=utf8`
+   
 4. 查看数据库
 
-- `show databases;`
-- `show create database 数据库名称;`
+   - `show databases;`
+
+   - `show create database 数据库名称;`
 
 ## 表增删改查
 
@@ -157,6 +158,16 @@
    - 同时更新多个字段数据
      - `update stu set score=33,name='it666' where id=5;`
 
+3. 查询数据
+
+   `select 字段名称1，字段名称2 from 表名 [where 条件];`
+
+   - *查询特定字段的数据*
+     - `SELECT NAME FROM PERSON;`
+   - 查询满足条件的数据
+     - `SELECT id,name,score from person where score > 90;`
+     - `SELECT id,name,score from person where score in (80,90,88);`
+
    **where支持的运算符**
 
    `=（等于）、!=（不等于）、<>（不等于）、<（小于）、<=（小于等于）、>（大于）、>=（大于等于）；`
@@ -175,7 +186,7 @@
 
    **LIKE: 模糊查询**
 
-3. 删除数据
+4. 删除数据
 
    `delete from 表名 [where 条件];`
 
