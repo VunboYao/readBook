@@ -193,3 +193,117 @@
    **删除满足条件的数据**: `delete from stu where score > 60;`
 
    **删除所有数据:**`delete from stu;`
+
+## 数据类型
+
+- 整形
+- 浮点类型型
+- 定点类型
+- 字符类型
+- 文本类型
+- 枚举类型
+- 集合类型
+- 日期类型
+- 布尔类型
+
+### 整数类型
+
+- TINYINT：1字节（-128， 127）（2，255） 小整数
+- SMALLINT：2字节（-32 768，32 767）（0，65 535）大整数值
+- MEDIUMINT: 3字节（-8 388 608， 8 388 607）（0，16 777 215）大整数值
+
+- INT或INTEGER：4字节（-2 147 483 648，2 147 483 647）（0，4 294 967 295）大整数值
+- BIGINT：8字节（-9 223 372 036 854 775 808，9 223 372 036 854 775 807）（0，18 446 744 073 709 551 615）极大整数值
+
+**注意点**
+
+- *MySQL中的整型和其它编程语言的整型一样, 也区分有符号和无符号*
+  - *默认情况下整型就是有符号的*
+  - *在数据类型的后面加上 unsigned 来将数据类型变成无符号的*
+
+- *在设计数据库的时候一定要合理的使用数据类型*
+  - *例如: 我们要保存一个人的年龄 (整数)*
+  - *我们应该使用TINYINT类型, 因为人最多活到255岁已经上天了, 所以使用最小的整型即可*
+  - *如果使用其它的整型, 就会造成资源浪费, 数据库体积变大, 效率变低...*
+- *在保存数据的时候, 如果超出了当前数据类型的范围, 那么就会报错*
+- *在设置整型的时候, 还可以设置整型数据将来显示的位宽*
+  - *如果存储的数据没有指定的位宽宽, 那么就会自动**补空格或者0**, 如果大于或者等于了指定的位宽, 那么毛都不做*
+  - *2020-2-3 -- 2020-02-03*
+
+```mysql
+create table person(
+    id int,
+    age tinyint
+);
+insert into person values (1, -128);
+insert into person values (1, 127);
+insert into person values (1, 128); #报错
+
+
+create table person2(
+    id int,
+    age tinyint unsigned
+);
+insert into person values (1, -128); #报错
+insert into person values (1, 127);
+insert into person values (1, 128);
+
+
+create table person3(
+    id int,
+    age tinyint(2) zerofill
+);
+insert into person values (1, 1);   #01
+insert into person values (1, 12);  #12
+insert into person values (1, 123); #123
+```
+
+### 浮点类型
+
+- FLOAT(M, D)：4字节 单精度
+- DOUBLE(M, D)：8字节 双精度
+- m总位数， d小数位数
+
+**float和double的区别**
+
+- 占用存储空间大小不一样
+- 默认保留的小数位数不同
+- 保存数据的有效精度不同
+
+**浮点类型特点**
+
+- 和其编程语言中一样，浮点类型是不准确的
+- *所以在企业开发中千万不要使用浮点数来保存用户的准确(珍贵)信息(RMB)*
+
+```mysql
+示例一: 默认保留的小数位数不同
+create table person(
+    id int,
+    weight FLOAT,
+    height DOUBLE
+);
+insert into person values (1, 1.12345678901234567890, 1.12345678901234567890);
+weight: 1.12346
+height: 1.1234567890123457
+
+示例二: 手动指定小数的总位数和小数部分的位数
+create table person2(
+    id int,
+    weight FLOAT(10, 6),
+    height DOUBLE(10, 6)
+);
+insert into person2 values (1, 1.12345678901234567890, 1.12345678901234567890);
+weight: 1.123457
+height: 1.123457
+
+示例三: 保存数据的有效精度也不同
+create table person3(
+    id int,
+    weight FLOAT(20, 19),
+    height DOUBLE(20, 19)
+);
+insert into person3 values (1, 1.12345678901234567890, 1.12345678901234567890);
+weight: 1.123456-8357467651000
+height: 1.123456789012345-7000
+```
+
