@@ -14,6 +14,5 @@ server.listen(port, hostname, () => {
 	console.log(`Server is listening http://${hostname}:${port}/`)
 })
 */
-exports.name = '123'
-
+// exports.name = '123'
 

@@ -14,7 +14,7 @@
       </p>
     </transition-group>
   </div>
-  <div v-else>
+  <div v-else class="x-1">
     <transition name="fade" mode="out-in">
       <router-view></router-view>
     </transition>
@@ -74,5 +74,8 @@ export default {
 .fade-enter-active,
 .fade-leave-active {
   transition: all .5s;
+}
+.x-1/deep/ .text{
+  color: blue;
 }
 </style>

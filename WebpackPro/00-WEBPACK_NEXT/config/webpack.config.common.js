@@ -7,7 +7,9 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const config = {
   entry: './src/index.js',
   resolve: {
-    extensions: ['.js', '.json', '.wasm', '.ts', '.jsx'], // 扩展名解析
+    extensions: ['.js', '.json', '.wasm', '.ts', '.jsx', '.vue'], // 扩展名解析
+    modules: ['node_modules'], // 默认的模块检索路径
+    mainFiles: ['index'], // 对于文件目录，默认找index文件，后缀根据extensions来解析
     alias: {
       '@': resolveApp('./src/js') // 别名
     }

@@ -23,7 +23,7 @@ const mapStateToProps = state => ({ count: state })
 /*
 1.mapDispatchToProps函数返回的是一个对象
 2.返回的对象中的key就作为传递给UI组件的props的key,value就作为传递给UI组件的props的value
-3.mapStateToProps用于传递操作状态的方法
+3.mapDispatchToProps用于传递操作状态的方法
 */
 const mapDispatchToProps = dispatch => {
   return {

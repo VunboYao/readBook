@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
+    "build2": "webpack --config webpack.common.js --env production",
+    "server2": "webpack --config webpack.common.js --env development",
     "watch": "webpack --watch",
     "serve": "webpack serve",
     "test": "echo \"Error: no test specified\" && exit 1"
