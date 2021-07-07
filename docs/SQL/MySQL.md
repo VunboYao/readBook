@@ -307,3 +307,207 @@ weight: 1.123456-8357467651000
 height: 1.123456789012345-7000
 ```
 
+### 定点类型
+
+用于存储小数，decimal(M, D)
+
+- M总位数，D小数位数
+- 定点类型的本质：是将数据分为两个部分来存储，每个部分都是整数。**所以定点类型不要滥用，非常消耗资源**
+
+```mysql
+create table person(
+	id int,
+	weight decimal(21, 12),
+	height decimal(21, 12)
+);
+
+insert into person values(1,1.12345678901234567890, 1.12345678901234567890);
+
+weight:1.123456789012
+height:1.123456789012
+```
+
+### 字符类型
+
+专门用于存储字符
+
+- char(size): 0-255 字节 定长字符串
+- varchar(size): 0-65535字节 变长字符串
+
+**char和varchar区别**
+
+- 能够保存数据的容量不一样
+
+- char 不会回收多余的字符，要多少给多少
+
+- varchar 会回收多余的字符，用多少给多少
+
+  - 例如: 通过    char(2)存储存储数据'a', 存储的结果是' a';
+
+  - 例如: 通过 varchar(2)存储存储数据'a', 存储的结果是'a';
+
+```mysql
+create table person(
+    id int,
+    name1 char(2),
+    name2 varchar(2)
+);
+insert into person values (1, 'a', 'b');
+insert into person values (1, '12', '34');
+insert into person values (1, 'abc', 'def'); #只要超出申请的范围就会报错
+```
+
+**注意点**
+
+- *由于是字符类型, 所以传递值建议用单引号''*
+- *VARCHAR理论上可以存储65535个字符, 但是实际会随着当前数据库的字符集改变*
+
+```mysql
+create table person2(
+    id int,
+    name1 char(255),
+    name2 varchar(255)
+);
+# 65535 / 3 = 21845, 由于utf8一个字符占用3个字节, 所以varchar在utf8的表中最多只能存储21845个字符
+# 65535 / 2 = 32767, 由于gbk一个字符占用2个字节,所以varchar在gbk的表中最多只能存储32767个字符
+
+create table person3(
+    id int,
+    name1 char(255),
+    name2 varchar(65535)
+)charset=gbk;
+Column length too big for column 'name2' (max = 21845); use BLOB or TEXT instead
+Column length too big for column 'name2' (max = 32767); use BLOB or TEXT instead
+```
+
+### 大文本类型
+
+**MySQL中每一行存储的数据是有大小限制的, 每一行最多只能存储65534个字节**
+
+```mysql
+create table person(
+    #name1 char(3),
+    name2 varchar(21844) #在UTF8中相当于65535个字节
+)charset=utf8;
+# Row size too large. The maximum row size for the used table type, not counting BLOBs, is 65535. This includes storage overhead, check the manual. You have to change some columns to TEXT or BLOBs
+```
+
+- *TINYTEXT 0-255字节         短文本字符串*
+- *TEXT     0-65535字节         长文本数据*
+- *MEDIUMTEXT 0-16777215字节      中等长度文本数据*
+- *LONGTEXT 0-4294967295字节    极大文本数据*
+
+ ```MYSQL
+ create table person2(
+     name1 char(3),
+     name2 TEXT #不会报错, 因为没有超出显示, 实际只占用10个字节
+ )charset=utf8;
+ ```
+
+**大文本类型在表中并不会实际占用所能保存的字节数, 而是利用10个字节引用了实际保存数据的地址**
+
+### 枚举类型
+
+**和其他的编程语言一样，如果某个字段的取值只能是几个固定值中的一个，那么就可以使用枚举enum(val1,val2,...);**
+
+```MYSQL
+CREATE TABLE PERSON(
+    id INT,
+    gender enum('男', '女', '妖')
+);
+insert into person values (1, '火'); #会报错
+insert into person values (1, '男'); #不会报错
+insert into person values (2, '女'); #不会报错
+insert into person values (3, '妖'); #不会报错
+```
+
+**注意点**
+
+- MySQL中的枚举类型和其它的编程语言一样，底层都是使用整形来实现的
+
+  - 和其他的编程语言不太一样的是，其他编程语言的枚举都是从0开始的，而MySQL的枚举是从1开始的
+
+  `select gender+0 from person;`
+
+- 由于MySQL的枚举底层是使用整形实现的，所以我们在赋值的时候除了可以赋值固定的几个值，还可以赋值对应的整数
+
+  ```mysql
+  insert into person values(4,1); # not error
+  insert into person values(4,4); # error
+  ```
+
+### 集合类型
+
+和编程开发中一样，如果某个字段的取值只能是几个固定值中的几个，那么就可以使用集合类型set(val1, val2, ...)
+
+```mysql
+create table person(
+    id int,
+    hobby set('basketball', 'soccer', 'football', 'golf')
+);
+
+insert into person values(1, 'soccer,football,golf'); // not error
+insert into person values(2, 'baseball'); // error
+
+insert into person values(1, 'soccer,football,golf'); # 14
+insert into person values(2, 'basketball'); # 1
+insert into person values(3,'soccer'); # 2
+insert into person values(5, 'football'); # 4
+```
+
+**注意点**
+
+- MySQL的集合类型也是使用整型来实现的
+  - `select hobby + 0 from person;`
+
+- MySQL的集合类型是按照2（n）的方式来实现的
+  - 2（0）= 1
+  - 2（1）= 2
+  - 2（2）= 4
+  - 2（3）= 8
+
+### 布尔类型
+
+用于保存真假
+
+```mysql
+create table person(
+    id int,
+    flag boolean
+);
+insert into person values (1, '男'); #会报错
+insert into person values (1, true); #不会报错
+insert into person values (2, false); #不会报错
+```
+
+**注意点**
+
+- MySQL中的布尔类型也是使用整形来实现的，**0 表示假， 1 表示真**
+  - 底层的本质是因为MySQL是使用C/C++来实现的，所以就是“非零即真”
+
+```mysql
+insert into person values (3, 1); #不会报错
+insert into person values (4, 0); #不会报错
+insert into person values (5, 2); #不会报错
+```
+
+### 日期类型
+
+用于保存时间
+
+- DATE    *3字节 YYYY-MM-DD  日期值*
+- *TIME     3字节 HH:MM:SS  时间值或持续时间*
+- *DATETIME 8字节 YYYY-MM-DD HH:MM:SS 混合日期和时间值*
+
+**注意点：在存储时间的时候，需要用单引号将时间括起来**
+
+```mysql
+create table person(
+    id int,
+    filed1 DATE,
+    filed2 TIME,
+    filed3 DATETIME
+);
+insert into person values (1, '2020-02-02', '14:18:23', '2020-02-02 14:18:23');
+```
+
