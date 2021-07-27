@@ -833,6 +833,7 @@ export default {
         zhengshu1: null,
         money: null,
         is_edit: null,
+        is_set: 0,
         comm: null,
         comm2: null
       },
