@@ -1,63 +1,6 @@
 <template>
   <div>
     <div v-show="!descPage" class="vue_content">
-      <!--  <el-table
-      :data="tableData"
-      border
-      stripe
-      style="width: 100%"
-    >
-      <el-table-column
-        prop="a"
-        :label="street+'街道'"
-      />
-      <el-table-column
-        prop="f"
-        label="街道各中心社区工作者：受理中心工作人员"
-      >
-        <template slot-scope="scope">
-          <el-input v-show="scope.row.show" v-model="scope.row.f" placeholder="请输入申请人数" />
-          <span v-show="!scope.row.show">{{ scope.row.f }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="d"
-        label="街道各中心社区工作者：其它中心工作人员"
-      >
-        <template slot-scope="scope">
-          <el-input v-show="scope.row.show" v-model="scope.row.d" placeholder="请输入申请人数" />
-          <span v-show="!scope.row.show">{{ scope.row.d }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="e"
-        label="专职党群工作者：“两新”组织专职党群工作者"
-      >
-        <template slot-scope="scope">
-          <el-input v-show="scope.row.show" v-model="scope.row.e" placeholder="请输入申请人数" />
-          <span v-show="!scope.row.show">{{ scope.row.e }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="c"
-        label="居民区专职党务工作者"
-      >
-        <template slot-scope="scope">
-          <el-input v-show="scope.row.show" v-model="scope.row.c" placeholder="请输入申请人数" />
-          <span v-show="!scope.row.show">{{ scope.row.c }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="b"
-        label="居民区社区工作者"
-      >
-        <template slot-scope="scope">
-          <el-input v-show="scope.row.show"
-          v-model="scope.row.b" placeholder="请输入申请人数" />
-          <span v-show="!scope.row.show">{{ scope.row.b }}</span>
-        </template>
-      </el-table-column>
-    </el-table> -->
       <h1 style="text-align:center;">杨浦区2021年度社区工作者招录额度统计表</h1>
       <el-table
         :data="subTableData"
@@ -381,44 +324,6 @@ export default {
   name: 'Addeditor',
   data() {
     return {
-      tableData: [
-        {
-          a: '编制基数',
-          b: '',
-          c: '',
-          d: '',
-          e: '',
-          f: '',
-          show: false
-        },
-        {
-          a: '在岗人数',
-          b: '',
-          c: '',
-          d: '',
-          e: '',
-          f: '',
-          show: false
-        },
-        {
-          a: '空编数',
-          b: '',
-          c: '',
-          d: '',
-          e: '',
-          f: '',
-          show: false
-        },
-        {
-          a: '额度申请',
-          b: '0',
-          c: '0',
-          d: '0',
-          e: '0',
-          f: '0',
-          show: true
-        }
-      ],
       // 总额度页面拼接数据
       subTableData: [
         {
