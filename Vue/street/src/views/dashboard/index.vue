@@ -17,7 +17,7 @@
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <div class="boxcardselect">
-            <span class="boxcardselecttitle">杨浦区社区工作者编制基数及使用</span>
+            <span class="boxcardselecttitle">杨浦区社区工作者员额基数及使用情况</span>
           </div>
         </div>
         <info-table

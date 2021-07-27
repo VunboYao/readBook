@@ -14,7 +14,7 @@
         align="center"
       />
       <el-table-column
-        label="街道/基数类别"
+        label="街道"
         align="center"
         prop="street"
         min-width="114"
@@ -24,7 +24,7 @@
         align="center"
       >
         <el-table-column
-          label="额度情况"
+          label="员额基数"
           align="center"
         >
           <el-table-column
@@ -75,7 +75,7 @@
         align="center"
       >
         <el-table-column
-          label="额度情况"
+          label="员额基数"
           align="center"
         >
           <el-table-column
@@ -127,7 +127,7 @@
       >
         <el-table-column
           prop="allTotal"
-          label="总额度"
+          label="员额基数"
           align="center"
           min-width="70"
         />
@@ -157,7 +157,7 @@
       </el-table-column>
       <el-table-column
         prop="totalWorker"
-        label="总人数（截止2021年5月）"
+        label="总人数"
         align="center"
       />
     </el-table>

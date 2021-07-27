@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-show="!descPage" class="vue_content">
-      <h1 style="text-align:center;">杨浦区2021年度社区工作者招录额度统计表</h1>
+      <h3 style="text-align:center;">杨浦区2021年度社区工作者招录员额只用申请</h3>
       <el-table
         :data="subTableData"
         border
@@ -72,7 +72,7 @@
     </div>
     <!-- 详情配置界面 -->
     <div v-show="descPage" class="vue_content">
-      <h1 style="text-align:center;">杨浦区2021年度社区工作者招录额度明细表</h1>
+      <h3 style="text-align:center;">当前员额申请情况</h3>
       <el-table
         :data="QuotaData"
       >
@@ -327,14 +327,14 @@ export default {
       // 总额度页面拼接数据
       subTableData: [
         {
-          type: '核定员额（名）',
+          type: '员额基数（名）',
           center: 0,
           specific: 0,
           people: 0,
           total: 0
         },
         {
-          type: '实际在岗（人）',
+          type: '实有人数（人）',
           center: 0,
           specific: 0,
           people: 0,
