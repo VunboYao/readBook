@@ -6,13 +6,11 @@
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain } from './components'
+import { AppMain } from './components'
 
 export default {
   name: 'Tree',
   components: {
-    Navbar,
-    Sidebar,
     AppMain
   },
   computed: {

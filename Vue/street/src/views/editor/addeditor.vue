@@ -77,49 +77,56 @@
         :data="QuotaData"
       >
         <el-table-column
-          label="中心社区工作者员额申请数"
+          :label="centerHeader"
           align="center"
         >
           <el-table-column
             prop="centerTotal"
             label="小计"
             align="center"
+            min-width="80"
           />
           <el-table-column
             prop="centerApply"
             label="受理中心"
             align="center"
+            min-width="80"
           />
           <el-table-column
             prop="centerOther"
             label="其他中心"
             align="center"
+            min-width="80"
           />
         </el-table-column>
         <el-table-column
-          label="专职党群工作者员额申请数"
+          :label="specificHeader"
           align="center"
         >
           <el-table-column
             prop="specificTotal"
             label="小计"
             align="center"
+            min-width="80"
           />
           <el-table-column
             prop="specificTwo"
             label="“两新”"
             align="center"
+            min-width="80"
           />
           <el-table-column
             prop="specificPeople"
             label="居民区"
             align="center"
+            min-width="80"
           />
         </el-table-column>
         <el-table-column
           prop="personTotal"
-          label="居民社区工作者员额申请数"
+          :label="peopleHeader"
           align="center"
+          min-width="140"
         >
           <template slot-scope="scope">
             <span>{{ scope.row.personTotal }}</span>
@@ -135,27 +142,65 @@
           </template>
         </el-table-column>
       </el-table>
-      <h1 style="text-align:center;">杨浦区2021年度社区工作者招考简章</h1>
+      <h3 style="text-align:center;">杨浦区2021年度社区工作者招考简章</h3>
       <el-table
         :data="BriefData"
-        :span-method="objectSpanMethod"
         border
       >
         <el-table-column
           prop="street"
           label="单位"
           align="center"
+          min-width="50"
         />
         <el-table-column
           prop="peopleType"
           label="人员分类"
           align="center"
-        />
+          min-width="160"
+        >
+          <template slot-scope="scope">
+            <el-select
+              v-model="scope.row.peopleType"
+              clearable
+              filterable
+              @change="onPeopleTypeClear(scope.row)"
+            >
+              <el-option label="中心社区工作者" value="1" />
+              <el-option label="社区专职党群工作者" value="2" />
+              <el-option label="居民区社区工作者" value="3" />
+            </el-select>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="typeName"
           label="岗位分类"
           align="center"
-        />
+          min-width="180"
+        >
+          <template slot-scope="scope">
+            <el-select
+              v-model="scope.row.typeName"
+              clearable
+              filterable
+            >
+              <template v-if="scope.row.peopleType === '1'">
+                <el-option label="社区事务受理中心" value="1" />
+                <el-option label="社区文化活动中心" value="2" />
+                <el-option label="城市运行管理中心" value="3" />
+                <el-option label="社区党建服务中心" value="4" />
+                <el-option label="社会治安综合治理中心" value="5" />
+              </template>
+              <template v-if="scope.row.peopleType === '2'">
+                <el-option label="“两新”组织专职党群工作者" value="1" />
+                <el-option label="居民区专职党务工作者" value="2" />
+              </template>
+              <template v-if="scope.row.peopleType === '3'">
+                <el-option label="居民区社区工作者" value="1" />
+              </template>
+            </el-select>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="content"
           label="岗位简介"
@@ -166,7 +211,6 @@
             <el-input
               v-model="scope.row.content"
               type="textarea"
-              placeholder=""
             />
           </template>
         </el-table-column>
@@ -174,7 +218,7 @@
           prop="count"
           label="招聘人数"
           align="center"
-          min-width="120"
+          min-width="100"
         >
           <template slot-scope="scope">
             <el-input
@@ -190,13 +234,16 @@
           prop="proportion"
           label="面试比例"
           align="center"
+          min-width="110"
         >
           <template slot-scope="scope">
-            <el-input
+            <el-select
               v-model="scope.row.proportion"
-              type="text"
-              placeholder=""
-            />
+              clearable
+              filterable
+            >
+              <el-option label="1:3" value="1" />
+            </el-select>
           </template>
         </el-table-column>
         <el-table-column
@@ -206,25 +253,41 @@
           min-width="200"
         >
           <template slot-scope="scope">
-            <el-input
+            <el-select
               v-model="scope.row.huji"
-              type="textarea"
-              placeholder=""
-            />
+              clearable
+              filterable
+            >
+              <el-option label="本市户籍" value="1" />
+              <el-option label="持有上海市民居住证三年以上" value="2" />
+            </el-select>
           </template>
         </el-table-column>
         <el-table-column
           prop="nianling"
           label="年龄要求"
           align="center"
-          min-width="100"
+          min-width="120"
         >
           <template slot-scope="scope">
-            <el-input
+            <el-select
               v-model="scope.row.nianling"
-              type="textarea"
-              placeholder=""
-            />
+              clearable
+              filterable
+            >
+              <template v-if="scope.row.peopleType === '1'">
+                <el-option label="男性1966年8月至2003年8月期间出生" value="1" />
+                <el-option label="女性1976年8月至2003年8月期间出生" value="2" />
+              </template>
+              <template v-if="scope.row.peopleType === '2'">
+                <el-option label="男性1971年8月至2003年8月期间出生" value="1" />
+                <el-option label="女性1976年8月至2003年8月期间出生" value="2" />
+              </template>
+              <template v-if="scope.row.peopleType === '3'">
+                <el-option label="男性1966年8月至2003年8月期间出生" value="1" />
+                <el-option label="女性1976年8月至2003年8月期间出生" value="2" />
+              </template>
+            </el-select>
           </template>
         </el-table-column>
         <el-table-column
@@ -245,18 +308,22 @@
           prop="zhengzhimianmao"
           label="政治面貌"
           align="center"
-          min-width="100"
+          min-width="120"
         >
           <template slot-scope="scope">
-            <el-select v-if="onShowZZMM(scope)" v-model="scope.row.zhengzhimianmao">
-              <el-option value="中共党员" label="中共党员" />
-            </el-select>
-            <el-select v-else v-model="scope.row.zhengzhimianmao">
-              <el-option value="不限" label="不限" />
-              <el-option value="中共党员" label="中共党员" />
-              <el-option value="群众" label="群众" />
-              <el-option value="共青团员" label="共青团员" />
-              <el-option value="民主党派" label="民主党派" />
+            <el-select
+              v-model="scope.row.zhengzhimianmao"
+            >
+              <template v-if="scope.row.peopleType === '2'">
+                <el-option value="中共党员" label="中共党员" />
+              </template>
+              <template v-else>
+                <el-option value="不限" label="不限" />
+                <el-option value="中共党员" label="中共党员" />
+                <el-option value="群众" label="群众" />
+                <el-option value="共青团员" label="共青团员" />
+                <el-option value="民主党派" label="民主党派" />
+              </template>
             </el-select>
           </template>
         </el-table-column>
@@ -301,6 +368,25 @@
               type="textarea"
               placeholder=""
             />
+          </template>
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="操作"
+          width="100"
+        >
+          <template slot-scope="scope">
+            <el-button
+              type="text"
+              size="mini"
+              @click="onAddRow(scope.row, scope.$index)"
+            >新增</el-button>
+            <el-button
+              v-if="scope.$index > 0"
+              type="text"
+              size="mini"
+              @click="onDeleteRow(scope.row, scope.$index)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -357,7 +443,7 @@ export default {
         }
       ],
       // 详情明细界面switch
-      descPage: false,
+      descPage: true,
       // 额度统计数据
       QuotaData: [
         {
@@ -376,8 +462,8 @@ export default {
         {
           street: '',
           peopleTypeId: 'center',
-          peopleType: '中心社区工作者',
-          typeName: '受理中心社区工作者', // 岗位分类
+          peopleType: '2',
+          typeName: '1', // 岗位分类
           content: '', // 岗位简介
           count: null, // 申请数量
           proportion: '',
@@ -393,8 +479,8 @@ export default {
         {
           street: '',
           peopleTypeId: 'center',
-          peopleType: '中心社区工作者',
-          typeName: '其他中心社区工作', // 岗位分类
+          peopleType: '2',
+          typeName: '1', // 岗位分类
           content: '', // 岗位简介
           count: null, // 申请数量
           proportion: '',
@@ -405,58 +491,7 @@ export default {
           xueli: '本科',
           other: '',
           remark: '',
-          type_post_id: 12
-        },
-        {
-          street: '',
-          peopleTypeId: 'specific',
-          peopleType: '社区专职党群工作者',
-          typeName: '“两新”组织专职党群工作者', // 岗位分类
-          content: '', // 岗位简介
-          count: null, // 申请数量
-          proportion: '',
-          huji: '',
-          nianling: '',
-          zhuanye: '',
-          zhengzhimianmao: '中共党员',
-          xueli: '本科',
-          other: '',
-          remark: '',
-          type_post_id: 14
-        },
-        {
-          street: '',
-          peopleTypeId: 'specific',
-          peopleType: '社区专职党群工作者',
-          typeName: '居民区专职党务工作者', // 岗位分类
-          content: '', // 岗位简介
-          count: null, // 申请数量
-          proportion: '',
-          huji: '',
-          nianling: '',
-          zhuanye: '',
-          zhengzhimianmao: '中共党员',
-          xueli: '本科',
-          other: '',
-          remark: '',
-          type_post_id: 15
-        },
-        {
-          street: '',
-          peopleTypeId: 'people',
-          peopleType: '居民区社区工作者',
-          typeName: '居民区社区工作者', // 岗位分类
-          content: '', // 岗位简介
-          count: null, // 申请数量
-          proportion: '',
-          huji: '',
-          nianling: '',
-          zhuanye: '',
-          zhengzhimianmao: '不限',
-          xueli: '本科',
-          other: '',
-          remark: '',
-          type_post_id: 13
+          type_post_id: 11
         }
       ],
       outerVisible: false,
@@ -472,11 +507,65 @@ export default {
       street: ''
     }
   },
+  computed: {
+    // 申请总数
+    centerTotal() {
+      return this.subTableData[this.subTableData.length - 1]['center']
+    },
+    specificTotal() {
+      return this.subTableData[this.subTableData.length - 1]['specific']
+    },
+    peopleTotal() {
+      return this.subTableData[this.subTableData.length - 1]['people']
+    },
+    // 申请情况合成
+    centerHeader() {
+      return `中心社区工作者员额申请数（${this.centerTotal}）`
+    },
+    specificHeader() {
+      return `专职党群工作者员额申请数（${this.specificTotal}）`
+    },
+    peopleHeader() {
+      return `居民社区工作者员额申请数（${this.peopleTotal}）`
+    }
+  },
   created() {
     this.getUserInfo()
     this.getTableData()
   },
   methods: {
+    // 招录简章删除
+    onDeleteRow(row, index) {
+      this.BriefData.splice(index, 1)
+    },
+    // 招录简章新增
+    onAddRow(row, index) {
+      const rowData = {
+        street: '',
+        peopleTypeId: '',
+        peopleType: '',
+        typeName: '', // 岗位分类
+        content: '', // 岗位简介
+        count: null, // 申请数量
+        proportion: '',
+        huji: '',
+        nianling: '',
+        zhuanye: '',
+        zhengzhimianmao: '不限',
+        xueli: '本科',
+        other: '',
+        remark: '',
+        type_post_id: 11
+      }
+      this.BriefData.splice(index + 1, 0, rowData)
+    },
+    // 人员分类监听
+    onPeopleTypeClear(row) {
+      row.typeName = ''
+      row.huji = ''
+      row.nianling = ''
+      row.zhengzhimianmao = ''
+    },
     // 返回额度统计界面
     obBackStatistics() {
       this.descPage = false
@@ -589,42 +678,44 @@ export default {
       })
       ApplyApplication({ infoList: this.BriefData }).then(res => {
         if (res.code == 200) {
-          this.subTableData = [
-            {
-              type: '核定员额（名）',
-              center: 0,
-              specific: 0,
-              people: 0,
-              total: 0
-            },
-            {
-              type: '实际在岗（人）',
-              center: 0,
-              specific: 0,
-              people: 0,
-              total: 0
-            },
-            {
-              type: '员额余量（名）',
-              center: 0,
-              specific: 0,
-              people: 0,
-              total: 0
-            },
-            {
-              type: '员额申请（名）',
-              center: 0,
-              specific: 0,
-              people: 0,
-              total: 0,
-              show: true
-            }
-          ]
-          this.getTableData()
-          this.descPage = false
-          this.$message({
+          this.$alert('已提交成功，请在审阅中查阅', '提示', {
             type: 'success',
-            message: '额度申请：新增成功'
+            confirmButtonText: '确定',
+            callback: action => {
+              this.subTableData = [
+                {
+                  type: '员额基数（名）',
+                  center: 0,
+                  specific: 0,
+                  people: 0,
+                  total: 0
+                },
+                {
+                  type: '实有人数（人）',
+                  center: 0,
+                  specific: 0,
+                  people: 0,
+                  total: 0
+                },
+                {
+                  type: '员额余量（名）',
+                  center: 0,
+                  specific: 0,
+                  people: 0,
+                  total: 0
+                },
+                {
+                  type: '员额申请（名）',
+                  center: 0,
+                  specific: 0,
+                  people: 0,
+                  total: 0,
+                  show: true
+                }
+              ]
+              this.getTableData()
+              this.descPage = false
+            }
           })
         }
       })
@@ -675,30 +766,6 @@ export default {
     // 政治面貌判断
     onShowZZMM(scope) {
       return scope.row.typeName === '“两新”组织专职党群工作者' || scope.row.typeName === '居民区专职党务工作者'
-    },
-    // 招生简章的合并处理
-    objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex === 0) {
-        if (rowIndex === 0) {
-          return {
-            rowspan: 5,
-            colspan: 1
-          }
-        } else {
-          return {
-            rowspan: 0,
-            colspan: 0
-          }
-        }
-      } else if (columnIndex === 1) {
-        if (rowIndex === 0 || rowIndex === 2) {
-          return [2, 1]
-        } else if (rowIndex === 4) {
-          return [1, 1]
-        } else {
-          return [0, 0]
-        }
-      }
     },
     onNext() {
       if (this.subTableData[this.subTableData.length - 1]['total'] <= 0) {
@@ -768,47 +835,6 @@ export default {
       this.subTableData[2]['specific'] = this.subTableData[0]['specific'] - this.subTableData[1]['specific']
       this.subTableData[2]['people'] = this.subTableData[0]['people'] - this.subTableData[1]['people']
       this.subTableData[2]['total'] = this.subTableData[0]['total'] - this.subTableData[1]['total']
-    },
-    application() {
-      let infoList = []
-      infoList.push({
-        typeName: this.category[0],
-        count: parseInt(this.tableData[2].b)
-      }, {
-        typeName: this.category[1],
-        count: parseInt(this.tableData[2].c)
-      }, {
-        typeName: this.category[2],
-        count: parseInt(this.tableData[2].d)
-      }, {
-        typeName: this.category[3],
-        count: parseInt(this.tableData[2].e)
-      }, {
-        typeName: this.category[4],
-        count: parseInt(this.tableData[2].f)
-      })
-
-      console.log(infoList, 'infoList')
-      let arr = []
-      infoList.forEach(item => {
-        if (item.count == 0) {
-          arr.push(1)
-        }
-      })
-      if (arr.length == 5) {
-        this.$message.error('请填写申请人数')
-      } else {
-        postUseApplication(infoList).then((res) => {
-          console.log(res, 'res')
-          if (res.code == 200) {
-            this.$message.success('申请成功')
-          } else {
-            this.$message.success('请检查名额使用情况')
-          }
-        })
-      }
-      arr = []
-      infoList = []
     }
   }
 }

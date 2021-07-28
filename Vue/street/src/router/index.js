@@ -66,7 +66,6 @@ export const constantRoutes = [
       }
     ]
   },
-
   {
     path: '/user',
     component: Layout,
@@ -278,6 +277,34 @@ export const constantRoutes = [
         path: '/somemessage',
         component: () => import('@/views/set/messagesome'),
         hidden: true
+      }
+    ]
+  },
+  // 额度使用汇总
+  {
+    path: '/total',
+    name: 'Total',
+    meta: { title: '额度使用汇总', icon: 'statistics', isAdmin: true },
+    component: Layout,
+    isAdmin: false,
+    children: [
+      {
+        path: '/statistical-table',
+        name: 'StatisticalTable',
+        component: () => import('@/views/quotaUseTotal/statisticalTable'),
+        meta: { title: '员额统计表' }
+      },
+      {
+        path: '/detail-table',
+        name: 'DetailTable',
+        component: () => import('@/views/quotaUseTotal/detailTable'),
+        meta: { title: '额度明细表' }
+      },
+      {
+        path: '/brief-table',
+        name: 'BriefTable',
+        component: () => import('@/views/quotaUseTotal/briefTable'),
+        meta: { title: '招考简章汇总表' }
       }
     ]
   },

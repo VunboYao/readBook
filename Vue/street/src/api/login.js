@@ -31,7 +31,7 @@ export function GetUserInfo(token) {
 
 export function getInfo(id) {
   return request({
-    url: '/api/demo//userinfo',
+    url: '/api/demo/userinfo',
     method: 'post',
     params: { id }
   })
@@ -39,7 +39,7 @@ export function getInfo(id) {
 
 export function logout() {
   return request({
-    url: '/api/demo//user/logout',
+    url: '/api/demo/user/logout',
     method: 'post'
   })
 }

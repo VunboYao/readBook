@@ -1,4 +1,4 @@
-import { login, logout, GetUserInfo, getInfo } from '@/api/login'
+import { login, GetUserInfo, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -35,8 +35,6 @@ const user = {
         login(userInfo.adminid, userInfo.password)
           .then(async response => {
             const data = response
-            console.log(data, '>>>>用户信息')
-            // const tokens = '1b90efb176a31a2b8cc148ed2ef44396314f1aac'
             setToken(response.data)
             commit('SET_TOKEN', response.data)
             const userInfo = await GetUserInfo(data.data)
@@ -70,7 +68,6 @@ const user = {
         console.log(state.token)
         // logout(state.token).then(() => {
         removeToken() // must remove  token  first
-        resetRouter()
         commit('RESET_STATE')
         // commit('SET_TOKEN', '')
         // commit('SET_ROLES', [])

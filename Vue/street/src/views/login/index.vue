@@ -153,7 +153,6 @@ export default {
 }
 </script>
 <style>
-@import url(//fonts.googleapis.com/css?family=Lato:300:400);
 
 body {
   margin: 0;
