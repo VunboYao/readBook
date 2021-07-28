@@ -416,12 +416,12 @@
         <el-form
           ref="form"
           :model="form"
-          label-width="120px"
+          label-width="160px"
           inline
         >
           <el-form-item label="姓名">
             <el-select
-              v-model="form.user_name"
+              v-model="form.user_namelist"
               filterable
               clearable
               multiple
@@ -437,9 +437,10 @@
           </el-form-item>
           <el-form-item label="选择街道">
             <el-select
-              v-model="form.street"
+              v-model="form.streetlist"
               multiple
-              placeholder="请选择"
+              filterable
+              clearable
             >
               <el-option
                 v-for="(item, idx) in bm_list"
@@ -450,14 +451,23 @@
             </el-select>
           </el-form-item>
           <el-form-item label="选择性别">
-            <el-select v-model="form.sex" placeholder="请选择">
+            <el-select
+              v-model="form.sex"
+              clearable
+              filterable
+              placeholder="请选择"
+            >
               <el-option label="男" value="男" />
               <el-option label="女" value="女" />
             </el-select>
           </el-form-item>
           <el-form-item label="起始年龄">
             <!-- <el-input v-model="form.age" placeholder="请输入年龄"></el-input> -->
-            <el-select v-model="form.agemin" placeholder="请选择年龄">
+            <el-select
+              v-model="form.agemin"
+              clearable
+              placeholder="请选择年龄"
+            >
               <el-option
                 v-for="(item, idx) in age_list"
                 :key="idx"
@@ -468,7 +478,11 @@
           </el-form-item>
           <el-form-item label="结束年龄">
             <!-- <el-input v-model="form.age" placeholder="请输入年龄"></el-input> -->
-            <el-select v-model="form.agemax" placeholder="请选择年龄">
+            <el-select
+              v-model="form.agemax"
+              clearable
+              placeholder="请选择年龄"
+            >
               <el-option
                 v-for="(item, idx) in age_list"
                 :key="idx"
@@ -483,6 +497,7 @@
               placeholder="请选择政治面貌"
               filterable
               multiple
+              clearable
             >
               <el-option label="中共党员" value="中共党员" />
               <el-option label="共青团员" value="共青团员" />
@@ -497,6 +512,7 @@
               v-model="form.zuigaoxveliList"
               filterable
               multiple
+              clearable
               placeholder="请选择学历"
             >
               <el-option label="大专以下" value="大专以下" />
@@ -510,6 +526,7 @@
               v-model="form.zaibiangangweileibieList"
               filterable
               multiple
+              clearable
               placeholder="请选择岗位类别"
             >
               <el-option
@@ -547,6 +564,7 @@
               v-model="form.gangweicengciList"
               filterable
               multiple
+              clearable
               placeholder="请选择岗位层次"
             >
               <el-option label="工作人员" value="工作人员" />
@@ -559,6 +577,7 @@
               v-model="form.gangweidengjiList"
               filterable
               multiple
+              clearable
               placeholder="请选择岗位等级"
             >
               <el-option
@@ -574,6 +593,7 @@
               v-model="form.shijigongzuobumenList"
               filterable
               multiple
+              clearable
               placeholder="请选择工作部门"
             >
               <el-option label="居民区" value="居民区" />
@@ -621,7 +641,10 @@
             </el-select>
           </el-form-item>
           <el-form-item label="是否曾调整过人员编制类别">
-            <el-select v-model="form.is_edit">
+            <el-select
+              v-model="form.is_edit"
+              clearable
+            >
               <el-option label="是" value="是" />
               <el-option label="否" value="否" />
             </el-select>
@@ -812,14 +835,14 @@ export default {
       // 街道列表
       dialogVisible: false,
       form: {
-        street: [],
+        streetlist: [],
         sex: null,
         agemin: '',
         agemax: '',
         zhengzhimianmaoList: null,
         zuigaoxveliList: [],
         staffs_types: null,
-        user_name: null,
+        user_namelist: [],
         user_id: null,
         biyeyuanxiao: null,
         is_type: null,

@@ -68,6 +68,7 @@ service.interceptors.response.use(
     }
   },
   error => {
+    loading && loading.close()
     console.log('err' + error) // for debug
     Message({
       message: '接口异常，请重试',
