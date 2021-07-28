@@ -437,7 +437,7 @@
           </el-form-item>
           <el-form-item label="选择街道">
             <el-select
-              v-model="form.streetSub"
+              v-model="form.street"
               multiple
               placeholder="请选择"
             >
@@ -457,7 +457,7 @@
           </el-form-item>
           <el-form-item label="起始年龄">
             <!-- <el-input v-model="form.age" placeholder="请输入年龄"></el-input> -->
-            <el-select v-model="form.age1" placeholder="请选择年龄">
+            <el-select v-model="form.agemin" placeholder="请选择年龄">
               <el-option
                 v-for="(item, idx) in age_list"
                 :key="idx"
@@ -468,7 +468,7 @@
           </el-form-item>
           <el-form-item label="结束年龄">
             <!-- <el-input v-model="form.age" placeholder="请输入年龄"></el-input> -->
-            <el-select v-model="form.age2" placeholder="请选择年龄">
+            <el-select v-model="form.agemax" placeholder="请选择年龄">
               <el-option
                 v-for="(item, idx) in age_list"
                 :key="idx"
@@ -812,12 +812,10 @@ export default {
       // 街道列表
       dialogVisible: false,
       form: {
-        street: '',
-        streetSub: [],
+        street: [],
         sex: null,
-        age: '',
-        age1: null,
-        age2: '',
+        agemin: '',
+        agemax: '',
         zhengzhimianmao: null,
         staffs_types: null,
         user_name: null,
@@ -928,12 +926,12 @@ export default {
     // 筛选
     onSearch(page, first = false) {
       this.text = this.form.street
-      if (this.form.age2) {
+      /* if (this.form.age2) {
         this.form.age = this.form.age1 + '-' + this.form.age2
       }
       this.form.streetSub && this.form.streetSub.forEach(item => {
         this.form.street = this.form.street ? this.form.street + '-' + item : item
-      })
+      }) */
       // 分页处理
       this.form.pages = page
       this.form.sums = this.page.limit
