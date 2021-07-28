@@ -479,7 +479,7 @@
           </el-form-item>
           <el-form-item label="政治面貌">
             <el-select
-              v-model="form.zhengzhimianmao"
+              v-model="form.zhengzhimianmaoList"
               placeholder="请选择政治面貌"
               filterable
               multiple
@@ -494,7 +494,7 @@
           </el-form-item>
           <el-form-item label="学历">
             <el-select
-              v-model="form.zuigaoxveli"
+              v-model="form.zuigaoxveliList"
               filterable
               multiple
               placeholder="请选择学历"
@@ -507,7 +507,7 @@
           </el-form-item>
           <el-form-item label="岗位类别">
             <el-select
-              v-model="form.zaibiangangweileibie"
+              v-model="form.zaibiangangweileibieList"
               filterable
               multiple
               placeholder="请选择岗位类别"
@@ -544,7 +544,7 @@
           </el-form-item>
           <el-form-item label="岗位层次">
             <el-select
-              v-model="form.gangweicengci"
+              v-model="form.gangweicengciList"
               filterable
               multiple
               placeholder="请选择岗位层次"
@@ -556,7 +556,7 @@
           </el-form-item>
           <el-form-item label="岗位等级">
             <el-select
-              v-model="form.gangweidengji"
+              v-model="form.gangweidengjiList"
               filterable
               multiple
               placeholder="请选择岗位等级"
@@ -571,7 +571,7 @@
           </el-form-item>
           <el-form-item label="工作部门">
             <el-select
-              v-model="form.shijigongzuobumen"
+              v-model="form.shijigongzuobumenList"
               filterable
               multiple
               placeholder="请选择工作部门"
@@ -816,7 +816,8 @@ export default {
         sex: null,
         agemin: '',
         agemax: '',
-        zhengzhimianmao: null,
+        zhengzhimianmaoList: null,
+        zuigaoxveliList: [],
         staffs_types: null,
         user_name: null,
         user_id: null,
@@ -824,10 +825,10 @@ export default {
         is_type: null,
         add_date: null,
         zhaolupici: null,
-        zaibiangangweileibie: null,
-        gangweicengci: null,
-        gangweidengji: null,
-        shijigongzuobumen: null,
+        zaibiangangweileibieList: [],
+        gangweicengciList: [],
+        gangweidengjiList: [],
+        shijigongzuobumenList: [],
         zhengshu1: null,
         money: null,
         is_edit: null,
