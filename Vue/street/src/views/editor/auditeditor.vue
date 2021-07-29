@@ -46,7 +46,7 @@
 
         align="center"
       >
-       <!--  <el-table-column
+        <!--  <el-table-column
           prop="centerTotal"
           label="小计"
           align="center"
@@ -116,7 +116,11 @@
         prop="peopleType"
         label="人员分类"
         align="center"
-      />
+      >
+        <template slot-scope="scope">
+          <span>{{ scope.row.peopleType | dictPeopleType }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="typeName"
         label="岗位分类"
@@ -212,6 +216,16 @@
 import { queryById, audit, isAdmin } from '@/api/postmanagement/index'
 export default {
   components: {},
+  filters: {
+    dictPeopleType(val) {
+      const data = {
+        '1': '中心社区工作者',
+        '2': '社区专职党群工作者',
+        '3': '居民区社区工作者'
+      }
+      return data[val]
+    }
+  },
   data() {
     return {
       // 总额度页面拼接数据
@@ -289,7 +303,6 @@ export default {
     this.id = this.$route.query.id
     this.getTableData()
   },
-
   methods: {
     // 招生简章的合并处理
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
@@ -329,8 +342,14 @@ export default {
       const res = await queryById(this.id)
       this.creatTime = res.data.gmtCreate
       const list = res.data.infoList
-      list.forEach(item => {
-        if (item.type_post_id === 11 || item.type_post_id === 12) {
+      let centerCount = 0 // 中心社区申额
+      let twoNewCount = 0 // 两新
+      let specificPeopleCount = 0 // 专职居民区申额
+      let peopleCount = 0 // 居民社区工作者
+      const centerArr = [11, 16, 17, 18, 19]
+      const peopleArr = [13]
+      list.forEach((item, index) => {
+        if (centerArr.includes(item.type_post_id)) {
           // 核定名额数据拼接
           this.subTableData[0]['center'] += item.postCount
           // 实际在岗数据拼接
@@ -344,7 +363,7 @@ export default {
           // 实际在岗数据拼接
           this.subTableData[1]['people'] += item.typesCount
           // 申请人数
-          this.subTableData[3]['center'] += item.count
+          this.subTableData[3]['people'] += item.count
         }
         if (item.type_post_id === 14 || item.type_post_id === 15) {
           // 核定名额数据拼接
@@ -352,7 +371,29 @@ export default {
           // 实际在岗数据拼接
           this.subTableData[1]['specific'] += item.typesCount
           // 申请人数
-          this.subTableData[3]['center'] += item.count
+          this.subTableData[3]['specific'] += item.count
+        }
+        // 当前员额申请情况
+        if (item.peopleType === '1') {
+          if (centerArr.includes(item.type_post_id)) {
+            centerCount += parseInt(item.count) || 0
+          }
+          this.QuotaData[0]['centerTotal'] = centerCount
+        } else if (item.peopleType === '2') {
+          if (item.type_post_id === 14) {
+            twoNewCount += parseInt(item.count) || 0
+          }
+          if (item.type_post_id === 15) {
+            specificPeopleCount += parseInt(item.count) || 0
+          }
+          this.QuotaData[0]['specificTotal'] = twoNewCount + specificPeopleCount
+          this.QuotaData[0]['specificTwo'] = twoNewCount
+          this.QuotaData[0]['specificPeople'] = specificPeopleCount
+        } else {
+          if (peopleArr.includes(item.type_post_id)) {
+            peopleCount += parseInt(item.count) || 0
+          }
+          this.QuotaData[0]['personTotal'] = peopleCount
         }
       })
       // 员额余量计算
@@ -361,88 +402,6 @@ export default {
       this.subTableData[2]['people'] = this.subTableData[0]['people'] - this.subTableData[1]['people']
       this.subTableData[2]['total'] = this.subTableData[0]['total'] - this.subTableData[1]['total']
       this.BriefData = list
-      return
-      list.forEach(item => {
-        if (item.type_post_id === 11 || item.type_post_id === 12) {
-          // 核定名额数据拼接
-          this.subTableData[0]['center'] += item.postCount
-          // 实际在岗数据拼接
-          this.subTableData[1]['center'] += item.typesCount
-          // 申请人数
-          this.subTableData[3]['center'] += item.count
-          // 简章详情数据拼接
-          const index = this.BriefData.findIndex(Element => {
-            return Element.type_post_id === item.type_post_id
-          })
-          // 对数据的名称做个过滤处理
-          item.peopleType = '中心社区工作者'
-          item.peopleTypeId = 'center'
-          item.typeName = item.type_post_id === 11 ? '受理中心社区工作者' : '其他中心社区工作'
-          this.BriefData[index] = item
-        }
-        if (item.type_post_id === 13) {
-          // 核定名额数据拼接
-          this.subTableData[0]['people'] += item.postCount
-          // 实际在岗数据拼接
-          this.subTableData[1]['people'] += item.typesCount
-          // 申请人数
-          this.subTableData[3]['center'] += item.count
-          // 简章详情数据拼接
-          const index = this.BriefData.findIndex(Element => {
-            return Element.type_post_id === item.type_post_id
-          })
-          // 对数据的名称做个过滤处理
-          item.peopleType = '居民区社区工作者'
-          item.typeName = '居民区社区工作者'
-          item.peopleTypeId = 'people'
-          this.BriefData[index] = item
-        }
-        if (item.type_post_id === 14 || item.type_post_id === 15) {
-          // 核定名额数据拼接
-          this.subTableData[0]['specific'] += item.postCount
-          // 实际在岗数据拼接
-          this.subTableData[1]['specific'] += item.typesCount
-          // 申请人数
-          this.subTableData[3]['center'] += item.count
-          // 简章详情数据拼接
-          const index = this.BriefData.findIndex(Element => {
-            return Element.type_post_id === item.type_post_id
-          })
-          // 对数据的名称做个过滤处理
-          item.peopleType = '社区专职党群工作者'
-          item.peopleTypeId = 'specific'
-          item.typeName = item.type_post_id === 14 ? '“两新”组织专职党群工作者' : '居民区专职党务工作者'
-          this.BriefData[index] = item
-        }
-      })
-      // 强制更新数据层
-      this.BriefData = JSON.parse(JSON.stringify(this.BriefData))
-      // 员额余量计算
-      this.subTableData[2]['center'] = this.subTableData[0]['center'] - this.subTableData[1]['center']
-      this.subTableData[2]['specific'] = this.subTableData[0]['specific'] - this.subTableData[1]['specific']
-      this.subTableData[2]['people'] = this.subTableData[0]['people'] - this.subTableData[1]['people']
-      this.subTableData[2]['total'] = this.subTableData[0]['total'] - this.subTableData[1]['total']
-      // 额度明细表数据处理
-      this.BriefData.forEach(item => {
-        if (item.peopleTypeId === 'center') {
-          const count1 = parseInt(this.BriefData[0]['count']) || 0
-          const count2 = parseInt(this.BriefData[1]['count']) || 0
-          this.QuotaData[0]['centerTotal'] = count1 + count2
-          this.QuotaData[0]['centerApply'] = count1
-          this.QuotaData[0]['centerOther'] = count2
-        } else if (item.peopleTypeId === 'specific') {
-          const count1 = parseInt(this.BriefData[2]['count']) || 0
-          const count2 = parseInt(this.BriefData[3]['count']) || 0
-          this.QuotaData[0]['specificTotal'] = count1 + count2
-          this.QuotaData[0]['specificTwo'] = count1
-          this.QuotaData[0]['specificPeople'] = count2
-        } else if (item.peopleTypeId === 'people') {
-          const count1 = parseInt(this.BriefData[this.BriefData.length - 1]['count']) || 0
-          console.log(this.QuotaData, this.QuotaData[0]['personTotal'])
-          this.QuotaData[0]['personTotal'] = count1
-        }
-      })
-      this.QuotaData = JSON.parse(JSON.stringify(this.QuotaData))
     },
     // 计算总额
     onTotal(scope) {

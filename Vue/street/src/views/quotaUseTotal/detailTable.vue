@@ -13,7 +13,7 @@
       <el-table-column
         label="街道"
         align="center"
-        prop="street"
+        prop="name_street"
       />
       <el-table-column
         label="中心社区工作者员额申请数"

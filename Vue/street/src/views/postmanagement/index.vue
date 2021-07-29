@@ -85,18 +85,6 @@
       <el-form ref="editform" :model="editform" label-width="100px">
         <el-form-item label="岗位名称">
           <el-input v-model="editform.type_name" />
-          <!-- <el-select
-            v-model="form.postName"
-            placeholder="请选择"
-            style="width: 100%"
-          >
-            <el-option
-              v-for="item in joblist1"
-              :key="item.id"
-              :label="item.type_name"
-              :value="item.id"
-            />
-          </el-select> -->
         </el-form-item>
         <el-form-item label="招收街道">
           <el-select
@@ -126,17 +114,6 @@
 </template>
 
 <script>
-// import {
-//   list,
-//   addbm,
-//   bmlist,
-//   delbm,
-//   register,
-//   deluser,
-//   upuser,
-//   chauser1,
-//   chauser2
-// } from "@/api/adduser";
 import { list, addsyspost, streetlist, editsyspost, removesyspost, workTypeSearch } from '@/api/postmanagement/index'
 import infoTable from '@/views/postmanagement/infoTable'
 export default {
@@ -148,15 +125,6 @@ export default {
     return {
       lastModifyTime: '',
       userinput: '',
-      /* columns: [
-        { prop: 'street_id', label: '序号' },
-        { prop: 'name_street', label: '街道' },
-        { prop: 'street_acceptance', label: '受理中心' },
-        { prop: 'street_other', label: '其他中心' },
-        { prop: 'community', label: '居民区社区工作者(聘任制居委干部、选任制居委干部/党组织班子成员)' },
-        { prop: 'specific_liangxin', label: '“两新”组织专职党群工作者' },
-        { prop: 'specific_community', label: '居民区专职党务工作(其他居民区专职党务工作者、居民区党组织副书记)' }
-      ],*/
       tableData: [],
       page: {
         show: false,
@@ -226,7 +194,6 @@ export default {
     async onSubmitedit() {
       const res = await editsyspost(this.editform)
       if (res.code === '200') {
-        console.log(111111111)
         this.$message.success(res.data)
         this.outerVisibleedit = false
         this.getList()

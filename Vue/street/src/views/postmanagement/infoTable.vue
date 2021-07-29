@@ -17,10 +17,14 @@
       />
       <!--      中心社区工作者-->
       <el-table-column
-        prop="centerTotal"
+        prop="street_center"
         label="中心社区工作者"
         align="center"
       >
+        <template slot-scope="scope">
+          <span v-if="!scope.row.modifyFlag">{{ scope.row.street_center }}</span>
+          <el-input v-else v-model="scope.row.street_center" type="text" />
+        </template>
         <!-- <el-table-column
           prop="street_acceptance"
           label="受理中心工作人员"
@@ -128,7 +132,6 @@ export default {
   },
   methods: {
     onConfirm(row) {
-      console.log(row, 'row')
       modifyStreetInfo(row).then(res => {
         console.log(res, 'callback for res')
         // 重新执行查询

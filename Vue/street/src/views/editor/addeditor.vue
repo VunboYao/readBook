@@ -164,7 +164,6 @@
           <template slot-scope="scope">
             <el-select
               v-model="scope.row.peopleType"
-              clearable
               filterable
               @change="onPeopleTypeClear(scope.row)"
             >
@@ -175,32 +174,40 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="typeName"
+          prop="type_post_id"
           label="岗位分类"
           align="center"
           min-width="180"
         >
           <template slot-scope="scope">
             <el-select
-              v-model="scope.row.typeName"
-              clearable
+              v-if="scope.row.peopleType === '1'"
+              v-model="scope.row.type_post_id"
               filterable
-              @change="onTypeNameClear(scope.row)"
+              @change="onTypePostIdClear(scope.row)"
             >
-              <template v-if="scope.row.peopleType === '1'">
-                <el-option label="社区事务受理中心" value="1" />
-                <el-option label="社区文化活动中心" value="2" />
-                <el-option label="城市运行管理中心" value="3" />
-                <el-option label="社区党建服务中心" value="4" />
-                <el-option label="社会治安综合治理中心" value="5" />
-              </template>
-              <template v-if="scope.row.peopleType === '2'">
-                <el-option label="“两新”组织专职党群工作者" value="1" />
-                <el-option label="居民区专职党务工作者" value="2" />
-              </template>
-              <template v-if="scope.row.peopleType === '3'">
-                <el-option label="居民区社区工作者" value="1" />
-              </template>
+              <el-option label="社区事务受理中心" value="11" />
+              <el-option label="社区文化活动中心" value="16" />
+              <el-option label="城市运行管理中心" value="17" />
+              <el-option label="社区党建服务中心" value="18" />
+              <el-option label="社会治安综合治理中心" value="19" />
+            </el-select>
+            <el-select
+              v-if="scope.row.peopleType === '2'"
+              v-model="scope.row.type_post_id"
+              filterable
+              @change="onTypePostIdClear(scope.row)"
+            >
+              <el-option label="“两新”组织专职党群工作者" value="14" />
+              <el-option label="居民区专职党务工作者" value="15" />
+            </el-select>
+            <el-select
+              v-if="scope.row.peopleType === '3'"
+              v-model="scope.row.type_post_id"
+              filterable
+              @change="onTypePostIdClear(scope.row)"
+            >
+              <el-option label="居民区社区工作者" value="13" />
             </el-select>
           </template>
         </el-table-column>
@@ -242,10 +249,8 @@
           <template slot-scope="scope">
             <el-select
               v-model="scope.row.proportion"
-              clearable
-              filterable
             >
-              <el-option label="1:3" value="1" />
+              <el-option label="1:3" value="1:3" />
             </el-select>
           </template>
         </el-table-column>
@@ -258,11 +263,8 @@
           <template slot-scope="scope">
             <el-select
               v-model="scope.row.huji"
-              clearable
-              filterable
             >
-              <el-option label="本市户籍" value="1" />
-              <el-option label="持有上海市民居住证三年以上" value="2" />
+              <el-option value="本市户籍或持有上海市民居住证三年以上" />
             </el-select>
           </template>
         </el-table-column>
@@ -275,21 +277,19 @@
           <template slot-scope="scope">
             <el-select
               v-model="scope.row.nianling"
-              clearable
-              filterable
             >
-              <template v-if="scope.row.peopleType === '1'">
-                <el-option label="男性1966年8月至2003年8月期间出生" value="1" />
-                <el-option label="女性1976年8月至2003年8月期间出生" value="2" />
-              </template>
-              <template v-if="scope.row.peopleType === '2'">
-                <el-option label="男性1971年8月至2003年8月期间出生" value="1" />
-                <el-option label="女性1976年8月至2003年8月期间出生" value="2" />
-              </template>
-              <template v-if="scope.row.peopleType === '3'">
-                <el-option label="男性1966年8月至2003年8月期间出生" value="1" />
-                <el-option label="女性1976年8月至2003年8月期间出生" value="2" />
-              </template>
+              <el-option
+                v-if="scope.row.peopleType === '1'"
+                value="男性1966年8月至2003年8月期间出生；女性1976年8月至2003年8月期间出生"
+              />
+              <el-option
+                v-if="scope.row.peopleType === '2'"
+                value="男性1971年8月至2003年8月期间出生；女性1976年8月至2003年8月期间出生"
+              />
+              <el-option
+                v-if="scope.row.peopleType === '3'"
+                value="男性1966年8月至2003年8月期间出生；女性1976年8月至2003年8月期间出生"
+              />
             </el-select>
           </template>
         </el-table-column>
@@ -316,17 +316,13 @@
           <template slot-scope="scope">
             <el-select
               v-model="scope.row.zhengzhimianmao"
+              filterable
             >
-              <template v-if="scope.row.peopleType === '2'">
-                <el-option value="中共党员" label="中共党员" />
-              </template>
-              <template v-else>
-                <el-option value="不限" label="不限" />
-                <el-option value="中共党员" label="中共党员" />
-                <el-option value="群众" label="群众" />
-                <el-option value="共青团员" label="共青团员" />
-                <el-option value="民主党派" label="民主党派" />
-              </template>
+              <el-option value="不限" label="不限" />
+              <el-option value="中共党员" label="中共党员" />
+              <el-option value="群众" label="群众" />
+              <el-option value="共青团员" label="共青团员" />
+              <el-option value="民主党派" label="民主党派" />
             </el-select>
           </template>
         </el-table-column>
@@ -464,19 +460,18 @@ export default {
       BriefData: [
         {
           street: '',
-          peopleType: '',
-          typeName: '', // 岗位分类
+          peopleType: '1',
+          type_post_id: '', // 岗位分类
           content: '', // 岗位简介
           count: null, // 申请数量
-          proportion: '',
-          huji: '',
+          proportion: '1:3',
+          huji: '本市户籍或持有上海市民居住证三年以上',
           nianling: '',
           zhuanye: '',
           zhengzhimianmao: '不限',
           xueli: '本科',
           other: '',
-          remark: '',
-          type_post_id: 11
+          remark: ''
         }
       ],
       outerVisible: false,
@@ -527,34 +522,31 @@ export default {
     onAddRow(row, index) {
       const rowData = {
         street: this.street,
-        peopleTypeId: '',
         peopleType: '',
-        typeName: '', // 岗位分类
+        type_post_id: '', // 岗位分类
         content: '', // 岗位简介
         count: null, // 申请数量
-        proportion: '',
-        huji: '',
+        proportion: '1:3',
+        huji: '本市户籍或持有上海市民居住证三年以上',
         nianling: '',
         zhuanye: '',
         zhengzhimianmao: '不限',
         xueli: '本科',
         other: '',
-        remark: '',
-        type_post_id: 11
+        remark: ''
       }
       this.BriefData.splice(index + 1, 0, rowData)
     },
     // 人员分类监听
     onPeopleTypeClear(row) {
-      row.typeName = ''
-      row.huji = ''
+      row.type_post_id = ''
       row.nianling = ''
       row.zhengzhimianmao = ''
       row.count = ''
       this.onCountChange(row)
     },
     // 岗位类别监听
-    onTypeNameClear(row) {
+    onTypePostIdClear(row) {
       row.count = ''
       this.onCountChange(row)
     },
@@ -622,66 +614,38 @@ export default {
     },
     // 计算人数问题
     onCountChange(row) {
-      if (row.peopleType === '1') {
-        const total = this.subTableData[this.subTableData.length - 1]['center']
-        let count = 0
-        this.BriefData.forEach(item => {
-          count += parseInt(item.count) || 0
-        })
-        console.log(count)
-        this.QuotaData[0]['centerTotal'] = count
-        this.msgTip('中心社区工作者员额申请数', total, count)
-      } else if (row.peopleType === '3') {
-        const total = this.subTableData[this.subTableData.length - 1]['people']
-        let count = 0
-        this.BriefData.forEach(item => {
-          count += parseInt(item.count) || 0
-        })
-        console.log(count)
-        this.QuotaData[0]['personTotal'] = count
-        this.msgTip('居民社区工作者员额申请数', total, count)
-      } else if (row.peopleType === '2') {
-        const total = this.subTableData[this.subTableData.length - 1]['specific']
-        let count1 = 0
-        let count2 = 0
-        this.BriefData.forEach(item => {
-          if (item.typeName === '1') {
-            count1 += parseInt(item.count) || 0
-          } else if (item.typeName === '2') {
-            count2 += parseInt(item.count) || 0
-          } else {
-            count1 = 0
-            count2 = 0
+      let centerCount = 0 // 中心社区申额
+      let twoNewCount = 0 // 两新
+      let specificPeopleCount = 0 // 专职居民区申额
+      let peopleCount = 0 // 居民社区工作者
+      const centerArr = ['11', '16', '17', '18', '19']
+      const peopleArr = ['13']
+      this.BriefData.forEach(item => {
+        if (item.peopleType === '1') {
+          if (centerArr.includes(item.type_post_id)) {
+            centerCount += parseInt(item.count) || 0
           }
-        })
-        this.QuotaData[0]['specificTotal'] = count1 + count2
-        this.QuotaData[0]['specificTwo'] = count1
-        this.QuotaData[0]['specificPeople'] = count2
-        this.msgTip('专职党群工作者员额申请数', total, count1 + count2)
-      }
-      /* if (scope.row.peopleTypeId === 'center') {
-        const total = this.subTableData[this.subTableData.length - 1]['center']
-        const count1 = parseInt(this.BriefData[0]['count']) || 0
-        const count2 = parseInt(this.BriefData[1]['count']) || 0
-        this.QuotaData[0]['centerTotal'] = count1 + count2
-        this.QuotaData[0]['centerApply'] = count1
-        this.QuotaData[0]['centerOther'] = count2
-        this.msgTip(scope.row.peopleType, total, count1 + count2)
-      } else if (scope.row.peopleTypeId === 'specific') {
-        const total = this.subTableData[this.subTableData.length - 1]['specific']
-        const count1 = parseInt(this.BriefData[2]['count']) || 0
-        const count2 = parseInt(this.BriefData[3]['count']) || 0
-        this.QuotaData[0]['specificTotal'] = count1 + count2
-        this.QuotaData[0]['specificTwo'] = count1
-        this.QuotaData[0]['specificPeople'] = count2
-        this.msgTip(scope.row.peopleType, total, count1 + count2)
-      } else if (scope.row.peopleTypeId === 'people') {
-        const total = this.subTableData[this.subTableData.length - 1]['people']
-        const count1 = parseInt(this.BriefData[this.BriefData.length - 1]['count']) || 0
-        console.log(this.QuotaData, this.QuotaData[0]['personTotal'])
-        this.QuotaData[0]['personTotal'] = count1
-        this.msgTip(scope.row.peopleType, total, count1)
-      } */
+          this.QuotaData[0]['centerTotal'] = centerCount
+          this.msgTip('中心社区工作者员额申请数', this.centerTotal, centerCount)
+        } else if (item.peopleType === '2') {
+          if (item.type_post_id === '14') {
+            twoNewCount += parseInt(item.count) || 0
+          }
+          if (item.type_post_id === '15') {
+            specificPeopleCount += parseInt(item.count) || 0
+          }
+          this.QuotaData[0]['specificTotal'] = twoNewCount + specificPeopleCount
+          this.QuotaData[0]['specificTwo'] = twoNewCount
+          this.QuotaData[0]['specificPeople'] = specificPeopleCount
+          this.msgTip('专职党群工作者员额申请数', this.specificTotal, twoNewCount + specificPeopleCount)
+        } else {
+          if (peopleArr.includes(item.type_post_id)) {
+            peopleCount += parseInt(item.count) || 0
+          }
+          this.QuotaData[0]['personTotal'] = peopleCount
+          this.msgTip('居民社区工作者员额申请数', this.peopleTotal, peopleCount)
+        }
+      })
     },
     msgTip(typeName, count, total) {
       if (total > count) {
@@ -735,13 +699,13 @@ export default {
     },
     async getUserInfo() {
       const res = await getUserInfo()
-      this.street = res.data.street
+      this.street = res.data && res.data.street
     },
     async getTableData() {
       const res = await queryEditor()
       if (!res.data) return
       res.data.forEach((item, index) => {
-        if (item.type_post_id === 11 || item.type_post_id === 12) {
+        if (item.type_post_id === 20) {
           // 核定名额数据拼接
           this.subTableData[0]['center'] += item.postCount
           // 实际在岗数据拼接

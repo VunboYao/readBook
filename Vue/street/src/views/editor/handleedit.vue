@@ -110,7 +110,11 @@
         prop="peopleType"
         label="人员分类"
         align="center"
-      />
+      >
+        <template slot-scope="scope">
+          <span>{{ scope.row.peopleType | dictPeopleType }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="typeName"
         label="岗位分类"
@@ -236,8 +240,17 @@
 <script>
 import { queryById, isAdmin } from '@/api/postmanagement/index'
 export default {
-
   components: {},
+  filters: {
+    dictPeopleType(val) {
+      const data = {
+        '1': '中心社区工作者',
+        '2': '社区专职党群工作者',
+        '3': '居民区社区工作者'
+      }
+      return data[val]
+    }
+  },
   data() {
     return {
       // 总额度页面拼接数据
@@ -353,8 +366,14 @@ export default {
       this.gmtCreate = res.data.gmtCreate
       this.gmtModified = res.data.gmtModified
       const list = res.data.infoList
-      list.forEach(item => {
-        if (item.type_post_id === 11 || item.type_post_id === 12) {
+      let centerCount = 0 // 中心社区申额
+      let twoNewCount = 0 // 两新
+      let specificPeopleCount = 0 // 专职居民区申额
+      let peopleCount = 0 // 居民社区工作者
+      const centerArr = [11, 16, 17, 18, 19]
+      const peopleArr = [13]
+      list.forEach((item, index) => {
+        if (centerArr.includes(item.type_post_id)) {
           // 核定名额数据拼接
           this.subTableData[0]['center'] += item.postCount
           // 实际在岗数据拼接
@@ -368,7 +387,7 @@ export default {
           // 实际在岗数据拼接
           this.subTableData[1]['people'] += item.typesCount
           // 申请人数
-          this.subTableData[3]['center'] += item.count
+          this.subTableData[3]['people'] += item.count
         }
         if (item.type_post_id === 14 || item.type_post_id === 15) {
           // 核定名额数据拼接
@@ -376,7 +395,29 @@ export default {
           // 实际在岗数据拼接
           this.subTableData[1]['specific'] += item.typesCount
           // 申请人数
-          this.subTableData[3]['center'] += item.count
+          this.subTableData[3]['specific'] += item.count
+        }
+        // 当前员额申请情况
+        if (item.peopleType === '1') {
+          if (centerArr.includes(item.type_post_id)) {
+            centerCount += parseInt(item.count) || 0
+          }
+          this.QuotaData[0]['centerTotal'] = centerCount
+        } else if (item.peopleType === '2') {
+          if (item.type_post_id === 14) {
+            twoNewCount += parseInt(item.count) || 0
+          }
+          if (item.type_post_id === 15) {
+            specificPeopleCount += parseInt(item.count) || 0
+          }
+          this.QuotaData[0]['specificTotal'] = twoNewCount + specificPeopleCount
+          this.QuotaData[0]['specificTwo'] = twoNewCount
+          this.QuotaData[0]['specificPeople'] = specificPeopleCount
+        } else {
+          if (peopleArr.includes(item.type_post_id)) {
+            peopleCount += parseInt(item.count) || 0
+          }
+          this.QuotaData[0]['personTotal'] = peopleCount
         }
       })
       // 员额余量计算
