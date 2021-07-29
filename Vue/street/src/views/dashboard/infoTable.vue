@@ -26,8 +26,9 @@
         <el-table-column
           label="员额基数"
           align="center"
+          prop="communityQuota"
         >
-          <el-table-column
+          <!-- <el-table-column
             prop="communityQuota"
             label="合计"
             align="center"
@@ -44,13 +45,14 @@
             label="其他中心"
             align="center"
             min-width="80"
-          />
+          /> -->
         </el-table-column>
         <el-table-column
           label="实有人数"
           align="center"
+          prop="communityWorker"
         >
-          <el-table-column
+          <!-- <el-table-column
             prop="communityWorker"
             label="合计"
             align="center"
@@ -67,7 +69,7 @@
             label="其他中心"
             align="center"
             min-width="80"
-          />
+          /> -->
         </el-table-column>
       </el-table-column>
       <el-table-column
@@ -179,7 +181,7 @@ export default {
   },
   methods: {
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex === 14) {
+      if (columnIndex === 10) {
         if (rowIndex === 0) {
           return {
             rowspan: this.dataTotal,

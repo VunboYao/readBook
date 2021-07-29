@@ -77,10 +77,12 @@
         :data="QuotaData"
       >
         <el-table-column
+          prop="centerTotal"
           :label="centerHeader"
           align="center"
+          min-width="140"
         >
-          <el-table-column
+          <!-- <el-table-column
             prop="centerTotal"
             label="小计"
             align="center"
@@ -97,7 +99,7 @@
             label="其他中心"
             align="center"
             min-width="80"
-          />
+          /> -->
         </el-table-column>
         <el-table-column
           :label="specificHeader"
@@ -151,7 +153,7 @@
           prop="street"
           label="单位"
           align="center"
-          min-width="50"
+          min-width="80"
         />
         <el-table-column
           prop="peopleType"
@@ -183,6 +185,7 @@
               v-model="scope.row.typeName"
               clearable
               filterable
+              @change="onTypeNameClear(scope.row)"
             >
               <template v-if="scope.row.peopleType === '1'">
                 <el-option label="社区事务受理中心" value="1" />
@@ -226,7 +229,7 @@
               type="tel"
               placeholder=""
               clearable
-              @input="onCountChange(scope)"
+              @input="onCountChange(scope.row)"
             />
           </template>
         </el-table-column>
@@ -403,9 +406,9 @@
 <script>
 import {
   queryEditor,
-  postUseApplication,
   getUserInfo,
   ApplyApplication } from '@/api/postmanagement/index'
+import { DictGet } from '@/api/quotaUseTotal/index'
 export default {
   name: 'Addeditor',
   data() {
@@ -443,7 +446,7 @@ export default {
         }
       ],
       // 详情明细界面switch
-      descPage: true,
+      descPage: false,
       // 额度统计数据
       QuotaData: [
         {
@@ -461,26 +464,8 @@ export default {
       BriefData: [
         {
           street: '',
-          peopleTypeId: 'center',
-          peopleType: '2',
-          typeName: '1', // 岗位分类
-          content: '', // 岗位简介
-          count: null, // 申请数量
-          proportion: '',
-          huji: '',
-          nianling: '',
-          zhuanye: '',
-          zhengzhimianmao: '不限',
-          xueli: '本科',
-          other: '',
-          remark: '',
-          type_post_id: 11
-        },
-        {
-          street: '',
-          peopleTypeId: 'center',
-          peopleType: '2',
-          typeName: '1', // 岗位分类
+          peopleType: '',
+          typeName: '', // 岗位分类
           content: '', // 岗位简介
           count: null, // 申请数量
           proportion: '',
@@ -541,7 +526,7 @@ export default {
     // 招录简章新增
     onAddRow(row, index) {
       const rowData = {
-        street: '',
+        street: this.street,
         peopleTypeId: '',
         peopleType: '',
         typeName: '', // 岗位分类
@@ -565,109 +550,17 @@ export default {
       row.huji = ''
       row.nianling = ''
       row.zhengzhimianmao = ''
+      row.count = ''
+      this.onCountChange(row)
+    },
+    // 岗位类别监听
+    onTypeNameClear(row) {
+      row.count = ''
+      this.onCountChange(row)
     },
     // 返回额度统计界面
     obBackStatistics() {
       this.descPage = false
-      this.BriefData = [
-        {
-          street: '',
-          peopleTypeId: 'center',
-          peopleType: '中心社区工作者',
-          typeName: '受理中心社区工作者', // 岗位分类
-          content: '', // 岗位简介
-          count: null, // 申请数量
-          proportion: '',
-          huji: '',
-          nianling: '',
-          zhuanye: '',
-          zhengzhimianmao: '不限',
-          xueli: '本科',
-          other: '',
-          remark: '',
-          type_post_id: null
-        },
-        {
-          street: '',
-          peopleTypeId: 'center',
-          peopleType: '中心社区工作者',
-          typeName: '其他中心社区工作', // 岗位分类
-          content: '', // 岗位简介
-          count: null, // 申请数量
-          proportion: '',
-          huji: '',
-          nianling: '',
-          zhuanye: '',
-          zhengzhimianmao: '不限',
-          xueli: '本科',
-          other: '',
-          remark: '',
-          type_post_id: null
-        },
-        {
-          street: '',
-          peopleTypeId: 'specific',
-          peopleType: '社区专职党群工作者',
-          typeName: '“两新”组织专职党群工作者', // 岗位分类
-          content: '', // 岗位简介
-          count: null, // 申请数量
-          proportion: '',
-          huji: '',
-          nianling: '',
-          zhuanye: '',
-          zhengzhimianmao: '中共党员',
-          xueli: '本科',
-          other: '',
-          remark: '',
-          type_post_id: null
-        },
-        {
-          street: '',
-          peopleTypeId: 'specific',
-          peopleType: '社区专职党群工作者',
-          typeName: '居民区专职党务工作者', // 岗位分类
-          content: '', // 岗位简介
-          count: null, // 申请数量
-          proportion: '',
-          huji: '',
-          nianling: '',
-          zhuanye: '',
-          zhengzhimianmao: '中共党员',
-          xueli: '本科',
-          other: '',
-          remark: '',
-          type_post_id: null
-        },
-        {
-          street: '',
-          peopleTypeId: 'people',
-          peopleType: '居民区社区工作者',
-          typeName: '居民区社区工作者', // 岗位分类
-          content: '', // 岗位简介
-          count: null, // 申请数量
-          proportion: '',
-          huji: '',
-          nianling: '',
-          zhuanye: '',
-          zhengzhimianmao: '不限',
-          xueli: '本科',
-          other: '',
-          remark: '',
-          type_post_id: null
-        }
-      ]
-      this.QuotaData = [
-        {
-          centerTotal: 0,
-          centerApply: 0,
-          centerOther: 0,
-          specificTotal: 0,
-          specificTwo: 0,
-          specificPeople: 0,
-          personTotal: 0,
-          total: 0
-        }
-      ]
     },
     // 提交确认
     onConfirm() {
@@ -728,8 +621,45 @@ export default {
       return t1 + t2 + t3
     },
     // 计算人数问题
-    onCountChange(scope) {
-      if (scope.row.peopleTypeId === 'center') {
+    onCountChange(row) {
+      if (row.peopleType === '1') {
+        const total = this.subTableData[this.subTableData.length - 1]['center']
+        let count = 0
+        this.BriefData.forEach(item => {
+          count += parseInt(item.count) || 0
+        })
+        console.log(count)
+        this.QuotaData[0]['centerTotal'] = count
+        this.msgTip('中心社区工作者员额申请数', total, count)
+      } else if (row.peopleType === '3') {
+        const total = this.subTableData[this.subTableData.length - 1]['people']
+        let count = 0
+        this.BriefData.forEach(item => {
+          count += parseInt(item.count) || 0
+        })
+        console.log(count)
+        this.QuotaData[0]['personTotal'] = count
+        this.msgTip('居民社区工作者员额申请数', total, count)
+      } else if (row.peopleType === '2') {
+        const total = this.subTableData[this.subTableData.length - 1]['specific']
+        let count1 = 0
+        let count2 = 0
+        this.BriefData.forEach(item => {
+          if (item.typeName === '1') {
+            count1 += parseInt(item.count) || 0
+          } else if (item.typeName === '2') {
+            count2 += parseInt(item.count) || 0
+          } else {
+            count1 = 0
+            count2 = 0
+          }
+        })
+        this.QuotaData[0]['specificTotal'] = count1 + count2
+        this.QuotaData[0]['specificTwo'] = count1
+        this.QuotaData[0]['specificPeople'] = count2
+        this.msgTip('专职党群工作者员额申请数', total, count1 + count2)
+      }
+      /* if (scope.row.peopleTypeId === 'center') {
         const total = this.subTableData[this.subTableData.length - 1]['center']
         const count1 = parseInt(this.BriefData[0]['count']) || 0
         const count2 = parseInt(this.BriefData[1]['count']) || 0
@@ -751,12 +681,12 @@ export default {
         console.log(this.QuotaData, this.QuotaData[0]['personTotal'])
         this.QuotaData[0]['personTotal'] = count1
         this.msgTip(scope.row.peopleType, total, count1)
-      }
+      } */
     },
     msgTip(typeName, count, total) {
       if (total > count) {
         this.$message({
-          type: 'warning',
+          type: 'error',
           showClose: true,
           duration: 5000,
           message: `${typeName}：员额申请为${count}（名）,当前为${total}（名）,已超出!!!`

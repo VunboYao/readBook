@@ -11,16 +11,17 @@
         width="50"
       />
       <el-table-column
-        label="街道/基数类别"
+        label="街道"
         align="center"
         prop="name_street"
       />
       <!--      中心社区工作者-->
       <el-table-column
+        prop="centerTotal"
         label="中心社区工作者"
         align="center"
       >
-        <el-table-column
+        <!-- <el-table-column
           prop="street_acceptance"
           label="受理中心工作人员"
         >
@@ -37,7 +38,7 @@
             <span v-if="!scope.row.modifyFlag">{{ scope.row.street_other }}</span>
             <el-input v-else v-model="scope.row.street_other" type="text" />
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table-column>
       <!--      专职党群工作者-->
       <el-table-column
@@ -47,6 +48,7 @@
         <el-table-column
           prop="specific_liangxin"
           label="&quot;两新&quot;组织专职党群工作者"
+          align="center"
         >
           <template slot-scope="scope">
             <span v-if="!scope.row.modifyFlag">{{ scope.row.specific_liangxin }}</span>
@@ -56,6 +58,7 @@
         <el-table-column
           prop="specific_community"
           label="居民区专职党务工作者（含居民区党组织副书记）"
+          align="center"
         >
           <template slot-scope="scope">
             <span v-if="!scope.row.modifyFlag">{{ scope.row.specific_community }}</span>

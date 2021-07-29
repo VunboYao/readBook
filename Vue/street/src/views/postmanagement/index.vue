@@ -187,6 +187,7 @@ export default {
       workTypeSearch().then(res => {
         res.data.forEach(item => {
           item.modifyFlag = false
+          item.centerTotal = item.street_acceptance + item.street_other
         })
         this.tableData = res.data
         this.page.total = res.amx_sum

@@ -36,10 +36,11 @@
       :data="QuotaData"
     >
       <el-table-column
+        prop="centerTotal"
         label="中心社区工作者员额申请数"
         align="center"
       >
-        <el-table-column
+        <!-- <el-table-column
           prop="centerTotal"
           label="小计"
           align="center"
@@ -53,7 +54,7 @@
           prop="centerOther"
           label="其他中心"
           align="center"
-        />
+        /> -->
       </el-table-column>
       <el-table-column
         label="专职党群工作者员额申请数"
@@ -97,7 +98,6 @@
     <h3 style="text-align:center;">杨浦区2021年度社区工作者招考简章</h3>
     <el-table
       :data="BriefData"
-      :span-method="objectSpanMethod"
       border
       class="table"
     >
@@ -156,32 +156,13 @@
         label="政治面貌"
         align="center"
         min-width="100"
-      >
-        <template slot-scope="scope">
-          <el-select v-model="scope.row.zhengzhimianmao">
-            <el-option value="不限" label="不限" />
-            <el-option value="中共党员" label="中共党员" />
-            <el-option value="群众" label="群众" />
-            <el-option value="共青团员" label="共青团员" />
-            <el-option value="民主党派" label="民主党派" />
-          </el-select>
-        </template>
-      </el-table-column>
+      />
       <el-table-column
         prop="xueli"
         label="学历要求"
         align="center"
         min-width="120"
-      >
-        <template slot-scope="scope">
-          <el-select v-model="scope.row.xueli">
-            <el-option value="大专及以上" label="大专及以上" />
-            <el-option value="本科" label="本科" />
-            <el-option value="本科及以上" label="本科及以上" />
-            <el-option value="研究生" label="研究生" />
-          </el-select>
-        </template>
-      </el-table-column>
+      />
       <el-table-column
         prop="other"
         label="其他条件"
@@ -305,127 +286,7 @@ export default {
         }
       ],
       // 招考简章数据
-      BriefData: [
-        {
-          street: '',
-          peopleTypeId: 'center',
-          peopleType: '中心社区工作者',
-          typeName: '受理中心社区工作者', // 岗位分类
-          content: '', // 岗位简介
-          count: null, // 申请数量
-          proportion: '',
-          huji: '',
-          nianling: '',
-          zhuanye: '',
-          zhengzhimianmao: '不限',
-          xueli: '本科',
-          other: '',
-          remark: '',
-          type_post_id: 11
-        },
-        {
-          street: '',
-          peopleTypeId: 'center',
-          peopleType: '中心社区工作者',
-          typeName: '其他中心社区工作', // 岗位分类
-          content: '', // 岗位简介
-          count: null, // 申请数量
-          proportion: '',
-          huji: '',
-          nianling: '',
-          zhuanye: '',
-          zhengzhimianmao: '不限',
-          xueli: '本科',
-          other: '',
-          remark: '',
-          type_post_id: 12
-        },
-        {
-          street: '',
-          peopleTypeId: 'specific',
-          peopleType: '社区专职党群工作者',
-          typeName: '“两新”组织专职党群工作者', // 岗位分类
-          content: '', // 岗位简介
-          count: null, // 申请数量
-          proportion: '',
-          huji: '',
-          nianling: '',
-          zhuanye: '',
-          zhengzhimianmao: '中共党员',
-          xueli: '本科',
-          other: '',
-          remark: '',
-          type_post_id: 14
-        },
-        {
-          street: '',
-          peopleTypeId: 'specific',
-          peopleType: '社区专职党群工作者',
-          typeName: '居民区专职党务工作者', // 岗位分类
-          content: '', // 岗位简介
-          count: null, // 申请数量
-          proportion: '',
-          huji: '',
-          nianling: '',
-          zhuanye: '',
-          zhengzhimianmao: '中共党员',
-          xueli: '本科',
-          other: '',
-          remark: '',
-          type_post_id: 15
-        },
-        {
-          street: '',
-          peopleTypeId: 'people',
-          peopleType: '居民区社区工作者',
-          typeName: '居民区社区工作者', // 岗位分类
-          content: '', // 岗位简介
-          count: null, // 申请数量
-          proportion: '',
-          huji: '',
-          nianling: '',
-          zhuanye: '',
-          zhengzhimianmao: '不限',
-          xueli: '本科',
-          other: '',
-          remark: '',
-          type_post_id: 13
-        }
-      ],
-      tableData: [
-        {
-          a: '编制基数',
-          b: '',
-          c: '',
-          d: '',
-          e: '',
-          f: ''
-        },
-        {
-          a: '在岗人数',
-          b: '',
-          c: '',
-          d: '',
-          e: '',
-          f: ''
-        },
-        {
-          a: '空编数',
-          b: '',
-          c: '',
-          d: '',
-          e: '',
-          f: ''
-        },
-        {
-          a: '额度申请',
-          b: '0',
-          c: '0',
-          d: '0',
-          e: '0',
-          f: '0'
-        }
-      ],
+      BriefData: [],
       form: {
         desc: ''
       },
@@ -487,7 +348,6 @@ export default {
     },
     async getTableData() {
       const res = await queryById(this.id)
-      console.log(res)
       this.creatTime = res.data.gmtCreate
       this.form.desc = res.data.remark
       this.gmtCreate = res.data.gmtCreate
@@ -501,15 +361,6 @@ export default {
           this.subTableData[1]['center'] += item.typesCount
           // 申请人数
           this.subTableData[3]['center'] += item.count
-          // 简章详情数据拼接
-          const index = this.BriefData.findIndex(Element => {
-            return Element.type_post_id === item.type_post_id
-          })
-          // 对数据的名称做个过滤处理
-          item.peopleType = '中心社区工作者'
-          item.peopleTypeId = 'center'
-          item.typeName = item.type_post_id === 11 ? '受理中心社区工作者' : '其他中心社区工作'
-          this.BriefData[index] = item
         }
         if (item.type_post_id === 13) {
           // 核定名额数据拼接
@@ -518,15 +369,6 @@ export default {
           this.subTableData[1]['people'] += item.typesCount
           // 申请人数
           this.subTableData[3]['center'] += item.count
-          // 简章详情数据拼接
-          const index = this.BriefData.findIndex(Element => {
-            return Element.type_post_id === item.type_post_id
-          })
-          // 对数据的名称做个过滤处理
-          item.peopleType = '居民区社区工作者'
-          item.typeName = '居民区社区工作者'
-          item.peopleTypeId = 'people'
-          this.BriefData[index] = item
         }
         if (item.type_post_id === 14 || item.type_post_id === 15) {
           // 核定名额数据拼接
@@ -535,45 +377,14 @@ export default {
           this.subTableData[1]['specific'] += item.typesCount
           // 申请人数
           this.subTableData[3]['center'] += item.count
-          // 简章详情数据拼接
-          const index = this.BriefData.findIndex(Element => {
-            return Element.type_post_id === item.type_post_id
-          })
-          // 对数据的名称做个过滤处理
-          item.peopleType = '社区专职党群工作者'
-          item.peopleTypeId = 'specific'
-          item.typeName = item.type_post_id === 14 ? '“两新”组织专职党群工作者' : '居民区专职党务工作者'
-          this.BriefData[index] = item
         }
       })
-      // 强制更新数据层
-      this.BriefData = JSON.parse(JSON.stringify(this.BriefData))
       // 员额余量计算
       this.subTableData[2]['center'] = this.subTableData[0]['center'] - this.subTableData[1]['center']
       this.subTableData[2]['specific'] = this.subTableData[0]['specific'] - this.subTableData[1]['specific']
       this.subTableData[2]['people'] = this.subTableData[0]['people'] - this.subTableData[1]['people']
       this.subTableData[2]['total'] = this.subTableData[0]['total'] - this.subTableData[1]['total']
-      // 额度明细表数据处理
-      this.BriefData.forEach(item => {
-        if (item.peopleTypeId === 'center') {
-          const count1 = parseInt(this.BriefData[0]['count']) || 0
-          const count2 = parseInt(this.BriefData[1]['count']) || 0
-          this.QuotaData[0]['centerTotal'] = count1 + count2
-          this.QuotaData[0]['centerApply'] = count1
-          this.QuotaData[0]['centerOther'] = count2
-        } else if (item.peopleTypeId === 'specific') {
-          const count1 = parseInt(this.BriefData[2]['count']) || 0
-          const count2 = parseInt(this.BriefData[3]['count']) || 0
-          this.QuotaData[0]['specificTotal'] = count1 + count2
-          this.QuotaData[0]['specificTwo'] = count1
-          this.QuotaData[0]['specificPeople'] = count2
-        } else if (item.peopleTypeId === 'people') {
-          const count1 = parseInt(this.BriefData[this.BriefData.length - 1]['count']) || 0
-          console.log(this.QuotaData, this.QuotaData[0]['personTotal'])
-          this.QuotaData[0]['personTotal'] = count1
-        }
-      })
-      this.QuotaData = JSON.parse(JSON.stringify(this.QuotaData))
+      this.BriefData = list
     },
     async getIsAdmin() {
       const res = await isAdmin()

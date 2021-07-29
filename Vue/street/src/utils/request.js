@@ -63,6 +63,7 @@ service.interceptors.response.use(
         duration: 5 * 1000,
         showClose: true
       })
+      return false
     } else {
       return res
     }
