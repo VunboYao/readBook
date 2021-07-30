@@ -132,6 +132,7 @@ export default {
   },
   methods: {
     onConfirm(row) {
+      console.log(row, '>>>>')
       modifyStreetInfo(row).then(res => {
         console.log(res, 'callback for res')
         // 重新执行查询

@@ -38,11 +38,12 @@ export default {
     ]),
     routes() {
       const route = this.$router.options.routes
+      console.log(route)
       if (this.isAdmin) {
         const newArr = []
         route.forEach(item => {
-          console.log(item)
           if (item.name === 'user') {
+            item.children[5]['meta']['title'] = '员额使用审批'
             item.children[5]['children'][0]['children'].splice(0, 1)
             item.children[5]['children'][1]['children'].splice(0, 1)
           }
@@ -52,6 +53,9 @@ export default {
       } else {
         const newArr = []
         route.forEach(item => {
+          if (item.name === 'user') {
+            item.children[5]['meta']['title'] = '员额使用申请'
+          }
           if (!item.isAdmin) {
             newArr.push(item)
           }

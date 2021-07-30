@@ -2,7 +2,7 @@
   <div>
     <div class="vue_content">
       <div class="table_toolbar">
-        <h2>杨浦区各类社区工作者编制基数一览</h2>
+        <h2>杨浦区各类社区工作者员额基数一览</h2>
         <p>（最后更新时间：{{ lastModifyTime }}）</p>
       </div>
       <!--      <commonTable

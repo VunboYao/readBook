@@ -15,7 +15,11 @@
         label="人员分类"
         prop="peopleType"
         align="center"
-      />
+      >
+        <template slot-scope="scope">
+          <span>{{ scope.row.peopleType | dictPeopleType }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         label="岗位分类"
         prop="typeName"
@@ -79,6 +83,16 @@
 import { DictGet, BriefUseTotal } from '@/api/quotaUseTotal/index'
 export default {
   name: 'BriefTable',
+  filters: {
+    dictPeopleType(val) {
+      const data = {
+        '1': '中心社区工作者',
+        '2': '社区专职党群工作者',
+        '3': '居民区社区工作者'
+      }
+      return data[val]
+    }
+  },
   data() {
     return {
       tableData: []
@@ -91,17 +105,6 @@ export default {
     BriefUseTotal() {
       BriefUseTotal(1, 50).then(res => {
         if (res.code == 200) {
-          res.data.forEach(item => {
-            if (item.type_post_id === 11 || item.type_post_id === 12) {
-              item.peopleType = '中心社区工作者'
-            }
-            if (item.type_post_id === 13) {
-              item.peopleType = '社区专职党群工作者'
-            }
-            if (item.type_post_id === 14 || item.type_post_id === 15) {
-              item.peopleType = '居民区社区工作者'
-            }
-          })
           this.tableData = res.data
         }
       })

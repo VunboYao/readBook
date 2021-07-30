@@ -1,6 +1,6 @@
 <template>
   <div class="vue_content">
-    <h3 style="text-align:center;">杨浦区2021年度社区工作者招录员额只用申请</h3>
+    <h3 style="text-align:center;">杨浦区2021年度社区工作者招录员额使用申请</h3>
     <el-table
       :data="subTableData"
       border

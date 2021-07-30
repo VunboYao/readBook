@@ -147,7 +147,7 @@ export const constantRoutes = [
         component: tree,
         redirect: '/user/editor/addeditor',
         name: 'editor',
-        meta: { title: '额度使用审批', icon: '' },
+        meta: { title: '员额基数管理', icon: '' },
         children: [
           {
             path: 'year',
@@ -171,7 +171,7 @@ export const constantRoutes = [
                 path: 'selecthandleedit',
                 name: 'selecthandleedit',
                 component: () => import('@/views/editor/selecthandleedit'),
-                meta: { title: '已处理的', icon: '' }
+                meta: { title: '已处理', icon: '' }
               }
             ]
           },
@@ -197,7 +197,7 @@ export const constantRoutes = [
                 path: 'selecthandleedit',
                 name: 'selecthandleedit',
                 component: () => import('@/views/editor/day'),
-                meta: { title: '已处理的', icon: '' }
+                meta: { title: '已处理', icon: '' }
               }
             ]
           },
@@ -232,7 +232,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/postmanagement/index',
     name: 'postmanagement',
-    meta: { title: '编制基数管理', icon: 'postmanagement' },
+    meta: { title: '员额基数管理', icon: 'postmanagement' },
     isAdmin: true,
     children: [
       {
@@ -286,7 +286,7 @@ export const constantRoutes = [
     name: 'Total',
     meta: { title: '额度使用汇总', icon: 'statistics', isAdmin: true },
     component: Layout,
-    isAdmin: false,
+    isAdmin: true,
     children: [
       {
         path: '/statistical-table',
