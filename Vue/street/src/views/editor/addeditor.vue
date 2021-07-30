@@ -520,6 +520,20 @@ export default {
     },
     // 招录简章新增
     onAddRow(row, index) {
+      let flag = true
+      const keys = Object.keys(row)
+      for (let i = 0; i < keys.length; i++) {
+        console.log(keys[i])
+        if (!row[keys[i]]) {
+          this.$message({
+            type: 'error',
+            message: '请在当前行数据全部录入后，再新增'
+          })
+          flag = false
+          break
+        }
+      }
+      if (!flag) return false
       const rowData = {
         street: this.street,
         peopleType: '',
@@ -556,6 +570,21 @@ export default {
     },
     // 提交确认
     onConfirm() {
+      let flag = true
+      for (let i = 0; i < this.BriefData.length; i++) {
+        const keys = Object.keys(this.BriefData[i])
+        for (let j = 0; j < keys.length; j++) {
+          if (!this.BriefData[i][keys[j]]) {
+            this.$message({
+              type: 'error',
+              message: '请检查当前数据是否全部录入完毕后，再提交'
+            })
+            flag = false
+            break
+          }
+        }
+      }
+      if (!flag) return false
       this.BriefData.forEach(item => {
         if (!item.count) {
           item.count = '0'

@@ -75,7 +75,11 @@
               <td>民族</td>
               <td><el-input v-model="modifyForm.minzu" clearable type="text" /></td>
               <td rowspan="4" colspan="2">
-                <img class="user-avatar" src="./../../assets/image/index/user.png" alt="avatar">
+                <div class="avatar-wrap">
+                  <img v-if="!modifyForm.photo" class="user-avatar" src="./../../assets/image/index/user.png" alt="avatar">
+                  <img v-else :src="modifyForm.photo" class="user-avatar" alt="">
+                  <input ref="file" class="upfile" type="file" @change="onUpload">
+                </div>
               </td>
             </tr>
             <tr>
@@ -692,7 +696,7 @@
 
 <script>
 import { bm_list, selectlist, userDetail, userInfoModify, userQuit } from '@/api/statistics/editing'
-
+import { UploadImg } from '@/api/indexs'
 export default {
   name: 'Current',
   components: {},
@@ -743,11 +747,13 @@ export default {
       },
       quitDialog: false,
       nameList: [],
+      avatar: null,
       modifyForm: {
         id: '',
         street: '',
         sex: '',
         desc: '',
+        photo: '',
         user_name: '',
         user_id: '',
         zhengzhimianmao: '',
@@ -865,6 +871,15 @@ export default {
       fileTemp: null
     }
   },
+  computed: {
+    user_avatar() {
+      if (this.modifyForm.photo) {
+        return this.modifyForm.photo
+      } else {
+        return `http://124.70.54.235:8080/demo/file/download?filename=${this.avatar}`
+      }
+    }
+  },
   mounted() {
     this.onSearch(1, true)
     bm_list().then((res) => {
@@ -872,6 +887,15 @@ export default {
     })
   },
   methods: {
+    onUpload() {
+      const file = this.$refs.file.files[0]
+      if (!file) return
+      const formData = new FormData()
+      formData.append('file', file)
+      UploadImg(formData).then(res => {
+        this.modifyForm.photo = `http://124.70.54.235:8080/demo/file/download?filename=${res.data}`
+      })
+    },
     onCancelQuit() {
       this.quitDialog = false
       this.$set(this.quitForm, 'quit_date', '')
@@ -1034,6 +1058,18 @@ table tr td {
   width: 180px;
   height: auto;
   border-radius: 4px;
+}
+.avatar-wrap {
+  position: relative;
+  .upfile {
+    opacity: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    position: absolute;
+  }
 }
 .mb-10 {
   margin-bottom: 10px;

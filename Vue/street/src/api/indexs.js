@@ -20,3 +20,10 @@ export function getMainData() {
     method: 'get'
   })
 }
+export function UploadImg(formData) {
+  return request({
+    url: '/api/demo/file/upload',
+    method: 'post',
+    data: formData
+  })
+}

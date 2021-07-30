@@ -24,43 +24,7 @@
           :table-data="tableData"
           :data-total="dataTotal"
         />
-        <!--
-        <div class="header1">按街道各中心社区（目前人数/编制人数）</div>
-        <div class="indexnav street">
-          <div
-            v-for="(item, idx) in streetlists"
-            :key="idx"
-            class="indexnavitem topmarge"
-          >
-            <img v-if="item.street" :src="item.ico" alt="">
-            <div class="itemcontent">
-              <p class="indexnavitemtitle fonttext">{{ item.street }}街道</p>
-              <div class="itemcon">
-                <span
-                  class="fonttext2"
-                >{{ item.typesCount }}/{{ item.postCount }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="header2">按岗位类别（目前人数/编制人数）</div>
-        <div class="indexnav street">
-          <div
-            v-for="(item, idx) in postTypesCountList"
-            :key="idx"
-            class="indexnavitem topmarge"
-          >
-            <img :src="tupian[idx].ico" alt="">
-            <div class="itemcontent">
-              <p class="indexnavitemtitle fonttext">{{ item.typeName }}</p>
-              <div class="itemcon">
-                <span
-                  class="fonttext2"
-                >{{ item.typesCount }}/{{ item.postCount }}</span>
-              </div>
-            </div>
-          </div>
-        </div> -->
+        <span v-if="$store.getters.isAdmin || isSpecific" class="tip">*说明：“两新”组织专职党群工作者员额基数中有4个员额为区委组织部使用。</span>
       </el-card>
     </div>
   </div>
@@ -168,87 +132,25 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['name', 'roles'])
+    ...mapGetters(['name', 'roles']),
+    isSpecific() {
+      if (!this.$store.getters.isAdmin) {
+        return this.tableData[0]['street'] === '平凉路街道*' || this.tableData[0]['street'] === '五角场街道*'
+      } else {
+        return false
+      }
+    }
   },
   mounted() {
     // 主页信息获取
     this.getMainData()
-    /* bm_list().then((res) => {
-      this.bm_list = res.data
-      // console.log(this.bm_list)
-    })
-    lastlist().then(res => {
-      res.data.postTypesCountList.forEach(item => {
-        // 先找到：的下标
-        const index = item.typeName.indexOf('：')
-        if (index !== -1) {
-          // 截取字符串
-          item.typeName = item.typeName.substring(index + 1)
-        }
-      })
-      console.log(res.data.streetPostTypesCounts[0].street, '88888')
-      this.postTypesCountList = res.data.postTypesCountList
-      this.streetlists[0].street = res.data.streetPostTypesCounts[0].street
-      this.streetlists[0].postCount = res.data.streetPostTypesCounts[0].postCount
-      this.streetlists[0].typesCount = res.data.streetPostTypesCounts[0].typesCount
-
-      this.streetlists[1].street = res.data.streetPostTypesCounts[1].street
-      this.streetlists[1].postCount = res.data.streetPostTypesCounts[1].postCount
-      this.streetlists[1].typesCount = res.data.streetPostTypesCounts[1].typesCount
-
-      this.streetlists[2].street = res.data.streetPostTypesCounts[2].street
-      this.streetlists[2].postCount = res.data.streetPostTypesCounts[2].postCount
-      this.streetlists[2].typesCount = res.data.streetPostTypesCounts[2].typesCount
-
-      this.streetlists[3].street = res.data.streetPostTypesCounts[3].street
-      this.streetlists[3].postCount = res.data.streetPostTypesCounts[3].postCount
-      this.streetlists[3].typesCount = res.data.streetPostTypesCounts[3].typesCount
-
-      this.streetlists[4].street = res.data.streetPostTypesCounts[4].street
-      this.streetlists[4].postCount = res.data.streetPostTypesCounts[4].postCount
-      this.streetlists[4].typesCount = res.data.streetPostTypesCounts[4].typesCount
-
-      this.streetlists[5].street = res.data.streetPostTypesCounts[5].street
-      this.streetlists[5].postCount = res.data.streetPostTypesCounts[5].postCount
-      this.streetlists[5].typesCount = res.data.streetPostTypesCounts[5].typesCount
-
-      this.streetlists[6].street = res.data.streetPostTypesCounts[6].street
-      this.streetlists[6].postCount = res.data.streetPostTypesCounts[6].postCount
-      this.streetlists[6].typesCount = res.data.streetPostTypesCounts[6].typesCount
-
-      this.streetlists[7].street = res.data.streetPostTypesCounts[7].street
-      this.streetlists[7].postCount = res.data.streetPostTypesCounts[7].postCount
-      this.streetlists[7].typesCount = res.data.streetPostTypesCounts[7].typesCount
-
-      this.streetlists[8].street = res.data.streetPostTypesCounts[8].street
-      this.streetlists[8].postCount = res.data.streetPostTypesCounts[8].postCount
-      this.streetlists[8].typesCount = res.data.streetPostTypesCounts[8].typesCount
-
-      this.streetlists[9].street = res.data.streetPostTypesCounts[9].street
-      this.streetlists[9].postCount = res.data.streetPostTypesCounts[9].postCount
-      this.streetlists[9].typesCount = res.data.streetPostTypesCounts[9].typesCount
-
-      this.streetlists[10].street = res.data.streetPostTypesCounts[10].street
-      this.streetlists[10].postCount = res.data.streetPostTypesCounts[10].postCount
-      this.streetlists[10].typesCount = res.data.streetPostTypesCounts[10].typesCount
-
-      this.streetlists[11].street = res.data.streetPostTypesCounts[11].street
-      this.streetlists[11].postCount = res.data.streetPostTypesCounts[11].postCount
-      this.streetlists[11].typesCount = res.data.streetPostTypesCounts[11].typesCount
-
-      // this.streetlist = res.data.streetPostTypesCounts
-    })*/
     list().then((res) => {
-      // console.log(res, "DAYIN")
       const _res = res.data
       // 顶部
       // 当前在编总人数
       this.lists[0].num = _res.bianneirenyuan
       // 历史退出人数
       this.lists[1].num = _res.lizhirenyuan
-      // this.lists[2].num = _res.bianneirenyuangongzi
-      // this.lists[3].num = _res.bianwairenyuangongzi
-      // this.lists[4].num = _res.max_mopney
 
       // 男女比例
       this.option = {
@@ -523,5 +425,11 @@ export default {
       }
     }
   }
+}
+.tip {
+  color: #333;
+  display: block;
+  padding: 10px 0;
+  font-size: 14px;
 }
 </style>
