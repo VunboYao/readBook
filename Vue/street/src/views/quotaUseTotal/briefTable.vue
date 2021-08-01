@@ -1,6 +1,13 @@
 <template>
   <div>
     <h3 style="text-align:center;">杨浦区2021年度社区工作者招考简章</h3>
+    <el-button style="margin: 10px;" type="primary">
+      <a
+        class="download"
+        href="http://124.70.54.235/prod-api/api/demo/admin/postUseInfo/excel3"
+        download="杨浦区2021年度社区工作者招考简章"
+      >下载</a>
+    </el-button>
     <el-table
       border
       stripe
