@@ -255,7 +255,8 @@ export default {
           if (item.street === '平凉路街道' || item.street === '五角场街道') {
             item.street = item.street + '*'
           }
-          this.allTotal += item.communityQuota + item.partyQuota
+          // this.allTotal += item.communityQuota + item.partyQuota
+          this.allTotal += item.residenceeQuota
           this.tableData.push({
             street: item.street,
             communityQuota: item.communityQuota,
