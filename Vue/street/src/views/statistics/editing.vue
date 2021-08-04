@@ -429,6 +429,8 @@
               filterable
               clearable
               multiple
+              allow-create
+              default-first-option
               placeholder="请选择用户姓名"
             >
               <el-option
