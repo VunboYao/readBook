@@ -5,12 +5,11 @@
     <div class="vue_content">
       <div class="table_toolbar">
         <div class="row">
-          <!-- 输入框 -->
-          <!-- <el-button
-            type="primary"
-            @click="dialogVisible = true"
-          >筛选</el-button>
-          <el-button type="primary">导入表格</el-button> -->
+          <a
+            class="download"
+            href="http://124.70.54.235/prod-api/api/demo/admin/staffstypes/listsExcel?is_set=1"
+            download="杨浦区2021年度社区工作者招录员额统计表"
+          >下载</a>
         </div>
         <!-- 选择器 -->
         <div class="table_toolbar_view" />
@@ -341,5 +340,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.download {
+  background: #409EFF;
+  color: #fff;
+  font-size: 14px;
+  padding: 12px 20px;
+  border-radius: 4px;
+  margin: 0 10px;
+}
 </style>

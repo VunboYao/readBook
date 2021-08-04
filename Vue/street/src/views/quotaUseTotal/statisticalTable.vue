@@ -1,13 +1,11 @@
 <template>
   <div>
     <h3 style="text-align:center;">杨浦区2021年度社区工作者招录员额统计表</h3>
-    <el-button style="margin: 10px;" type="primary">
-      <a
-        class="download"
-        href="http://124.70.54.235/prod-api/api/demo/admin/postUseInfo/excel1"
-        download="杨浦区2021年度社区工作者招录员额统计表"
-      >下载</a>
-    </el-button>
+    <a
+      class="download"
+      href="http://124.70.54.235/prod-api/api/demo/admin/postUseInfo/excel1"
+      download="杨浦区2021年度社区工作者招录员额统计表"
+    >下载</a>
 
     <el-table
       border
@@ -80,4 +78,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.download {
+  background: #409EFF;
+  color: #fff;
+  font-size: 14px;
+  padding: 12px 20px;
+  border-radius: 4px;
+  margin: 0 10px;
+}
 </style>

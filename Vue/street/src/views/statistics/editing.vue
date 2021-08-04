@@ -3,9 +3,15 @@
     <div class="alltitle">在岗社区工作者信息</div>
     <div class="vue_content">
       <div class="table_toolbar">
-        <el-row :gutter="20">
-          <el-col :span="6">
+        <el-row>
+          <el-col>
             <el-button type="primary" @click="dialogVisible = true">筛选</el-button>
+            <a
+              class="download"
+              href="http://124.70.54.235/prod-api/api/demo/admin/staffstypes/listsExcel?is_set=0"
+              download="杨浦区2021年度社区工作者招录员额统计表"
+            >下载</a>
+            <el-button type="success" @click="onAddNoApplication">人员添加</el-button>
           </el-col>
         </el-row>
         <!-- 选择器 -->
@@ -403,9 +409,15 @@
           </table>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button type="warning" @click="quitDialog = true">人员退出</el-button>
-          <el-button @click="modifyVisible = false">取 消</el-button>
-          <el-button type="primary" @click="userInfoModify">确 定</el-button>
+          <template v-if="isAddNoApplication">
+            <el-button @click="isAddNoApplication = modifyVisible = false">取 消</el-button>
+            <el-button type="primary" @click="AddNoApplication">确 定</el-button>
+          </template>
+          <template v-else>
+            <el-button :disabled="modifyForm === '1'" type="warning" @click="quitDialog = true">人员退出</el-button>
+            <el-button @click="modifyVisible = false">取 消</el-button>
+            <el-button type="primary" @click="userInfoModify">确 定</el-button>
+          </template>
         </span>
       </el-dialog>
       <!-- 筛选条件 -->
@@ -697,7 +709,7 @@
 </template>
 
 <script>
-import { bm_list, selectlist, userDetail, userInfoModify, userQuit } from '@/api/statistics/editing'
+import { bm_list, selectlist, userDetail, userInfoModify, userQuit, AddNoApplication } from '@/api/statistics/editing'
 import { UploadImg } from '@/api/indexs'
 export default {
   name: 'Current',
@@ -706,6 +718,7 @@ export default {
     return {
       // 人员信息表
       modifyVisible: false,
+      isAddNoApplication: false,
       text: '所有区',
       columns: [
         { type: 'index', label: '序号' },
@@ -774,7 +787,7 @@ export default {
         comm: '',
         comm2: '',
         age: '',
-        is_set: '1',
+        is_set: null,
         gmt_modified: '',
         gmt_create: '',
         start: '',
@@ -838,7 +851,7 @@ export default {
         other_mobile: '',
         agemin: '',
         agemax: '',
-        streetlist: ''
+        streetlist: null
       },
       // 街道列表
       dialogVisible: false,
@@ -974,7 +987,7 @@ export default {
       })
     },
     // 筛选
-    onSearch(page, first = false) {
+    onSearch(page = 1, first = false) {
       this.text = this.form.street
       /* if (this.form.age2) {
         this.form.age = this.form.age1 + '-' + this.form.age2
@@ -1032,12 +1045,129 @@ export default {
           message: '简历修改成功'
         })
       })
+    },
+    // 添加人员
+    onAddNoApplication() {
+      this.isAddNoApplication = this.modifyVisible = true
+    },
+    // 无额度申请
+    AddNoApplication() {
+      AddNoApplication(this.modifyForm).then(res => {
+        if (res.code === '200') {
+          this.isAddNoApplication = this.modifyVisible = false
+          this.form.user_namelist = []
+          this.form.user_namelist.push(this.modifyForm.user_name)
+          this.modifyForm = {
+            id: '',
+            street: '',
+            sex: '',
+            desc: '',
+            photo: '',
+            user_name: '',
+            user_id: '',
+            zhengzhimianmao: '',
+            zuigaoxveli: '',
+            biyeyuanxiao: '',
+            is_type: '',
+            add_date: '',
+            zhaolupici: '',
+            zaibiangangweileibie: '',
+            gangweicengci: '',
+            gangweidengji: '',
+            shijigongzuobumen: '',
+            zhengshu1: '',
+            money: '',
+            is_edit: '',
+            comm: '',
+            comm2: '',
+            age: '',
+            is_set: null,
+            gmt_modified: '',
+            gmt_create: '',
+            start: '',
+            end: '',
+            applicationId: '',
+            pages: '',
+            sums: '',
+            minzu: '',
+            chushengnianyue: '',
+            jiguan: '',
+            chushengdi: '',
+            rudang_date: '',
+            zhuanyeshuipin: '',
+            xueli_quanrizhi: '',
+            xuewei_quanrizhi: '',
+            biyeyuanxiao_quanrizhi: '',
+            zhuanye_quanrizhi: '',
+            xueli_zaizhi: '',
+            xuewei_zaizhi: '',
+            biyeyuanxiao_zaizhi: '',
+            zhuanye_zaizhi: '',
+            jianli: '',
+            jiangfaqingkuang: '',
+            kaoheqingkong: '',
+            other: '',
+            staffs_type_familys: [{
+              staffs_type_id: 1,
+              relationtitle: '',
+              user_name: '',
+              birth_date: '',
+              place: '',
+              zhengzhimianmao: ''
+            },
+            {
+              staffs_type_id: 2,
+              relationtitle: '',
+              user_name: '',
+              birth_date: '',
+              place: '',
+              zhengzhimianmao: ''
+            },
+            {
+              staffs_type_id: 3,
+              relationtitle: '',
+              user_name: '',
+              birth_date: '',
+              place: '',
+              zhengzhimianmao: ''
+            },
+            {
+              staffs_type_id: 4,
+              relationtitle: '',
+              user_name: '',
+              birth_date: '',
+              place: '',
+              zhengzhimianmao: ''
+            }],
+            other_huji: '',
+            other_family_place: '',
+            other_phone: '',
+            other_mobile: '',
+            agemin: '',
+            agemax: '',
+            streetlist: null
+          }
+          this.$message({
+            type: 'success',
+            message: '人员添加成功'
+          })
+          this.onSearch()
+        }
+      })
     }
   }
 }
 </script>
 
 <style lang="scss">
+.download {
+  background: #409EFF;
+  color: #fff;
+  font-size: 14px;
+  padding: 12px 20px;
+  border-radius: 4px;
+  margin: 0 10px;
+}
 .modify-wrap {
   width: 80%;
   margin: 0 auto;

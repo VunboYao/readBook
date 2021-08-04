@@ -1,6 +1,12 @@
 <template>
   <div class="vue_content">
-    <h3 style="text-align:center;">杨浦区2021年度社区工作者招录员额使用申请</h3>
+    <h3 style="text-align:center;">杨浦区2021年度社区工作者招录员额使用申请
+      <a
+        class="download"
+        :href="'http://124.70.54.235/prod-api/api/demo/admin/postUse/queryExcel1ById?id=' + id"
+        download="杨浦区2021年度社区工作者招录员额统计表"
+      >下载</a>
+    </h3>
     <el-table
       :data="subTableData"
       border
@@ -36,7 +42,14 @@
         </template>
       </el-table-column>
     </el-table>
-    <h3 style="text-align:center;">当前员额申请情况</h3>
+
+    <h3 style="text-align:center;">当前员额申请情况
+      <a
+        class="download"
+        :href="'http://124.70.54.235/prod-api/api/demo/admin/postUse/queryExcel2ById?id=' + id"
+        download="杨浦区2021年度社区工作者招录员额统计表"
+      >下载</a>
+    </h3>
     <el-table
       :data="QuotaData"
     >
@@ -101,7 +114,14 @@
         </template>
       </el-table-column>
     </el-table>
-    <h3 style="text-align:center;">杨浦区2021年度社区工作者招考简章</h3>
+
+    <h3 style="text-align:center;">杨浦区2021年度社区工作者招考简章
+      <a
+        class="download"
+        :href="'http://124.70.54.235/prod-api/api/demo/admin/postUse/queryExcel3ById?id=' + id"
+        download="杨浦区2021年度社区工作者招录员额统计表"
+      >下载</a>
+    </h3>
     <el-table
       :data="BriefData"
       border
@@ -440,6 +460,14 @@ export default {
 }
 </script>
 <style lang='css' scoped>
+.download {
+  background: #409EFF;
+  color: #fff;
+  font-size: 14px;
+    padding: 12px 20px;
+  border-radius: 4px;
+  margin: 0 10px;
+}
     .flexdiv {
         display: flex;
         justify-content: space-between;
