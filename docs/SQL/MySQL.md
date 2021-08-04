@@ -1080,3 +1080,191 @@ insert into rel values(3, 1); # error
 insert into rel values(1, 4); # error
 ```
 
+## 单表查询
+
+- `select * from 表明;` 查询表中所有数据
+- `select 字段1，字段2 from 表名;` 查询表中指定字段数据
+- `select [* || 字段] from 表名 [where 条件];` 查询表中满足条件的数据
+
+1. 结果集
+
+   - 通过查询语句查询出来的结果，称为结果集	
+
+   - 结果集以表的形式将查询的结果返回给我们
+
+2. 注意点：
+
+   - 结果集返回的表和查询的表不是同一张表
+
+   - 被查询的表是真实存在的，是存储在磁盘上的
+
+   - 而结果集不是真实存在的，是存储到内存中的
+
+3. 如何给结果集的字段别名？
+
+   - 查询指定字段数据时，可以通过as给指定的字段取别名
+
+   - `select name as myName, age as myAge from stu;`
+
+4. 什么是字段表达式？
+
+   查询数据的时候，除了可以查询指定字段的数据以外，还可以查询表达式的结果
+
+   `select 6+6;`
+
+5. 什么是伪表？
+   - 字段表达式虽然能够查询出表达式的结果，但是不符合MySQL的规范
+   - 可通过伪表（dual）的方式让字段表达式符合MySQL的规范
+   - `select 6+6 from dual;`
+
+### 模糊查询
+
+格式：`select 字段 from 表名 where 字段 like '条件';`
+
+- `_`通配符：表示任意一个字符
+- `%`通配符：表示任意`0~n`个字符
+
+```
+a_c: abc/adc
+abc,adc,abbc,ac
+
+_a_c:1abc/3adc
+1abc,abc1,2abbc,3adc
+
+a%c: abc/adc/abbc/ac
+abc,adc,abbc,ac
+
+%a%c:1abc/2abbc/3adc
+1abc,abc1,2abbc,3adc
+
+select * from stu where name like 'z_';
+select * from stu where name like 'z__';
+select * from stu where name like 'z_%';
+```
+
+### 排序 order by
+
+- `select 字段 from 表名 order by 字段 [asc | desc];`
+- `select * from stu order by age;` 默认按照升序进行排序
+- `select * from stu order by asc;` 升序排序
+- `select * from stu order by age desc;` 降序排序
+
+- **`select * from stu order by age desc, score asc;`** 如果年龄相同，那么还可以继续按照其它字段来排序
+
+### 聚合函数
+
+1. `count()` 统计
+   - `select count(*) from stru`;
+   - `select count(*) from stu where score >= 60;`
+2. `sum()`求和
+   - `select sum(id) from stu;`
+
+3. `avg()`求平均值
+   - `select avg(id) from stu;`
+   - `select avg(score) from stu;`
+
+4. `max()`获取最大值
+   - `select max(score) from stu;`
+
+5. `min()` 获取最小值
+   - `select min(score) from stu;`
+
+**数值类**
+
+1. `rand()` 生成随机数
+   - `select rand() from dual;`
+   - `select * from stu order by rand();`
+
+2. `round()`四舍五入
+   - `select round(3.1) from dual;`
+   - `select round(3.5) from dual;`
+
+3. `ceil()` 向上取整
+   - `select ceil(3.1) from dual;`
+
+4. `floor()`向下取整
+   - `select floor(3.9) from dual;`
+
+5. `truncate()`截取小数位
+   - `select truncate(3.123457, 2) from dual;`
+
+**字符串类**
+
+1. `ucase()`转换为大写
+   - `select ucase('hello world') from dual;`
+
+2. `lcase()`转换为小写
+   - `select lcase('HELLO WORLD') from dual;`
+
+3. `left()`从左边开始截取到指定的位置
+   - `select left('1234567890', 3) from dual;`
+
+4. `right()`从右边开始截取到指定的位置
+   - `select right('1234567890', 3) from dual;`
+
+5. `substring()`从指定位置开始截取指定字符
+   - `select substring('1234567890', 3, 5) from dual;`
+
+### 数据分组 group by
+
+`select 分组字段 || 聚合函数 from 表名 group by 分组字段;`
+
+- 需求：需求统计表中一共有多少个城市
+
+  - `select city from student;` 查询所有的
+
+  - `select city from student group by address;` 去重
+
+- 需求：要求统计每个城市有多少个
+  - `select city, count(*) from stu group by city;`
+
+- **注意点**
+  - 在对数据进行分组的时候，`select `后面**必须是分组字段或者聚合函数，否则就只会返回第一条数据**
+  - `select address from student group by address;`
+  - `select address, GROUP_CONCAT(name) from student group by address;`
+
+### 条件查询having
+
+- having 和 where 很像，都是用来做条件查询的
+- where是去数据库中查询符合条件的数据，而 having 是去结果集中查询符合条件的数据
+
+```mysql
+select * from student where address="北京";
+select * from student having address="北京";
+
+select name, age from student where address="北京";
+select name, age from student having address="北京"; #Unknown column 'address' in 'having clause'
+
+需求：select address from student group by address;
+需求：select address, avg(age) as average from student group by address
+需求：select address, avg(age) as average from student group by address having average >= 20;
+```
+
+### 分页limit
+
+`select 字段 from 表 limit 索引，个数;`
+
+### 查询选项
+
+`select [查询选项] 字段名称 from 表名;`
+
+- all: 显示所有查询出来的数据【模式】
+- distinct: 去除结果集中重复的数据之后再显示
+
+```mysql
+select name from student;
+select all name from student;
+select distinct name from student;
+```
+
+**注意点**
+
+- 如果是通过distinct来对结果集中重复的数据进行去重，那么只有所有列的数据都相同才会去重
+
+- `select name, age from student;`
+- `select distinct name, age from student;`
+
+### 完整的查询语句
+
+`select [查询选项] 字段名称 [from 表名] [where 条件] [order by 排序] [group by 分组] [having 条件] [limit 分页];`
+

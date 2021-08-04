@@ -16,7 +16,8 @@ const config = {
   },
   output: {
     filename: 'bundle.js',
-    path: resolveApp('./dist')
+    path: resolveApp('./dist'),
+    // publicPath: '', // 默认值为空。 在打包后的静态资源前面加上一个路径的拼接
     // assetModuleFilename: 'img/[name].[hash:6][ext]'
   },
   module: {
