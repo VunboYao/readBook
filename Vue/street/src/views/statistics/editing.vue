@@ -58,6 +58,7 @@
         width="80%"
         top="0"
         center
+        :show-close="false"
         :close-on-click-modal="false"
         :close-on-press-escape="false"
       >
@@ -429,6 +430,7 @@
         :visible.sync="dialogVisible"
         width="70%"
         center
+        :show-close="false"
       >
         <el-form
           ref="form"
@@ -682,6 +684,7 @@
         top="30vh"
         :close-on-click-modal="false"
         :close-on-press-escape="false"
+        :show-close="false"
       >
         <el-form
           ref="form"
