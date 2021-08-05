@@ -7,6 +7,7 @@ const user = {
     name: '',
     avatar: '',
     roles: [],
+    street: '',
     isAdmin: false // 是否管理员
   },
 
@@ -25,6 +26,9 @@ const user = {
     },
     AUTH_ADMIN(state, bool) {
       state.isAdmin = bool
+    },
+    SET_STREET(state, str) {
+      state.street = str
     }
   },
 
@@ -34,12 +38,17 @@ const user = {
       return new Promise((resolve, reject) => {
         login(userInfo.adminid, userInfo.password)
           .then(async response => {
-            const data = response
-            setToken(response.data)
-            commit('SET_TOKEN', response.data)
-            const userInfo = await GetUserInfo(data.data)
-            commit('AUTH_ADMIN', userInfo.data)
-            resolve(data)
+            if (response.code == '200') {
+              const data = response
+              setToken(response.data)
+              commit('SET_TOKEN', response.data)
+              commit('SET_STREET', response.street)
+              const userInfo = await GetUserInfo(data.data)
+              commit('AUTH_ADMIN', userInfo.data)
+              resolve(data)
+            } else {
+              reject(response)
+            }
           })
           .catch(error => {
             reject(error)

@@ -145,7 +145,7 @@ export default {
           if (res.code === 500) return Message.error(res.data)
           this.$router.push({ path: this.redirect || '/' })
           this.loading = false
-        }).catch((err) => {
+        }).catch(() => {
           this.loading = false
         })
     }

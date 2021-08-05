@@ -61,10 +61,3 @@ export function AddNoApplication(data) {
   })
 }
 
-export function Download() {
-  return request({
-    url: '/api/demo/admin/staffstypes/listsExcel?is_set=0',
-    method: 'get',
-    responseType: 'blob'
-  })
-}

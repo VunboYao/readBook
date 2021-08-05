@@ -6,14 +6,11 @@
         <el-row>
           <el-col>
             <el-button type="primary" @click="dialogVisible = true">筛选</el-button>
-            <!--  <a
-              class="download"
-              href="http://124.70.54.235/prod-api/api/demo/admin/staffstypes/listsExcel?is_set=0"
-              download="杨浦区2021年度社区工作者招录员额统计表"
-            >下载</a> -->
             <a
               class="download"
-              @click="onDownload"
+              :href="downloadHref"
+              target="_blank"
+              download="杨浦区2021年度社区工作者招录员额统计表"
             >下载</a>
             <el-button type="success" @click="onAddNoApplication">人员添加</el-button>
           </el-col>
@@ -713,9 +710,8 @@
 </template>
 
 <script>
-import { bm_list, selectlist, userDetail, userInfoModify, userQuit, AddNoApplication, Download } from '@/api/statistics/editing'
+import { bm_list, selectlist, userDetail, userInfoModify, userQuit, AddNoApplication } from '@/api/statistics/editing'
 import { UploadImg } from '@/api/indexs'
-import axios from 'axios'
 export default {
   name: 'Current',
   components: {},
@@ -898,6 +894,9 @@ export default {
       } else {
         return `http://124.70.54.235:8080/demo/file/download?filename=${this.avatar}`
       }
+    },
+    downloadHref() {
+      return `http://124.70.54.235/prod-api/api/demo/admin/staffstypes/listsExcel?is_set=0&street=${this.$store.getters.street}`
     }
   },
   mounted() {
@@ -907,43 +906,6 @@ export default {
     })
   },
   methods: {
-    onDownload() {
-      /* Download().then(res => {
-        console.log(res, 'Download')
-      }) */
-      axios({
-        url: 'http://124.70.54.235/prod-api/api/demo/admin/staffstypes/listsExcel?is_set=0',
-        method: 'get',
-        headers: {
-          Authorization: this.$store.getters.token
-        },
-        responseType: 'blob'
-      }).then(res => {
-        const data = res.data
-        const fileReader = new FileReader()
-        fileReader.onload = function() {
-          try { // 正常返回错误信息
-            JSON.parse(fileReader.result)
-          } catch (err) { // 返回文件流
-            const href = window.URL.createObjectURL(new Blob([res.data]))
-            const fileName = decodeURIComponent(res.headers['content-disposition'].split(';')[1].split('=')[1])
-            const a = document.createElement('a')
-            a.style.display = 'none'
-            a.download = fileName
-            a.href = href
-            document.body.appendChild(a)
-            a.click()
-            a.remove()
-          }
-        }
-        fileReader.readAsText(data)
-      }, () => {
-        this.$message({
-          type: 'error',
-          message: '服务调用失败！'
-        })
-      })
-    },
     onUpload() {
       const file = this.$refs.file.files[0]
       if (!file) return

@@ -7,7 +7,8 @@
         <div class="row">
           <a
             class="download"
-            href="http://124.70.54.235/prod-api/api/demo/admin/staffstypes/listsExcel?is_set=1"
+            :href="downloadHref"
+            target="_blank"
             download="杨浦区2021年度社区工作者招录员额统计表"
           >下载</a>
         </div>
@@ -304,7 +305,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdmin'])
+    ...mapGetters(['isAdmin', 'street']),
+    downloadHref() {
+      return `http://124.70.54.235/prod-api/api/demo/admin/staffstypes/listsExcel?is_set=1&street=${this.street}`
+    }
   },
   mounted() {
     list(this.page.pageNo, this.page.limit, 1).then((res) => {
