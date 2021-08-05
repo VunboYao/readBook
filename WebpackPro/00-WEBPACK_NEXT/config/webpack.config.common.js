@@ -4,8 +4,20 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { DefinePlugin } = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const config = {
-  entry: './src/index.js',
+  entry: {
+    // 可配置多文件入口
+    index: './src/index.js',
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      
+    },
+    // minimize: false // 压缩代码。默认是true
+    minimizer: [new TerserPlugin()] // 定制
+  },
   resolve: {
     extensions: ['.js', '.json', '.wasm', '.ts', '.jsx', '.vue'], // 扩展名解析
     modules: ['node_modules'], // 默认的模块检索路径
@@ -15,7 +27,7 @@ const config = {
     }
   },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     path: resolveApp('./dist'),
     // publicPath: '', // 默认值为空。 在打包后的静态资源前面加上一个路径的拼接
     // assetModuleFilename: 'img/[name].[hash:6][ext]'
