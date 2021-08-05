@@ -466,7 +466,8 @@ export default {
   font-size: 14px;
     padding: 12px 20px;
   border-radius: 4px;
-  margin: 0 10px;
+  display: inline-block;
+  margin: 10px;
 }
     .flexdiv {
         display: flex;

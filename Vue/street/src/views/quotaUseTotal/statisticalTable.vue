@@ -84,6 +84,7 @@ export default {
   font-size: 14px;
   padding: 12px 20px;
   border-radius: 4px;
-  margin: 0 10px;
+  margin: 10px;
+  display: inline-block;
 }
 </style>
