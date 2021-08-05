@@ -5,14 +5,14 @@
       class="hamburger-container"
       @toggleClick="toggleSideBar"
     />
-    <breadcrumb class="breadcrumb-container" />
+    <!-- <breadcrumb class="breadcrumb-container" /> -->
     <div class="right-menu">
       <!-- 小铃铛 消息 -->
-      <i class="el-icon-bell" @click="goToMyMessage" />
+      <!-- <i class="el-icon-bell" @click="goToMyMessage" /> -->
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img
-            src="https://bkimg.cdn.bcebos.com/pic/b03533fa828ba61ecdc2c0754e34970a304e59bf?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxMTY=,g_7,xp_5,yp_5/format,f_auto"
+            src="@/assets/avatar.jpeg"
             class="user-avatar"
           >
           <i class="el-icon-caret-bottom" />

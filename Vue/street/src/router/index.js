@@ -311,7 +311,7 @@ export const constantRoutes = [
   {
     path: '/statistics',
     component: Layout,
-    redirect: '/statistics/editing',
+    redirect: '/statistics/districtlevel',
     name: 'statistics',
     meta: { title: '统计', icon: 'statistics' },
     isAdmin: true,
