@@ -11,10 +11,28 @@ const config = {
     index: './src/index.js',
   },
   optimization: {
+    chunkIds: 'named',
     splitChunks: {
       chunks: 'all',
       minSize: 2000,
-      minChunks: 2
+      minChunks: 1,
+      cacheGroups: {
+        venders: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+          filename: "[id]_[hash:6]_vendor.js"
+        },
+        foo: {
+          test: /foo/,
+          priority: -20,
+          filename: "foo_[id]_[name].js"
+        },
+        default: {
+          minChunks: 1,
+          priority: -30,
+          filename: "common_[id]_[name].js"
+        }
+      }
     },
     // minimize: false // 压缩代码。默认是true
     minimizer: [new TerserPlugin()] // 定制
