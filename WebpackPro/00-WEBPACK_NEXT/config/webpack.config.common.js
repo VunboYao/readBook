@@ -13,7 +13,8 @@ const config = {
   optimization: {
     splitChunks: {
       chunks: 'all',
-      
+      minSize: 2000,
+      minChunks: 2
     },
     // minimize: false // 压缩代码。默认是true
     minimizer: [new TerserPlugin()] // 定制
