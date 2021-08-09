@@ -174,6 +174,7 @@ const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
+  /* 所有的 vue-router 注册的路由信息都是存放在matcher之中的，所以当我们想清空路由的时候，我们只要新建一个空的Router实例，将它的matcher重新赋值给我们之前定义的路由就可以了。巧妙的实现了动态路由的清除。现在我们只需要调用resetRouter，就能得到一个空的路有实例，之后你就可以重新addRoutes你想要的路由了 */
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router
 }

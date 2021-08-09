@@ -31,9 +31,29 @@
 - 控制子组件 html 属性上是否显示父组件提供的属性， 无论子组件上 props 是否包含的属性
 - 父组件中没被需要的属性， 跟子组件本来的属性冲突的时候，则依据父组件。 如果该属性为 false, 则父组件不会覆盖子组件原来的属性
 
-## $attrs
+## $attrs与$listeners
 
 - 获取到没有使用的注册属性， 如果需要，也可以继续往下传递
+
+- 包含了父作用域中的事件监听器，传入内部组件
+
+- `v-bind="$attrs"、v-on="$listeners"`
+
+- ```js
+  子组件： 
+  <el-button
+      v-bind="$attrs"
+      v-on="$listeners"
+    >ShowButton</el-button>
+  
+  父组件：
+  <compon-test
+      :foo.sync="bar"
+      type="success"
+  />
+  ```
+
+- 
 
 ## provide / inject
 
