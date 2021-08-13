@@ -2,6 +2,10 @@
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
     <el-button @click="$router.push('/login')">Login</el-button>
+    <customer-com
+      v-model="bar"
+    />
+    {{ bar }}
     <compon-test
       :foo.sync="bar"
       type="success"
@@ -12,14 +16,16 @@
 <script>
 import { mapGetters } from 'vuex'
 import ComponTest from './ComponTest.vue'
+import CustomerCom from '@/components/customerCom'
 export default {
   name: 'Dashboard',
   components: {
-    ComponTest
+    ComponTest,
+    CustomerCom
   },
   data() {
     return {
-      bar: '123'
+      bar: '1234'
     }
   },
   computed: {
