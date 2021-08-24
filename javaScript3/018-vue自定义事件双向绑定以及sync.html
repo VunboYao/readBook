@@ -12,6 +12,8 @@
       <!-- v-bind="xxx" 批量导入多个的prop -->
       <base-input v-bind="doc" @focus="onFocus" :title.sync="title" placeholder="xixi" type="text" v-model="lovingVue"></base-input>
       {{lovingVue}}
+      <div><button @click="change">show</button></div>
+      {{doc.a.b}}
     </div>
 
     <script>
@@ -53,12 +55,22 @@
           lovingVue: '123',
           title: 'nihao',
           doc: {
-            a: '1',
+            a: {
+              b: '2',
+            },
             b: '200',
             c: '3',
           },
         },
         methods: {
+          change() {
+            this.doc = {
+              a: {
+                b: '',
+              },
+              b: '100',
+            }
+          },
           onFocus() {
             console.log(this.lovingVue)
           },
