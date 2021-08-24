@@ -9,6 +9,12 @@
 export default {
   name: 'CounterFraud',
   inheritAttrs: false,
+  props: {
+    close: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: {
     $subListeners() {
       const vm = this
@@ -16,7 +22,9 @@ export default {
         this.$listeners,
         {
           change: function(ev) {
-            console.log(`自定义事件=>`, ev)
+            if (!vm.close) {
+              console.log(`自定义事件=>`, ev)
+            }
             vm.$emit('change', ev)
           }
         }

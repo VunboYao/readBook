@@ -12,6 +12,7 @@
     />
     <counter-fraud
       v-model="inputValue"
+      :close="false"
       type="text"
       placeholder="请输入内容"
       maxlength="10"
@@ -61,6 +62,7 @@ export default {
 <style lang="scss" scoped>
 .dashboard {
   &-container {
+    width: 30vw;
     margin: 30px;
   }
   &-text {
