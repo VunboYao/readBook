@@ -10,6 +10,15 @@
       :foo.sync="bar"
       type="success"
     />
+    <counter-fraud
+      v-model="inputValue"
+      :close="false"
+      type="text"
+      placeholder="请输入内容"
+      maxlength="10"
+      show-word-limit
+      @change="showChange"
+    />
   </div>
 </template>
 
@@ -17,15 +26,18 @@
 import { mapGetters } from 'vuex'
 import ComponTest from './ComponTest.vue'
 import CustomerCom from '@/components/customerCom'
+import CounterFraud from '@/components/CounterFraud'
 export default {
   name: 'Dashboard',
   components: {
     ComponTest,
-    CustomerCom
+    CustomerCom,
+    CounterFraud
   },
   data() {
     return {
-      bar: '1234'
+      bar: '1234',
+      inputValue: '123123'
     }
   },
   computed: {
@@ -37,6 +49,9 @@ export default {
     changeVal(e) {
       this.bar = e
     },
+    showChange(e) {
+      console.log(`e=>`, e)
+    },
     handleClick(e) {
       console.log(`'123123'`, e)
     }
@@ -47,6 +62,7 @@ export default {
 <style lang="scss" scoped>
 .dashboard {
   &-container {
+    width: 30vw;
     margin: 30px;
   }
   &-text {

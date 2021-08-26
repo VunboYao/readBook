@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <!-- v-bind="xxx" 批量导入多个的prop -->
+      <base-input v-bind="doc" @focus="onFocus" :title.sync="title" placeholder="xixi" type="text" v-model="lovingVue"></base-input>
+      {{lovingVue}}
+      <div><button @click="change">show</button></div>
+      {{doc.a.b}}
+    </div>
+
+    <script>
+      Vue.component('base-input', {
+        props: ['value', 'title', 'a', 'b', 'c'],
+        inheritAttrs: false,
+        created() {
+          console.log(`this.a, this.b, this.c`, this.a, this.b, this.c)
+        },
+        computed: {
+          // 原生事件绑定到组件。通过$listeners注入
+          inputListeners() {
+            return Object.assign({}, this.$listeners, {
+              input: e => {
+                this.$emit('input', e.target.value)
+              },
+              blur: e => {
+                // 属性的“双向绑定”。:title.sync快捷引用。设置多个props时，可以批量导入：v-bind.sync="doc"
+                this.$emit('update:title', e.target.value + 'OK')
+              },
+            })
+          },
+        },
+        template: `
+          <label>
+            {{title}}
+            <span>{{a + b + c}}</span>
+            <input
+              v-bind="$attrs"
+              :value="value"
+              v-on="inputListeners"
+           />
+            </label>
+        `,
+      })
+      let app = new Vue({
+        el: '#app',
+        data: {
+          lovingVue: '123',
+          title: 'nihao',
+          doc: {
+            a: {
+              b: '2',
+            },
+            b: '200',
+            c: '3',
+          },
+        },
+        methods: {
+          change() {
+            this.doc = {
+              a: {
+                b: '',
+              },
+              b: '100',
+            }
+          },
+          onFocus() {
+            console.log(this.lovingVue)
+          },
+        },
+      })
+    </script>
+  </body>
+</html>

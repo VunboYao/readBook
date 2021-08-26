@@ -5,6 +5,7 @@
         <input type="text" :value="value" @input="onInput">
       </label>
     </form>
+    <input type="checkbox">
   </div>
 </template>
 
