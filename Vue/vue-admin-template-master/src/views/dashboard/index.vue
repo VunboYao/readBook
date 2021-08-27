@@ -19,6 +19,7 @@
       show-word-limit
       @change="showChange"
     />
+    <heading :level="1" :title="bar" icon="hanbao-01">{{ bar }}</heading>
   </div>
 </template>
 
@@ -27,12 +28,15 @@ import { mapGetters } from 'vuex'
 import ComponTest from './ComponTest.vue'
 import CustomerCom from '@/components/customerCom'
 import CounterFraud from '@/components/CounterFraud'
+import Heading from '@/components/RenderCom'
+
 export default {
   name: 'Dashboard',
   components: {
     ComponTest,
     CustomerCom,
-    CounterFraud
+    CounterFraud,
+    Heading
   },
   data() {
     return {
