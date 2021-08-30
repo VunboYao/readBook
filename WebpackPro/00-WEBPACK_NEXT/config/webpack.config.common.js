@@ -10,27 +10,48 @@ const config = {
     // 可配置多文件入口
     index: './src/index.js',
   },
+  /* 优化 */
   optimization: {
+    /*
+    用于告知webpack模块的id采用什么算法生成
+    - natural：按照数字的顺序使用id
+    - named：development下的默认值，一个可读的名称的id；
+    - deterministic：确定性的，在不同的编译中不变的短数字id
+      -  在webpack4中是没有这个值的；那个时候如果使用natural，那么在一些编译发生变化时，就会有问题；
+    最佳实践：
+    - 开发过程中，我们推荐使用named；
+    - 打包过程中，我们推荐使用deterministic；
+    */
     chunkIds: 'named',
     splitChunks: {
+      // async 异步   initial: 同步     all: 表示对同步和异步代码都进行处理
       chunks: 'all',
-      minSize: 2000,
+      // 最小尺寸： 如果拆分出来一个，那么拆分出来的包这个包的最小值为minSize
+      minSize: 20000, // 优先级更高
+      // 将大于maxSize的包，拆分成不小于minSize的包
+      maxSize: 20000,
+      // 表示引入的包至少被导入了几次
       minChunks: 1,
+      // 缓存组
       cacheGroups: {
+        // ************自定义的分割包需要满足minSize*************
         venders: {
+          // 匹配符合规则的包
           test: /[\\/]node_modules[\\/]/,
+          // 优先级大：优先
           priority: -10,
-          filename: "[id]_[hash:6]_vendor.js"
+          // 拆分后包的名称
+          filename: "[id]_[hash:6]_vendor.js",
+          // name: '固定的名称'
         },
-        foo: {
-          test: /foo/,
+        vue: {
+          test: /Test-/,
           priority: -20,
-          filename: "foo_[id]_[name].js"
+          filename: "Vue_[id]_DEMO.js"
         },
         default: {
-          minChunks: 1,
-          priority: -30,
-          filename: "common_[id]_[name].js"
+          minChunks: 1, // 引入次数.常规：2
+          filename: 'common_[id].js'
         }
       }
     },
@@ -48,6 +69,11 @@ const config = {
   output: {
     filename: '[name].bundle.js',
     path: resolveApp('./dist'),
+    /*
+    因为动态导入通常是一定会打包成独立的文件的，所以并不会再cacheGroups中进行配置；
+    那么它的命名我们通常会在output中，通过 chunkFilename 属性来命名；
+    */
+    chunkFilename: "[name].chunk.js" // 配合魔法注释：chunks: 'all'时生效
     // publicPath: '', // 默认值为空。 在打包后的静态资源前面加上一个路径的拼接
     // assetModuleFilename: 'img/[name].[hash:6][ext]'
   },
