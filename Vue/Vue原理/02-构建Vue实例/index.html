@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- <script src="../vue.js"></script> -->
+    <script src="./Vun.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <input v-model="name" type="text" />
+      <h2>{{age}}</h2>
+      <h2>{{name}}</h2>
+      <ul>
+        <li v-for="item in 3">{{item}}</li>
+      </ul>
+    </div>
+    <script>
+      /*
+    1.要想使用Vue必须先创建Vue的实例，创建Vue的实例通过new 来创建，所以说明Vue是一个类。
+      所以我们要使用自己的Vue，就必须定义一个名称叫做Vue的类
+    2.只要创建好了Vue的实例， Vue就会根据指定的区域和数据，去编译渲染这个区域
+      所以我们需要在自己编写的Vue实例中拿到数据和控制区域，去编译渲染这个区域
+      注意点：创建Vue实例的时候指定的控制区域可以是一个ID名称，也可以是一个DOM元素
+      注意点：Vue实例会将传递的控制区域和数据都绑定到创建出来的实例对象上
+            $el/$data
+     */
+      // let vue = new Vue({
+      let vue = new Vun({
+        el: '#app',
+        data: {
+          name: '姚某人',
+          age: 20,
+        },
+      })
+      console.log(`vue.$el`, vue.$el)
+      console.log(`vue.$data`, vue.$data)
+    </script>
+  </body>
+</html>
