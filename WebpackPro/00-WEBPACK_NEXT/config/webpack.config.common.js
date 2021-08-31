@@ -70,10 +70,10 @@ const config = {
     filename: '[name].bundle.js',
     path: resolveApp('./dist'),
     /*
-    因为动态导入通常是一定会打包成独立的文件的，所以并不会再cacheGroups中进行配置；
+    因为动态导入通常是一定会打包成独立的文件的，所以并不会在cacheGroups中进行配置；
     那么它的命名我们通常会在output中，通过 chunkFilename 属性来命名；
     */
-    chunkFilename: "[name].chunk.js" // 配合魔法注释：chunks: 'all'时生效
+    chunkFilename: "[name].chunk.js" // 配合魔法注释：chunks: 'initial'时生效
     // publicPath: '', // 默认值为空。 在打包后的静态资源前面加上一个路径的拼接
     // assetModuleFilename: 'img/[name].[hash:6][ext]'
   },
