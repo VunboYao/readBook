@@ -21,6 +21,7 @@
     <el-button @click="show">show</el-button>
     <el-button @click="hide">hide</el-button>
     <el-button @click="showMsg">showMsg</el-button>
+    <el-button @click="handleRouter">RouterMatched</el-button>
   </div>
 </template>
 
@@ -40,6 +41,9 @@ export default {
   },
   mounted() {},
   methods: {
+    handleRouter() {
+      console.log('this.$route :>> ', this.$route);
+    },
     showMsg() {
       const data = [{
         code: '1102'

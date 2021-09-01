@@ -22,14 +22,16 @@
       <h2>{{name}}</h2>
     </div>
     <script>
-      new Vue({
+      let testD = new Vue({
         el: '#app',
+        customOption: 'foo',
         data() {
           return {
             name: 'yyb',
           }
         },
       })
+      console.log('testD :>> ', testD)
     </script>
     <script>
       let obj = {
