@@ -19,6 +19,11 @@ export default new Vuex.Store({
       }, 1000);
     }
   },
+  getters: {
+    doubleState (state) {
+        return state.counter * 2
+    }
+  },
   modules: {
   }
 })
