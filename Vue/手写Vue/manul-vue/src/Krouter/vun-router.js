@@ -14,13 +14,39 @@ class VunRouter{
     // 把current作为响应式数据
     // 将来发生变化，router-view的render函数能够再次执行
     // this指向路由实例
-    const initial = window.location.hash.slice(1) || '/'
-    Vue.util.defineReactive(this, 'current', initial)
+    /*const initial = window.location.hash.slice(1) || '/'
+    Vue.util.defineReactive(this, 'current', initial)*/
+
+    this.current = window.location.hash.slice(1) || '/'
+    Vue.util.defineReactive(this, 'matched', [])
+    // match方法可以递归遍历路由表，获得匹配关系数组
+    this.match()
 
     // 监听hash变化
     window.addEventListener('hashchange', () => {
       this.current = window.location.hash.slice(1)
+      this.matched = []
+      this.match()
     })
+  }
+  match(routes) {
+    routes = routes || this.constructorOptions.routes
+
+    // 递归遍历
+    for (const route of routes) {
+      if (route.path === '/' && this.current === '/') {
+        this.matched.push(route)
+        return
+      }
+      // /about/info
+      if (route.path !== '/' && this.current.indexOf(route.path) !== -1) {
+        this.matched.push(route)
+        if (route.children) {
+          this.match(route.children)
+        }
+        return
+      }
+    }
   }
 }
 
@@ -36,7 +62,7 @@ VunRouter.install = function (_Vue) {
       // 根实例执行一次
       if (this.$options.router) {
         // this指向每一个Vue组件的实例
-        console.log('Vue组件的实例中的路由钩子 :>> ', this.$options.router);
+        // console.log('Vue组件的实例中的路由钩子 :>> ', this.$options.router);
         Vue.prototype.$router = this.$options.router
       }
     }
@@ -66,11 +92,28 @@ VunRouter.install = function (_Vue) {
   // 3.router-view
   Vue.component('router-view', {
     render(h) {
+      // 标记深度
+      this.$vnode.data.routerView = true
+      let depth = 0
+      let parent = this.$parent
+      while(parent) {
+        const vnodeData = parent.$vnode && parent.$vnode.data
+        if (vnodeData) {
+          if (vnodeData.routerView) {
+            // 说明当前parent是一个router-view
+            depth++
+          }
+        }
+        parent = parent.$parent
+      }
       // this指向router-view(Vue组件)的实例
-      console.log('this.$router :>> ', this.$router);
-      console.log('路由地址', this.$router.constructorOptions.routes);
+      // console.log('this.$router :>> ', this.$router);
+      // console.log('路由地址', this.$router.constructorOptions.routes);
       let component = null
-      const route = this.$router.constructorOptions.routes.find( route => route.path === this.$router.current)
+      // const route = this.$router.constructorOptions.routes.find( route => route.path === this.$router.current)
+      // 从匹配数组中获取
+      console.log(this.$router.matched)
+      const route = this.$router.matched[depth]
       if (route) component = route.component
       return h(component)
     }

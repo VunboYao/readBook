@@ -6,10 +6,20 @@
     </div>
     <p @click="$store.commit('add')">{{$store.state.counter}}</p>
     <p @click="$store.dispatch('add')">async{{$store.state.counter}}</p>
+    <p>double: {{$store.getters.doubleState}}</p>
+    <button @click="getValue">getValue</button>
     <router-view/>
   </div>
 </template>
-
+<script>
+export default {
+  methods: {
+    getValue() {
+      console.log(this.$store.getters.doubleState)
+    }
+  }
+}
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
