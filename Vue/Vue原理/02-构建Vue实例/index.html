@@ -11,10 +11,16 @@
   <body>
     <div id="app">
       <input v-model="name" type="text" />
-      <h2>{{age}}</h2>
+      <input v-model="time.h" type="text" />
+      <input v-model="time.m" type="text" />
+      <input v-model="time.s" type="text" />
+      <div v-html="html">这里被html替换</div>
+      <div v-text="text">这里被text替换</div>
+      <h2>{{name}}-{{age}}</h2>
       <h2>{{name}}</h2>
+      <h2>{{time.h}}</h2>
       <ul>
-        <li v-for="item in 3">{{item}}</li>
+        <li v-for="item in for">{{item}}</li>
       </ul>
     </div>
     <script>
@@ -33,10 +39,18 @@
         data: {
           name: '姚某人',
           age: 20,
+          time: {
+            h: 3,
+            m: 12,
+            s: 12,
+          },
+          for: ['apple', 'pear', 'banner'],
+          html: `<h2>i am html data</h2>`,
+          text: `<h2>i am html data</h2>`,
         },
       })
-      console.log(`vue.$el`, vue.$el)
-      console.log(`vue.$data`, vue.$data)
+      // console.log(`vue.$el`, vue.$el)
+      // console.log(`vue.$data`, vue.$data)
     </script>
   </body>
 </html>

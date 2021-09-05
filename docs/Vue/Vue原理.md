@@ -49,5 +49,24 @@
 
 ## Vuex
 
-1.存取器
+1. 存取器
+
+2. Vuex插件
+   1. API方法：store.subscribe
+   2. 登录持久化等
+
+## Vue
+
+1. 函数式组件？
+
+## Vue-cli
+
+1. Vue-cli快速原型开发
+2. 自动导入依赖
+3. CSS深度作用选择器
+   1. `>>>`
+   2. sass类预处理器的使用：`/deep/` 或者 `::v-deep`
+
+4. devServer中本地模拟接口
+   1. before(app){} // app是express的实例
 
