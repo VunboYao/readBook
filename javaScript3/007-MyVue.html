@@ -6,15 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script src="./vue.js"></script>
-    <script>
-      function getType(obj) {
-        const type = typeof obj
-        if (type !== 'object') return type
-        return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, (match, $1) => {
-          return $1.toLocaleLowerCase()
-        })
-      }
-    </script>
   </head>
   <body>
     <div id="app">
@@ -34,52 +25,43 @@
       console.log('testD :>> ', testD)
     </script>
     <script>
-      let obj = {
-        // name: { a: 'abc' },
-        name: 'yyb',
-        age: 28,
+      /*var n = 100
+      function foo() {
+      	n = 200
       }
-      class Observer {
-        // 将需要监听的对象传递给Observer这个类
-        // 快速给传入的对象的所有属性添加get/set方法
-        constructor(data) {
-          this.observer(data)
-        }
-        observer(obj) {
-          if (obj && getType(obj) === 'object') {
-            // 遍历取出传入对象的所有属性，给遍历到的属性都增加set/get方法
-            for (let key in obj) {
-              this.defineReactive(obj, key, obj[key])
-            }
-          }
-        }
-        // obj：需要操作的对象
-        // attr： 属性
-        // value： 需要新增get/set属性方法的值
-        defineReactive(obj, attr, value) {
-          // 监听对象中的对象
-          this.observer(value)
-          Object.defineProperty(obj, attr, {
-            get() {
-              return value
-            },
-            set: newValue => {
-              console.log(`UPDATE-UI:`, newValue)
-              if (value !== newValue) {
-                // 设置对象时，监听
-                this.observer(newValue)
-                value = newValue
-              }
-            },
-          })
-        }
+      foo()
+			console.log(n) // 200 */
+			/*function foo() {
+				console.log(n) // undefined
+				var n = 200
+				console.log(n) // 200
+			}
+			var n = 100
+			foo()*/
+      /*var n = 100
+      function foo1() {
+				console.log(n) // 2. 100
       }
-      new Observer(obj)
-      /* obj.name = 'vunbo'
-      obj.age = 666
-      obj.name.a = 'vunbo yao' */
-      obj.name = { a: 'yaoming' }
-      obj.name.a = 'vunboyao'
+      function foo2() {
+      	var n = 200
+				console.log(n) // 1.200
+        foo1()
+      }
+      foo2()
+			console.log(n) // 3. 100*/
+      /*var a = 100
+      function foo() {
+				console.log(a) // undefined
+        return
+        var a = 100
+      }
+      foo()*/
+      /*function foo() {
+      	var a = b = 100
+      }
+      foo()
+			// console.log(a) // error. not defined
+			console.log(b) // 100*/
     </script>
   </body>
 </html>
