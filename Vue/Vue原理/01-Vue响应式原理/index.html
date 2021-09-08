@@ -47,7 +47,7 @@
               return value
             },
             set: newValue => {
-              console.log(`UPDATE-UI:`, newValue)
+              console.warn(`UPDATE-UI:`, newValue)
               if (value !== newValue) {
                 // 设置对象时，监听
                 this.observer(newValue)

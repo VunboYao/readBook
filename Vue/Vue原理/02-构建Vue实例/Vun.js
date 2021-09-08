@@ -8,7 +8,7 @@ let CompilerUtil = {
     }, vm.$data)
   },
 
-  getContent(vm, value){
+  getContent(vm, value) {
     // {{name}}-{{age}} => 姚某人-{{age}} => 姚某人-20
     // 匹配{{}}中的内容。惰性匹配。添加“？”
     const reg = /\{\{(.+?)\}\}/gi
@@ -28,19 +28,19 @@ let CompilerUtil = {
     return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, (match, $1) => $1.toLocaleLowerCase())
   },
 
-  model: function (node, _value, vm) {
+  model: function(node, _value, vm) {
     // node.value = vm.$data[_value] // vm.$data[time.h]
     node.value = this.getValue(vm, _value)
   },
-  html: function (node, _value, vm) {
+  html: function(node, _value, vm) {
     node.innerHtml = this.getValue(vm, _value)
   },
 
-  text: function (node, _value, vm) {
+  text: function(node, _value, vm) {
     node.textContent = this.getValue(vm, _value)
   },
 
-  for: function (node, _value, vm) {
+  for: function(node, _value, vm) {
     if (/in(.+)/gi.test(_value)) {
       const originData = this.getValue(vm, RegExp.$1.trim())
       const fragment = document.createDocumentFragment()
@@ -54,10 +54,10 @@ let CompilerUtil = {
     }
   },
 
-  content: function (node, _value, vm) {
+  content: function(node, _value, vm) {
     let val = this.getContent(vm, _value)
     node.textContent = val
-  }
+  },
 }
 
 class Vun {
@@ -71,6 +71,9 @@ class Vun {
     this.$data = options.data
     // 2.根据指定的区域和数据去编译渲染界面
     if (this.$el) {
+      // 2.1 添加数据的get/set。监听数据的变化
+      new Observer(this.$data)
+      // 2.2 编译渲染界面
       new Compiler(this)
     }
   }
@@ -142,4 +145,48 @@ class Compiler {
       CompilerUtil['content'](node, context, this.vm)
     }
   }
+}
+
+class Observer {
+  // 将需要监听的对象传递给Observer这个类
+  // 快速给传入的对象的所有属性添加get/set方法
+  constructor(data) {
+    this.observer(data)
+  }
+  observer(obj) {
+    if (obj && getType(obj) === 'object') {
+      // 遍历取出传入对象的所有属性，给遍历到的属性都增加set/get方法
+      for (let key in obj) {
+        this.defineReactive(obj, key, obj[key])
+      }
+    }
+  }
+  // obj：需要操作的对象
+  // attr： 属性
+  // value： 需要新增get/set属性方法的值
+  defineReactive(obj, attr, value) {
+    // 监听对象中的对象
+    this.observer(value)
+    Object.defineProperty(obj, attr, {
+      get() {
+        return value
+      },
+      set: newValue => {
+        console.warn(`UPDATE-UI:`, newValue)
+        if (value !== newValue) {
+          // 设置对象时，监听
+          this.observer(newValue)
+          value = newValue
+        }
+      },
+    })
+  }
+}
+
+function getType(obj) {
+  const type = typeof obj
+  if (type !== 'object') return type
+  return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, (match, $1) => {
+    return $1.toLocaleLowerCase()
+  })
 }
