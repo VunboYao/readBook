@@ -25,7 +25,7 @@ let CompilerUtil = {
     if (type !== 'object') {
       return type
     }
-    return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, (match, $1) => $1.toLocaleLowerCase())
+    return Object.prototype.toString.call(obj).replace(/^\[object (\S+)]$/, (match, $1) => $1.toLocaleLowerCase())
   },
 
   model: function(node, _value, vm) {
@@ -186,7 +186,20 @@ class Observer {
 function getType(obj) {
   const type = typeof obj
   if (type !== 'object') return type
-  return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, (match, $1) => {
+  return Object.prototype.toString.call(obj).replace(/^\[object (\S+)]$/, (match, $1) => {
     return $1.toLocaleLowerCase()
   })
+}
+
+// 数据变化之后更新UI界面，发布订阅模式
+// 定义一个观察者类，再定义一个发布订阅类，然后再通过发布订阅的类来管理观察者类
+
+class watcher {
+  constructor(vm, attr, cb) {
+    this.vm = vm
+    this.attr = attr
+    this.cb = cb
+
+
+  }
 }
