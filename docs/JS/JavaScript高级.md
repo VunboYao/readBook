@@ -63,3 +63,54 @@
    4. new绑定
       1. **this === new绑定出来的对象**
 
+3. 规则优先级
+
+   1. 默认规则的优先级最低
+
+   2. **显示高于隐式绑定**
+
+      1. ```js
+         function foo() {
+             console.log(this) // abc
+         }
+         let obj = {
+             name: 'obj',
+             foo: foo.bind('abc')
+         }
+         obj.foo()
+         ```
+
+   3. **new 高于隐式绑定**
+
+   4. new 关键字不能与apply、call一起使用。new的优先级高于bind
+
+   5. **call、apply、bind传入null和undefined，自动将 this 绑定至全局对象**
+
+4. **异常问题**
+
+   ```js
+   let obj1 = {
+       name: 1,
+   } // 此处需要加分号
+   ;[(1, 2, 3, 4)].forEach(element => {
+       // Uncaught TypeError: Cannot read properties of undefined (reading 'forEach')
+       console.log(element)
+   })
+   ```
+
+5. **箭头函数**
+
+   1. **不会绑定this、arguments**
+
+   2. 箭头函数不能用new来调用
+
+   3. 如果函数执行体只有一行代码，`{}` 可以省略。
+
+      1. **默认将这行代码的执行结果作为返回值**
+
+      ```js
+      let bar = () => ({name: 'yyb', age: 12}) // 箭头函数返回一个对象的简写
+      ```
+
+   4. 箭头函数的 this 绑定，从上层作用域中查找
+
