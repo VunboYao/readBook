@@ -2,46 +2,62 @@
   <head>
     <meta charset="UTF-8" />
     <title></title>
+    <style>
+      .green {
+        background-color: green;
+      }
+    </style>
+    <script src="./vue3.js"></script>
   </head>
   <body>
-    <!--    <script src="./index.js"></script>-->
+    <div id="app">
+      <todo-list>
+        <template v-slot:default="slotProps">
+          <i class="fas fa-check"></i>
+          <span class="green">{{ slotProps.item2 }}</span>
+        </template>
+      </todo-list>
+    </div>
     <script>
-      function clone(obj) {
-        let map = new WeakMap()
-        function deep(data) {
-          let result = []
-          const keys = [...Object.getOwnPropertyNames(data), ...Object.getOwnPropertySymbols(data)]
-          if (!keys.length) return data
-          const exist = map.get(data)
-          if (exist) return exist
-          map.set(data, result)
-          keys.forEach(key => {
-            let item = data[key]
-            if (typeof item === 'object' && item) {
-              result[key] = deep(item)
-            } else {
-              result[key] = item
-            }
-          })
-          return result
-        }
-        return deep(obj)
-      }
-      const isComplexDataType = obj => (typeof obj === 'object' || typeof obj === 'function') && obj !== null
-      const deepClone = function (obj, hash = new WeakMap()) {
-        if (obj.constructor === Date) return new Date(obj)
-        if (obj.constructor === RegExp) return new RegExp(obj)
-        if (hash.has(obj)) return hash.get(obj)
+      const app = Vue.createApp({
+        data() {
+          return {
+            bar: true,
+          }
+        },
+        methods: {},
+      })
 
-        let addDesc = Object.getOwnPropertyDescriptors(obj)
-        let cloneObj = Object.create(Object.getPrototypeOf(obj), allDesc)
-        hash.set(obj, cloneObj)
-        for (let key of Reflect.ownKeys(obj)) {
-          cloneObj[key] = isComplexDataType[obj[key]] && typeof obj[key] !== 'function' ? deepClone(obj[key], hash) : obj[key]
-        }
-        return cloneObj
-      }
+      app.component('todo-button', {
+        template: `
+          <button><slot>Submit</slot></button>
+        `,
+      })
+      app.component('todo-list', {
+        data() {
+          return {
+            items: ['Feed a cat', 'Buy milk'],
+          }
+        },
+        template: `
+          <ul>
+            <li v-for="(item, index) in items">
+              <slot :item2="item"></slot>
+            </li>
+          </ul>
+        `,
+      })
 
+      app.mount('#app')
+    </script>
+    <script>
+      let obj1 = {
+        name: 1,
+      } // 此处需要加分号
+      ;[1, 2, 3, 4].forEach(element => {
+        // Uncaught TypeError: Cannot read properties of undefined (reading 'forEach')
+        console.log(element)
+      })
     </script>
   </body>
 </html>
