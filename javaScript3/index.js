@@ -653,100 +653,100 @@
 
 // this面试题一
 {
-  let name = 'window'
-  let person = {
+  var name = 'window'
+  var person = {
     name: 'person',
     sayName: function () {
-      console.log(this.name);
+      console.log('one=', this.name);
     }
   }
 
   function sayName() {
-    let sss = person.sayName;
-    sss(); // window
-    person.sayName(); // person
-    (person.sayName)(); // window
-    (b = person.sayName)(); // window
+    var sss = person.sayName;
+    sss(); //
+    person.sayName(); //
+    (person.sayName)(); //
+    (b = person.sayName)(); //
   }
   sayName()
 }
 
 // this面试题二
 {
-  let name = 'window'
-  let person1 = {
+  var name = 'window'
+  var person1 = {
     name: 'person1',
     foo1: function () {
-      console.log(this.name);
+      console.log('two=', this.name);
     },
-    foo2: () => console.log(this.name),
+    foo2: () => console.log('two-foo3=', this.name),
     foo3: function () {
       return function () {
-        console.log(this.name);
+        console.log('two', this.name);
       }
     },
     foo4: function () {
       return () => {
-        console.log(this.name);
+        console.log('two=', this.name);
       }
     }
   }
-  let person2 = { name: 'person2' }
+  var person2 = { name: 'person2' }
 
-  person1.foo1(); // person1
-  person1.foo1.call(person2) // person2
+  person1.foo1(); //
+  person1.foo1.call(person2) //
 
-  person1.foo2(); // window
-  person1.foo2.call(person2) // window
+  person1.foo2(); //
+  person1.foo2.call(person2) //
 
-  person1.foo3()() // window
-  person1.foo3.call(person2)() // window
-  person1.foo3().call(person2) // person2
+  person1.foo3()() //
+  person1.foo3.call(person2)() //
+  person1.foo3().call(person2) //
 
-  person1.foo4()() // person1
-  person1.foo4.call(person2)() // person2
-  person1.foo4().call(person2) // person1
+  person1.foo4()() //
+  person1.foo4.call(person2)() //
+  person1.foo4().call(person2) //
 }
 
 // this面试题Three
 {
-  let name = 'window'
+  var name = 'window'
   function Person(name) {
     this.name = name
     this.foo1 = function () {
-      console.log('three', this.name)
+      console.log('three>>', this.name)
     }
-    this.foo2 = () => console.log('three', this.name)
+    this.foo2 = () => console.log('three>>', this.name)
     this.foo3 = function () {
       return function () {
-        console.log('three', this.name)
+        console.log('three>>', this.name)
       }
     }
     this.foo4 = function () {
-      return () => console.log('three', this.name)
+      return () => console.log('three>>', this.name)
     }
   }
-  let person1 = new Person('person1')
-  let person2 = new Person('person2')
+  var person1 = new Person('person1')
+  var person2 = new Person('person2')
 
-  person1.foo1() // person1
-  person1.foo1.call(person2) // person2
+  person1.foo1() //
+  person1.foo1.call(person2) //
 
-  person1.foo2() // person1
-  person1.foo2.call(person2) // person1
+  person1.foo2() //
+  person1.foo2.call(person2) //
 
-  person1.foo3()() // window
-  person1.foo3.call(person2)() // window
-  person1.foo3().call(person2) // person2
+  person1.foo3()() //
+  person1.foo3.call(person2)() //
+  person1.foo3().call(person2) //
 
-  person1.foo4()() // person1
-  person1.foo4.call(person2)() //  person2
-  person1.foo4().call(person2) // person1
+  person1.foo4()() //
+  person1.foo4.call(person2)() //
+  person1.foo4().call(person2) //
 }
 
 // this面试题Si
 {
-  let name = 'window'
+  var name = 'window'
   function Person(name) {
     this.name = name
     this.obj = {
@@ -763,13 +763,13 @@
       }
     }
   }
-  let person1 = new Person('person1')
-  let person2 = new Person('person2')
-  person1.obj.foo1()() // window
-  person1.obj.foo1.call(person2)() // window
-  person1.obj.foo1().call(person2) // person2
+  var person1 = new Person('person1')
+  var person2 = new Person('person2')
+  person1.obj.foo1()() //
+  person1.obj.foo1.call(person2)() //
+  person1.obj.foo1().call(person2) //
 
-  person1.obj.foo2()() // obj
-  person1.obj.foo2.call(person2)() // person2
-  person1.obj.foo2().call(person2) // obj
+  person1.obj.foo2()() //
+  person1.obj.foo2.call(person2)() //
+  person1.obj.foo2().call(person2) //
 }
