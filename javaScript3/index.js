@@ -653,6 +653,7 @@
 
 // this面试题一
 {
+  console.log('------------------------------分割线-------------------------------')
   var name = 'window'
   var person = {
     name: 'person',
@@ -677,17 +678,17 @@
   var person1 = {
     name: 'person1',
     foo1: function () {
-      console.log('two=', this.name);
+      console.warn('two', this.name);
     },
-    foo2: () => console.log('two-foo3=', this.name),
+    foo2: () => console.warn('two', this.name),
     foo3: function () {
       return function () {
-        console.log('two', this.name);
+        console.warn('two', this.name);
       }
     },
     foo4: function () {
       return () => {
-        console.log('two=', this.name);
+        console.warn('two', this.name);
       }
     }
   }
@@ -753,12 +754,12 @@
       name: 'obj',
       foo1: function () {
         return function () {
-          console.log('four', this.name)
+          console.warn('four', this.name)
         }
       },
       foo2: function () {
         return () => {
-          console.log('four', this.name)
+          console.warn('four', this.name)
         }
       }
     }
@@ -772,4 +773,17 @@
   person1.obj.foo2()() //
   person1.obj.foo2.call(person2)() //
   person1.obj.foo2().call(person2) //
+}
+
+{
+  Function.prototype.myCall = function(targetObj, arg = []) {
+    const fn = this
+    targetObj = Object(targetObj)
+    targetObj.fn = fn
+    targetObj.fn(arg)
+  }
+  function showCall(a,b,c) {
+    console.log('myCall is running', this);
+  }
+  showCall.myCall('123', 1,2,3)
 }
