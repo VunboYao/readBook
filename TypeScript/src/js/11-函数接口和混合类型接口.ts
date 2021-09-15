@@ -1,14 +1,18 @@
+// 函数接口
+// 除了可以通过接口来限定对象以外，我们还可以使用接口来限定函数
 interface SearchFunc {
-  // 函数定义：2个参数，字符串，返回值为boolean值
-  (source: string, subString: string): boolean
+  // TODO：函数定义：2个参数，数字，返回数字
+  (a: number, b: number): number
 }
 
-let mySearch: SearchFunc = (sou: string, sub: string): boolean => {
-  console.log(sou + sub);
-  return 5 > -2
+let mySearch: SearchFunc = (x: number, y: number): number => {
+  return x + y
 }
-mySearch('vunbo', ' yao')
+const res11 = mySearch(10, 1)
+console.log(res11)
 
+// TODO：混合类型接口
+// TODO： 约定的内容中既有对象属性，又有函数
 interface CountInterface {
   (): void
   count: number
@@ -20,9 +24,10 @@ let CountTest = (function (): CountInterface {
   // fn作为函数时符合接口定义中函数接口的设定：(): void
   // fn作为对象时符合接口定义中对象属性的设定：count: number
 
-  let fn = <CountInterface>function () { // 类型断言
+  let fn = <CountInterface>function () {
+    // 类型断言
     fn.count++
-    console.log(fn.count);
+    console.log(fn.count)
   }
   fn.count = 0
   return fn

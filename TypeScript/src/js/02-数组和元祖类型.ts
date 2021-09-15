@@ -17,7 +17,7 @@ arr2 = ['a', 'b', 'c']
 console.log(arr2)
 
 // 联合类型
-let arr3: (number | string | boolean)[] // 表示定义了一个名称叫做arr3的数组，这个数组中将来只能够存储字符串类型或数值类型的的数据
+let arr3: (number | string | boolean)[] // 表示定义了一个名称叫做arr3的数组，这个数组中将来只能够存储字符串类型、布尔类型或数值类型的的数据
 arr3 = [1, '12', 'b', true]
 // arr3 = [1, '12', 'b', true]
 console.log(arr3)
