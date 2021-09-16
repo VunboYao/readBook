@@ -786,4 +786,13 @@
     console.log('myCall is running', this);
   }
   showCall.myCall('123', 1,2,3)
+
+  Function.prototype.myBind = function(targetObj, bindArgs) {
+    targetObj = targetObj ? Object(targetObj) : window
+    targetObj.fn = this
+    return function (...newArgs) {
+      let args = [...bindArgs, ...newArgs]
+      return targetObj.fn(...args)
+    }
+  }
 }
