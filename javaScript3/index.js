@@ -782,17 +782,67 @@
     targetObj.fn = fn
     targetObj.fn(arg)
   }
-  function showCall(a,b,c) {
-    console.log('myCall is running', this);
-  }
-  showCall.myCall('123', 1,2,3)
-
-  Function.prototype.myBind = function(targetObj, bindArgs) {
+  Function.prototype.myBind = function(targetObj, ...bindArgs) {
+    // 对传入的对象进行数据处理，如果是真值，则Object包装下。否则指向window
     targetObj = targetObj ? Object(targetObj) : window
+    // 将this绑定至传入的对象
     targetObj.fn = this
+    // 返回一个新的函数，传入参数，与原函数的参数重叠
     return function (...newArgs) {
       let args = [...bindArgs, ...newArgs]
       return targetObj.fn(...args)
     }
   }
+  function showCall(a, b, c) {
+    console.log(`a, b, c`, a, b, c)
+    console.log('myCall is running', this);
+  }
+  let c = showCall.myBind('123', [1, 2])
+  console.log(c(3), 'c333')
+
+
+}
+
+{
+  function foo(m) {
+    return function (n) {
+      return function(x) {
+        return function(y) {
+          return m + n + x + y
+        }
+      }
+    }
+  }
+  console.log(foo(1)(2)(3)(4));
+
+  // 柯里化简写
+  let foo2 = x => y => z => x+y+z
+  console.log(foo2(1)(2)(3));
+
+  // 自动柯里化
+  function myCurrying(fn) {
+    return function curried(...args) {
+      // 当已经传入的参数大于等于需要的参数时，就执行函数
+      // 参数满足，直接执行
+      if (args.length >= fn.length) {
+        // fn(...args)
+        // fn.call(this, ...args)
+        return fn.apply(this, args)
+      } else {
+        // 参数不满足时：返回一个新的函数，继续接收参数
+        return function curried2(...args2) {
+          // 递归调用curried来检查函数的个数是否达到
+          return curried.apply(this, [...args, ...args2])
+        }
+      }
+    }
+  }
+
+  function add(a,b,c) {
+    return a + b + c
+  }
+
+  let c = myCurrying(add)
+  console.log(c(1,2,3), '>>>>')
+  console.log(c(3)(1, 2), '>>>>')
 }
