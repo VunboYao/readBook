@@ -183,3 +183,38 @@ function myCurrying(fn) {
 }
 ```
 
+### 高阶柯里化自动执行
+
+```js
+function double(m) {
+    return m * 2
+}
+function square(n) {
+    return n ** 2
+}
+
+
+function hyCompose(...fns) {
+    let length = fns.length
+    for (let i = 0; i < length; i++) {
+        if (typeof fns[i] !== 'function') {
+            throw new TypeError('excepted arguments are functions')
+        }
+    }
+
+    return function (...args) {
+        let index = 0
+        // 数组长度如果为0，则直接返回参数
+        let result = length ? fns[index].apply(this, args) : args
+        while(++index < length) {
+            // 索引递增，继续执行下一个函数
+            result = fns[index].call(this, result)
+        }
+        return result
+    }
+}
+
+let newFn = hyCompose(double, square)
+console.log(newFn(12)) // 576
+```
+
