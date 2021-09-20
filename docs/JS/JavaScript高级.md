@@ -218,3 +218,43 @@ let newFn = hyCompose(double, square)
 console.log(newFn(12)) // 576
 ```
 
+## 08-对象
+
+```js
+Object.defineProperty(someObj, xxx, {
+  configurable: true,
+  enumerable: true,
+  get(){
+    console.log('get')
+  },
+  set(){
+    console.log('set')
+  }
+})
+
+// ===============等价于================
+someObj = {
+  // 默认可枚举、可配置
+  set age(value) {},
+  get age() {}
+}
+```
+
+- `Object.preventExtensions(obj)`，禁止对象继续添加新的属性
+- `Object.seal(obj)`，密封一个对象。不可配置、不可删除。**属性值可以修改**
+- `Object.freeze(obj)`，不可删除、不可配置，**不可修改属性值**
+
+## 09-面向对象
+
+ ### 工厂函数
+
+无法区分对象的类型
+
+### 构造函数
+
+1. 创建一个空对象
+2. 将构造函数的`protytype`赋值到该对象的`__proto__`
+3. 绑定this绑定，指向该空对象
+4. 进行属性赋值
+5. 如果没有返回对象，则默认返回该对象
+
