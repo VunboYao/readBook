@@ -193,7 +193,7 @@ function square(n) {
     return n ** 2
 }
 
-
+// 实现先执行double获取返回值，再执行square
 function hyCompose(...fns) {
     let length = fns.length
     for (let i = 0; i < length; i++) {
