@@ -843,43 +843,42 @@
   }
 
   let c = myCurrying(add)
-  // console.log(c(1,2,3), '>>>>')
-  // console.log(c(3)(1, 2), '>>>>')
-}
+  console.log(c(1,2,3), '>>>>')
+  console.log(c(3)(1, 2), '>>>>')
 
-{
-  function double(num) {
-    return num * 2
+  function double(m) {
+    return m * 2
   }
-  function square(num) {
-    return num ** 2
+  function square(n) {
+    return n ** 2
   }
 
-  // 普通组合函数
-  function composeFn(m, n) {
-    return function(count) {
-      return n(m(count))
-    }
-  }
 
-  // 通用组合函数
   function hyCompose(...fns) {
     let length = fns.length
-    for(let i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
       if (typeof fns[i] !== 'function') {
-        throw new TypeError('expected arguments are functions')
+        throw new TypeError('excepted arguments are functions')
       }
     }
+
     return function (...args) {
       let index = 0
+      // 数组长度如果为0，则直接返回参数
       let result = length ? fns[index].apply(this, args) : args
       while(++index < length) {
-       result = fns[index].apply(this, [result])
+        // 索引递增，继续执行下一个函数
+        result = fns[index].call(this, result)
       }
       return result
     }
   }
 
   let newFn = hyCompose(double, square)
-  console.log(newFn(10))
+  console.log(newFn(12)) // 576
+}
+{
+	function Person() {}
+	let p = new Person()
+	console.log(p.demo, '>>>>');
 }

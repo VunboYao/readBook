@@ -183,3 +183,78 @@ function myCurrying(fn) {
 }
 ```
 
+### 高阶柯里化自动执行
+
+```js
+function double(m) {
+    return m * 2
+}
+function square(n) {
+    return n ** 2
+}
+
+// 实现先执行double获取返回值，再执行square
+function hyCompose(...fns) {
+    let length = fns.length
+    for (let i = 0; i < length; i++) {
+        if (typeof fns[i] !== 'function') {
+            throw new TypeError('excepted arguments are functions')
+        }
+    }
+
+    return function (...args) {
+        let index = 0
+        // 数组长度如果为0，则直接返回参数
+        let result = length ? fns[index].apply(this, args) : args
+        while(++index < length) {
+            // 索引递增，继续执行下一个函数
+            result = fns[index].call(this, result)
+        }
+        return result
+    }
+}
+
+let newFn = hyCompose(double, square)
+console.log(newFn(12)) // 576
+```
+
+## 08-对象
+
+```js
+Object.defineProperty(someObj, xxx, {
+  configurable: true,
+  enumerable: true,
+  get(){
+    console.log('get')
+  },
+  set(){
+    console.log('set')
+  }
+})
+
+// ===============等价于================
+someObj = {
+  // 默认可枚举、可配置
+  set age(value) {},
+  get age() {}
+}
+```
+
+- `Object.preventExtensions(obj)`，禁止对象继续添加新的属性
+- `Object.seal(obj)`，密封一个对象。不可配置、不可删除。**属性值可以修改**
+- `Object.freeze(obj)`，不可删除、不可配置，**不可修改属性值**
+
+## 09-面向对象
+
+ ### 工厂函数
+
+无法区分对象的类型
+
+### 构造函数
+
+1. 创建一个空对象
+2. 将构造函数的`protytype`赋值到该对象的`__proto__`
+3. 绑定this绑定，指向该空对象
+4. 进行属性赋值
+5. 如果没有返回对象，则默认返回该对象
+
