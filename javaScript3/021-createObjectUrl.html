@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #output {
+        color: rgb(207, 84, 84);
+      }
+      #progress {
+        color: #09bb0c;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="file" id="file" />
+    <p id="progress"></p>
+    <p id="output"></p>
+    <script>
+      let filesList = document.getElementById('file')
+      filesList.addEventListener('change', e => {
+        let info = '',
+          output = document.getElementById('output'),
+          progress = document.getElementById('progress'),
+          files = e.target.files,
+          file = files[0],
+          // TODO: window.URL.createObjectURL（File/Blob）
+          // TODO: 该方法通过传入一个文件，返回一个指向内存中地址的字符串。对象URL的优点是不用把文件内容读取到JS也可以使用文件。只要在适当的位置提供对象URL即可
+          url = window.URL.createObjectURL(file)
+        if (url) {
+          if (/image/.test(file.type)) {
+            output.innerHTML = `<img src="${url}">`
+          } else {
+            output.innerHTML = 'Not an image'
+          }
+        } else {
+          output.innerHTML = 'your browser does not support object URLs.'
+        }
+
+        console.log(url, '>>>此时')
+        setTimeout(() => {
+          // TODO: window.URL.revokeObjectURL(url)内存释放。不再使用时，则调用此方法进行释放
+          let c = window.URL.revokeObjectURL(url)
+          console.log(c)
+        }, 3000)
+        setTimeout(() => {
+          console.log(url, '>>>>now')
+        }, 6000)
+      })
+    </script>
+  </body>
+</html>

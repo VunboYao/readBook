@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button onclick="goCreate()">点击我进行新建</button>
+    <!-- <iframe width="500" height="500" id="frame" src="http://127.0.0.1:8080/009-demo.html" frameborder="0"></iframe> -->
+  </body>
+  <script>
+    function goCreate() {
+      const iframe = document.createElement('iframe')
+      iframe.src = 'http://127.0.0.1:5555/009-demo.html'
+      iframe.width = '500'
+      iframe.height = '500'
+      console.log(iframe)
+      document.body.appendChild(iframe)
+      setTimeout(() => {
+        console.log('post')
+        const data = [
+          { id: 1, name: 'yyb' },
+          { id: 2, name: 'yao' },
+        ]
+        iframe.contentWindow.postMessage(data, '*')
+      }, 5000)
+    }
+    window.addEventListener('message', e => {
+      console.log(e)
+      console.log(e.data, 'e.data')
+      console.log(e.origin, 'e.origin')
+      console.log(e.source, 'e.source')
+    })
+  </script>
+</html>
