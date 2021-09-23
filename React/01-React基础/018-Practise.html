@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script src="./js/react.development.js"></script>
+    <script src="./js/react-dom.development.js"></script>
+    <script src="./js/babel.min.js"></script>
+    <script type="text/babel">
+      /*
+        TODO：注释问题
+      1.ReactJSX中不能用HTML注释，遇到<>会当作元素处理：<!--注释内容-->
+      2.在JSX中不能使用JS的单行注释，因为元素中是有内容的，所以JSX会把单行注释带当作是元素的内容： // 当行注释
+      3.同单行注释
+      4.通过告诉JSX，注释内容不是元素内容，将注释内容放置于{}中即可
+      */
+
+      /*
+      TODO:嵌入规则
+      1. [] true false null  undefined 内容不会被显示出来
+      2. 如果想显示上边的内容，就必须先转换成字符串；对于空数组，转换成字符串，也不会显示
+      */
+
+      /*
+      TODO: JSX编码规范
+      1. 在编写JSX代码的时候，建议使用（）将JSX代码包裹起来
+      2. 在JSX中只能有一个根元素
+      3.
+      */
+      class RInstance extends React.Component {
+        constructor() {
+          super()
+          this.state = {
+            msg: 'hello react',
+            flag: true,
+            fruit: ['apple', 'banner', 'pear'],
+          }
+        }
+
+        toggle = () => {
+          this.setState({
+            flag: !this.state.flag,
+          })
+        }
+        render() {
+          const { msg, flag, fruit } = this.state
+          return (
+            <div>
+              {/* v-show */}
+              <button onClick={this.toggle}>Toggle</button>
+              {/* v-if */}
+              {flag && <p>{msg + ', v-if'}</p>}
+              <p style={{ display: flag ? 'block' : 'none', color: 'red' }}>你好，React</p>
+              {/* v-for */}
+              <ol>
+                {fruit.map((item, index) => {
+                  return <li key={index}>{item}</li>
+                })}
+              </ol>
+            </div>
+          )
+        }
+      }
+      ReactDOM.render(<RInstance />, document.getElementById('root'))
+    </script>
+  </body>
+</html>

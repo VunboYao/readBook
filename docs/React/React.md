@@ -20,6 +20,16 @@ ReactDOM.render(VDOM, document.getElementById('APP'), [回调函数])
 2. 虚拟 DOM 比较“轻”，真实 DOM 比较“重”, 因为虚拟 DOM 是 React 内部使用，无需真实 DOM 上那么多的属性
 3. 虚拟 DOM 最终会被 React 转化为真实 DOM，呈现在页面上
 
+## 注释问题
+
+​      1.ReactJSX中不能用HTML注释，遇到<>会当作元素处理：<!--注释内容-->
+
+​      2.在JSX中不能使用JS的单行注释，因为元素中是有内容的，所以JSX会把单行注释带当作是元素的内容： // 当行注释
+
+​      3.同单行注释
+
+​      4.通过告诉JSX，注释内容不是元素内容，将注释内容放置于{}中即可
+
 ## JSX 语法规则
 
 1. 定义虚拟 DOM 时，不要写引号
@@ -33,6 +43,7 @@ ReactDOM.render(VDOM, document.getElementById('APP'), [回调函数])
 7. 标签首字母
    1. 若小写字母开头，则将该标签转为 html 中同名元素。若 html 中无该标签对应的同名元素，则报错
    2. 若大写字母开头， react 就去渲染对应的组件，若组件没有定义，则报错
+8. 在编写JSX代码的时候，建议使用`（）`将JSX代码包裹起来
 
 ## 注意点
 
@@ -77,12 +88,14 @@ ReactDOM.render(VDOM, document.getElementById('APP'), [回调函数])
 ### 类式组件
 
 - constructor 中原型方法通过 bind 绑定 this
-
 - 方法中通过 setState 进行更新，是一种数据合并
-
 - constructor 构造器只执行一次
-
 - render 调用 n + 1 次
+
+## 嵌入规则
+
+- `[] true false null  undefined` 内容不会被显示出来
+- 如果想显示上边的内容，就必须先转换成字符串；**对于空数组，转换成字符串，也不会显示**
 
 ## state-状态机
 
@@ -175,6 +188,7 @@ class Person extends React.Component {
 - 若无`fun()`调用，赋值语句给第三方变量，则属于直接调用
 - 类中默认开启严格模式，直接调用方法则返回 undefined。
 - **react 中的`{this.onClick=handleClick}`方法赋值语句就是直接调用**.提取出来单独使用，this 会指向该方法运行时所在的环境
+- **默认情况下react在调用事件监听方法的时候，是通过apply来调用的，并且在调用的时候将监听方法中的this修改为了undefined(ctx)，所以默认情况下我们是无法在监听方法中使用this的**
 
 ```js
 class Person {
@@ -191,6 +205,18 @@ student.speak() // Person {name: "Yao", age: 20} 实例调用
 const x = student.speak // 方法指向到x， class中默认开启严格模式
 x() // undefined
 ```
+
+### this问题解决方案
+
+1. 箭头函数
+2. 通过添加监听方法的时候，手动通过bind的方式来修改监听方法中的this
+3. 通过在构造函数中，手动通过bind的方式来修改监听方法中的this
+4. 手动绑定一个箭头函数，然后再通过箭头函数的函数体中手动调用监听方法。
+   1. 因为箭头函数中的this,就是当前的实例对象
+   2. 因为监听方法并不是React调用的，而是我们在箭头函数中手动调用的
+   3. 因为普通的方法，默认情况下谁调用就指向谁
+
+**注意点：企业开发中，推荐第四种**
 
 ## ref
 
@@ -303,7 +329,8 @@ class Person extends React.Component {
 ## 事件对象
 
 - 通过`onXxx`属性指定事件处理函数（**大小写问题**）
-  - React 使用的是自定义（合成）事件，而不是使用原生的 DOM 事件——为了更好的兼容性
+  - React 使用的是**自定义（合成）事件**，而不是使用原生的 DOM 事件——为了更好的兼容性
+  - **虽然传递给我们的是React自己合成的事件对象，但是提供的API和元素的几乎一致。如果用到了一个没有提供的API，可以根据合成的事件对象拿到原生的事件对象。event.nativeEvent**
   - React 中的事件是通过委托方式处理的（委托给组件最外层的元素）——为了高效
 - 通过`event.target`得到发生事件的 DOM 元素对象——**不要过度使用 Ref**
 
