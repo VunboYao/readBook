@@ -11,7 +11,7 @@ const VDOM = (
 // JS虚拟DOM创建
 // React.createElement(标签名，{属性id,class}, 内容[标签级则React.createElement(标签名,{属性}, 内容)])
 const VDOM = React.createElement('h1', { id: 'title' }, React.createElement('span', {}, 'Hello React'))
-ReactDOM.render(VDOM, document.getElementById('APP'))
+ReactDOM.render(VDOM, document.getElementById('APP'), [回调函数])
 ```
 
 ## 虚拟 DOM
