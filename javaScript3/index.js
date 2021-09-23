@@ -877,8 +877,3 @@
   let newFn = hyCompose(double, square)
   console.log(newFn(12)) // 576
 }
-{
-	function Person() {}
-	let p = new Person()
-	console.log(p.demo, '>>>>');
-}
