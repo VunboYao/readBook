@@ -1028,6 +1028,14 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
    static contextType = xxxContext  // 后代组件声明接收context
    this.context // 组件中读取context中的value数据
    
+   //声明上下文时就传递初始数据
+   const Ctx = React.createContext({name:VunboYao,age: 27})
+   // 则后代组件
+   // 可通过静态属性声明并获取：static contextType = Ctx
+   // 组件中则可通过this.context读取相关的属性
+   
+   
+   
    //第二种方式: 函数组件与类组件都可以
    <xxxContext.Consumer>
        {
@@ -1038,7 +1046,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
    </xxxContext.Consumer>
    ```
 
-4. 在应用开发中一般不用 context, 一般都用它封装 react 插件
+4. **context上下文：`<xxxContext.Consumer>`此类模式，可支持多个上下文，不支持第一种方式**
+
+5. 在应用开发中一般不用 context, 一般都用它封装 react 插件
 
 ### 组件优化
 
@@ -1137,7 +1147,7 @@ componentDidCatch(error, info) {
 
 - 消息订阅-发布
 
-- pubs-sub、event 等等
+- pubs-sub、events 等等
 
 - 集中式管理：
 
