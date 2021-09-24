@@ -75,6 +75,7 @@ ReactDOM.render(VDOM, document.getElementById('APP'), [回调函数])
         })
     }
 </ul>
+// key的作用：diff算法性能优化比对虚拟DOM时，通过key值与同层元素的其他位置进行比对。否则逐一比对，消耗性能
 ```
 
 ## 组件
@@ -110,7 +111,33 @@ state 是组件对象最重要的属性，值是对象（可包含多个 key-val
 
 - 状态数据，不能直接修改或更新
 
-- **对象式状态改变，setState 是异步的**
+- **对象式状态改变，setState 默认是异步的**
+
+  - 主要是为了优化性能，防止多次修改setState带来的UI渲染消耗
+  - 通过setState的第二个参数，回调中可以拿到更新后的值
+  - 在**定时器、原生事件中**是同步的
+
+- **setState合并现象**
+
+  - setState是一个异步的方法，默认会收集一段事件内的所有更新，然后再统一更新，所以就导致了最终的结果是1
+
+  - ```react
+    handleCount() {
+        let { count } = this.state
+        this.setState({
+            count: count + 1 // 0 + 1
+        })
+        this.setState({
+            count: count + 1 // 0 + 1
+        })
+        this.setState({
+            count: count + 1 // 0 + 1
+        })
+    }
+    // 1
+    ```
+
+    
 
 - 更改方式：
 

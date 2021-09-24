@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './index.css'
+import './body.css'
 // TODO: context上下文从组件中获取。默认值仅在无法在父级查询到Provider时生效
 const Ctx = React.createContext('VunboYao')
 // TODO: 获取组件中的两个容器生产者与消费者

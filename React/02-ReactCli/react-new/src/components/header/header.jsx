@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import './index.css'
+import './header.css'
 export default class index extends Component {
   // TODO: 定义传入属性限制
   static propTypes = {
@@ -19,7 +19,6 @@ export default class index extends Component {
     fatherFn('msg', 'son')
   }
   render() {
-    console.log(this.props)
     return (
       <div>
         <h1 className={'header'}>
