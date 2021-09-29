@@ -365,6 +365,19 @@ class Person extends React.Component {
 
 - 将外界定义的ref传递到组件内部，传给谁则获取谁
 
+```react
+const FnRef = React.forwardRef(function (props, fnRef) {
+		return (
+				<>
+					<h4>函数式获取到的props:{props.name}</h4>
+					<h4 ref={fnRef}>我是函数式的ref</h4>
+				</>
+		)
+})
+
+// 可通过this.fnRef直接获取到对用dom内容
+```
+
 ## 受控组件
 
 受到react控制的组件：通过setState控制更新的组件，事件以onChange触发的
@@ -495,10 +508,32 @@ class Person extends React.Component {
 
 - `componentWillUnmount()`
 
-## 高阶组件
+## 高阶组件HOC
 
 - Higher-Order Components, 简称为 HOC
+
 - 参数为组件，返回值为新组件的函数
+
+  ```react
+  // 封装父组件生成：内置consumer，并想子组件传递props
+  const GenFather = function (Son) {
+  	return class father extends PureComponent{
+  		render() {
+  			return (
+                  <Consumer>
+                      {
+                          value => {
+                              return (<Son name={value.name} age={value.age}/>)
+                          }
+                      }
+                  </Consumer>
+  			)
+  		}
+  	}
+  }
+  ```
+
+  
 
 ## 路由
 
