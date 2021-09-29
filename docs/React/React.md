@@ -335,7 +335,7 @@ class Person extends React.Component {
     inputNode = React.createRef()
     showData = () => {
         this.setState({ isHot: !this.state.isHot })
-        console.log(this.inputNode.current.value) // 取ref中的值
+        console.log(this.inputNode.current.value) // 取ref中的值.【current】
     }
     render() {
         return (

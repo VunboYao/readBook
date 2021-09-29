@@ -3,6 +3,8 @@ import './App.css'
 import Header from './components/header/header.jsx'
 import Body from './components/body/body'
 import Footer from './components/footer/footer'
+import Control from "./components/control/control"
+import HOC from "./components/hoc/hoc"
 export class App extends Component {
   state = {
     showFooter: true,
@@ -32,13 +34,23 @@ export class App extends Component {
   render() {
     const { showFooter, count } = this.state
     return (
-      <div>
-        <Header fatherFn={this.myFun.bind(this)} name={'大头'} age={2}/>
-        <Body />
-        {showFooter ? <Footer/> : ''}
-        <button onClick={() => this.onMountCom()}>unmountFooterCom</button>
-        <h3>count: {count}</h3>
-        <button onClick={() => this.handleCount()}>SetState连续触发，合并现象</button>
+      <div className={'wrap'}>
+        <div className={'border-f'}>
+          <h1>受控组件</h1>
+          <Control fs={'hello, boy'}/>
+        </div>
+        <div className={'border-f'}>
+          <h1>高阶组件HOC</h1>
+          <HOC/>
+        </div>
+        <div className={'border-f'}>
+          <Header fatherFn={this.myFun.bind(this)} name={'大头'} age={2}/>
+          <Body />
+          {showFooter ? <Footer/> : ''}
+          <button onClick={() => this.onMountCom()}>unmountFooterCom</button>
+          <h3>count: {count}</h3>
+          <button onClick={() => this.handleCount()}>SetState连续触发，合并现象</button>
+        </div>
       </div>
     )
   }
