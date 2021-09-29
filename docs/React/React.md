@@ -353,6 +353,22 @@ class Person extends React.Component {
 }
 ```
 
+### ref注意点
+
+- 如果获取的是原生的元素，那么拿到的就是元素本身
+- 如果获取的是类组件元素，那么拿到的就是类组件的实例对象
+- 如果获取的是函数组件元素，那么什么都拿不到
+
+### 函数式ref实现
+
+**React.forwardRef(function(props, myRef){})**
+
+- 将外界定义的ref传递到组件内部，传给谁则获取谁
+
+## 受控组件
+
+受到react控制的组件：通过setState控制更新的组件，事件以onChange触发的
+
 ## 事件对象
 
 - 通过`onXxx`属性指定事件处理函数（**大小写问题**）
@@ -478,6 +494,11 @@ class Person extends React.Component {
 **由 ReactDOM.unmountComponentAtNode()触发**
 
 - `componentWillUnmount()`
+
+## 高阶组件
+
+- Higher-Order Components, 简称为 HOC
+- 参数为组件，返回值为新组件的函数
 
 ## 路由
 
@@ -1088,6 +1109,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
 
 - 使用 PureComponent： PureComponent 重写了 shouldComponentUpdate(), 只有 state 或 props 数据有变化才返回 true
 - 注意：**只是进行 state 和 props 数据的浅比较, 如果只是数据对象内部数据变了, 返回 false。不要直接修改 state 数据, 而是要产生新数据**
+- 函数式组建优化方式：通过`React.memo(fn)`创建函数
 
 ### render props
 
