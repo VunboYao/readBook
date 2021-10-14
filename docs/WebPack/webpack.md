@@ -465,7 +465,7 @@ watchOptions: {
         "/api": {
             "target": "http://localhost:3000",
             "secure": false, // HTTPS跨域
-            "changeOrigin": true, // 域名跨域
+            "changeOrigin": true, // 域名跨域,如果服务器要求特定的源访问。可更改为同源
         },
         "/login": {
             ...
@@ -1118,9 +1118,12 @@ module.exports = {
 - 如果我们将其设置为了 /abc，那么我们需要通过 http://localhost:8080/abc才能访问到对应的打包后的资源
 - 并且这个时候，我们其中的bundle.js通过 http://localhost:8080/bundle.js也是无法访问的：
   - 所以必须将output.publicPath也设置为 /abc；
-  - 官方其实有提到，建议 devServer.publicPath 与 output.publicPath相同
+  - **官方其实有提到，建议 devServer.publicPath 与 output.publicPath相同**
 
 # devServer中的contentBase
 
 devServer中contentBase对于我们直接访问打包后的资源其实并没有太大的作用，它的主要作用是如果我们打包
 后的资源，又依赖于其他的一些资源，那么就需要指定从哪里来查找这个内容
+
+- **告诉服务器从哪个目录中提供内容。只有在你想要提供静态文件时才需要**
+- **使用绝对路径**

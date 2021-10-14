@@ -1,4 +1,4 @@
-import js0 from './js/00-test'
+/* import js0 from './js/00-test'
 import './css/00-test.css';
 
 const name = js0.getFullName()
@@ -42,4 +42,10 @@ import App from './js/06-app'
 
 new Vue({
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app') */
+
+
+import (/* webpackChunkName: "VueDemo" */'./js/Test-01').then(res => {
+  console.log(`res`, res)
+})
+console.log(`分包测试`)

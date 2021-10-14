@@ -8,9 +8,10 @@ const Dev = {
   devServer: {
     hot: true, // webpack-dev-serve启动
     open: true,
-    hotOnly: true,
+    hotOnly: true, // 编译失败后也不刷新
     port: 2021,
-    compress: true
+    compress: true,
+    // publicPath: '/' // 默认值是/。建议 devServer.publicPath 与 output.publicPath相同
   },
 }
 

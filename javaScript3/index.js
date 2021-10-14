@@ -354,7 +354,7 @@
 	let ET = new EventEmitter()
 
 	function sayName(names) {
-		console.log('sayName', names)
+		// console.log('sayName', names)
 	}
 
 	function eatApple(names) {
@@ -648,5 +648,232 @@
 	s.append(2)
 	s.append(3)
 	s.append(4)
-	console.log(s)
+	// console.log(s)
+}
+
+// this面试题一
+{
+  console.log('------------------------------分割线-------------------------------')
+  var name = 'window'
+  var person = {
+    name: 'person',
+    sayName: function () {
+      console.log('one=', this.name);
+    }
+  }
+
+  function sayName() {
+    var sss = person.sayName;
+    sss(); //
+    person.sayName(); //
+    (person.sayName)(); //
+    (b = person.sayName)(); //
+  }
+  sayName()
+}
+
+// this面试题二
+{
+  var name = 'window'
+  var person1 = {
+    name: 'person1',
+    foo1: function () {
+      console.warn('two', this.name);
+    },
+    foo2: () => console.warn('two', this.name),
+    foo3: function () {
+      return function () {
+        console.warn('two', this.name);
+      }
+    },
+    foo4: function () {
+      return () => {
+        console.warn('two', this.name);
+      }
+    }
+  }
+  var person2 = { name: 'person2' }
+
+  person1.foo1(); //
+  person1.foo1.call(person2) //
+
+  person1.foo2(); //
+  person1.foo2.call(person2) //
+
+  person1.foo3()() //
+  person1.foo3.call(person2)() //
+  person1.foo3().call(person2) //
+
+  person1.foo4()() //
+  person1.foo4.call(person2)() //
+  person1.foo4().call(person2) //
+}
+
+// this面试题Three
+{
+  var name = 'window'
+  function Person(name) {
+    this.name = name
+    this.foo1 = function () {
+      console.log('three>>', this.name)
+    }
+    this.foo2 = () => console.log('three>>', this.name)
+    this.foo3 = function () {
+      return function () {
+        console.log('three>>', this.name)
+      }
+    }
+    this.foo4 = function () {
+      return () => console.log('three>>', this.name)
+    }
+  }
+  var person1 = new Person('person1')
+  var person2 = new Person('person2')
+
+  person1.foo1() //
+  person1.foo1.call(person2) //
+
+  person1.foo2() //
+  person1.foo2.call(person2) //
+
+  person1.foo3()() //
+  person1.foo3.call(person2)() //
+  person1.foo3().call(person2) //
+
+  person1.foo4()() //
+  person1.foo4.call(person2)() //
+  person1.foo4().call(person2) //
+}
+
+// this面试题Si
+{
+  var name = 'window'
+  function Person(name) {
+    this.name = name
+    this.obj = {
+      name: 'obj',
+      foo1: function () {
+        return function () {
+          console.warn('four', this.name)
+        }
+      },
+      foo2: function () {
+        return () => {
+          console.warn('four', this.name)
+        }
+      }
+    }
+  }
+  var person1 = new Person('person1')
+  var person2 = new Person('person2')
+  person1.obj.foo1()() //
+  person1.obj.foo1.call(person2)() //
+  person1.obj.foo1().call(person2) //
+
+  person1.obj.foo2()() //
+  person1.obj.foo2.call(person2)() //
+  person1.obj.foo2().call(person2) //
+}
+
+{
+  Function.prototype.myCall = function(targetObj, arg = []) {
+    const fn = this
+    targetObj = Object(targetObj)
+    targetObj.fn = fn
+    targetObj.fn(arg)
+  }
+  Function.prototype.myBind = function(targetObj, ...bindArgs) {
+    // 对传入的对象进行数据处理，如果是真值，则Object包装下。否则指向window
+    targetObj = targetObj ? Object(targetObj) : window
+    // 将this绑定至传入的对象
+    targetObj.fn = this
+    // 返回一个新的函数，传入参数，与原函数的参数重叠
+    return function (...newArgs) {
+      let args = [...bindArgs, ...newArgs]
+      return targetObj.fn(...args)
+    }
+  }
+  function showCall(a, b, c) {
+    console.log(`a, b, c`, a, b, c)
+    console.log('myCall is running', this);
+  }
+  let c = showCall.myBind('123', [1, 2])
+  console.log(c(3), 'c333')
+
+
+}
+
+{
+  function foo(m) {
+    return function (n) {
+      return function(x) {
+        return function(y) {
+          return m + n + x + y
+        }
+      }
+    }
+  }
+  console.log(foo(1)(2)(3)(4));
+
+  // 柯里化简写
+  let foo2 = x => y => z => x+y+z
+  console.log(foo2(1)(2)(3));
+
+  // 自动柯里化
+  function myCurrying(fn) {
+    return function curried(...args) {
+      // 当已经传入的参数大于等于需要的参数时，就执行函数
+      // 参数满足，直接执行
+      if (args.length >= fn.length) {
+        // fn(...args)
+        // fn.call(this, ...args)
+        return fn.apply(this, args)
+      } else {
+        // 参数不满足时：返回一个新的函数，继续接收参数
+        return function curried2(...args2) {
+          // 递归调用curried来检查函数的个数是否达到
+          return curried.apply(this, [...args, ...args2])
+        }
+      }
+    }
+  }
+
+  function add(a,b,c) {
+    return a + b + c
+  }
+
+  let c = myCurrying(add)
+  console.log(c(1,2,3), '>>>>')
+  console.log(c(3)(1, 2), '>>>>')
+
+  function double(m) {
+    return m * 2
+  }
+  function square(n) {
+    return n ** 2
+  }
+
+
+  function hyCompose(...fns) {
+    let length = fns.length
+    for (let i = 0; i < length; i++) {
+      if (typeof fns[i] !== 'function') {
+        throw new TypeError('excepted arguments are functions')
+      }
+    }
+
+    return function (...args) {
+      let index = 0
+      // 数组长度如果为0，则直接返回参数
+      let result = length ? fns[index].apply(this, args) : args
+      while(++index < length) {
+        // 索引递增，继续执行下一个函数
+        result = fns[index].call(this, result)
+      }
+      return result
+    }
+  }
+
+  let newFn = hyCompose(double, square)
+  console.log(newFn(12)) // 576
 }

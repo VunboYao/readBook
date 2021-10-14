@@ -1,0 +1,25 @@
+
+.body {
+  color: #fff;
+  background-color: burlywood;
+}
+
+
+.border-f {
+  min-width: 45vw;
+  margin: 5px 0;
+  padding: 10px;
+  border: 1px solid #0b9eb0;
+  box-shadow: 0 0 6px #0b9eb0;
+  border-radius: 4px;
+}
+/* odd 奇数 even偶数*/
+.border-f:nth-child(even) {
+  margin-left: 20px;
+}
+
+.wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+

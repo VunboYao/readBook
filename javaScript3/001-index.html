@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <style>
+      .green {
+        background-color: green;
+      }
+    </style>
+    <script src="./vue3.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <todo-list>
+        <template v-slot:default="slotProps">
+          <i class="fas fa-check"></i>
+          <span class="green">{{ slotProps.item2 }}</span>
+        </template>
+      </todo-list>
+    </div>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            bar: true,
+          }
+        },
+        methods: {},
+      })
+
+      app.component('todo-button', {
+        template: `
+          <button><slot>Submit</slot></button>
+        `,
+      })
+      app.component('todo-list', {
+        data() {
+          return {
+            items: ['Feed a cat', 'Buy milk'],
+          }
+        },
+        template: `
+          <ul>
+            <li v-for="(item, index) in items">
+              <slot :item2="item"></slot>
+            </li>
+          </ul>
+        `,
+      })
+
+      app.mount('#app')
+    </script>
+    <script>
+      let obj1 = {
+        name: 1,
+      } // 此处需要加分号
+      ;[1, 2, 3, 4].forEach(element => {
+        // Uncaught TypeError: Cannot read properties of undefined (reading 'forEach')
+        console.log(element)
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <input v-model="name" type="text" />
+      <h2>{{name}}</h2>
+    </div>
+    <script>
+      let testD = new Vue({
+        el: '#app',
+        customOption: 'foo',
+        data() {
+          return {
+            name: 'yyb',
+          }
+        },
+      })
+      console.log('testD :>> ', testD)
+    </script>
+    <script>
+      /*var n = 100
+      function foo() {
+      	n = 200
+      }
+      foo()
+			console.log(n) // 200 */
+			/*function foo() {
+				console.log(n) // undefined
+				var n = 200
+				console.log(n) // 200
+			}
+			var n = 100
+			foo()*/
+      /*var n = 100
+      function foo1() {
+				console.log(n) // 2. 100
+      }
+      function foo2() {
+      	var n = 200
+				console.log(n) // 1.200
+        foo1()
+      }
+      foo2()
+			console.log(n) // 3. 100*/
+      /*var a = 100
+      function foo() {
+				console.log(a) // undefined
+        return
+        var a = 100
+      }
+      foo()*/
+      /*function foo() {
+      	var a = b = 100
+      }
+      foo()
+			// console.log(a) // error. not defined
+			console.log(b) // 100*/
+    </script>
+  </body>
+</html>

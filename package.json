@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
+    "@vue/cli-plugin-vuex": "^4.5.13",
     "vuepress": "^1.8.2"
   },
   "scripts": {
