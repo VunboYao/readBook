@@ -87,6 +87,7 @@ class Vun {
 // 编译器
 class Compiler {
   constructor(vm) {
+    // 0.保存实例，方便后续使用
     this.vm = vm
     // 1.将网页上的元素放到内存中
     let fragment = this.node2fragment(this.vm.$el)
@@ -102,7 +103,7 @@ class Compiler {
     // 2.遍历循环取到每一个元素
     let node = app.firstChild
     while (node) {
-      // 注意点：只要将元素添加到了文档碎片中，那么这个元素就会自动从网页上消失
+      // TODO：注意点：只要将元素添加到了文档碎片中，那么这个元素就会自动从网页上消失
       fragment.appendChild(node)
       node = app.firstChild
     }
@@ -110,6 +111,7 @@ class Compiler {
   }
   buildTemplate(fragment) {
     const nodeList = Array.from(fragment.childNodes)
+    console.log(nodeList);
     nodeList.forEach(node => {
       // 判断当前遍历到的节点是一个元素还是一个文本
       // 如果是一个元素，需要判断有没有一个v-model属性
@@ -117,7 +119,7 @@ class Compiler {
       if (this.vm.isElement(node)) {
         // 是一个元素
         this.buildElement(node)
-        // 处理子元素（后代）(递归)
+        // TODO:处理子元素（后代）(递归)
         this.buildTemplate(node)
       } else {
         // 不是一个元素
