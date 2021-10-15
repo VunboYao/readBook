@@ -1,4 +1,5 @@
 let CompilerUtil = {
+  // 获取对象属性值
   getValue(vm, value) {
     // time.h => [time, h]
     return value.split('.').reduce((data, currentKey) => {
@@ -7,12 +8,11 @@ let CompilerUtil = {
       return data[currentKey.trim()]
     }, vm.$data)
   },
-
   getContent(vm, value) {
     // {{name}}-{{age}} => 姚某人-{{age}} => 姚某人-20
     // 匹配{{}}中的内容。惰性匹配。添加“？”
-    const reg = /\{\{(.+?)\}\}/gi
-    // 替换内容
+    const reg = /{{(.+?)}}/gi
+    // TODO：替换内容. g全局匹配标识符。执行多次匹配
     return value.replace(reg, (...args) => {
       // 第一次执行 args[1] = name
       // 第二次执行 args[1] = age
@@ -20,26 +20,28 @@ let CompilerUtil = {
     })
   },
 
-  getType(obj) {
-    const type = typeof obj
-    if (type !== 'object') {
-      return type
-    }
-    return Object.prototype.toString.call(obj).replace(/^\[object (\S+)]$/, (match, $1) => $1.toLocaleLowerCase())
-  },
-
   model: function(node, _value, vm) {
     // node.value = vm.$data[_value] // vm.$data[time.h]
+    // TODO:第二步：第一次渲染的时候，给所有的属性添加观察者
+    new Watcher(vm, _value, (newValue, oldValue) => {
+      node.value = newValue
+    })
     node.value = this.getValue(vm, _value)
   },
   html: function(node, _value, vm) {
-    node.innerHtml = this.getValue(vm, _value)
+    // TODO:第二步：第一次渲染的时候，给所有的属性添加观察者
+    new Watcher(vm, _value, (newValue, oldValue) => {
+      node.innerHTML = newValue
+    })
+    node.innerHTML = this.getValue(vm, _value)
   },
-
   text: function(node, _value, vm) {
+    // TODO:第二步：第一次渲染的时候，给所有的属性添加观察者
+    new Watcher(vm, _value, (newValue, oldValue) => {
+      node.textContent = newValue
+    })
     node.textContent = this.getValue(vm, _value)
   },
-
   for: function(node, _value, vm) {
     if (/in(.+)/gi.test(_value)) {
       const originData = this.getValue(vm, RegExp.$1.trim())
@@ -53,10 +55,20 @@ let CompilerUtil = {
       node.parentNode.replaceChild(fragment, node)
     }
   },
-
+  // 插值模板文本处理
   content: function(node, _value, vm) {
-    let val = this.getContent(vm, _value)
-    node.textContent = val
+    // TODO:第二步：第一次渲染的时候，给所有的属性添加观察者
+    let reg = /{{(.+?)}}/gi
+    node.textContent = _value.replace(reg, (...args) => {
+      new Watcher(vm, args[1], (newValue, oldValue) => {
+        // node.textContent = newValue
+        // TODO: 不能用赋值新值的方式。
+        //  针对{{name}}-{{age}},如果只更新了name，则会导致：姚某人-20 => yyb。
+        //  进行重新计算更新后的{{name}}-{{age}}.因此采用getContent(vm, _value)
+        node.textContent = this.getContent(vm, _value)
+      })
+      return this.getValue(vm, args[1])
+    })
   },
 }
 
@@ -84,7 +96,7 @@ class Vun {
   }
 }
 
-// 编译器
+// 1.编译器
 class Compiler {
   constructor(vm) {
     // 0.保存实例，方便后续使用
@@ -96,7 +108,6 @@ class Compiler {
     // 3.将编译好的内容，重新渲染回网页上
     this.vm.$el.appendChild(fragment)
   }
-
   node2fragment(app) {
     // 1.创建一个空的文档碎片对象
     const fragment = document.createDocumentFragment()
@@ -111,7 +122,6 @@ class Compiler {
   }
   buildTemplate(fragment) {
     const nodeList = Array.from(fragment.childNodes)
-    console.log(nodeList);
     nodeList.forEach(node => {
       // 判断当前遍历到的节点是一个元素还是一个文本
       // 如果是一个元素，需要判断有没有一个v-model属性
@@ -142,13 +152,15 @@ class Compiler {
   buildText(node) {
     // {{}} 正则判断
     const context = node.textContent
-    const reg = /\{\{(.+?)\}\}/gi
+    // TODO：此处正则可以不需要转义
+    const reg = /{{(.+?)}}/gi
     if (reg.test(context)) {
       CompilerUtil['content'](node, context, this.vm)
     }
   }
 }
 
+// 2.监听数据
 class Observer {
   // 将需要监听的对象传递给Observer这个类
   // 快速给传入的对象的所有属性添加get/set方法
@@ -169,8 +181,12 @@ class Observer {
   defineReactive(obj, attr, value) {
     // 监听对象中的对象
     this.observer(value)
+    // TODO：第三步，将当前属性的所有观察者对象都放到当前属性的发布订阅对象中管理起来
+    // 创建属于当前属性的发布订阅对象
+    const dep = new Dep()
     Object.defineProperty(obj, attr, {
       get() {
+        Dep.target && dep.addSub(Dep.target)
         return value
       },
       set: newValue => {
@@ -179,6 +195,8 @@ class Observer {
           // 设置对象时，监听
           this.observer(newValue)
           value = newValue
+          // 发布通知
+          dep.notify()
         }
       },
     })
@@ -193,15 +211,46 @@ function getType(obj) {
   })
 }
 
-// 数据变化之后更新UI界面，发布订阅模式
-// 定义一个观察者类，再定义一个发布订阅类，然后再通过发布订阅的类来管理观察者类
+// TODO：数据变化之后更新UI界面，发布订阅模式
+// TODO：定义一个观察者类，再定义一个发布订阅类，然后再通过发布订阅的类来管理观察者类
 
-class watcher {
+// 发布订阅
+class Dep {
+  constructor() {
+    // 该数组用于管理某个属性所有的观察者对象
+    this.subs = []
+  }
+
+  // 订阅观察的方法
+  addSub(watcher) {
+    this.subs.push(watcher)
+  }
+  // 发布订阅的方法
+  notify() {
+    this.subs.forEach(watcher => watcher.update())
+  }
+}
+
+// 观察者
+class Watcher {
   constructor(vm, attr, cb) {
     this.vm = vm
     this.attr = attr
     this.cb = cb
-
-
+    // 获取旧值
+    this.oldValue = this.getOldValue()
+  }
+  getOldValue() {
+    Dep.target = this
+    const oldValue = CompilerUtil.getValue(this.vm, this.attr)
+    Dep.target = null
+    return oldValue
+  }
+  // 定义一个更新的方法，用于判断新值和旧值是否相同
+  update() {
+    const newValue = CompilerUtil.getValue(this.vm, this.attr)
+    if (this.oldValue !== newValue) {
+      this.cb(newValue, this.oldValue)
+    }
   }
 }
