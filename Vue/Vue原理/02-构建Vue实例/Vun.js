@@ -114,7 +114,7 @@ class Compiler {
     // 2.遍历循环取到每一个元素
     let node = app.firstChild
     while (node) {
-      // TODO：注意点：只要将元素添加到了文档碎片中，那么这个元素就会自动从网页上消失
+      //注意点：只要将元素添加到了文档碎片中，那么这个元素就会自动从网页上消失
       fragment.appendChild(node)
       node = app.firstChild
     }
