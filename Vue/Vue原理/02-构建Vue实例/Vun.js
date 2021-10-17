@@ -19,6 +19,16 @@ let CompilerUtil = {
       return this.getValue(vm, args[1])
     })
   },
+  setValue(vm, attr, newValue) {
+    // 针对time.h此类绑定的参数进行切割处理。
+    attr.split('.').reduce((data, currentAttr, index, arr) => {
+      // 如果是最后一个参数时，则进行数据赋值
+      if (index === arr.length - 1) {
+        data[currentAttr] = newValue
+      }
+      return data[currentAttr]
+    }, vm.$data)
+  },
 
   model: function(node, _value, vm) {
     // node.value = vm.$data[_value] // vm.$data[time.h]
@@ -27,6 +37,12 @@ let CompilerUtil = {
       node.value = newValue
     })
     node.value = this.getValue(vm, _value)
+
+    // TODO:视图驱动数据更新
+    node.addEventListener('input', e => {
+      const newValue = e.target.value
+      this.setValue(vm, _value, newValue)
+    })
   },
   html: function(node, _value, vm) {
     // TODO:第二步：第一次渲染的时候，给所有的属性添加观察者
@@ -57,9 +73,9 @@ let CompilerUtil = {
   },
   // 插值模板文本处理
   content: function(node, _value, vm) {
-    // TODO:第二步：第一次渲染的时候，给所有的属性添加观察者
     let reg = /{{(.+?)}}/gi
     node.textContent = _value.replace(reg, (...args) => {
+    // TODO:第二步：第一次渲染的时候，给所有的属性添加观察者
       new Watcher(vm, args[1], (newValue, oldValue) => {
         // node.textContent = newValue
         // TODO: 不能用赋值新值的方式。
@@ -140,7 +156,9 @@ class Compiler {
   buildElement(node) {
     const attrs = [...node.attributes]
     attrs.forEach(attr => {
+      // 解析node上的所有属性。获取属性name、value
       const { name, value } = attr
+      // 判断‘v-’开头的指令
       if (name.startsWith('v-')) {
         // v-model / v-html / v-text
         const [, directive] = name.split('-') // [v, model]
@@ -186,6 +204,7 @@ class Observer {
     const dep = new Dep()
     Object.defineProperty(obj, attr, {
       get() {
+        // 订阅
         Dep.target && dep.addSub(Dep.target)
         return value
       },
@@ -233,6 +252,7 @@ class Dep {
 
 // 观察者
 class Watcher {
+  // vue实例，属性，回调函数
   constructor(vm, attr, cb) {
     this.vm = vm
     this.attr = attr
