@@ -106,6 +106,9 @@ class Vun {
     this.$data = options.data
     // TODO：将数据代理到vue实例
     this.proxyData()
+    // 计算属性实现
+    this.$computed = options.computed
+    this.computedToData()
     this.$methods = options.methods
     // 2.根据指定的区域和数据去编译渲染界面
     if (this.$el) {
@@ -122,6 +125,16 @@ class Vun {
         get() {
           // TODO: defineProperty方法中访问器属性中的this指向当前设置的对象
           return this.$data[key]
+        }
+      })
+    }
+  }
+  computedToData() {
+    for (let key in this.$computed) {
+      Object.defineProperty(this.$data, key, {
+        // TODO:计算属性，this要从实例获取
+        get:()=> {
+          return this.$computed[key].call(this)
         }
       })
     }

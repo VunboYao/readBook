@@ -22,6 +22,7 @@
       <ul>
         <li v-for="item in for">{{ item }}</li>
       </ul>
+      <h2>{{doubleAge}}</h2>
     </div>
     <script>
       /*
@@ -47,6 +48,12 @@
           for: ['apple', 'pear', 'banner'],
           html: `<h2>i am html data</h2>`,
           text: `<h2>i am html data</h2>`,
+        },
+        computed: {
+          doubleAge() {
+            console.log(this);
+            return this.age * 2
+          },
         },
         methods: {
           myFun(e) {
