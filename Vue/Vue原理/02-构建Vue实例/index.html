@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Document</title>
-  <!-- <script src="../vue.js"></script> -->
-  <script src="./Vun.js"></script>
-</head>
-<body>
-<div id="app">
-  <input v-model="name" type="text"/>
-  <input v-model="time.h" type="text"/>
-  <input v-model="time.m" type="text"/>
-  <input v-model="time.s" type="text"/>
-  <div v-html="html">这里被html替换</div>
-  <div v-text="text">这里被text替换</div>
-  <h2>{{ name }}-{{ age }}</h2>
-  <h2>{{ name }}</h2>
-  <h2>{{ time.h }}</h2>
-  <ul>
-    <li v-for="item in for">{{ item }}</li>
-  </ul>
-</div>
-<script>
-	/*
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- <script src="../vue.js"></script> -->
+    <script src="./Vun.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <input v-model="name" type="text" />
+      <input v-model="time.h" type="text" />
+      <input v-model="time.m" type="text" />
+      <input v-model="time.s" type="text" />
+      <div v-html="html">这里被html替换</div>
+      <div v-text="text">这里被text替换</div>
+      <h2>{{ name }}-{{ age }}</h2>
+      <h2>{{ name }}</h2>
+      <h2 v-on:click="myFun">我身上有点击事件{{ time.h }}</h2>
+      <ul>
+        <li v-for="item in for">{{ item }}</li>
+      </ul>
+    </div>
+    <script>
+      /*
 1.要想使用Vue必须先创建Vue的实例，创建Vue的实例通过new 来创建，所以说明Vue是一个类。
   所以我们要使用自己的Vue，就必须定义一个名称叫做Vue的类
 2.只要创建好了Vue的实例， Vue就会根据指定的区域和数据，去编译渲染这个区域
@@ -33,24 +33,30 @@
   TODO: 注意点：Vue实例会将传递的控制区域和数据都绑定到创建出来的实例对象上
         $el/$data
  */
-	// let vue = new Vue({
-	let vue = new Vun({
-		el: '#app',
-		data: {
-			name: '姚某人',
-			age: 20,
-			time: {
-				h: 3,
-				m: 12,
-				s: 12,
-			},
-			for: ['apple', 'pear', 'banner'],
-			html: `<h2>i am html data</h2>`,
-			text: `<h2>i am html data</h2>`,
-		},
-	})
-	// console.log(`vue.$el`, vue.$el)
-	// console.log(`vue.$data`, vue.$data)
-</script>
-</body>
+      // let vue = new Vue({
+      let vue = new Vun({
+        el: '#app',
+        data: {
+          name: '姚某人',
+          age: 20,
+          time: {
+            h: 3,
+            m: 12,
+            s: 12,
+          },
+          for: ['apple', 'pear', 'banner'],
+          html: `<h2>i am html data</h2>`,
+          text: `<h2>i am html data</h2>`,
+        },
+        methods: {
+          myFun(e) {
+            console.log(this)
+            console.log('MyFun被执行了', e.target.innerText)
+          },
+        },
+      })
+      // console.log(`vue.$el`, vue.$el)
+      // console.log(`vue.$data`, vue.$data)
+    </script>
+  </body>
 </html>

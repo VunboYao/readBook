@@ -71,6 +71,13 @@ let CompilerUtil = {
       node.parentNode.replaceChild(fragment, node)
     }
   },
+  on: function (node, _value, vm, type) {
+    // TODO: 监听节点，监听type类型的事件，从实例vm的事件$methods中查找该方法_value并执行
+    // 通过call绑定其正确的this对象。vue的实例
+    node.addEventListener(type, e => {
+      vm.$methods[_value].call(vm, e)
+    })
+  },
   // 插值模板文本处理
   content: function(node, _value, vm) {
     let reg = /{{(.+?)}}/gi
@@ -97,6 +104,7 @@ class Vun {
       this.$el = document.querySelector(options.el)
     }
     this.$data = options.data
+    this.$methods = options.methods
     // 2.根据指定的区域和数据去编译渲染界面
     if (this.$el) {
       // 2.1 添加数据的get/set。监听数据的变化
@@ -156,14 +164,17 @@ class Compiler {
   buildElement(node) {
     const attrs = [...node.attributes]
     attrs.forEach(attr => {
-      // 解析node上的所有属性。获取属性name、value
+      // 解析node上的所有属性。获取属性name、value=> name=v-model  value=name
+      // v-on:click="myFun": name=v-on:click /value=myFun
       const { name, value } = attr
       // 判断‘v-’开头的指令
       if (name.startsWith('v-')) {
-        // v-model / v-html / v-text
-        const [, directive] = name.split('-') // [v, model]
+        // TODO：通过':'分割获取directiveName=v-on，directiveType=click
+        const [directiveName, directiveType] = name.split(':')
+        // 对以上的类型进行分割，v-model / v-html / v-text / v-on
+        const [, directive] = directiveName.split('-') // [v, model]
         // 将指令中的value值，通过匹配的directive，去Vue实例中data里的更换数据
-        CompilerUtil[directive](node, value, this.vm)
+        CompilerUtil[directive](node, value, this.vm, directiveType)
       }
     })
   }
