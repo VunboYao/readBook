@@ -104,6 +104,8 @@ class Vun {
       this.$el = document.querySelector(options.el)
     }
     this.$data = options.data
+    // TODO：将数据代理到vue实例
+    this.proxyData()
     this.$methods = options.methods
     // 2.根据指定的区域和数据去编译渲染界面
     if (this.$el) {
@@ -114,6 +116,16 @@ class Vun {
     }
   }
 
+  proxyData() {
+    for (let key in this.$data) {
+      Object.defineProperty(this, key, {
+        get() {
+          // TODO: defineProperty方法中访问器属性中的this指向当前设置的对象
+          return this.$data[key]
+        }
+      })
+    }
+  }
   // 判断是否是一个元素
   isElement(node) {
     return node.nodeType === 1
