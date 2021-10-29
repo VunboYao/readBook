@@ -2,10 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <!--  <meta http-equiv="Refresh" content="5; URL=./009-demo.html">-->
     <title>Document</title>
@@ -106,7 +103,7 @@
   </div>
   <script>
     const person = {
-      a: 1
+      a: 1,
     }
     Object.defineProperty(person, 'a', {
       get() {
@@ -114,10 +111,10 @@
       },
       set(val) {
         this._a = val
-      }
+      },
     })
-    console.log(person.a);
+    console.log(person.a)
     person.a = 2
-    console.log(person.a);
+    console.log(person.a)
   </script>
 </html>
