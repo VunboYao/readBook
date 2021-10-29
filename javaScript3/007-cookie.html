@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+      beforeCreate: 初始化。（实例刚被创建，组件属性计算之前。）
+      created: 数据监听，双向绑定处理。初始化事件（组件实例创建完成，属性已绑定，但DOM未生成。$el属性还不存在）
+      beforeMount: 编译、解析。检查是否包含el元素，是否包含template模板进行响应的编译。（模板编译之前）
+      mounted： 创建vm.$el并执行挂载，用他替换原有的el（模板编译、挂载之后）
+      beforeUpdate：虚拟dom的重绘与比对
+      updated：数据更新
+      activated: for keep-alive。组件激活时调用
+      deactivated: for keep-alive。组件被移除时调用
+      beforeDestory：销毁子组件、监听方法以及事件函数
+      destroyed：销毁页面
+
+
+      cookie的构成：名称、值、域、路径、过期时间、安全标志
+      */
+
+      // TODO: cookie 设置，删除，获取
+      class CookieUtil {
+        static get(name) {
+          let cookieName = `${encodeURIComponent(name)}=`,
+            cookieStart = document.cookie.indexOf(cookieName),
+            cookieValue = null
+          if (cookieStart > -1) {
+            let cookieEnd = document.cookie.indexOf(';', cookieStart)
+            if (cookieEnd == -1) {
+              cookieEnd = document.cookie.length
+            }
+            cookieValue = decodeURIComponent(document.cookie.substring(cookieStart + cookieName.length, cookieEnd))
+          }
+          return cookieValue
+        }
+
+        static set(name, value, expires, path, domain, secure) {
+          let cookieText = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`
+          if (expires instanceof Date) {
+            cookieText += `;expires=${expires.toGMTString()}`
+          }
+
+          if (path) {
+            cookieText += `;path=${path}`
+          }
+
+          if (domain) {
+            cookieText += `;domain=${domain}`
+          }
+
+          if (secure) {
+            cookieText += ';secure'
+          }
+
+          document.cookie = cookieText
+        }
+
+        static unset(name, path, domain, secure) {
+          CookieUtil.set(name, '', new Date(0), path, domain, secure)
+        }
+      }
+
+      // CookieUtil.set('book', 'Professional JavaScript')
+
+      // TODO： 子cookie 的获取，设置，删除
+      class SubCookieUtil {
+        static get(name, subName) {
+          let subCookies = SubCookieUtil.getAll(name)
+          return subCookies ? subCookies[subName] : null
+        }
+
+        static getAll(name) {
+          let cookieName = encodeURIComponent(name) + '=',
+            cookieStart = document.cookie.indexOf(cookieName),
+            cookieValue = null,
+            cookieEnd,
+            subCookies,
+            parts,
+            result = {}
+          if (cookieStart > -1) {
+            cookieEnd = document.cookie.indexOf(';', cookieStart)
+            if (cookieEnd === -1) {
+              cookieEnd = document.cookie.length
+            }
+            cookieValue = document.cookie.substring(cookieStart + cookieName.length, cookieEnd)
+            if (cookieValue.length > 0) {
+              subCookies = cookieValue.split('&')
+              for (let i = 0, len = subCookies.length; i < len; i++) {
+                parts = subCookies[i].split('=')
+                result[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1])
+              }
+              return result
+            }
+          }
+          return null
+        }
+
+        static set(name, subName, value, expires, path, domain, secure) {
+          let subcookies = SubCookieUtil.getAll(name) || {}
+          subcookies[subName] = value
+          SubCookieUtil.setAll(name, subcookies, expires, path, domain, secure)
+        }
+
+        static setAll(name, subcookies, expires, path, domain, secure) {
+          let cookieText = encodeURIComponent(name) + '=',
+            subcookieParts = [],
+            subName
+          for (subName in subcookies) {
+            if (subName.length > 0 && subcookies.hasOwnProperty(subName)) {
+              subcookieParts.push(`${encodeURIComponent(subName)}=${encodeURIComponent(subcookies[subName])}`)
+            }
+          }
+          if (subcookieParts.length > 0) {
+            cookieText += subcookieParts.join('&')
+            if (expires instanceof Date) {
+              cookieText += `;expires=${expires.toGMTString()}`
+            }
+
+            if (path) {
+              cookieText += `;path=${path}`
+            }
+
+            if (domain) {
+              cookieText += `;domain=${domain}`
+            }
+
+            if (secure) {
+              cookieText += `;secure`
+            }
+          } else {
+            cookieText += `;expires=${new Date(0).toGMTString()}`
+          }
+          document.cookie = cookieText
+        }
+
+        static unset(name, subName, path, domain, secure) {
+          let subcookies = SubCookieUtil.getAll(name)
+          if (subcookies) {
+            delete subcookies[subName]
+            SubCookieUtil.setAll(name, subcookies, null, path, domain, secure)
+          }
+        }
+
+        static unsetAll(name, path, domain, secure) {
+          SubCookieUtil.setAll(name, null, new Date(0), path, domain, secure)
+        }
+      }
+      document.cookie = 'data=name=Nicholas&book=Professional%20JavaScript'
+      SubCookieUtil.set('data', 'name', 'Michael', new Date('February 1, 2022'))
+    </script>
+  </body>
+</html>
