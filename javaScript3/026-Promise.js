@@ -47,7 +47,14 @@
 }
 
 {
-  // TODO：手写Promise
+  // TODO：手写Promise 
+  /*
+  1.默认参数，内置两个函数参数
+  2.状态由pending=>fulfilled; pending=>rejected。
+  3.then方法的实现
+  4.多个then的实现。延迟调用then的处理
+  5.catch方法的实现
+  */
 
   const PROMISE_STATUS_PENDING = 'pending'
   const PROMISE_STATUS_FULFILLED = 'fulfilled'
@@ -57,12 +64,14 @@
       this.value = undefined
       this.reason = undefined
       this.status = PROMISE_STATUS_PENDING
+      // 保存多个then调用
       this.onFulfilledFns = []
       this.onRejectedFnS = []
 
       const resolve = value => {
         if (this.status === PROMISE_STATUS_PENDING) {
           queueMicrotask(() => {
+            // 判断状态为：pending.防止同时调用reject
             if (this.status !== PROMISE_STATUS_PENDING) return
             this.value = value
             this.status = PROMISE_STATUS_FULFILLED
@@ -73,6 +82,7 @@
       const reject = reason => {
         if (this.status === PROMISE_STATUS_PENDING) {
           queueMicrotask(() => {
+            // 判断状态为: pending.防止同时调用resolve
             if (this.status !== PROMISE_STATUS_PENDING) return
             this.status = PROMISE_STATUS_REJECTED
             this.reason = reason
@@ -84,7 +94,7 @@
     }
 
     then(onFulfilled, onRejected) {
-      // 1.状态成功且存在回调函数
+      // 1.then调用时当前状态如果已经fulfilled,则立即调用回调函数
       if (this.status === PROMISE_STATUS_FULFILLED && onFulfilled) {
         onFulfilled(this.value)
       }
@@ -112,23 +122,5 @@
       console.log(`err`, err)
     }
   )
-
-  yp.then(
-    res => {
-      console.log(`res2`, res)
-    },
-    err => {
-      console.log(`err2`, err)
-    }
-  )
-  setTimeout(() => {
-    yp.then(
-      res => {
-        console.log(`res`, res)
-      },
-      err => {
-        console.log(`err`, err)
-      }
-    )
-  }, 1000)
 }
+
