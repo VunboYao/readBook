@@ -91,7 +91,7 @@ VunRouter.install = function(_Vue) {
   // 3.router-view
   Vue.component('router-view', {
     render(h) {
-      // 标记深度
+      // 当前router-view标记深度
       this.$vnode.data.routerView = true
       let depth = 0
       let parent = this.$parent
@@ -106,12 +106,12 @@ VunRouter.install = function(_Vue) {
         parent = parent.$parent
       }
       // this指向router-view(Vue组件)的实例
-      console.log('this.$router 路由实例:>> ', this.$router)
-      console.log('路由地址列表', this.$router.constructorOptions.routes)
+      /* console.log('this.$router 路由实例:>> ', this.$router)
+      console.log('路由地址列表', this.$router.constructorOptions.routes) */
       let component = null
       // const route = this.$router.constructorOptions.routes.find( route => route.path === this.$router.current)
       // 从匹配数组中获取
-      console.log(this.$router.matched)
+      console.log(this.$router.matched, depth)
       const route = this.$router.matched[depth]
       if (route) component = route.component
       return h(component)
