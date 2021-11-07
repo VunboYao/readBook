@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- <script src="../node_modules/vue/dist/vue.js"></script> -->
+    <script src="./vun.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h2>Hello Vue</h2>
+      <p>{{count}}</p>
+      <span v-text="count"></span>
+      <p v-html="msgc"></span>
+    </div>
+    <script>
+      const app = new Vun({
+        el: '#app',
+        data: {
+          count: 10,
+          msgc: '<h2 style="color:red">Hello Vue4</h2>'
+        },
+      })
+      setInterval(() => {
+        app.count++
+      }, 1000)
+    </script>
+  </body>
+</html>
