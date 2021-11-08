@@ -40,10 +40,12 @@ export class Observer {
   vmCount: number; // number of vms that have this object as root $data
 
   constructor (value: any) {
+    // 32-此处的dep? 如果使用Vue.set/delete添加或删除属性，负责通知更新
     this.value = value
     this.dep = new Dep()
     this.vmCount = 0
     def(value, '__ob__', this)
+    // 31-分辨传入对象类型
     if (Array.isArray(value)) {
       if (hasProto) {
         protoAugment(value, arrayMethods)
@@ -111,7 +113,10 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
   if (!isObject(value) || value instanceof VNode) {
     return
   }
+  // 29-Observer作用？
+  // 1.将传入的value做响应式处理
   let ob: Observer | void
+  // 如果做过了响应式处理，则直接返回ob
   if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
     ob = value.__ob__
   } else if (
@@ -121,6 +126,7 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
     Object.isExtensible(value) &&
     !value._isVue
   ) {
+    // 30-初始化传入需要响应式的对象
     ob = new Observer(value)
   }
   if (asRootData && ob) {
@@ -139,6 +145,7 @@ export function defineReactive (
   customSetter?: ?Function,
   shallow?: boolean
 ) {
+  // 33-创建和key一一对应的Dep
   const dep = new Dep()
 
   const property = Object.getOwnPropertyDescriptor(obj, key)
@@ -153,16 +160,22 @@ export function defineReactive (
     val = obj[key]
   }
 
+  // 递归遍历
   let childOb = !shallow && observe(val)
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter () {
       const value = getter ? getter.call(obj) : val
+      // 34-如果存在，说明此次调用触发者是一个Watcher实例
+      // dep n:n watcher
       if (Dep.target) {
+        // 建立dep和Dep.target之间的依赖关系
         dep.depend()
         if (childOb) {
+          // 建立ob内部的dep和Dep.target之间的依赖关系;
           childOb.dep.depend()
+          // 如果是数组，数组内部所有项都要做相同处理
           if (Array.isArray(value)) {
             dependArray(value)
           }

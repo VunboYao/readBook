@@ -58,7 +58,7 @@ Vue.prototype.$mount = function (
     } else if (el) {
       template = getOuterHTML(el)
     }
-    // -7-如果存在template选项，则编译它。获取render函数
+    // 07-如果存在template选项，则编译它。获取render函数
     if (template) {
       /* istanbul ignore if */
       if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
