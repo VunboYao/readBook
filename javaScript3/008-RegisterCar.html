@@ -175,6 +175,9 @@
         msgContent: '',
         visible: false,
       },
+      created() {
+        this.recommend = location.href.split('cellPhone=')[1]
+      },
       computed: {
         isPhone() {
           return /\d{11}/.test(this.phone)
@@ -220,7 +223,7 @@
                 this.errorModel(res.msg)
               }
             })
-            .catch(function (error) {
+            .catch(function(error) {
               this.errorModel(error)
             })
         },
@@ -270,7 +273,7 @@
                 this.errorModel(res.msg)
               }
             })
-            .catch(function (error) {
+            .catch(function(error) {
               this.errorModel(error)
             })
         },
