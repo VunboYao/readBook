@@ -19,8 +19,7 @@
         position: fixed;
         width: 100%;
         height: 100%;
-        /* background-image: url(./1.png); */
-        background-color: #e5f5f5;
+        background-color: #e5e5e5;
         filter: blur(60px);
         z-index: -1;
       }
@@ -30,9 +29,11 @@
       .r-ul {
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
         height: 80vh;
+      }
+      .r-ul img {
+        width: 100%;
       }
       .r-li {
         position: relative;
@@ -60,7 +61,7 @@
         font-size: 1rem;
         width: 100%;
         border: none;
-        background: #f56662;
+        background: #6853f0;
         color: #fff;
         border-radius: 0.2rem;
         border-bottom: 0;
@@ -68,14 +69,14 @@
       .code-btn {
         position: absolute;
         padding: 0 0.3rem;
-        border: 1px solid #f56662;
+        border: 1px solid #6853f0;
         height: 1.8rem;
         line-height: 1.8rem;
         right: 0;
         top: 0.5rem;
         border-radius: 0.2rem;
         font-size: 0.7rem;
-        color: #f56662;
+        color: #6853f0;
         cursor: pointer;
       }
       .disable-btn {
@@ -117,7 +118,7 @@
       }
       .close-msg {
         display: block;
-        background-color: #f56662;
+        background-color: #6853f0;
         color: #fff;
         margin: 1.5rem 0 0 0;
         border-top: 1px solid #eee;
@@ -130,6 +131,7 @@
   </head>
   <body>
     <div id="app" class="r-ul">
+      <img src="./bg.jpg" alt="" />
       <div class="r-li">
         <input v-model="phone" type="text" maxlength="11" minlength="11" placeholder="请输入手机号码" />
       </div>
@@ -147,7 +149,9 @@
         <input v-model="recommend" type="text" placeholder="请输入推荐人邀请码" />
       </div>
       <div class="r-li">
-        <button @click="onSubmit">免费办卡</button>
+        <button @click="onSubmit">立即注册</button>
+        <button @click="">安卓下载</button>
+        <button @click="">苹果下载</button>
       </div>
       <div v-if="visible" class="out-tip">
         <div class="inner-tip">
@@ -268,7 +272,7 @@
               const res = response.data
               if (res.code === 1) {
                 // 注册成功。页面跳转等
-                this.errorModel(`${res.msg}，注册成功！`)
+                this.errorModel(`请前往APP我的界面，进行身份认证成为有效用户`)
               } else {
                 this.errorModel(res.msg)
               }
