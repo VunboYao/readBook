@@ -43,7 +43,7 @@
         border: 0;
       }
       .r-li input {
-        margin: 0.4rem 0;
+        margin: 0.4rem 0 0;
         height: 2.2rem;
         line-height: 2.2rem;
         font-size: 1.2rem;
@@ -93,6 +93,39 @@
         color: #666;
         cursor: pointer;
       }
+      .out-tip {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .inner-tip {
+        text-align: center;
+        width: 70vw;
+        padding: 1.5rem 1rem;
+        background-color: #efefef;
+        border-radius: 0.5rem;
+      }
+      .error-msg {
+        text-align: center;
+        white-space: wrap;
+      }
+      .close-msg {
+        display: block;
+        background-color: #f56662;
+        color: #fff;
+        margin: 1.5rem 0 0 0;
+        border-top: 1px solid #eee;
+        height: 2.2rem;
+        line-height: 2.2rem;
+        border-radius: 0.5rem;
+        letter-spacing: 0.2rem;
+      }
     </style>
   </head>
   <body>
@@ -116,6 +149,12 @@
       <div class="r-li">
         <button @click="onSubmit">免费办卡</button>
       </div>
+      <div v-if="visible" class="out-tip">
+        <div class="inner-tip">
+          <p class="error-msg">{{msgContent}}</p>
+          <p class="close-msg" @click="closeModel">确定</p>
+        </div>
+      </div>
     </div>
     <div class="r-bg"></div>
   </body>
@@ -123,14 +162,18 @@
     new Vue({
       el: '#app',
       data: {
-        phone: '18766488847',
+        phone: '',
         authCode: '',
+        code: '',
         pwd: '',
         rePwd: '',
         recommend: '',
-        timeout: 10,
+        timeout: 60,
         isCode: false,
         btnMsg: '获取验证码',
+        pwdLength: 6,
+        msgContent: '',
+        visible: false,
       },
       computed: {
         isPhone() {
@@ -138,18 +181,28 @@
         },
       },
       methods: {
+        errorModel(msg) {
+          this.msgContent = msg + ''
+          this.visible = true
+        },
+        closeModel() {
+          this.visible = false
+          this.msgContent = ''
+        },
+        // 验证码获取
         getAuth() {
           if (this.isCode) return
           if (!this.isPhone) {
-            alert('请输入合法的手机号码')
+            this.errorModel('请输入合法的手机号码')
             return
           }
+          this.isCode = true
+          this.btnMsg = `${--this.timeout}s`
           this.timer = setInterval(() => {
-            this.isCode = true
             this.btnMsg = `${--this.timeout}s`
             if (this.timeout < 0) {
               clearInterval(this.timer)
-              this.timeout = 10
+              this.timeout = 60
               this.isCode = false
               this.btnMsg = '获取验证码'
             }
@@ -159,55 +212,66 @@
               phone: this.phone, //手机号
               type: 0, //验证类型
             })
-            .then(function(response) {
-              if (response.status === 200) {
-                console.log(response)
-                this.code = response.data.data.code
+            .then(response => {
+              const res = response.data
+              if (res.code === 1) {
+                this.code = res.data.code
+              } else {
+                this.errorModel(res.msg)
               }
             })
-            .catch(function(error) {
-              alert(error)
+            .catch(function (error) {
+              this.errorModel(error)
             })
         },
+        // 密码输入校验
         onPwd() {
-          if (this.pwd.length < 8) {
-            alert('密码最少输入8位')
+          if (this.pwd.length < this.pwdLength) {
+            this.errorModel(`密码最少输入${this.pwdLength}位`)
             return
           }
         },
+        // 提交信息校验
         onSubmit() {
           if (!this.isPhone) {
-            alert('请输入合法的手机号码')
+            this.errorModel('请输入合法的手机号码')
             return
           }
           if (!this.phone || !this.authCode || !this.pwd || !this.rePwd) {
-            alert('请完成信息录入')
+            this.errorModel('请完成信息录入')
             return
           }
-          if (this.pwd.length < 8) {
-            alert('密码最少输入8位')
+          if (this.pwd.length < this.pwdLength) {
+            this.errorModel(`密码最少输入${this.pwdLength}位`)
             return
           }
           if (this.pwd !== this.rePwd) {
-            alert('两次密码输入不一致')
+            this.errorModel('两次密码输入不一致')
+            return
+          }
+          console.log(this.code, this.authCode)
+          if (String(this.code) !== this.authCode) {
+            this.errorModel('验证码错误')
             return
           }
           axios
             .post('http://120.27.145.178/registerSignByPwd', {
               mobile: this.phone, //手机号
               pwd: this.pwd,
-              invitation_code: this.authCode,
-              verifyCode: this.recommend,
+              invitation_code: this.recommend,
+              verifyCode: this.authCode,
             })
-            .then(function(response) {
-              if (response.status === 200) {
-                this.code = response.data.data.code
+            .then(response => {
+              const res = response.data
+              if (res.code === 1) {
+                // 注册成功。页面跳转等
+                this.errorModel(`${res.msg}，注册成功！`)
               } else {
-                alert(response.msg)
+                this.errorModel(res.msg)
               }
             })
-            .catch(function(error) {
-              alert(error)
+            .catch(function (error) {
+              this.errorModel(error)
             })
         },
       },
