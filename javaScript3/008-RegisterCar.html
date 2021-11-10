@@ -150,7 +150,7 @@
       </div>
       <div class="r-li">
         <button @click="onSubmit">立即注册</button>
-        <button @click="">安卓下载</button>
+        <button @click="goAndroid">安卓下载</button>
         <button @click="">苹果下载</button>
       </div>
       <div v-if="visible" class="out-tip">
@@ -163,6 +163,8 @@
     <div class="r-bg"></div>
   </body>
   <script>
+    const testHref = 'http://47.94.232.87:44'
+    const prodHref = 'http://120.27.145.178'
     new Vue({
       el: '#app',
       data: {
@@ -188,6 +190,9 @@
         },
       },
       methods: {
+        goAndroid() {
+          window.open('http://video.sdtanyue.com/jiayunbang.apk')
+        },
         errorModel(msg) {
           this.msgContent = msg + ''
           this.visible = true
@@ -215,7 +220,7 @@
             }
           }, 1000)
           axios
-            .post('http://120.27.145.178/getverifycode', {
+            .post(`${testHref}/getverifycode`, {
               phone: this.phone, //手机号
               type: 0, //验证类型
             })
@@ -262,7 +267,7 @@
             return
           }
           axios
-            .post('http://120.27.145.178/registerSignByPwd', {
+            .post(`${testHref}/registerSignByPwd`, {
               mobile: this.phone, //手机号
               pwd: this.pwd,
               invitation_code: this.recommend,
