@@ -47,7 +47,7 @@
 }
 
 {
-  // TODO：手写Promise 
+  // TODO：手写Promise
   /*
   1.默认参数，内置两个函数参数
   2.状态由pending=>fulfilled; pending=>rejected。
@@ -110,7 +110,7 @@
     }
   }
 
-  let yp = new YPromise((resolve, rejected) => {
+  /* let yp = new YPromise((resolve, rejected) => {
     // resolve(12)
     rejected(12354)
   })
@@ -121,6 +121,12 @@
     err => {
       console.log(`err`, err)
     }
-  )
+  ) */
 }
 
+{
+  /*
+  
+
+  */
+}
