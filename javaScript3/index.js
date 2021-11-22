@@ -799,8 +799,6 @@
   }
   let c = showCall.myBind('123', [1, 2])
   console.log(c(3), 'c333')
-
-
 }
 
 {
