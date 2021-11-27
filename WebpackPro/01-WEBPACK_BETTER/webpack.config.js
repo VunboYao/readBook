@@ -8,7 +8,7 @@ module.exports = {
 	// 多页面应用，多入口 对应 多出口
 	entry: {
 		index: './src/index.js',
-		login: './src/login.js',
+		// login: './src/login.js',
 	},
 	// 出口
 	output: {
@@ -17,21 +17,50 @@ module.exports = {
 		// 生成资源的名称
 		filename: '[name]-new.js', // 占位符[name]
 	},
+	resolveLoader: {
+		modules: ['node_modules', 'src/loaders']
+	},
 	module: {
 		rules: [
 			{
 				test: /\.css$/,
-				use: [MiniCssExtractPlugin.loader, 'css-loader'],
+				use: [
+					MiniCssExtractPlugin.loader,
+					'css-loader'],
 			},
-			/* npm i less less-loader@7 -D */
-			{
+			/* 2.npm i less less-loader@7 -D */
+			/*{
 				test: /\.less$/,
 				use: [
 					MiniCssExtractPlugin.loader,
 					'css-loader',
 					'postcss-loader',
 					'less-loader'],
+			},*/
+			// 3.自定义loader
+			{
+				test: /.index\.js$/,
+				use: [
+					{
+						loader: 'loader-normal',
+						options: {
+							action: '学习'
+						}
+					},
+					{
+						loader: 'loader-async'
+					}
+				]
 			},
+			// 4.自定义loader解析less
+			{
+				test: /\.less$/,
+				use: [
+					'yyb-style-loader',
+					'yyb-css-loader',
+					'yyb-less-loader'
+				]
+			}
 		],
 	},
 	plugins: [
@@ -39,11 +68,11 @@ module.exports = {
 		new MiniCssExtractPlugin({
 			filename: '[name].css',
 		}),
-		new HtmlWebpackPlugin({
-			template: './src/public/login.html',
-			filename: 'login.html',
-			chunks: ['login'],
-		}),
+		// new HtmlWebpackPlugin({
+		// 	template: './src/public/login.html',
+		// 	filename: 'login.html',
+		// 	chunks: ['login'],
+		// }),
 		new HtmlWebpackPlugin({
 			template: './src/public/index.html',
 			filename: 'index.html',

@@ -7,3 +7,13 @@
 * 多个loader
 * 如何处理路径问题
 * */
+
+
+module.exports = function (content) {
+	const info = content.replace('Hello', '你好')
+	// 异步callback
+	let callback = this.async()
+	setTimeout(() => {
+		callback(null, info)
+	}, 1000)
+}
