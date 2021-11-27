@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <a download="faceCheck" class="demo">下载</a>
+    <script>
+      const base64 =
+        'data:image/gif;base64,R0lGODlhWAAfAJEAAAAAAP////8AAGZmZiH5BAAHAP8ALAAAAABYAB8AAALfhI+py+0PX5i02ouz3rxn44XiSHJgiaYqdq7uK7bwTFtyjcN3zqd7D4wBgkTSr4i87AQCCrPCfFoG1IGIWqtabUOLNPCVfgNY8rZTzp4py+Yk7B6nL9pp3T6f3O3KLrQJ6OYlqLdGUTaHuKZYwcjHdfEUOEh4aGiW4Vi4acnZeNkGBlb5Ror5mbmVqLrISgfq9zcqO4uxmup5enuKChk56RRHqKnbmktMnDvxI1kZRbpnmZccXTittXaUtB2gzY3k/U0ULg5EXs5zjo6jvk7T7q4TGz8+T28eka+/zx9RAAA7'
+      function dataURLtoBlob(dataUrl) {
+        // 对base64数据进行分割，获取报文头的数据类型
+        let arr = dataUrl.split(',')
+        let mime = arr[0].match(/:(.*?);/)[1] // 获取到：image/gif
+        // 对base64的数据部分进行解码操作
+        let raw = atob(arr[1])
+        // 获取数据长度
+        let n = raw.length
+        // 创建一个存储解码后数据的数组
+        let unit8 = new Uint8Array(n)
+        while (n--) {
+          // 将二进制编码重新装填
+          unit8[n] = raw.charCodeAt(n)
+        }
+        // 返回一个blob
+        return new Blob([unit8], { type: mime })
+      }
+      let blob = dataURLtoBlob(base64)
+      document.querySelector('.demo').href = URL.createObjectURL(blob)
+    </script>
+  </body>
+</html>

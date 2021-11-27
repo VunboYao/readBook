@@ -63,6 +63,13 @@
       obj.name.a = 'vunbo yao' */
       obj.name = { a: 'yaoming' }
       obj.name.a = 'vunboyao'
+
+      // TODO: replace 方法。根据g标识符多次匹配
+      let str = 'bancan'
+      const c = str.replace(/an/gi, (...args) => {
+				return '11'
+			})
+			console.log(c)
     </script>
   </body>
 </html>

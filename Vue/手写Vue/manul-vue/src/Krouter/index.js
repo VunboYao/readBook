@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from './vun-router'
 import Home from '../views/Home.vue'
+import subAbout from '../views/subAbout.vue'
 
 Vue.use(VueRouter)
 
@@ -8,7 +9,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
   },
   {
     path: '/about',
@@ -20,14 +21,15 @@ const routes = [
     children: [
       {
         path: '/about/info',
-        component: { render(h){ return h('h1', 'some about info ')}}
-      }
-    ]
-  }
+        name: 'subAbout',
+        component: subAbout,
+      },
+    ],
+  },
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
 })
 
 export default router

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="locale">Locale</button>
+    <button id="session">Session</button>
+    <button id="clear">clear</button>
+    <script>
+      /*
+      localStorage是永久存储机制
+
+      TODO:1.sessionStorage是跨会话的存储机制.只会存储到浏览器关闭。和浏览器关闭时会消失的会话cookie类似。
+           2.因为sessionStorage对象与服务器会话紧密相关，所以在运行本地文件时不能使用。存储在sessionStorage对象中
+             的数据只能由最初存储数据的页面使用。
+      */
+
+      window.addEventListener('storage', event => alert('Storage changed for ${event.domain}'))
+      const session = document.getElementById('session')
+      session.onclick = function() {
+        sessionStorage.setItem('name', 'yyb')
+      }
+
+      const locale = document.getElementById('locale')
+      locale.onclick = function() {
+        localStorage.setItem('name', 'Nicholas')
+        localStorage.book = 'Professional JavaScript'
+      }
+
+      const clear = document.getElementById('clear')
+      clear.onclick = function() {
+        localStorage.clear()
+      }
+
+      let db,
+        request,
+        version = 1
+      let user = {
+        username: '007',
+        firstName: 'James',
+        lastName: 'Bond',
+        password: 'foo',
+      }
+      request = indexedDB.open('admin', version)
+      request.onerror = e => console.log(e)
+      request.onsuccess = e => {
+        db = e.target.result
+      }
+      request.onupgradeneeded = e => {
+        const cb = e.target.result
+        if (db.objectStoreNames.contains('users')) {
+          db.deleteObjectStore('users')
+        }
+        db.createObjectStore('users', { keyPath: 'username' })
+      }
+    </script>
+  </body>
+</html>

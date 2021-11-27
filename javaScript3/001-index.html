@@ -11,6 +11,28 @@
   </head>
   <body>
     <div id="app">
+      <div>初级：<input ref="normal" type="text" v-model.trim="normal" /> {{normalRes}}</div>
+      <div>中级：<input type="text" v-model.trim="middle" />{{middleRes}}</div>
+      <div>总价：{{oneTotal}} <button @click="onAdd">添加</button></div>
+      <table border="1">
+        <tr>
+          <!-- <td>序号</td> -->
+          <td>价格</td>
+        </tr>
+        <tr v-for="(item, index) in price" :key="item">
+          <!-- <td>
+            {{index + 1}}
+          </td> -->
+          <td>
+            {{item}}
+          </td>
+        </tr>
+        <tr>
+          <!-- <td>合计</td> -->
+          <td>合计:{{total}}</td>
+        </tr>
+      </table>
+
       <todo-list>
         <template v-slot:default="slotProps">
           <i class="fas fa-check"></i>
@@ -23,9 +45,34 @@
         data() {
           return {
             bar: true,
+            normal: 0,
+            middle: 0,
+            price: [],
           }
         },
-        methods: {},
+        computed: {
+          normalRes() {
+            return Number((this.normal / 22) * 25000).toFixed(2)
+          },
+          middleRes() {
+            return Number((this.middle / 22) * 31000).toFixed(2)
+          },
+          oneTotal() {
+            return (Number(this.normalRes) + Number(this.middleRes)).toFixed(2)
+          },
+          total() {
+            return this.price.reduce((prev, now) => {
+              return Number(prev) + Number(now)
+            }, 0)
+          },
+        },
+        methods: {
+          onAdd() {
+            this.price.push(this.oneTotal)
+            this.normal = this.middle = 0
+            this.$refs.normal.focus()
+          },
+        },
       })
 
       app.component('todo-button', {
