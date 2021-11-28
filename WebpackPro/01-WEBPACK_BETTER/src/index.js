@@ -17,7 +17,7 @@ function genImg() {
   img.src = imgSrc
   document.body.appendChild(img)
 }
-genImg()
+// genImg()
 
 document.body.appendChild(dom())
 console.log(add(4, 5))
