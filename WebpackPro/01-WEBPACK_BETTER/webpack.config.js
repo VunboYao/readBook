@@ -6,9 +6,10 @@ module.exports = {
 	mode: 'development',
 	// 入口
 	// 多页面应用，多入口 对应 多出口
+	// chunk => chunks => chunkName => bundle
 	entry: {
 		index: './src/index.js',
-		login: './src/login.js',
+		// login: './src/login.js',
 	},
 	// 出口
 	output: {
@@ -59,6 +60,18 @@ module.exports = {
 					'yyb-style-loader',
 					'yyb-css-loader',
 					'yyb-less-loader'
+				]
+			},
+			// 5.
+			{
+				test: /\.(jpe?g|png|gif|svg)$/,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: '[name].[ext]'
+						}
+					}
 				]
 			}
 		],
