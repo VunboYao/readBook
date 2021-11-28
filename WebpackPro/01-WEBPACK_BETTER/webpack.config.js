@@ -8,7 +8,7 @@ module.exports = {
   // 多页面应用，多入口 对应 多出口
   entry: {
     index: './src/index.js',
-    // login: './src/login.js',
+    login: './src/login.js',
   },
   // 出口
   output: {
@@ -28,7 +28,7 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           'css-loader'],
       },
-      /* 2.npm i less less-loader@7 -D */
+      // 2.npm i less less-loader@7 -D
       /*{
         test: /\.less$/,
         use: [
@@ -68,15 +68,15 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),
-    /* new HtmlWebpackPlugin({
-       template: './src/public/login.html',
-       filename: 'login.html',
-       chunks: ['login'],
-     }),*/
+    new HtmlWebpackPlugin({
+      template: './src/public/login.html',
+      filename: 'login.html',
+      chunks: ['index']
+    }),
     new HtmlWebpackPlugin({
       template: './src/public/index.html',
       filename: 'index.html',
-      chunks: ['index'],
+      chunks: ['login']
     }),
   ],
 }
