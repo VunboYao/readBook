@@ -81,6 +81,19 @@ module.exports = {
           // 6.图片压缩：image-webpack-loader 必须在url-loader/file-loader前调用.必须用 cnpm 安装
           'image-webpack-loader'
         ]
+      },
+      // 7.font字体处理
+      {
+        test:/\.(eot|woff|woff2|svg|ttf)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]',
+            // 资源存放的位置
+            outputPath: 'font',
+            publicPath: '../font'
+          }
+        }
       }
     ],
   },
