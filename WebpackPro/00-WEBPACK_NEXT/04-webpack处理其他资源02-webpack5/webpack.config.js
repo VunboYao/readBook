@@ -8,11 +8,14 @@ module.exports = {
   output: {
     filename: 'js/bundle.js',
     path: resolve(__dirname, './dist'), // 绝对路径。当前文件所在的绝对路径
+    // 静态资源输出位置设置
+    // assetModuleFilename: 'img/[hash][ext]' // ext默认带了点(.)
   },
   resolveLoader: {
     modules: ['node_modules', 'src/loaders'],
   },
   module: {
+    // loader: 特定的模块类型。转换对应的文件
     // rule对象
     rules: [
       {
@@ -50,30 +53,39 @@ module.exports = {
         test: /\.less$/,
         use: ['style-loader', 'css-loader', 'postcss-loader', 'less-loader'],
       },
-      /*图片处理:file-loader已废弃*/
+      // webpack5静态资源处理
       {
         test: /\.(jpe?g|png|gif|svg)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              esModule: false, // 路径模块处理
-              name: 'img/[name].[hash:6].[ext]',
-              // outputPath: 'img', // 输出到特定的文件夹
-              limit: 6 * 1024
-            },
-          },
-        ],
-        type: 'javascript/auto', // webpack5已废弃。停止使用asset模块处理
+        // type: 'asset/resource', // 1.file-loader
+        // type: 'asset/inline', // 2.url-loader。转换成base64.
+        type: 'asset', // 通用资源
+        generator: { // TODO:asset/inline不能设置该值
+          filename: 'images/[name].[hash:6][ext]'
+        },
+        parser: {
+          dataUrlCondition: {
+            maxSize: 6 * 1024
+          }
+        }
       },
+      // webpack5:asset/resource方式设置字体
+      {
+        test: /\.(ttf|eot|woff2?)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'font/[name].[hash:6][ext]'
+        }
+      }
     ],
   },
+  // 打包优化、资源管理、环境变量注入等。执行更加广泛的任务。
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'css/[name].css'
     }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
+      template: resolve(__dirname, './src/public/index.html'),
       filename: 'vunbo.html',
     }),
   ],

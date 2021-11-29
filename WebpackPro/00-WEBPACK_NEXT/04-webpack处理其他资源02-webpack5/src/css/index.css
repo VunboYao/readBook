@@ -1,4 +1,19 @@
 @import "foo.css";
+
+@font-face {
+  font-family: "webfont";
+  font-display: swap;
+  src: url('../font/webfont.eot'); /* IE9 */
+  src: url('../font/webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('../font/webfont.woff2') format('woff2'),
+  url('../font/webfont.woff') format('woff'), /* chrome、firefox */
+  url('../font/webfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('../font/webfont.svg#webfont') format('svg'); /* iOS 4.1- */
+}
+#api {
+  font-size: 20px;
+  font-family: 'webfont' !important;
+}
 .content {
   color: #12345678; /* rgba格式：利用postcss-preset-env插件来处理*/
 }
