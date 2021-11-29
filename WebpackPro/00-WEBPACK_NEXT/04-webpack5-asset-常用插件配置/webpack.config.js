@@ -100,6 +100,7 @@ module.exports = {
         {
           from: './public',
           globOptions: {
+            // 忽略文件。必须用：**/file.xxx
             ignore: ['**/index.html', '**/.DS_Store']
           }
         }
