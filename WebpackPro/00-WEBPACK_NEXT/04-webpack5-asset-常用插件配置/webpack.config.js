@@ -2,6 +2,8 @@ const { resolve } = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const {DefinePlugin} = require('webpack')
 module.exports = {
   mode: 'development',
   entry: './src/index.js',
@@ -75,7 +77,7 @@ module.exports = {
         generator: {
           filename: 'font/[name].[hash:6][ext]'
         }
-      }
+      },
     ],
   },
   // 打包优化、资源管理、环境变量注入等。执行更加广泛的任务。
@@ -85,8 +87,23 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: resolve(__dirname, './src/public/index.html'),
-      filename: 'vunbo.html',
+      template: './public/index.html',
+      title: 'Yao',
+      filename: 'Vunbo.html',
     }),
+    // 全局常量插件
+    new DefinePlugin({
+      BASE_URL: "'./'"
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: './public',
+          globOptions: {
+            ignore: ['**/index.html', '**/.DS_Store']
+          }
+        }
+      ]
+    })
   ],
 }
