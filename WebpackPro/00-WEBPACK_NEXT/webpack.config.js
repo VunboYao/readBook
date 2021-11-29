@@ -7,15 +7,23 @@ module.exports = {
 		filename: "bundle.js",
 		path: resolve(__dirname, './build') // 绝对路径。当前文件所在的绝对路径
 	},
+	resolveLoader: {
+		modules: ['node_modules', 'src/loaders']
+	},
 	module: {
 		// rule对象
 		rules: [
 			{
 				test: /\.css$/,
-				// 完整使用方式。loader加载从后往前
+				// 1.完整使用方式。loader加载从后往前
 				use: [
 					{loader: 'style-loader'},
-					{loader: 'css-loader'},
+					{
+						loader: 'css-loader',
+						options: {
+							importLoaders: 1 // 允许重新加载css-loader前的importLoaders
+						}
+					},
 					{
 						loader: 'postcss-loader',
 						/*options: {
@@ -26,9 +34,9 @@ module.exports = {
 						}*/
 					}
 				],
-				// 省略使用方式
+				// 2.省略使用方式
 				// use: ['style-loader', 'css-loader']
-				// 只有一个loader时的缩写
+				// 3.只有一个loader时的缩写
 				// loader: 'css-loader'
 			},
 			/* npm i less-loader -D */
@@ -37,7 +45,9 @@ module.exports = {
 				use: [
 					'style-loader',
 					'css-loader',
-					'less-loader']
+					'postcss-loader',
+					'less-loader'
+				]
 			}
 		]
 	},
