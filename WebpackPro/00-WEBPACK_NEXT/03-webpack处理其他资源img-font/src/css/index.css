@@ -6,3 +6,9 @@
 :fullscreen {
   user-select: none;
 }
+
+.bg-img {
+  width: 150px;
+  height: 199px;
+  background: url("./../img/minidlam.jpg") no-repeat;
+}

@@ -73,7 +73,7 @@ module.exports = {
               // 资源存放的位置
               outputPath: 'images',
               // 资源引入的位置 src=publicPath/[name].png
-              publicPath: '../images',
+              publicPath: '../images', // webpack5中已修复。无需手动传如该值
               // 限制大小
               limit: 2 * 1024
             }
