@@ -1,0 +1,19 @@
+/* postcss-loader文件引入处理 */
+@import './00-postcss-loader.css';
+/* 背景图片处理 */
+.bg-image {
+  background-image: url('./../img/minidlam.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  box-shadow: 0 0 5px 5px #eee;
+}
+
+/* 引入字体文件css */
+@import '../font/iconfont.css';
+
+.icon-hanbao-01 {
+  margin: 0 20px;
+  font-size: 40px;
+  color: #790cd343;
+}
