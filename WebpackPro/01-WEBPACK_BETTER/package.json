@@ -5,6 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "build": "webpack",
+    "mpa": "webpack --config mpa.webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -15,6 +16,8 @@
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^5.2.7",
     "cssnano": "^5.0.11",
+    "file-loader": "^6.2.0",
+    "glob": "^7.2.0",
     "html-webpack-plugin": "^4.5.2",
     "less": "^4.1.2",
     "less-loader": "^7.3.0",
@@ -22,8 +25,10 @@
     "postcss": "^8.4.3",
     "postcss-loader": "^4.3.0",
     "style-loader": "^2.0.0",
+    "url-loader": "^4.1.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
-  }
+  },
+  "dependencies": {}
 }

@@ -10,5 +10,14 @@ function dom() {
   test.innerHTML = 'Hello WEBPACK'
   return test
 }
+
+import imgSrc from './img/logo.png'
+function genImg() {
+  const img = document.createElement('img')
+  img.src = imgSrc
+  document.body.appendChild(img)
+}
+// genImg()
+
 document.body.appendChild(dom())
 console.log(add(4, 5))

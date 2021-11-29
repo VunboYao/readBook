@@ -1,0 +1,14 @@
+@import "foo.css";
+.content {
+  color: #12345678; /* rgba格式：利用postcss-preset-env插件来处理*/
+}
+
+:fullscreen {
+  user-select: none;
+}
+
+.bg-img {
+  width: 150px;
+  height: 199px;
+  background: url("./../img/minidlam.jpg") no-repeat;
+}

@@ -22,3 +22,10 @@ webpack-cli封装了对webpack的调用，类似一个服务调用管家
 * 1.相对路径问题：npx webpack --entry ./../src/main.js (解析路径问题)
 * 	.bin中请求路径基于node_modules触发
 * */
+
+
+/*
+* postcss:
+* 1.查找PostCSS在构建工具中的扩展，比如webpack中的postcss-loader
+* 2.选择可以添加你需要的PostCSS相关的插件
+* */
