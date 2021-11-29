@@ -16,7 +16,7 @@ module.exports = {
     // 生成资源存放的位置，必须是绝对路径
     path: path.resolve(__dirname, './dist'),
     // 生成资源的名称
-    filename: '[name]-new.js', // 占位符[name]
+    filename: 'js/[name].js', // 占位符[name]
   },
   resolveLoader: {
     modules: ['node_modules', 'src/loaders']
@@ -62,7 +62,7 @@ module.exports = {
           'yyb-less-loader'
         ]
       },
-      // 5.file-loader => url-loader
+      // 5.图片解析：file-loader => url-loader
       {
         test: /\.(jpe?g|png|gif|svg)$/,
         use: [
@@ -109,7 +109,7 @@ module.exports = {
     }),*/
     new HtmlWebpackPlugin({
       template: './src/public/index.html',
-      // filename: 'html/index.html', // js路径处理
+      // filename: 'html/index.html', // js路径处理: img图片引用地址问题
       filename: 'index.html',
       chunks: ['index']
     }),
