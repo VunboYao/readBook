@@ -16,7 +16,7 @@ module.exports = {
     // 生成资源存放的位置，必须是绝对路径
     path: path.resolve(__dirname, './dist'),
     // 生成资源的名称
-    filename: 'js/[name].js', // 占位符[name]
+    filename: 'js/[name].[hash:6].js', // 占位符[name]
   },
   resolveLoader: {
     modules: ['node_modules', 'src/loaders']
