@@ -1,9 +1,8 @@
-import {multiple, sum} from "./js/math.js" // ES Module
-const {dateFormat, priceFormat} = require('./js/format') // CommonJS => Node
+const {multiple, sum} = require("./js/esmodule.js") // es导出，commonJS导入
+import {dateFormat, priceFormat} from './js/common' // commonjs导出，es导入
+
 
 multiple(20,30)
 sum(20,30)
 
-console.log(dateFormat())
-console.log(priceFormat())
-
+console.log(dateFormat(), priceFormat())
