@@ -3,8 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
+const TxtWebPlugin = require('./src/myPlugins/text-webpack-plugin')
 module.exports = {
-	mode: 'production',
+	mode: 'development',
 	// 入口
 	// 多页面应用，多入口 对应 多出口
 	// chunk => chunks => chunkName => bundle
@@ -119,8 +120,11 @@ module.exports = {
 		],
 	},
 	plugins: [
+			new TxtWebPlugin({
+				name: 'my-plugin'
+			}),
 		// 请确保引入这个插件！
-		new VueLoaderPlugin(),
+		// new VueLoaderPlugin(),
 		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin({
 			filename: 'css/[name].css',

@@ -1,14 +1,14 @@
 // import "@babel/polyfill"; // 方式一，配合entry
-import Demo from './demo.vue'
-import Vue from "vue"
-console.log('hello login')
+// import Demo from './demo.vue'
+// import Vue from "vue"
+import foo from './js/foo'
 const arr = [new Promise(() => {}), new Promise(() => {})]
 
 arr.map(item => {
 	console.log(item, 'ABC')
 })
 // TODO:Vue挂载的实现
-new Vue({
+/*new Vue({
 	el: '#login',
 	render: h => h(Demo)
 })
@@ -23,7 +23,7 @@ class App extends Component {
 	}
 }
 
-ReactDom.render(<App/>, document.getElementById('app'))
+ReactDom.render(<App/>, document.getElementById('app'))*/
 /*
 * useBuiltIns: entry usage false
 * entry: 在入口模块执行，import "@babel/polyfill"。没有使用到的不会导入
