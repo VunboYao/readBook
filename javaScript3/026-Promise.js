@@ -90,11 +90,12 @@
           })
         }
       }
+      // 直接调用
       executor(resolve, reject)
     }
 
     then(onFulfilled, onRejected) {
-      // 1.then调用时当前状态如果已经fulfilled,则立即调用回调函数
+      // 1.then调用时当前状态如果已经fulfilled,则立即调用回调函数【针对定时延迟调用情况】
       if (this.status === PROMISE_STATUS_FULFILLED && onFulfilled) {
         onFulfilled(this.value)
       }
@@ -110,23 +111,31 @@
     }
   }
 
-  /* let yp = new YPromise((resolve, rejected) => {
-    // resolve(12)
-    rejected(12354)
+
+  const p = new YPromise((resolve, reject) => {
+    resolve(3)
+    reject(44)
   })
-  yp.then(
-    res => {
-      console.log(`res`, res)
-    },
-    err => {
-      console.log(`err`, err)
-    }
-  ) */
-}
-
-{
-  /*
+  p.then(res => {
+    console.log(res, 'then')
+  }, err => {
+    console.log(err, 'err')
+  })
 
 
-  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
