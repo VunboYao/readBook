@@ -56,6 +56,15 @@
   5.catch方法的实现
   */
 
+  function execFunctionWithCatchError(execFn, value, resolve, reject) {
+    try {
+      const result = execFn(value)
+      resolve(result)
+    } catch(e) {
+      reject(e)
+    }
+  }
+
   const PROMISE_STATUS_PENDING = 'pending'
   const PROMISE_STATUS_FULFILLED = 'fulfilled'
   const PROMISE_STATUS_REJECTED = 'rejected'
@@ -75,7 +84,7 @@
             if (this.status !== PROMISE_STATUS_PENDING) return
             this.value = value
             this.status = PROMISE_STATUS_FULFILLED
-            this.onFulfilledFns.forEach(fn => fn(this.value))
+            this.onFulfilledFns.forEach(fn => fn())
           })
         }
       }
@@ -86,42 +95,60 @@
             if (this.status !== PROMISE_STATUS_PENDING) return
             this.status = PROMISE_STATUS_REJECTED
             this.reason = reason
-            this.onRejectedFnS.forEach(fn => fn(this.reason))
+            this.onRejectedFnS.forEach(fn => fn())
           })
         }
       }
       // 直接调用
-      executor(resolve, reject)
+      try {
+        executor(resolve, reject)
+      } catch(e) {
+        reject(e)
+      }
     }
 
     then(onFulfilled, onRejected) {
-      // 1.then调用时当前状态如果已经fulfilled,则立即调用回调函数【针对定时延迟调用情况】
-      if (this.status === PROMISE_STATUS_FULFILLED && onFulfilled) {
-        onFulfilled(this.value)
-      }
-      if (this.status === PROMISE_STATUS_REJECTED && onRejected) {
-        onRejected(this.reason)
-      }
+      onRejected = onRejected || (err => {throw err})
+      return new YPromise((resolve, reject) => {
+        // 1.then调用时当前状态如果已经fulfilled,则立即调用回调函数【针对定时延迟调用情况】
+        if (this.status === PROMISE_STATUS_FULFILLED && onFulfilled) {
+          execFunctionWithCatchError(onFulfilled, this.value, resolve, reject)
+        }
+        if (this.status === PROMISE_STATUS_REJECTED && onRejected) {
+          execFunctionWithCatchError(onRejected, this.reason, resolve, reject)
+        }
 
-      // 2.状态未更新时，将成功回调和失败的回调放到数组中
-      if (this.status === PROMISE_STATUS_PENDING) {
-        this.onFulfilledFns.push(onFulfilled)
-        this.onRejectedFnS.push(onRejected)
-      }
+        // 2.状态未更新时，将成功回调和失败的回调放到数组中
+        if (this.status === PROMISE_STATUS_PENDING) {
+          onRejected && this.onFulfilledFns.push(() => {
+            execFunctionWithCatchError(onFulfilled, this.value, resolve, reject)
+          })
+          onRejected && this.onRejectedFnS.push(() => {
+            execFunctionWithCatchError(onRejected, this.reason, resolve, reject)
+          })
+        }
+      })
+    }
+
+    catch(onRejected) {
+      this.then(undefined, onRejected)
     }
   }
 
 
   const p = new YPromise((resolve, reject) => {
-    resolve(3)
+    console.log('Pending')
+    // resolve(3)
     reject(44)
+    // throw new Error('error, exector')
   })
   p.then(res => {
-    console.log(res, 'then')
+    console.log('res', res)
   }, err => {
-    console.log(err, 'err')
+    console.log('err', err)
+  }).catch(err => {
+    console.log('catch', err)
   })
-
 
 
 
