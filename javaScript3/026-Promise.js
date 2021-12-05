@@ -52,6 +52,11 @@
   1.默认参数，内置两个函数参数
   2.状态由pending=>fulfilled; pending=>rejected。
   3.then方法的实现
+    1.onFulfilled onRejected
+    2.判断默认值问题
+    3.返回一个promise
+    4.判断状态已变更，直接执行
+    5.异步延迟调用，放到数组中
   4.多个then的实现。延迟调用then的处理
   5.catch方法的实现
   */
@@ -131,38 +136,102 @@
     }
 
     catch(onRejected) {
-      this.then(undefined, onRejected)
+      return this.then(undefined, onRejected)
+    }
+
+    finally(onFinally) {
+      this.then(_ => {
+        onFinally()
+      }, _ => {
+        onFinally()
+      })
+    }
+
+    static resolve(value) {
+      return new YPromise(resolve => resolve(value))
+    }
+
+    static reject(reason) {
+      return new YPromise((undefined, reject) => reject(reason))
+    }
+
+    static all(promises) {
+      return new YPromise((resolve, reject) => {
+        const values = []
+        promises.forEach(promise => {
+          promise.then(res => {
+            values.push(res)
+            if (values.length === promises.length) {
+              resolve(values)
+            }
+          }, err => {
+            return reject(err)
+          })
+        })
+      })
+    }
+
+    static allSettled(promises) {
+      return new YPromise(resolve => {
+        const result = []
+        promises.forEach(promise => {
+          promise.then(res => {
+            result.push({status: PROMISE_STATUS_FULFILLED, value: res})
+            if (result.length === promises.length) {
+              resolve(result)
+            }
+          }, err => {
+            result.push({status: PROMISE_STATUS_REJECTED, value: err})
+            if (result.length === promises.length) {
+              resolve(result)
+            }
+          })
+        })
+      });
+    }
+
+    static race(promises) {
+      return new YPromise((resolve, reject) => {
+        promises.forEach(promise => {
+          /*promise.then(res => {
+            resolve(res)
+          }, err => {
+            reject(err)
+          })*/
+          promise.then(resolve,reject)
+        })
+      })
+    }
+
+    static any(promises) {
+      return new YPromise((resolve,reject) => {
+        const reasons = []
+        promises.forEach(promise => {
+          promise.then(res => {
+            resolve(res)
+          }, err => {
+            reasons.push(err)
+            if (reasons.length === promises.length) {
+              reject(new AggregateError(reasons))
+            }
+          })
+        })
+      })
     }
   }
 
-
-  const p = new YPromise((resolve, reject) => {
-    console.log('Pending')
-    // resolve(3)
-    reject(44)
-    // throw new Error('error, exector')
+ const p1 = new YPromise((resolve,reject) => {
+   setTimeout(() => reject(1111), 3000)
+ })
+  const p2 = new YPromise((resolve,reject) => {
+    setTimeout(() => reject(3322222222), 2000)
   })
-  p.then(res => {
-    console.log('res', res)
-  }, err => {
-    console.log('err', err)
-  }).catch(err => {
-    console.log('catch', err)
+  const p3 = new YPromise((resolve,reject) => {
+    setTimeout(() => reject(12333333333), 3000)
   })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ YPromise.any([p1,p2,p3]).then(res => {
+   console.log(res)
+ }).catch(err => {
+   console.log('catch', err)
+ })
 }
