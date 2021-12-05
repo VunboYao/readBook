@@ -23,8 +23,6 @@
     "copy-webpack-plugin": "^9.1.0",
     "css-loader": "^6.5.1",
     "eslint": "^8.4.0",
-    "eslint-plugin-react": "^7.27.1",
-    "eslint-plugin-vue": "^8.1.1",
     "html-webpack-plugin": "^5.5.0",
     "postcss-loader": "^6.2.1",
     "postcss-preset-env": "^7.0.1",

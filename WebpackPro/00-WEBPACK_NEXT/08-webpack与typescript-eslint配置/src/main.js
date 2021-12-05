@@ -8,7 +8,6 @@ const foo = name => {
 
 foo('Yao')
 
-
 /*
 *
 * npm install @babel/preset-env -D
