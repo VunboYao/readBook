@@ -1,12 +1,14 @@
-import './index.css'
-import './typescript.ts'
+import "./index.css";
+import "./typescript.ts";
 // import 'core-js/stable'
 // import 'regenerator-runtime/runtime'
-const foo = name => {
-  console.log(name)
-}
+const foo = (name) => {
+  console.log(name);
+};
 
-foo('Yao')
+foo("Yao");
+
+const message = "Hello World";
 
 /*
 *
@@ -15,7 +17,6 @@ foo('Yao')
 * npx babel src --out-dir dist --presets=@babel/preset-env
 *
 * */
-
 
 /*
 * ts-loader和babel-loader的选择
