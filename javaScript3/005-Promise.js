@@ -119,6 +119,7 @@ function resolvePromise(promise2, x, resolve, reject) {
     let self = this
     //PromiseA+ 2.3.1
     // 如果 promise2 和 x 相等，那么 reject promise with a TypeError
+    // 防止死循环
     if (promise2 === x) {
       reject(new TypeError('Chaining cycle'))
     }
@@ -162,12 +163,12 @@ function resolvePromise(promise2, x, resolve, reject) {
       return params
     }
     return new Promise((resolve, reject) => {
-      if (param && typeof param === 'object' && typeof param.then === 'function') {
+      if (params && typeof params === 'object' && typeof params.then === 'function') {
         setTimeout(() => {
-          param.then(resolve, reject)
+          params.then(resolve, reject)
         });
       } else {
-        resolve(param)
+        resolve(params)
       }
     })
   }

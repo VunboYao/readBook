@@ -1,0 +1,14 @@
+{
+  "name": "javascript3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "promises-aplus-tests 005-Promise.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "promises-aplus-tests": "^2.1.2"
+  }
+}
