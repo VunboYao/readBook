@@ -23,6 +23,12 @@ module.exports = {
     "semi": 2, // 分号
     "no-console": "warn", // console.log警告
     "quotes": ["error", "double"], // 采用双引号。错误警告
+    "linebreak-style": ["off", "CRLF"],
+  },
+  "settings": {
+    react: {
+      version: "detect",
+    },
   },
 };
 

@@ -14,7 +14,7 @@ module.exports = {
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true,
-    }, // 启用语言功能
+    }, // 启用语言特性功能
   },
   "rules": { // off(0) 关闭 warn(1)：警告 error(2):错误
     "no-unused-vars": "warn", // 未使用的变量
@@ -23,6 +23,12 @@ module.exports = {
     "semi": 2, // 分号
     "no-console": "warn", // console.log警告
     "quotes": ["error", "double"], // 采用双引号。错误警告
+    "linebreak-style": ["off", "CRLF"],
+  },
+  "settings": {
+    react: {
+      version: "detect",
+    },
   },
 };
 

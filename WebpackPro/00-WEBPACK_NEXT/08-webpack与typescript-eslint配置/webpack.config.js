@@ -17,13 +17,13 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ["babel-loader"],
+        use: ["babel-loader", "eslint-loader"],
       },
       {
         test: /\.ts$/,
         exclude: /node_modules/,
-        // use: ['ts-loader'] // 需要依赖typescript，tsc文件
-        use: "ts-loader", // 可以直接使用babel-loader
+        // use: ['ts-loader'] // 需要依赖typescript，tsc文件。但是不会对polyfill无法实现。需要借助babel-loader
+        use: "babel-loader", // 可以直接使用babel-loader.但是没有类型检测。通过命令：npm run tsc --noEmit --watch来进行检测
       },
       {
         test: /\.css$/,

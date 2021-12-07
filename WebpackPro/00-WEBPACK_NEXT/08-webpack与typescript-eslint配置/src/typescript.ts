@@ -1,7 +1,11 @@
 const msg: string = 'hello TypeScript'
 
 const foo = (info: string): any => {
-  console.log(info)
+    console.log(info)
 }
 
-foo(msg)
+const p = new Promise(resolve => {
+    resolve('123123')
+})
+
+foo('12')
