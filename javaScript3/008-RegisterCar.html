@@ -149,9 +149,9 @@
         <input v-model="recommend" type="text" placeholder="请输入推荐人邀请码" />
       </div>
       <div class="r-li">
-        <button @click="onSubmit">立即注册</button>
-        <button @click="goAndroid">安卓下载</button>
-        <button @click="">苹果下载</button>
+        <button @touchstart="onSubmit">立即注册</button>
+        <button @touchstart="goAndroid">安卓下载</button>
+        <button @touchstart="">苹果下载</button>
       </div>
       <div v-if="visible" class="out-tip">
         <div class="inner-tip">
