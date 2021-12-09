@@ -1,12 +1,46 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
+const TerserPlugin = require('terser-webpack-plugin')
 const path = require('path')
 const resolveApp = require('./path')
 
 const config = {
   entry: {
+    // 配置一
+    /* index: { import: './src/index.js', dependOn: ['lodash', 'dayjs'] },
+    main: { import: './src/main.js', dependOn: 'lodash' },
+    lodash: 'lodash',
+    dayjs: 'dayjs', */
+    // 配置二
+    /* index: { import: './src/index.js', dependOn: 'shared' },
+    main: { import: './src/main.js', dependOn: 'shared' },
+    shared: ['lodash', 'dayjs'], */
     index: './src/index.js',
     main: './src/main.js',
+  },
+  optimization: {
+    minimizer: [new TerserPlugin({
+      extractComments: false, // 是否提取注释文件
+    })],
+    splitChunks: {
+      // async 异步：import 动态导入
+      // initial 同步导入
+      // all 异步/同步导入
+      chunks: 'all',
+      // 最小尺寸：拆分出来的包，最小20kb
+      minSize: 200000, // 默认。20kb
+      // 将大于maxSize，拆分成不小于minSize
+      maxSize: 200000,
+      // 表示最少被引入几次的包，需要分包
+      minChunks: 2,
+      // 缓存组
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          filename: '[id]_vendors.js',
+        },
+      },
+    },
   },
   output: {
     filename: '[name].bundle.js',
