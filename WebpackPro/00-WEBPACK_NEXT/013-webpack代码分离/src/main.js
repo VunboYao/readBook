@@ -1,7 +1,8 @@
-import _ from 'lodash'
-import dayJs from 'dayjs'
+/* import _ from 'lodash'
+import dayJs from 'dayjs' */
+import './bar01'
 
-console.log(_.join(['Hello', 'Vue']))
+// console.log(_.join(['Hello', 'Vue']))
 
 console.log('Hello Main')
-console.log(dayJs(), 'main')
+// console.log(dayJs(), 'main')

@@ -22,22 +22,35 @@ const config = {
     minimizer: [new TerserPlugin({
       extractComments: false, // 是否提取注释文件
     })],
+    chunkIds: 'deterministic', // natural：自然数 named:包所在name, deterministic:生产使用。方便缓存
     splitChunks: {
-      // async 异步：import 动态导入
+      // async 异步：import 动态导入。会单独打成一个包
       // initial 同步导入
       // all 异步/同步导入
       chunks: 'all',
       // 最小尺寸：拆分出来的包，最小20kb
-      minSize: 200000, // 默认。20kb
+      minSize: 2000, // 默认。20kb
       // 将大于maxSize，拆分成不小于minSize
-      maxSize: 200000,
+      maxSize: 2000,
       // 表示最少被引入几次的包，需要分包
       minChunks: 2,
       // 缓存组
       cacheGroups: {
         vendors: {
           test: /[\\/]node_modules[\\/]/,
+          // name: 'vendor-chunks.js', // 固定的名字
           filename: '[id]_vendors.js',
+          priority: -20, // 优先级
+        },
+        /* Demo: {
+          test: /bar+/,
+          filename: '[id]_bar.js',
+        }, */
+        default: {
+          minChunks: 2,
+          filename: 'common_[id].js',
+          priority: -10, // 优先级
+          reuseExistingChunk: true, // 缓存
         },
       },
     },
@@ -49,6 +62,7 @@ const config = {
     // 建议是：'/'. 本地访问则是：'./'
     // publicPath: "",
     clean: true,
+    chunkFilename: '[name].chunk.js', // 动态导入的模块的输出命名.魔法注释精确命名
   },
   resolve: {
     modules: ['node_modules'], // 模块的解析目录

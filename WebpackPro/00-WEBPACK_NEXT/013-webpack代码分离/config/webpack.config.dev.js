@@ -31,7 +31,7 @@ const config = {
     },
   },
   plugins: [
-    new ReactRefreshPlugin(), // react热更新配置
+    // new ReactRefreshPlugin(), // react热更新配置
   ],
 }
 module.exports = merge([commonConfig, config])
