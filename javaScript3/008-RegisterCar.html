@@ -54,7 +54,10 @@
         color: #333;
         background-color: transparent;
       }
-      .r-li button {
+      .r-li button, .r-li .download-class {
+        text-align: center;
+        text-decoration: none;
+        display: block;
         margin-top: 1rem;
         height: 2.2rem;
         line-height: 2.2rem;
@@ -150,7 +153,8 @@
       </div>
       <div class="r-li">
         <button @touchstart="onSubmit">立即注册</button>
-        <button @touchstart="goAndroid">安卓下载</button>
+<!--        <button @touchstart="goAndroid">安卓下载</button>-->
+        <a class="download-class" href="http://video.sdtanyue.com/jiayunbang.apk">安卓下载</a>
         <button @touchstart="">苹果下载</button>
       </div>
       <div v-if="visible" class="out-tip">

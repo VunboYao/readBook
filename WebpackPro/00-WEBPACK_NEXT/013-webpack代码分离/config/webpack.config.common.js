@@ -22,7 +22,7 @@ const config = {
     minimizer: [new TerserPlugin({
       extractComments: false, // 是否提取注释文件
     })],
-    chunkIds: 'deterministic', // natural：自然数 named:包所在name, deterministic:生产使用。方便缓存
+    // chunkIds: 'deterministic', // natural：自然数 named:包所在name, deterministic:生产使用。方便缓存
     splitChunks: {
       // async 异步：import 动态导入。会单独打成一个包
       // initial 同步导入

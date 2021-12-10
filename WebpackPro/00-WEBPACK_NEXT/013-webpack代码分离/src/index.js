@@ -14,3 +14,8 @@ import _ from 'lodash'
 console.log(_.join(['Hello', 'Webpack']))
 console.log('Hello Webpack')
 // console.log(dayJs(), 'index')
+
+/*
+* prefetch=>魔法注释 webpackPrefetch: true
+* Preload
+* */
