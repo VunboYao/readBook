@@ -29,9 +29,9 @@ const config = {
       // all 异步/同步导入
       chunks: 'all',
       // 最小尺寸：拆分出来的包，最小20kb
-      minSize: 2000, // 默认。20kb
+      minSize: 6000, // 默认。20kb=20000(bytes)
       // 将大于maxSize，拆分成不小于minSize
-      maxSize: 2000,
+      maxSize: 6000, // 6kb.超出则自动拆包
       // 表示最少被引入几次的包，需要分包
       minChunks: 2,
       // 缓存组
@@ -62,7 +62,7 @@ const config = {
     // 建议是：'/'. 本地访问则是：'./'
     // publicPath: "",
     clean: true,
-    chunkFilename: '[name].chunk.js', // 动态导入的模块的输出命名.魔法注释精确命名
+    chunkFilename: '[name].chunk.js', // TODO:动态导入的模块的输出命名.魔法注释精确命名
   },
   resolve: {
     modules: ['node_modules'], // 模块的解析目录
