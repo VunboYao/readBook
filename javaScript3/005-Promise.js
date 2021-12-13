@@ -19,7 +19,7 @@ const PENDING = 'pending'
 const FULFILLED = 'fulfilled'
 const REJECTED = 'rejected'
 
-function Promise(executor) {
+function YPromise(executor) {
   let self = this
   self.status = PENDING
   self.onFulfilled = [] // 成功的回调
@@ -51,7 +51,7 @@ function Promise(executor) {
   }
 }
 
-Promise.prototype.then = function (onFulfilled, onRejected) {
+YPromise.prototype.then = function (onFulfilled, onRejected) {
   //PromiseA+ 2.2.1 / PromiseA+ 2.2.5 / PromiseA+ 2.2.7.3 / PromiseA+ 2.2.7.4
   // onFulfilled 和 onRejected 都是可选参数
   // onFulfilled  和 onRejected 必须作为函数被调用
@@ -62,7 +62,7 @@ Promise.prototype.then = function (onFulfilled, onRejected) {
   let self = this
   // PromiseA+ 2.2.7
   // then必须返回一个promise
-  let promise2 = new Promise((resolve, reject) => {
+  let promise2 = new YPromise((resolve, reject) => {
     if (self.status === FULFILLED) {
       //PromiseA+ 2.2.2
       //PromiseA+ 2.2.4 --- setTimeout
@@ -119,6 +119,7 @@ function resolvePromise(promise2, x, resolve, reject) {
     let self = this
     //PromiseA+ 2.3.1
     // 如果 promise2 和 x 相等，那么 reject promise with a TypeError
+    // 防止死循环
     if (promise2 === x) {
       reject(new TypeError('Chaining cycle'))
     }
@@ -157,29 +158,29 @@ function resolvePromise(promise2, x, resolve, reject) {
     }
   }
 
-  Promise.resolve = function (params) {
-    if (params instanceof Promise) {
-      return params
-    }
-    return new Promise((resolve, reject) => {
-      if (param && typeof param === 'object' && typeof param.then === 'function') {
-        setTimeout(() => {
-          param.then(resolve, reject)
-        });
-      } else {
-        resolve(param)
-      }
-    })
-  }
+  // Promise.resolve = function (params) {
+  //   if (params instanceof Promise) {
+  //     return params
+  //   }
+  //   return new Promise((resolve, reject) => {
+  //     if (params && typeof params === 'object' && typeof params.then === 'function') {
+  //       setTimeout(() => {
+  //         params.then(resolve, reject)
+  //       });
+  //     } else {
+  //       resolve(params)
+  //     }
+  //   })
+  // }
 
 
-Promise.defer = Promise.deferred = function () {
+YPromise.defer = YPromise.deferred = function () {
     let dfd = {};
-    dfd.promise = new Promise((resolve, reject) => {
+    dfd.promise = new YPromise((resolve, reject) => {
         dfd.resolve = resolve;
         dfd.reject = reject;
     });
     return dfd;
 }
 
-module.exports = Promise
+module.exports = YPromise

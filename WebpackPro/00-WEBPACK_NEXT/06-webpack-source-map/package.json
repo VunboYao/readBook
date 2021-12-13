@@ -1,0 +1,22 @@
+{
+    "name": "webpack-learn01",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build:none": "webpack --entry ./src/main.js --output-path ./build",
+        "build": "webpack --config webpack.config.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/core": "^7.16.0",
+        "@babel/preset-env": "^7.16.4",
+        "babel-loader": "^8.2.3",
+        "clean-webpack-plugin": "^4.0.0",
+        "html-webpack-plugin": "^5.5.0",
+        "webpack": "^5.14.0",
+        "webpack-cli": "^4.3.1"
+    }
+}

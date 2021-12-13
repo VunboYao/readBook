@@ -21,6 +21,7 @@ var __webpack_modules__ = {
 // cache
 var __webpack_module_cache__ = {};
 
+// 加载模块的函数
 function __webpack_require__(moduleId) {
   // 1.获取模块value
   var cachedModule = __webpack_module_cache__[moduleId];

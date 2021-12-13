@@ -107,7 +107,7 @@ module.exports = {
 							limit: 2 * 1024
 						}
 					},
-					// 6.图片压缩：image-webpack-loader 必须在url-loader/file-loader前调用.必须用 cnpm 安装
+					// 6.TODO：图片压缩：image-webpack-loader 必须在url-loader/file-loader前调用.必须用 cnpm 安装
 					'image-webpack-loader'
 				]
 			},
