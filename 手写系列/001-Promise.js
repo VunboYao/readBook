@@ -121,7 +121,7 @@ YPromise.prototype.catch = function (onRejected) {
   return this.then(null, onRejected)
 }
 
-// 无论如何，都会执行
+// 无论如何，都会执行。用then包括。异步调用
 YPromise.prototype.finally = function (fn) {
   this.then(_ => fn(), _ => fn())
 }
@@ -246,7 +246,7 @@ function resolvePromise(promise2, x, resolve, reject) {
       reject(e)
     }
   } else {
-    // 如果不是不是函数，或者对象。直接resolve
+    // 如果不是函数，或者对象。直接resolve
     resolve(x)
   }
 }
