@@ -19,3 +19,13 @@ console.log('Hello Webpack')
 * prefetch=>魔法注释 webpackPrefetch: true
 * Preload
 * */
+
+// 懒加载
+const button = document.createElement('button')
+button.innerHTML = 'LoadEle'
+button.addEventListener('click', () => {
+  import(/* webpackChunkName: 'lazy' */'./lazy').then((res) => {
+    document.body.appendChild(res.default)
+  })
+})
+document.body.appendChild(button)
