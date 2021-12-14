@@ -1,30 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <script src="./vue3.js"></script>
-  </head>
-  <body>
-    <div id="app">
-      <h2>{{msg}}</h2>
-    </div>
-    <script>
-      const RootComponent = {
-        data() {
-          return {
-            msg: 'Hello Vue',
-          }
-        },
-        created() {
-          console.log('msg is :>> ', this.msg)
-        },
-      }
-      const app = Vue.createApp(RootComponent)
-      const vm = app.mount('#app')
-      console.log('vm :>> ', vm.msg)
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Document</title>
+  <link rel="stylesheet" href="https://qidian.gtimg.com/lulu/edge/css/common/ui.css">
+  <link rel="stylesheet" href="https://qidian.gtimg.com/lulu/edge/css/common/color.css">
+  <script src="https://qidian.gtimg.com/lulu/edge/js/common/all.js"></script>
+  <script src="./vue3.js"></script>
+</head>
+<body>
+<div id="app">
+  <span class="dark">主色(深色)dark</span>
+  <span class="light">浅色light</span>
+  <span class="gray">灰色(主色灰)gray</span>
+  <span class="blue">蓝色blue</span>
+  <span class="red">红色red</span>
+  <span class="orange">橘色orange</span>
+  <span class="green">绿色green</span>
+  <span class="grey">灰色(边框灰)grey</span>
+  <span class="white">白色white</span>
+  <h1 class="blue">{{msg}}</h1>
+  <ol>
+    <li>button按钮的disabled属性，如果是truthy的值则生效。空字符串也会包括在内:
+      <button class="ui-button" :disabled="btnShow">基本按钮</button>
+    </li>
+    <li>事件动态参数，小写，可缩写：
+      <button class="ui-button orange" @click="toggleDynamic=!toggleDynamic">toggleDynamic</button>
+      <button class="ui-button" @[method]="onHandle">{{method}}</button>
+    </li>
+    <li>计算属性将基于它们的响应依赖关系缓存</li>
+    <li>
+      类的绑定：
+      <ol>
+        <li>对象语法、数组语法（三元表达式）、数组中对象形式使用</li>
+        <li>组件中使用：自定义组件中的class将被添加到该元素中。不会覆盖</li>
+        <li>如果组件具有多个根元素，可以使用$attrs组件property执行此操作。$attrs.class</li>
+      </ol>
+    </li>
+    <li>内联样式：
+      <ol>
+        <li>对象语法，绑定一个JavaScript对象。驼峰或者短横线分割</li>
+        <li>数组语法</li>
+      </ol>
+    </li>
+    <li>v-show不支持template元素</li>
+    <li>v-if优先级高于v-for</li>
+    <li>v-for:在遍历对象时，会按 Object.keys() 的结果遍历，但是不能保证它在不同 JavaScript 引擎下的结果都一致。请用字符串或数值类型的值作为key
+      <ul>
+        <li v-for="item in forList" :key="item.message">{{item.message}}</li>
+      </ul>
+      <button class="ui-button red" @click="toggleForList">toggleList</button>
+    </li>
+    <li>事件处理：
+      <ol>
+        <li>访问原始的DOM事件，用变量$event</li>
+      </ol>
+      <button class="ui-button blue" @click="eOne($event),eTwo($event)">多事件处理</button>
+      {{eventOne}}--{{eventTwo}}
+    </li>
+    <li>
+      ???事件修饰符：
+      <ol>
+        <li>.stop冒泡</li>
+        <li>.prevent默认事件</li>
+        <li>.capture捕获</li>
+        <li>.self当前元素自身时</li>
+        <li>.once</li>
+        <li>.passive</li>
+        <li>可串联</li>
+      </ol>
+      <div @click.self.prevent="ePrevent">
+        <button @click.prevent.self="eInner">prevent</button>
+      </div>
+    </li>
+    <li>表单输入绑定：v-model内部实现
+      <ol>
+        <li>text 和 textarea 元素使用 value property 和 input 事件</li>
+        <li>checkbox 和 radio 使用 checked property 和 change 事件；</li>
+        <li>select 字段将 value 作为 prop 并将 change 作为事件。</li>
+        <li>修饰符：.lazy，在“change”时而非“input”时更新</li>
+        <li>.number .trim</li>
+      </ol>
+    </li>
+
+  </ol>
+</div>
+<script>
+	const RootComponent = {
+		data() {
+			return {
+				msg: 'Hello Vue3',
+				btnShow: '',
+				toggleDynamic: false,
+				rawHTML: `<span style="color: red">This should be red.</span>`,
+				forList: [{message: 'Foo'}, {message: 'Bar'}],
+				eventOne: '',
+				eventTwo: ''
+			}
+		},
+		created() {
+			// console.log('msg is :>> ', this.msg)
+		},
+		computed: {
+			method() {
+				return this.toggleDynamic ? 'click' : 'focus'
+			}
+		},
+		methods: {
+			ePrevent() {
+				alert('prevent')
+			},
+			eInner() {
+				alert('inner')
+			},
+			async eOne(e) {
+				return new Promise(resolve => {
+					setTimeout(() => {
+						this.eventOne = 'one Event'
+						resolve()
+					}, 2000)
+				})
+			},
+			eTwo(e) {
+				this.eventTwo = 'Second Two'
+			},
+			onHandle(e) {
+				console.log('执行了。', e.type)
+			},
+			toggleForList() {
+				this.forList = [
+					{
+						message: 'Hello Vue3'
+					},
+					{
+						message: 'Hello World'
+					}
+				]
+			}
+		}
+	}
+	const app = Vue.createApp(RootComponent)
+	const vm = app.mount('#app')
+	console.log('vm :>> ', vm.msg)
+</script>
+</body>
 </html>
