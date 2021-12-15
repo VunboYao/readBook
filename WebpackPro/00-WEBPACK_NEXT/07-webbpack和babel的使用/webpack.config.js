@@ -15,7 +15,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /node_modules/, // 在babel.config.js中，useBuiltIns：usage
         use: {
           loader: 'babel-loader',
           /*options: {

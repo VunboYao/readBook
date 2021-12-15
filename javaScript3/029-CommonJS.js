@@ -4,7 +4,12 @@ module.exports = {}
 exports = module.exports
 */
 /**/
+let name = 'yyb'
+let age = '12'
 
-export const name = 'yyb'
-export const age = '12'
-
+setTimeout(() => {
+  name = 'yao'
+}, 2000)
+export {
+  name, age
+}
