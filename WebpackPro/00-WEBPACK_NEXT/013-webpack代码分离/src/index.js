@@ -24,7 +24,24 @@ console.log('Hello Webpack')
 const button = document.createElement('button')
 button.innerHTML = 'LoadEle'
 button.addEventListener('click', () => {
-  import(/* webpackChunkName: 'lazy' */'./lazy').then((res) => {
+  // 1.懒加载
+/*  import(/!* webpackChunkName: 'lazy' *!/'./lazy').then((res) => {
+    document.body.appendChild(res.default)
+  }) */
+  // 2.TODO:预获取。浏览器限制时下载
+  /* import(
+    /!* webpackChunkName: 'prefetch' *!/
+    /!* webpackPrefetch: true *!/
+    './lazy'
+  ).then((res) => {
+    document.body.appendChild(res.default)
+  }) */
+  // 3.预加载。与父级一同加载。并行
+  import(
+    /* webpackChunkName: 'preload' */
+    /* webpackPreload: true */
+    './lazy'
+  ).then((res) => {
     document.body.appendChild(res.default)
   })
 })
