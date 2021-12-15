@@ -65,10 +65,6 @@ const config = {
     clean: true,
     chunkFilename: '[name].chunk.js', // TODO:动态导入的模块的输出命名.魔法注释精确命名
   },
-  // 外部扩展
-  externals: {
-    lodash: '_',
-  },
   resolve: {
     modules: ['node_modules'], // 模块的解析目录
     extensions: ['.ts', '.vue', '.jsx', '...'], // 可以使用 '...' 访问默认拓展名
