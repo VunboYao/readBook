@@ -1,4 +1,6 @@
 import _ from 'lodash'
+// eslint-disable-next-line import/no-unresolved
+import './index.css'
 
 // TODO:异步导入。魔法注释.针对output.chunkFilename中name命名
 /* import(/!* webpackChunkName: 'foo' *!/'./foo').then(() => {

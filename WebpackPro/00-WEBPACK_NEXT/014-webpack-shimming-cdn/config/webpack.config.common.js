@@ -2,6 +2,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const TerserPlugin = require('terser-webpack-plugin')
 const path = require('path')
+const { ProvidePlugin } = require('webpack')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const resolveApp = require('./path')
 
 const config = {
@@ -57,13 +59,15 @@ const config = {
     },
   },
   output: {
-    filename: '[name].bundle.js',
+    filename: 'js/[name].bundle.js',
     path: resolveApp('./dist'), // TODO: 静态资源的输出目录。
     // TODO: 默认空字符串。 访问时：host + publicPath + path
     // 建议是：'/'. 本地访问则是：'./'
     // publicPath: "",
     clean: true,
-    chunkFilename: '[name].chunk.js', // TODO:动态导入的模块的输出命名.魔法注释精确命名
+    // TODO: 如果所有资源都放到cdn上，在publicPath上添加cdn地址
+    // publicPath: 'https://vunbo.com/cdn/',
+    chunkFilename: 'js/[name].chunk.js', // TODO:动态导入的模块的输出命名.魔法注释精确命名
   },
   resolve: {
     modules: ['node_modules'], // 模块的解析目录
@@ -91,13 +95,21 @@ const config = {
       {
         test: /\.css$/,
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           'css-loader',
         ],
       },
     ],
   },
   plugins: [
+    // TODO: shimming预知全局变量.不推荐此方法
+    new ProvidePlugin({
+      axios: 'axios', // 文件中引用了axios方法，未引入axios，webpack进行自动引入
+      get: ['axios', 'get'], // get方法，axios中去查找get方法进行引入。
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[contenthash:6].css',
+    }),
     new VueLoaderPlugin(), // vue编译插件
     new HtmlWebpackPlugin({
       template: 'public/index.html',
