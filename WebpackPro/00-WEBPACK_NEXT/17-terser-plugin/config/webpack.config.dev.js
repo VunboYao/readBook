@@ -1,5 +1,7 @@
 const { merge } = require('webpack-merge')
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const commonConfig = require('./webpack.config.common')
 const resolveApp = require('./path')
 
@@ -7,8 +9,18 @@ process.env.isProduction = 'false' // TODO: 字符串
 
 const config = {
   mode: 'development',
-  devtool: 'source-map',
-  devServer: { // webpack-dev-server
+  // devtool: 'source-map',
+  optimization: {
+    minimize: true, // 自动开启压缩
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false,
+        // terserOptions: {} // 覆盖默认的配置
+      }),
+    ],
+  },
+  devServer: {
+    // webpack-dev-server
     static: {
       directory: resolveApp('static'),
       // TODO: 默认值'/' 。告诉服务器在哪个 URL 上提供 static.directory 的内容。如../static/static.js 通过abc/static.js访问
@@ -31,6 +43,7 @@ const config = {
     },
   },
   plugins: [
+    new CssMinimizerPlugin(),
     // new ReactRefreshPlugin(), // react热更新配置
   ],
 }

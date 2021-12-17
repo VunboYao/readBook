@@ -1,6 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
-const TerserPlugin = require('terser-webpack-plugin')
 const path = require('path')
 const { ProvidePlugin } = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -21,9 +20,6 @@ const config = {
     main: './src/main.js',
   },
   optimization: {
-    minimizer: [new TerserPlugin({
-      extractComments: false, // 是否提取注释文件
-    })],
     // chunkIds: 'deterministic', // natural：自然数 named:包所在name, deterministic:生产使用。方便缓存
     // runtimeChunk: 'single', // 运行时代码单独分离
     splitChunks: {

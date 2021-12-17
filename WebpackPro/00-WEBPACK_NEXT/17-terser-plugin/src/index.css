@@ -3,3 +3,8 @@ body {
     font-weight: 600;
     font-size: 30px;
 }
+
+.foo {
+    color: blue;
+    font-size: 100px;
+}
