@@ -1,3 +1,4 @@
+import { add } from 'vunbo-lib'
 import { sum } from './math'
 import './index.css'
 
@@ -31,3 +32,5 @@ button.addEventListener('click', () => {
   })
 })
 document.body.appendChild(button)
+
+console.log(add(1, 20), '.>>>>>>>>')
