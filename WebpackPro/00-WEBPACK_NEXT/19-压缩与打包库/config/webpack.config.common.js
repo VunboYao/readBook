@@ -21,6 +21,10 @@ const config = {
         compress: true,
       },
     })],
+    runtimeChunk: 'single', // 运行时代码单独分离
+    splitChunks: {
+      chunks: 'all',
+    },
   },
   output: {
     filename: '[name].[hash:6].bundle.js',
