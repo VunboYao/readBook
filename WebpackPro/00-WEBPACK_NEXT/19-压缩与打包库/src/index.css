@@ -1,0 +1,27 @@
+body {
+    color: skyblue;
+    font-weight: 600;
+    font-size: 30px;
+}
+
+
+.title {
+    color: red;
+    font-size: 20px;
+}
+
+.a1 {
+    display: flex;
+    font-weight: 100;
+}
+
+.a2 {
+    font-size: 100px;
+    float: left;
+}
+
+.a3 {
+    font-size: 21px;
+    white-space: nowrap;
+    border: 1px solid #333;
+}
