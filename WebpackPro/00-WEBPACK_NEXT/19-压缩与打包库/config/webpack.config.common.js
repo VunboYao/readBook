@@ -67,9 +67,24 @@ const config = {
     new MiniCssExtractPlugin({
       filename: 'css/[name].[hash:6].css',
     }),
+    // TODO： Html中代码的压缩
     new HtmlWebpackPlugin({
       template: 'public/index.html',
       title: 'yao', // webpack-dev-server默认的模板文件名称必须是index.html
+      inject: 'head', // false body head true
+      cache: true,
+      minify: {
+        removeAttributeQuotes: false,
+        removeComments: true,
+        removeRedundantAttributes: true, // 移除多余属性
+        collapseWhitespace: true,
+        minifyCSS: true, // 压缩内联的css
+        minifyJS: {
+          mangle: {
+            toplevel: true, // 丑化JS
+          },
+        },
+      },
     }),
     // TODO: CSS tree Shaking
     new PurgeCSSPlugin({
