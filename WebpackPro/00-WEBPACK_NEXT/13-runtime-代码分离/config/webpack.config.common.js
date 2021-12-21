@@ -1,8 +1,12 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const TerserPlugin = require('terser-webpack-plugin')
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const path = require('path')
 const resolveApp = require('./path')
+
+const smp = new SpeedMeasurePlugin()
 
 const config = {
   entry: {
@@ -98,6 +102,7 @@ const config = {
     ],
   },
   plugins: [
+    new BundleAnalyzerPlugin(),
     new VueLoaderPlugin(), // vue编译插件
     new HtmlWebpackPlugin({
       template: 'public/index.html',
@@ -106,4 +111,4 @@ const config = {
   ],
 }
 
-module.exports = config
+module.exports = smp.wrap(config)
