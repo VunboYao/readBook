@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
 	mode: 'development',
 	entry: './src/index.js',
+	devtool: 'source-map',
 	output: {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, './dist')
@@ -27,6 +28,10 @@ module.exports = {
 				use: 'yyb-loader3',
 				enforce: 'post'
 			}*/
+			{
+				test: /\.css/i,
+				use: ['style-loader', 'css-loader']
+			},
 				// 异步loader、传参、参数校验
 			{
 				test: /\.js$/i,
@@ -50,6 +55,12 @@ module.exports = {
             ]
           }
 				}
+			},
+			{
+				test: /\.md$/i,
+				use: [
+						// 'html-loader', // 手动处理hymd-loader
+					'hymd-loader']
 			}
 		]
 	},

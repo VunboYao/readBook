@@ -16,6 +16,6 @@ module.exports = function (content) {
 	const callback = this.async()
 	setTimeout(() => {
 		this.callback(null, res) // 返回多个结果
-	}, 2000)
+	}, 100)
 }
 
