@@ -1,5 +1,5 @@
 const path = require('path')
-
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
 	mode: 'development',
 	entry: './src/index.js',
@@ -27,6 +27,20 @@ module.exports = {
 				use: 'yyb-loader3',
 				enforce: 'post'
 			}*/
+			{
+				test: /\.js$/i,
+				use: {
+					loader: 'async-loader',
+					options: {
+						name: 'Vunbo',
+						age: 123,
+						// old: false // schema中additionalProperties false 时报错
+					}
+				}
+			}
 		]
-	}
+	},
+	plugins: [
+			new HtmlWebpackPlugin()
+	]
 }
