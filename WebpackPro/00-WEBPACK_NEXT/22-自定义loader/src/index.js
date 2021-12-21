@@ -1,1 +1,5 @@
-console.log('Hello World')
+const msg = 'Hello'
+const fun = () => {
+	return msg + ' World'
+}
+fun()

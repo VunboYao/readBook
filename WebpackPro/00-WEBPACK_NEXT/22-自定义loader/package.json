@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
     "html-webpack-plugin": "^5.5.0",
     "schema-utils": "^4.0.0",
     "webpack": "^5.65.0",

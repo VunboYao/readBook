@@ -5,7 +5,7 @@ module.exports = {
 	entry: './src/index.js',
 	output: {
 		filename: 'bundle.js',
-		path: path.resolve(__dirname, './build')
+		path: path.resolve(__dirname, './dist')
 	},
 	resolveLoader: {
 		modules: ['node_modules', './loaders/']
@@ -27,6 +27,7 @@ module.exports = {
 				use: 'yyb-loader3',
 				enforce: 'post'
 			}*/
+				// 异步loader、传参、参数校验
 			{
 				test: /\.js$/i,
 				use: {
@@ -36,6 +37,18 @@ module.exports = {
 						age: 123,
 						// old: false // schema中additionalProperties false 时报错
 					}
+				}
+			},
+				// 自定义babel的实现
+			{
+				test: /\.js$/i,
+				use: {
+					loader: 'babel-yyb',
+          options: {
+            presets: [
+              '@babel/preset-env'
+            ]
+          }
 				}
 			}
 		]
