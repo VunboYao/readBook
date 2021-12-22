@@ -1,0 +1,19 @@
+{
+  "name": "learn_plugin",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "build": "npx webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "adm-zip": "^0.5.9",
+    "html-webpack-plugin": "^5.5.0",
+    "tapable": "^2.2.1",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
+  }
+}
