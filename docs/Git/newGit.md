@@ -1,5 +1,11 @@
 # Git 简介
 
+### Git工作流程
+
+1. 在工作目录中修改文件
+2. 暂存文件，将文件的快照放入暂存区域
+3. 提交更新，找到暂存区域的文件，将快照永久性存储到Git仓库目录
+
 ## 工作区(Working Directory)
 
 
@@ -50,6 +56,8 @@
 
 - 查看远程库信息：`git remote -v`
 
+- 查看某一项的配置信息：`git config <key>`
+
   ## config 的三个作用域
 
   **等同于 local**
@@ -69,6 +77,16 @@
 ## 获取文件
 
 - `git clone 远程地址`, 克隆获取远程项目仓库地址
+
+## 状态简览
+
+- `git status`，工作区状态查看
+- `git status -s / git status --short`，紧凑的格式
+  - 新添加的未跟踪文件前面有 `??` 标记
+  - 新添加到暂存区中的文件前面有 `A`标记
+  - 修改过的文件前面有 `M` 标记
+  -  `M`有两个可以出现的位置，出现在右边的 `M` 表示该文件被修改了但是还没放入暂存区，出现在靠左
+    边的 `M` 表示该文件被修改了并放入了暂存区
 
 
 ## 修改文件
@@ -176,6 +194,7 @@
   - 将改名后的分支名称push到远程：`git push origin  new_branch`
 
 - **:point_up_2:撤销分支合并**
+  
   - `git revert version_name -m 1`: 撤销上次分支合并，并设置第一个分支为主依赖
 
 # 标签
@@ -284,6 +303,6 @@ git ci
 
 # 问题列表
 
-- `git init --bare`： 建立一个空壳 GIT 仓库，禁止`add, commi`
+- `git init --bare`： 建立一个空壳 GIT 仓库，禁止`add, commit`
 - 合并分支遇见`fatal: refusing to merge unrelated histories`
   - 解决方式：`git pull origin <branchName> --allow-unrelated-histories`
