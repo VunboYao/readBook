@@ -10,10 +10,14 @@
 <!--防抖函数-->
 <input type="text" id="input">
 <script>
-  let handle = function (e, a, b) {
-    console.log('调用输入监听', this, e, a, b)
+  let count = 0
+  let handle = function (e) {
+    console.log(`第${++count}调用输入监听`, this, e)
   }
-  input.oninput = debounce(handle, 1000)
+  input.oninput = throttle(handle, 2000, {
+		leading: true,
+    trailing: true
+  })
 </script>
 </body>
 </html>
