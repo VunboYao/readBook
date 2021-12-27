@@ -5,18 +5,20 @@ private: 私有的，只能在类的内部使用，不能在外部和子类使�
 */
 
 
-// 有一个基类，所有的子类都需要继承自这个基类，但是不希望别人能够通过基类来创建对象
+// TODO：奇淫技巧：有一个基类，所有的子类都需要继承自这个基类，但是不希望别人能够通过基类来创建对象
 
 class Person21 {
   name: string
   age: number
   gender: string
+
   protected constructor(name: string, age: number, gender: string) {
     this.name = name
     this.age = age
     this.gender = gender
   }
-  say():void {
+
+  say(): void {
     console.log(`My name is ${this.name}, age is ${this.age}, gender is ${this.gender}`);
   }
 }
@@ -27,4 +29,4 @@ class Student21 extends Person21 {
   }
 }
 
-// const p21 = new Person21('yao', 28, 'man') // 不可使用new构建
+// const p21 = new Person21('yao', 28, 'man') // todo:不可使用new构建

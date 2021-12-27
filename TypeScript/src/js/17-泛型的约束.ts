@@ -9,6 +9,7 @@
 interface LengthInterface {
   length: number
 }
+
 let getArray16 = <T extends LengthInterface>(value: T, items: number = 5): T[] => {
   return new Array(items).fill(value)
 }
