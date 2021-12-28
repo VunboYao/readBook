@@ -15,6 +15,9 @@ let arr15A = getArrayA15(5, 3) // [5, 5, 5]
 console.log(arr15A)
 let res15A = arr15A.map(item => item.length)
 console.log(res15A)
+// TODO: 当前存储问题
+// 1.编写代码没有提示，因为TS的静态检测不知道是什么类型
+// 2.代码写错也不会报错，因为TS的静态检测不知道具体是什么类型
 
 // 泛型
 let getArray15 = <T>(value: T, items: number = 5): T[] => {

@@ -10,6 +10,7 @@ class Cache26<T>{
   }
 }
 
+// 指定必须传入number
 let cache26 = new Cache26<number>()
 cache26.add(1)
 cache26.add(3)

@@ -13,7 +13,9 @@
 
 abstract class Person24 {
   abstract name: string
+
   abstract say(): void
+
   eat(): void {
     console.log(this.name + '正在吃。。。');
   }
@@ -21,11 +23,12 @@ abstract class Person24 {
 
 class Student24 extends Person24 {
   name: string = 'yyb'
-  say():void {
+
+  say(): void {
     console.log('my name is ' + this.name);
   }
 }
 
-let  s24 = new Student24()
+let s24 = new Student24()
 s24.say()
 s24.eat()
