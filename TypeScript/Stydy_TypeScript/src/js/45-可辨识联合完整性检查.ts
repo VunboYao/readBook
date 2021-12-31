@@ -29,8 +29,17 @@
 
     type Shape = Square | Rectangle | Circle;
 
-    // @ts-ignore
-    function area(s: Shape) {
+
+    /*
+    * 在企业开发中如果相对可辨识联合的完整性进行检查，可以使用：
+    * 方式一：给函数添加返回值 + 开启 strictNullChecks
+    * 方式二： 添加default + never
+    * */
+    function MyNever(x: never): never {
+        throw new Error('可辨识联合处理不完整' + x)
+    }
+
+    function area1(s: Shape): number {
         switch (s.kind) {
             case "square":
                 return s.size * s.size;
@@ -38,6 +47,8 @@
                 return s.height * s.width;
             case "circle":
                 return Math.PI * s.radius ** 2;
+            default:
+                return MyNever(s)
         }
     }
 }

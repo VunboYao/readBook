@@ -44,7 +44,7 @@ function getArray(x: string): string[]
 // 实现函数的重载
 function getArray(value: any): any[] {
     if (typeof value === 'number') {
-        let arr = []
+        let arr:number[] = []
         for (let i = 0; i < value; i++) {
             arr.push(i)
         }

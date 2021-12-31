@@ -4,18 +4,21 @@
         public name: string
         public age: number
         public static age: number // 不比较静态成员
-        constructor(name:string,age:number) {
+        constructor(name: string, age: number) {
         }
     }
 
     class Animal {
         public name: string
-        constructor(name:string) {
+
+        constructor(name: string) {
         }
     }
-    let p:Person
-    let a:Animal
+
+    let p: Person
+    let a: Animal
     // p = a // error
+    // @ts-ignore
     a = p // 可多不可少
 }
 
@@ -31,8 +34,10 @@
         // protected name: string
         // private name: string
     }
-    let p:Person
-    let a:Animal
+
+    let p: Person
+    let a: Animal
+    // @ts-ignore
     p = a
     a = p
 }
