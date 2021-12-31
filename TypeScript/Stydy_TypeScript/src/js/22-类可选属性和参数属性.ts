@@ -1,19 +1,20 @@
-// 可选属性 todo: 在TS中如果定义了实例属性，那么就必须在构造函数中使用，否则就会报错
-/* class Person22 {
-  name: string
-  age: number
-  gender?: string // 可选属性
-  say(name: string, age: number, gender?: string) {
-    this.name = name
-    this.age = age
-    this.gender = gender
-  }
-} */
-
+// 可选属性
+{
+    class Person22 {
+        name: string
+        age: number
+        gender?: string // 可选属性
+        say(name: string, age: number, gender?: string) {
+            this.name = name
+            this.age = age
+            this.gender = gender
+        }
+    }
+}
 
 // 参数属性 todo:简化代码
-
-/* class Person22 {
+{
+    /* class Person22 {
   name: string
   age: number
   gender: string
@@ -24,11 +25,12 @@
   }
 } */
 
-// 简写
-class Person22 {
-  constructor(public name: string, public age: number, public gender: string) {
-  }
-}
+    // 简写
+    class Person22 {
+        constructor(public name: string, public age: number, public gender: string) {
+        }
+    }
 
-let p22 = new Person22('yao', 22, 'man')
-console.log(p22);
+    let p22 = new Person22('yao', 22, 'man')
+    console.log(p22);
+}

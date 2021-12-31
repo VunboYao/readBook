@@ -2,7 +2,7 @@
 {
     class Person {
         public name: string
-        // public age: number
+        public age: number
         public static age: number // 不比较静态成员
         constructor(name:string,age:number) {
         }
@@ -15,7 +15,7 @@
     }
     let p:Person
     let a:Animal
-    p = a
+    // p = a // error
     a = p // 可多不可少
 }
 

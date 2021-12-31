@@ -11,15 +11,18 @@ value = 'abc'
 value = true
 value = [1, 2, 3]
 
-// void类型: void于any正好相反，表示没有任何类型，一般用于函数返回值
+// void类型: void于any正好相反，表示没有任何类型，一般用于函数返回值(undefined或者null)
 // TODO：在TS中只有null和undefined可以赋值给void类型
 
 function test(): void {
-  console.log('hello')
+    console.log('hello')
+    return undefined
+    // return 12 // Error
 }
+
 test()
 
-// 定义了一个不可以保存任意类型数据的变量，只能保存null和undefined
+// TODO:定义了一个不可以保存任意类型数据的变量，只能保存null和undefined
 let demo: void
 // demo = 123 // error
 // demo = 'abc' // error
