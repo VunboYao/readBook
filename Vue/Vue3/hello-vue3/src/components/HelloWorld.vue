@@ -1,6 +1,9 @@
 <template>
   <div class="hello">
-    <h1>{{ msgTip }}</h1>
+    <input type="text" v-model="email">
+    <input type="text" v-model="password">
+    <button @click="submitForm(email, password)">submit</button>
+    <input type="text" :value="title" @input="emitValue">
   </div>
 </template>
 
@@ -8,8 +11,42 @@
 export default {
   name: 'HelloWorld',
   props: {
-    msgTip: String,
-    msg: String
+    title: String,
+    titleModifiers: { // arg + 'Modifiers'
+      default: () => {}
+    },
+    modelModifiers: { // 默认修饰符
+      default: () => ({})
+    }
+  },
+  data() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  emits: {
+    'update:title': null,
+    submit: ({email, password}) => {
+      if (email && password) {
+        return true
+      } else {
+        console.warn('Invalid submit event payload!')
+        return false
+      }
+    }
+  },
+  methods: {
+    emitValue(e) {
+      let value = e.target.value
+      if (this.titleModifiers.capitalize) {
+        value = value.charAt(0).toUpperCase() + value.slice(1)
+      }
+      this.$emit('update:title', value)
+    },
+    submitForm(email, password) {
+      this.$emit('submit', {email, password})
+    }
   }
 }
 </script>
