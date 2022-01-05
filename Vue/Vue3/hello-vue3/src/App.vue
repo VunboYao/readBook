@@ -1,11 +1,14 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <!--Props模版内能够驼峰或者横线-->
-  <h1>{{title}}</h1>
-  <HelloWorld
-      v-model:title.capitalize="title"
-      @submit="submit"
-  />
+  <div id="app">
+    <img alt="Vue logo" src="./assets/logo.png">
+    <!--Props模版内能够驼峰或者横线-->
+    <h1>{{ title }}</h1>
+    <HelloWorld
+        v-model:title.capitalize="title"
+        @submit="submit"
+        v-bind="obj"
+    />
+  </div>
 </template>
 
 <script>
@@ -18,7 +21,11 @@ export default {
   },
   data() {
     return {
-      title: 'Hello Vue3'
+      title: 'Hello Vue3',
+      obj: {
+        name: 'yyb',
+        age: 20
+      }
     }
   },
   methods: {
@@ -29,7 +36,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -37,5 +44,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+h1 {
+  color: red;
 }
 </style>

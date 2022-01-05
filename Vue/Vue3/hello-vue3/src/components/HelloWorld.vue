@@ -1,9 +1,11 @@
 <template>
   <div class="hello">
+    <h1>i am child</h1>
     <input type="text" v-model="email">
     <input type="text" v-model="password">
     <button @click="submitForm(email, password)">submit</button>
     <input type="text" :value="title" @input="emitValue">
+    <h2>{{ age }}-{{ name }}</h2>
   </div>
 </template>
 
@@ -11,9 +13,12 @@
 export default {
   name: 'HelloWorld',
   props: {
+    name: String,
+    age: Number,
     title: String,
     titleModifiers: { // arg + 'Modifiers'
-      default: () => {}
+      default: () => {
+      }
     },
     modelModifiers: { // 默认修饰符
       default: () => ({})
@@ -56,14 +61,17 @@ export default {
 h3 {
   margin: 40px 0 0;
 }
+
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
 }
+
 a {
   color: #42b983;
 }
