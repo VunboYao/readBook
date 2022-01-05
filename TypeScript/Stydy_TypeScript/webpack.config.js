@@ -17,7 +17,7 @@ module.exports = {
 	/*
 	* 配置sourcemap
 	* */
-	devtool: 'cheap-module-eval-source-map',
+	devtool: 'cheap-module-source-map',
 	/*
 	* mode: 打包模式
 	* */
@@ -42,12 +42,12 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js']
   },
-	watch: true,
-	watchOptions: {
-		ignored: /node_modules/,
-		aggregateTimeout: 300,
-		poll: 1000
-	},
+	// watch: true,
+	// watchOptions: {
+	// 	ignored: /node_modules/,
+	// 	aggregateTimeout: 300,
+	// 	poll: 1000
+	// },
 	module: {
     rules: [
       {

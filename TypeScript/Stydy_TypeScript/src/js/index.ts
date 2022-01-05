@@ -1,5 +1,5 @@
-// import './01-基础数据类型'
-// import './02-数组和元祖类型'
+import './01-基础数据类型'
+import './02-数组和元祖类型'
 // import './03-枚举类型'
 // import './04-any-void类型'
 // import './05-Never和Object类型'
@@ -42,4 +42,5 @@
 // import './43-字面量类型'
 // import './44-可辨识联合'
 // import './45-可辨识联合完整性检查'
-import './46-索引类型'
+// import './46-索引类型'
+
