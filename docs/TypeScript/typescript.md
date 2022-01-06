@@ -226,7 +226,7 @@ let str = 'str' as const;
 const readOnlyArr = [0, 1] as const;
 ```
 
-4. 非空断言：值后边添加`‘！’`断言操作符。排除值为null、undefined的情况。
+4. 方式四：非空断言：值后边添加`‘！’`断言操作符。排除值为null、undefined的情况。
    1. 建议使用“类型守卫“代替非空断言
 
 企业中使用第二种，当你在 TypeScript 里使用 JSX 时，只有 as 语法断言是被允许的。**
