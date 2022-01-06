@@ -114,8 +114,8 @@ value = [1, 2, 3]
 2. void 类型
 
 - void 与 any 正好相反，表示没有任何类型，一般用于函数返回值
-- 在 TS 中只有 null 和 undefined 可以赋值给 void 类型
-- null 和 undefined 是所有类型的子类型，所以可以将 null 和 undefined 赋值给任意类型
+- **在 TS 中只有 null 和 undefined 可以赋值给 void 类型**
+- **null 和 undefined 是所有类型的子类型，所以可以将 null 和 undefined 赋值给任意类型**
 
 ```typescript
 // 无返回值函数。默认返回undefined
@@ -133,7 +133,7 @@ variable = null
 
 ## unknown
 
-与 any 不同的是，unknown 在类型上更安全。比如我们可以将任意类型的值赋值给 unknown，但 unknown 类型的值只能赋值给 unknown 或 any
+与 any 不同的是，unknown 在类型上更安全。比如我们可以将任意类型的值赋值给 unknown，**但 unknown 类型的值只能赋值给 unknown 或 any**
 
 ```typescript
 let result: unknown;
@@ -141,9 +141,38 @@ let num: number = result; // 提示 ts(2322)
 let anything: any = result; // 不会提示错误
 ```
 
+- 使用 unknown 后， TS 会对它做类型检测。但是，如果不缩小（Type Narrowing)，我们对 unknown 执行的任何操作都会出现如下错误
+
+  ```typescript
+  let result:unknown
+  result.toFixed() // error: ts(2571)
+  ```
+
+- 所有类型的缩小手段对 unknown 都有效
+
 ## never 类型与 object 类型
 
 never 类型表示的是那些永不存在的值的类型;一般用于抛出异常或根本不可能有返回值的函数
+
+- never是所有类型的子类型，可以给所有类型赋值
+
+- 反过来，除了 never 自身以外，其他类型（包括 any 在内的类型）都不能为 never 类型赋值
+
+- 在恒为false的类型守卫条件判断下，变量的类型将缩小为never
+
+- 基于never的特性，可以使用never实现一些有意思的功能。如可以把never作为接口类型下的属性类型，用来禁止写接口下特定的属性
+
+  ```typescript
+  const props: {
+    id: number
+    name?: never
+  } = {
+    id: 1
+  }
+  props.name = null // ts(2322))
+  props.name = 'str' // ts(2322)
+  props.name = 1 // ts(2322)
+  ```
 
 ```typescript
 function Yao(): never {
@@ -188,7 +217,38 @@ let str: any = 'VunboYao'
 let len: number = (str as string).length
 ```
 
-**企业中使用第二种，当你在 TypeScript 里使用 JSX 时，只有 as 语法断言是被允许的。**
+3. 方式三: 常量断言
+
+```typescript
+/** str 类型是 '"str"' */
+let str = 'str' as const;
+/** readOnlyArr 类型是 'readonly [0, 1]' */
+const readOnlyArr = [0, 1] as const;
+```
+
+4. 非空断言：值后边添加`‘！’`断言操作符。排除值为null、undefined的情况。
+   1. 建议使用“类型守卫“代替非空断言
+
+企业中使用第二种，当你在 TypeScript 里使用 JSX 时，只有 as 语法断言是被允许的。**
+
+- 不建议随意使用非空断言来排除可能为null或undefined的情况
+
+  ```typescript
+  userInfo.id!.toFixed()
+  userInfo.name!.toLowerCase()
+  ```
+
+- **建议使用单问号(Optional Chain)，双问号（空值合并）,保障代码的安全性**
+
+  ```typescript
+  userInfo.id?.toFixed() // Optional Chain
+  const myName = userInfo.name ?? `my name is ${userInfo.name}` // 空值合并
+  ```
+
+# 空值合并
+
+- `??`是一个逻辑操作符，当左侧的操作数为null和undefined时，返回右侧操作数。否则返回左侧操作数
+- 与逻辑或`||`不同，逻辑或会在左侧为**假值**时返回右侧操作数。
 
 # 接口
 
