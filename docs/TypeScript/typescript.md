@@ -5,6 +5,7 @@
 - `let val:number`, 定义 number 类型
 - `let val2:boolean`, 定义 boolean 类型
 - `let val3:string`, 定义 string 类型
+- **number和bigint都表示数字，但是这两个类型不兼容**
 
 ## 数组和元素类型
 
