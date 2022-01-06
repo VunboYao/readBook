@@ -44,7 +44,7 @@ function getArray(x: string): string[]
 // 实现函数的重载
 function getArray(value: any): any[] {
     if (typeof value === 'number') {
-        let arr:number[] = []
+        let arr: number[] = []
         for (let i = 0; i < value; i++) {
             arr.push(i)
         }
@@ -56,3 +56,5 @@ function getArray(value: any): any[] {
 
 console.log(`getArray(10)`, getArray(10))
 console.log(`getArray`, getArray('Vunbo'))
+
+export {}

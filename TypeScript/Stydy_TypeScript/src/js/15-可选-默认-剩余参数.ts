@@ -19,3 +19,8 @@ function addF15(x: number, y: number, z?: number): number {
 console.log('函数重载配合可选参数', addF15(1, 2, 3))
 
 // TODO:可选参数后面只能跟可选参数
+
+function sum(...nums: number[]) {
+  console.log(nums)
+}
+sum(30,202,20)
