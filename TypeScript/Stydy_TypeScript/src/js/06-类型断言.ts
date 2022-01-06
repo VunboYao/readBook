@@ -16,3 +16,14 @@ console.log(len)
 // 第一种在使用到了JSX的时候存在兼容性问题
 let len2 = (str as string).padStart(6, '0')
 console.log(len2)
+
+{
+    // todo：非空类型断言
+    function printMsgLen(msg?: string) {
+        console.log(msg!.length) // todo:非空类型断言。不可能为null和undefined
+    }
+
+    printMsgLen('hello world')
+    printMsgLen('')
+    printMsgLen() // 空值传入会报错
+}

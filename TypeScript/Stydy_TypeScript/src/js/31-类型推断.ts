@@ -6,9 +6,9 @@
 // todo:1.根据初始值自动推断
 // 如果是先定义再初始化，那么是无法自动推断的
 let value31
-value = 123
-value = false
-value = 'abc'
+value31 = 123
+value31 = false
+value31 = 'abc'
 
 // todo: 如果是定义的同时初始化，那么TS就会自动进行类型推荐
 let value311 = 123 // let value311:number = 123

@@ -52,7 +52,17 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use:[
+					// {
+					// 	loader: 'ts-loader'
+					// },
+					{
+						loader: 'babel-loader',
+						options:{
+							presets:  ['@babel/preset-env', "@babel/preset-typescript"]
+						}
+					}
+				],
         exclude: /node_modules/
       }
     ]

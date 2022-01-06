@@ -61,4 +61,22 @@
     } else {
         console.log(obj.age)
     }
+
+    /*
+    * todo: in 操作符
+    * */
+    type Fish = {
+        swim: () => void
+    }
+    type Dog = {
+        running: () => void
+    }
+
+    function walk(animal: Fish | Dog) {
+        if ('swim' in animal) {
+            animal.swim()
+        } else {
+            animal.running()
+        }
+    }
 }
