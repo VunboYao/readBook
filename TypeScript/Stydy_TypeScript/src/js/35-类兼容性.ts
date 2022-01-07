@@ -5,6 +5,8 @@
         public age: number
         public static age: number // 不比较静态成员
         constructor(name: string, age: number) {
+            this.name = name
+            this.age = age
         }
     }
 
@@ -12,6 +14,7 @@
         public name: string
 
         constructor(name: string) {
+            this.name = name
         }
     }
 
