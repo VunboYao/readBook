@@ -73,6 +73,12 @@ export default {
     TodoButton,
     ScopedSlot
   },
+  provide() {
+    console.log(this)
+    return {
+      len: this.title
+    }
+  },
   data() {
     return {
       title: 'Hello Vue3',
