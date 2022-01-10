@@ -8,6 +8,7 @@
         @submit="submit"
         v-bind="obj"
     />
+    <hr>
     <TodoButton>
       <template v-slot:header>
         <h1>Here might be a page title</h1>
@@ -58,6 +59,11 @@
     <ScopedSlot #default="{item}">
       <h2>{{ item }}</h2>
     </ScopedSlot>
+    <hr>
+    <AnimationDemo/>
+    <hr>
+    <button v-on:click="ChangeTitle">ChangeTitle</button>
+    <SetupDemo :title="title"/>
   </div>
 </template>
 
@@ -65,13 +71,17 @@
 import HelloWorld from './components/HelloWorld.vue'
 import TodoButton from './components/slot'
 import ScopedSlot from "@/components/scopedSlot"
+import AnimationDemo from '@/components/animation.vue'
+import SetupDemo from "@/components/setup"
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
     TodoButton,
-    ScopedSlot
+    ScopedSlot,
+    AnimationDemo,
+    SetupDemo
   },
   provide() {
     console.log(this)
@@ -97,6 +107,12 @@ export default {
     }
   },
   methods: {
+    changeTitle() {
+      console.log(this)
+      console.log(this.title)
+      this.title += '1'
+      console.log(this.title)
+    },
     submit(payload) {
       console.log(payload)
     }

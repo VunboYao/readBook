@@ -14,13 +14,10 @@
 
 <script>
 export default {
-  name: "slot",
+  name: "slotDemo",
   data() {
     return {}
-  },
-  mounted() {
-  },
-  methods: {}
+  }
 }
 </script>
 
