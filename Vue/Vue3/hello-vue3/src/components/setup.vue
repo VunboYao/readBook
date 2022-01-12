@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import {ref, reactive, toRefs, computed} from 'vue'
+import {ref, reactive, toRefs, computed, watch} from 'vue'
 export default {
   name: "setup",
   props: {
@@ -33,6 +33,10 @@ export default {
       console.log(number)
       counter.value++
     }
+
+    watch(counter, (newValue,old) => {
+      console.log(newValue, old, '><><><><><><>>>><><M><M><M<>M><M><<>')
+    })
 
     const doubleNumber = computed({
       get() {
