@@ -1,52 +1,57 @@
 <template>
-  <div>
-    <ul>
-      <li v-for="item in counter" :key="item">{{ item }}</li>
-    </ul>
-    <button @click="number++">{{ title }}</button>
-  </div>
+  <h1>{{ title }} {{counter}}</h1>
+  <h2>reactive:{{number}}</h2>
+  <h2>{{doubleNumber}}</h2>
+  <button @click="add">Add</button>
+  <button @click="doubleNumber = doubleNumber - 1">double</button>
 </template>
 
 <script>
-import {ref, onMounted, watch, computed, toRefs  } from 'vue'
-
-function demoAdd() {
-  const fruits = ['apple', 'banners']
-  const counter = ref(fruits)
-  const number = ref(0)
-  const twiceTheCounter = computed(() => number.value * 2)
-  console.log(twiceTheCounter, 'computed')
-
-  onMounted(() => {
-    console.log(counter)
-  })
-  watch(number, (newVal, oldVal) => {
-    console.log(newVal, oldVal, 'the new number')
-  })
-
-  return {
-    counter,
-    number
-  }
-}
+import {ref, reactive, toRefs, computed, watch} from 'vue'
 export default {
   name: "setup",
   props: {
     title: {
       type: String,
-      default: '123'
+      required: true
     }
   },
-  mounted() {
-    console.log(this.number, this.counter)
+  created() {
+    console.log(this.counter)
   },
-  setup(props) {
-    console.log(props)
-    const {title} = toRefs(props)
-    console.log(title.value)
-    const {number, counter} = demoAdd()
+  setup() {
+    let counter = ref(100)
+    let state = reactive({
+      number: 10
+    })
+    let {number} = toRefs(state)
+    /*const info = {name: 'yyb'}
+    const readOnlyInfo1 = readonly(info)*/
+    const add = () => {
+      state.number++
+      number.value++
+      console.log(number)
+      counter.value++
+    }
+
+    watch(counter, (newValue,old) => {
+      console.log(newValue, old, '><><><><><><>>>><><M><M><M<>M><M><<>')
+    })
+
+    const doubleNumber = computed({
+      get() {
+        return counter.value * 2
+      },
+      set(val) {
+        counter.value = val - 1
+        console.log(counter.value)
+      }
+    })
     return {
-      number, counter
+      counter,
+      number,
+      add,
+      doubleNumber
     }
   }
 }
