@@ -1,6 +1,12 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <SetupDemo
+        :title="title2"
+        />
+    <hr>
+    <MixinCom/>
+    <ExtendsHome/>
+    <hr>
     <!--Props模版内能够驼峰或者横线-->
     <h1>{{ title }}</h1>
     <HelloWorld
@@ -63,7 +69,6 @@
     <AnimationDemo/>
     <hr>
     <button v-on:click="ChangeTitle">ChangeTitle</button>
-    <SetupDemo :title="title"/>
   </div>
 </template>
 
@@ -73,6 +78,8 @@ import TodoButton from './components/slot'
 import ScopedSlot from "@/components/scopedSlot"
 import AnimationDemo from '@/components/animation.vue'
 import SetupDemo from "@/components/setup"
+import MixinCom from '@/components/mixin'
+import home from "@/components/extends/home"
 
 export default {
   name: 'App',
@@ -81,7 +88,9 @@ export default {
     TodoButton,
     ScopedSlot,
     AnimationDemo,
-    SetupDemo
+    SetupDemo,
+    MixinCom,
+    ExtendsHome: home
   },
   provide() {
     console.log(this)
@@ -91,7 +100,8 @@ export default {
   },
   data() {
     return {
-      title: 'Hello Vue3',
+      title2: 'Hello Vue3 CompositionAPI',
+      title: 'hello',
       obj: {
         name: 'yyb',
         age: 20
@@ -125,7 +135,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }
