@@ -569,6 +569,82 @@ function add15(x:number, y:number=30, z?: number): number {
 console.log(add15(10))
 ```
 
+# 类型别名
+
+`type 别名名字 = 类型定义`
+
+## interface 与 type 的区别
+
+- 重复定义的接口类型，会叠加。别名不可以
+- 接口类型只能声明对象, 类型别名可以声明元组、联合类型、交叉类型、原始类型，对象等。
+- **索引签名**
+  - interface：虽然属性可以与索引签名进行混用，但是属性的类型必须是对应的数字索引或字符串索引的类型的子集，否则会出现错误提示
+
+## 联合类型
+
+- 通过“｜”操作符分隔类型的语法表示联合类型。
+
+- 将原始类型string和“string"字面量类型组合成一个联合类型，会类型缩减为原始类型string
+
+## 交叉类型
+
+- 多个类型合并成一个类型，合并后的类型将拥有所有成员类型的特性
+- **原始类型、字面量类型、函数类型等原子类型合并成交叉类型，是没有任何用处的。因为任何类型都不能满足同时属于多种原子类型，比如既是 string 类型又是 number 类型。最终为 never**
+
+## 合并接口类型
+
+> 等同接口继承的效果。{} & {}
+
+- 如果同名属性的类型不兼容，number 和 string 两个原子类型的交叉类型，即 never
+- 如果同名属性的类型兼容，一个是number，一个是 number 的子类型、数字字面量类型，合并后的类型就是两者中的子类型
+
+## 类型缩减
+
+如果将 string 原始类型和“string字面量类型”组合成联合类型会是什么效果？效果就是类型缩减成 string 了
+
+- TypeScript 对这样的场景做了缩减，它把字面量类型、枚举成员类型缩减掉，只保留原始类型、枚举类型等父类型，这是合理的“优化”
+
+  - 可是这个缩减，却极大地削弱了 IDE 自动提示的能力，如下代码所示
+
+    ```typescript
+    type BorderColor = 'black' | 'red' | 'green' | 'yellow' | 'blue' | string; // 类型缩减成 string
+    
+    // 需要给父类型添加“& {}”
+    type BorderColor = 'black' | 'red' | 'green' | 'yellow' | 'blue' | string & {}; // 字面类型都被保留
+    ```
+
+- 如何定义如下所示 age 属性是数字类型，而其他不确定的属性是字符串类型的数据结构对象？
+
+  - ```typescript
+    {
+      age: 1, // 数字类型
+      anyProperty: 'str' // 其他不确定的属性都是字符串类型
+      ...
+    }
+    ```
+
+  - **用到两个接口的联合类型及类型缩减，这个问题的核心在于找到一个既是 number 的子类型，这样 age 类型缩减之后的类型就是 number；同时也是 string 的子类型，这样才能满足属性和 string 索引类型的约束关系**
+
+    - *never 有一个特性是它是所有类型的子类型，自然也是 number 和 string 的子类型，所有如下所示：*
+
+    - ```typescript
+      type UnionInterface = {
+        age: number
+      } | {
+        [key:string]: string 
+        // 因为 never 同时又是 string 类型的子类型，所以 age 属性的类型和字符串索引签名类型不冲突
+        age: never 
+        // 等价于 age 属性的类型是由 number 和 never 类型组成的联合类型
+      }
+      
+      let person:UnionInterface = {
+        age: 12,
+        string: 'string'
+      }
+      ```
+
+      
+
 # 泛型
 
 定义一个数组，固定长度，可用任意值填充
