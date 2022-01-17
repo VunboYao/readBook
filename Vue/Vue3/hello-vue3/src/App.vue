@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+    <JSXDemo/>
+    <hr>
+    <render/>
+    <hr>
     <SetupDemo
         :title="title2"
         />
@@ -80,6 +84,8 @@ import AnimationDemo from '@/components/animation.vue'
 import SetupDemo from "@/components/setup"
 import MixinCom from '@/components/mixin'
 import home from "@/components/extends/home"
+import render from "@/components/render"
+import JSXDemo from "@/components/JSXDemo"
 
 export default {
   name: 'App',
@@ -90,7 +96,9 @@ export default {
     AnimationDemo,
     SetupDemo,
     MixinCom,
-    ExtendsHome: home
+    ExtendsHome: home,
+    render,
+    JSXDemo
   },
   provide() {
     console.log(this)

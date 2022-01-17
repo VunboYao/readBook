@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import {ref, reactive, toRefs, computed, watch} from 'vue'
+import {ref, reactive, toRefs, computed, watch, onMounted, onBeforeMount} from 'vue'
 export default {
   name: "setup",
   props: {
@@ -20,6 +20,12 @@ export default {
     console.log(this.counter)
   },
   setup() {
+    onBeforeMount(() => {
+      console.log('beforeMounted')
+    })
+    onMounted(() => {
+      console.log('onMounted1')
+    })
     let counter = ref(100)
     let state = reactive({
       number: 10
