@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <Directive/>
+    <hr>
     <JSXDemo/>
     <hr>
     <render/>
@@ -86,7 +88,7 @@ import MixinCom from '@/components/mixin'
 import home from "@/components/extends/home"
 import render from "@/components/render"
 import JSXDemo from "@/components/JSXDemo"
-
+import directive from "@/components/directive"
 export default {
   name: 'App',
   components: {
@@ -98,7 +100,8 @@ export default {
     MixinCom,
     ExtendsHome: home,
     render,
-    JSXDemo
+    JSXDemo,
+    Directive: directive
   },
   provide() {
     console.log(this)
