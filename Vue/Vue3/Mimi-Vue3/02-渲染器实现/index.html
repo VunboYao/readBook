@@ -9,7 +9,7 @@
 <script src="./renderer.js"></script>
 <script>
 	// 1.通过h函数创建一个vnode
-	const vnode = h('div', {class: 'yyb'}, [
+	const vnode = h('div', {class: 'yyb', id: 'aaa'}, [
 		h('h2', null, 'HEllo vue3'),
 		h('button', {
 			onClick: () => {
@@ -19,6 +19,12 @@
 	])
 	// 2.通过mount函数，将vnode挂载到app上
 	mount(vnode, document.querySelector('#app'))
+
+	// 3.新旧节点比对
+	const vnode1 = h('div', {class: 'vunbo', id: 'bbb'}, 'hello oldNode')
+	setTimeout(()=> {
+		patch(vnode, vnode1)
+	}, 2000)
 </script>
 </body>
 </html>
