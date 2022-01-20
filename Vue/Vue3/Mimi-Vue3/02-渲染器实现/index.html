@@ -9,7 +9,7 @@
 <script src="./renderer.js"></script>
 <script>
 	// 1.通过h函数创建一个vnode
-	const vnode = h('div', {class: 'yyb', id: 'aaa'}, [
+	const vnode = h('div', {class: 'yyb', id: 'aaa', other: 'demo'}, [
 		h('h2', null, 'HEllo vue3'),
 		h('button', {
 			onClick: () => {

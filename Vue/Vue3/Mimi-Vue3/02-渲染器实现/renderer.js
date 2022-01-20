@@ -55,7 +55,6 @@ const patch = (n1, n2) => {
     for (let key in newProps) {
       const oldValue = oldProps[key]
       const newValue = newProps[key]
-			console.log(oldValue, newValue);
       if (newValue !== oldValue) {
         if (key.startsWith('on')) {
           el.addEventListener(key.slice(2).toLowerCase(), newValue)
