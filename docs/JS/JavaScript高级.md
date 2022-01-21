@@ -13,10 +13,15 @@
    6. MachineCode 优化的机器码
    7. deoptimization => bytecode
    8. 运行结果
-
-4. 执行上下文栈：ECS
-5. 全局执行栈：GEC
-6. 函数执行上下文：FEC
+4. 执行上下文栈：**ECS（Execution Context Stack)**， 执行代码的调用栈
+5. 全局执行栈：**GEC (Global Execution Context)**
+   1. GEC会被放到ECS中执行
+   2. GEC被放到ECS里面包含两部分内容：执行前代码VO（变量提升）
+   3. 代码执行
+6. 函数执行上下文：**FEC(Functional Execution Context)**
+   1. **AO(Action Object)**: 包含形参、arguments、函数定义和指向函数对象、定义的变量
+   2. **作用域链(Scope Chain)**：**由 VO和父级VO(ParentScope)组成**
+   3. **thisValue**
 7. 作用域链：VO（在函数中就是AO）和父级VO组成，查找时会一层层查找。
    1. 新的ECMA标准中，VO称呼变为VE（VariableEnvironment）
 

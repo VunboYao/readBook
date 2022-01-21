@@ -1,21 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>个人简历</title>
-    <!-- <script src="./index.js"></script> -->
-    <!-- <script src="./023-Map.js"></script> -->
-  </head>
-  <div class="x" name="123" disabled="true">
-    <h2 class="title">123</h2>
-    <label for="name">你好<input id="name" value="123"/></label>
-  </div>
-  <script src="./024-DOM.js"></script>
-  <script src="./025-Proxy响应式.js"></script>
-  <script src="./026-Promise.js"></script>
-  <script src="./030-esModule.js" type="module"></script>
-  <!-- <body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>个人简历</title>
+		<!-- <script src="./index.js"></script> -->
+		<!-- <script src="./023-Map.js"></script> -->
+		<style>
+			.box::after {
+				content: '';
+				display: table;
+				clear: both;
+			}
+			.left {
+				width: 300px;
+				height: 200px;
+				float: left;
+				background-color: tomato;
+			}
+			.center {
+				float: left;
+				width: calc(100% - 400px);
+				height: 400px;
+				background-color: darkcyan;
+			}
+			.right {
+				width: 100px;
+				height: 200px;
+				float: right;
+				background-color: darkblue;
+			}
+		</style>
+	</head>
+	<div class="box">
+		<div class="left">1</div>
+		<div class="center"></div>
+		<div class="right">2</div>
+	</div>
+	<div class="x" name="123" disabled="true">
+		<h2 class="title">123</h2>
+		<label for="name">你好<input id="name" value="123" /></label>
+	</div>
+	<script src="./024-DOM.js"></script>
+	<script src="./025-Proxy响应式.js"></script>
+	<script src="./026-Promise.js"></script>
+	<script src="./030-esModule.js" type="module"></script>
+	<!-- <body>
   <section>
     <h1>个人信息</h1>
     <div style='display: flex; align-items: center;border-radius: 6px; background: #eee;padding: 14px;'>
