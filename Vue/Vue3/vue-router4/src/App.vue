@@ -4,7 +4,7 @@
   <div>
     <router-link to="/home">Home</router-link>|
     <router-link to="/about" active-class="coder-yyb">About</router-link>|
-    <router-link to="/user/Vunbo/id/001" active-class="coder-yyb">动态路由参数</router-link>|
+    <router-link to="/user/vunbo/id/123" active-class="coder-yyb">动态路由参数</router-link>|
     <router-link to="/123" active-class="coder-yyb">/:pathMatch(.*)</router-link>|
     <button @click="program">编程式跳转到About</button>|
     <router-link to="/home" v-slot="{navigate}" custom>
@@ -12,8 +12,9 @@
       <span @click="navigate">navigate</span>
     </router-link>
   </div>
+<!--  <router-view></router-view>-->
   <router-view v-slot="{Component}">
-    <transition name="yyb" mode="out-in">
+    <transition name="yyb" mode="in-out">
       <keep-alive>
         <component :is="Component"></component>
       </keep-alive>
