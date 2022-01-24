@@ -1,11 +1,12 @@
 <template>
-<h2>About</h2>
-  <h3>query参数: {{this.$route.query.name}}</h3>
+<h2>Page Not Found</h2>
+  <p>404</p>
+  <h2>错误地址：{{this.$route.params.pathMatch}}</h2>
 </template>
 
 <script>
 export default {
-  name: "About",
+  name: "NotFound",
   data() {
     return {}
   },

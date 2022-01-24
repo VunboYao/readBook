@@ -1,11 +1,10 @@
 <template>
-<h2>About</h2>
-  <h3>query参数: {{this.$route.query.name}}</h3>
+<h2>Home的二级路由页面，Message。通过路由重定向，{path: '', redirect: '/home/msg'}</h2>
 </template>
 
 <script>
 export default {
-  name: "About",
+  name: "Message",
   data() {
     return {}
   },
