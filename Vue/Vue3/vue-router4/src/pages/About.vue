@@ -1,6 +1,8 @@
 <template>
-<h2>About</h2>
+<div>
+  <h2>About</h2>
   <h3>query参数: {{this.$route.query.name}}</h3>
+</div>
 </template>
 
 <script>

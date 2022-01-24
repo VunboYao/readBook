@@ -1,7 +1,9 @@
 <template>
-<h2>Page Not Found</h2>
+<div>
+  <h2>Page Not Found</h2>
   <p>404</p>
   <h2>错误地址：{{this.$route.params.pathMatch}}</h2>
+</div>
 </template>
 
 <script>
