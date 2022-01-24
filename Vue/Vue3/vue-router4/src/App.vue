@@ -10,11 +10,12 @@
     <router-link to="/home" v-slot="{navigate}" custom>
       <button @click="navigate">slot自定义link</button>
       <span @click="navigate">navigate</span>
-    </router-link>
+    </router-link>|
+    <router-link to="/category">Category</router-link>
   </div>
 <!--  <router-view></router-view>-->
   <router-view v-slot="{Component}">
-    <transition name="yyb" mode="in-out">
+    <transition name="yyb" mode="out-in">
       <keep-alive>
         <component :is="Component"></component>
       </keep-alive>

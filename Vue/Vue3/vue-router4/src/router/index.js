@@ -41,7 +41,20 @@ const routes = [
 	}
 ]
 
-export default createRouter({
+const router = createRouter({
 	routes,
 	history: createWebHashHistory()
 })
+const DynamicRoutes = {
+	path: '/category',
+	component: () => import('@/pages/Category')
+}
+
+router.addRoute(DynamicRoutes)
+
+router.addRoute('home', {
+	path: 'homeSub',
+	component:() => import('@/pages/HomeSub')
+})
+
+export default router

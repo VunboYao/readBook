@@ -34,7 +34,7 @@ export default new VueRouter({
         name: 'subUser',
         component: subUser
       }, {
-        path: 'foobar/:id',
+        path: 'foobar/:id/name/:name',
         name: 'Common',
         component: Common,
         props: true

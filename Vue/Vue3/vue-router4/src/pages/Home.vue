@@ -3,7 +3,8 @@
     <h2>Home</h2>
     <hr>
     <router-link to="/home/msg">Message</router-link>|
-    <router-link to="/home/product">Product</router-link>
+    <router-link to="/home/product">Product</router-link>|
+    <router-link to="/home/homeSub">homeSub</router-link>
     <router-view></router-view>
   </div>
 </template>
