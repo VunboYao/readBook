@@ -36,6 +36,11 @@ const routes = [
 		component: () => import('@/pages/User')
 	},
 	{
+		path: '/login',
+		name: 'login',
+		component: () => import('@/pages/login')
+	},
+	{
 		path: '/:pathMatch(.*)*', // 最后加“*”,会被分割成数组
 		component: () => import('@/pages/NotFound')
 	}
@@ -57,4 +62,12 @@ router.addRoute('home', {
 	component:() => import('@/pages/HomeSub')
 })
 
+router.beforeEach((to) => {
+	const token = window.localStorage.getItem('token')
+	if (to.path !== '/login') {
+		if (!token) {
+			return '/login'
+		}
+	}
+})
 export default router

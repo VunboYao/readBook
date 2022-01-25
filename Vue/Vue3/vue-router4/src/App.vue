@@ -11,7 +11,8 @@
       <button @click="navigate">slot自定义link</button>
       <span @click="navigate">navigate</span>
     </router-link>|
-    <router-link to="/category">Category</router-link>
+    <router-link to="/category">Category</router-link>|
+    <router-link to="/login">Login</router-link>
   </div>
 <!--  <router-view></router-view>-->
   <router-view v-slot="{Component}">
