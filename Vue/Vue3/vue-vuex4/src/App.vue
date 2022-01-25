@@ -1,15 +1,18 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld />
+  <Mutations/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld3.vue'
+import HelloWorld from './components/03-mapState_useState'
+import Mutations from './components/04-mutations'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HelloWorld,
+    Mutations
   },
 }
 </script>
