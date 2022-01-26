@@ -5,6 +5,7 @@
   <h2>{{age}}</h2>
   <button @click="change">change</button>
   <HelloWorld />
+  <Mutations/>
 </template>
 
 <script>

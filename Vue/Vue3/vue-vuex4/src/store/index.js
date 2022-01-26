@@ -9,11 +9,11 @@ const store = createStore({
 		}
 	},
 	mutations: {
-		add(state) {
-			state.count++
+		add(state, payload = 1) {
+			state.count+= payload
 		},
-		down(state) {
-			state.count--
+		down(state, payload = 1) {
+			state.count-= payload
 		}
 	}
 })

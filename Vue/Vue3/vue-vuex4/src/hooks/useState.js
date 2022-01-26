@@ -1,14 +1,13 @@
-import {mapState, useStore} from "vuex"
-import {computed} from "vue"
+import {mapState,createNamespacedHelpers} from "vuex"
+import {useMapper} from "@/hooks/useMapper";
 
-export function useState(mapper) {
-	const store = useStore()
-	// 获取到对应的对象的functions: {name: function, age: function}
-	const storeStateFns = mapState(mapper)
-	const newState = {}
-	Object.keys(storeStateFns).forEach(fnKey => {
-		const fn = storeStateFns[fnKey].bind({$store: store})
-		newState[fnKey] = computed(fn)
-	})
-	return newState
+export function useState(moduleName, mapper) {
+	let mapperFn = mapState
+	if (typeof moduleName === 'string' && moduleName.length > 0) {
+		mapperFn = createNamespacedHelpers(moduleName).mapState
+	} else {
+		mapper = moduleName
+	}
+	return useMapper(mapper, mapperFn)
 }
+
