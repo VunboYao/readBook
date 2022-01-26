@@ -1,14 +1,16 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <cus-com v-model:title.capitalize="reverseTitle" />
-  <h2>reverse: {{reverseTitle}}</h2>
+  <cus-com v-model:title.capitalize="reverseTitle.name" />
+  <h2>reverse: {{reverseTitle.name}}</h2>
+  <h2>{{age}}</h2>
+  <button @click="change">change</button>
   <HelloWorld />
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld3.vue'
 import CusCom from './components/customCom.vue'
-import { ref } from 'vue';
+import { reactive, ref, toRef } from 'vue';
 
 
 export default {
@@ -18,10 +20,19 @@ export default {
     CusCom
   },
   setup() {
-    const title = ref('Hello World')
-    const reverseTitle = ref('some')
+    const reverseTitle = ref({name: 'some'})
+    const state = reactive({
+      name: 'why',
+      age: 18
+    })
+    let age = toRef(state, 'age')
+    const change = () => {
+      state.age = 22
+      // age.value = 'Hello'
+    }
     return {
-      title,
+      age,
+      change,
       reverseTitle
     }
   }
