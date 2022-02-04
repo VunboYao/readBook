@@ -38,7 +38,7 @@ ReactDOM.render(VDOM, document.getElementById('APP'), [回调函数])
 4. 内联样式，要用 `style=\{\{key:value\}\}` 的形式去写
 5. 只有一个根标签。
    1. 代码片段元素**`<React.Fragment key={item.id}></React.Fragment>`， 目前唯一支持 key 属性**
-   2. 短语法：**`<></>`, 但不支持 key 或属性**
+   2. 短语法：**`<></>`, 但不支持 key 属性**
 6. 标签必须闭合或者自闭合
 7. 标签首字母
    1. 若小写字母开头，则将该标签转为 html 中同名元素。若 html 中无该标签对应的同名元素，则报错
