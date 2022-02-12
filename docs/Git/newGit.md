@@ -308,3 +308,5 @@ git ci
   - 解决方式：`git pull origin <branchName> --allow-unrelated-histories`
 
 # rebase的使用
+
+- git rebase 使用注意点
