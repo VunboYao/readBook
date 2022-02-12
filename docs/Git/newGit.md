@@ -306,3 +306,6 @@ git ci
 - `git init --bare`： 建立一个空壳 GIT 仓库，禁止`add, commit`
 - 合并分支遇见`fatal: refusing to merge unrelated histories`
   - 解决方式：`git pull origin <branchName> --allow-unrelated-histories`
+
+
+- git rebase 使用注意点
