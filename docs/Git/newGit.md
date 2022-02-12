@@ -312,3 +312,4 @@ git ci
 - git rebase 使用注意点
 - git checkout demo, 切换到测试分支
 - git rebase master, 变基应用
+- git checkout master，返回master
