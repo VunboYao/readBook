@@ -310,3 +310,4 @@ git ci
 # rebase的使用
 
 - git rebase 使用注意点
+- git checkout demo, 切换到测试分支
