@@ -3,21 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-<!--  <script src="./001-02.js"></script>-->
-  <script src="003-防抖debounce&节流throttle.js"></script>
+  <script src="./006-手写call-a.js"></script>
 </head>
 <body>
-<!--防抖函数-->
-<input type="text" id="input">
-<script>
-  let count = 0
-  let handle = function (e) {
-    console.log(`第${++count}调用输入监听`, this, e)
-  }
-  input.oninput = throttle(handle, 2000, {
-		leading: true,
-    trailing: true
-  })
-</script>
 </body>
 </html>
