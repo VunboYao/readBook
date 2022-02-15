@@ -11,9 +11,9 @@ setTimeout(() => {
 }, 1000)
 
 // 测试exports导出
-exports.name = name
+/* exports.name = name
 exports.age = age
-exports.sayHello = sayHello
+exports.sayHello = sayHello */
 
 // TODO: exports默认是一个空对象。
 
@@ -21,6 +21,7 @@ exports.sayHello = sayHello
 setTimeout(() => {
 	console.log(module.exports.name, '>>')
 }, 3000)
+console.log(module)
 
 // module.exports导出
 module.exports = {
