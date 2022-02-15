@@ -9,7 +9,7 @@
 # module.exports
 
 - CommonJS 中没有 module.exports
-- 本质上是 module.exports 在导出
+- NodeJS 本质上是 module.exports 在导出
 - module.exports = exports
 - 若 module.exports = {}， 则 module.exports 不再引用 exports.
 - exports 的意义是 NodeJS 实现 CommonJS 规范
@@ -18,7 +18,7 @@
 
 ## require
 
-- NodeJS 中 require 方法的加载过程是同步的（服务器同一个目录，没啥影响）
+- NodeJS 中 require 方法的加载过程是同步的（性能：服务器同一个目录，没啥影响）
 - require 本质是一个函数，动态执行
 
 # ESModule
