@@ -306,3 +306,17 @@ git ci
 - `git init --bare`： 建立一个空壳 GIT 仓库，禁止`add, commit`
 - 合并分支遇见`fatal: refusing to merge unrelated histories`
   - 解决方式：`git pull origin <branchName> --allow-unrelated-histories`
+
+# rebase的使用
+
+- git rebase 使用注意点
+- git checkout demo, 切换到测试分支
+- git rebase master, 变基应用
+- git checkout master，返回master
+- git merge demo 快进合并
+
+## rebase的优缺点
+
+- 优点：能让主分支看起来，记录统一，干净整洁
+- 缺点：需要随时更新上游分支的内容下来，以免冲突过多
+- 缺点：分支的提交时间线是混乱的。

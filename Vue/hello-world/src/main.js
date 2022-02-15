@@ -10,6 +10,11 @@ Vue.use(Loading, {
 import router from './router'
 Vue.config.productionTip = false
 
+Vue.config.errorHandler = function (err, vm, info) {
+  console.log('err: ', err)
+  console.log('vm: ', vm)
+  console.log('info: ', info)
+}
 new Vue({
   router,
   render: h => h(App),

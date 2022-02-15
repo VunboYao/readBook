@@ -1,5 +1,6 @@
 const webpack = require('webpack')
 module.exports = {
+  publicPath: './',
   productionSourceMap: false,
   configureWebpack: {
     plugins: [
@@ -8,6 +9,7 @@ module.exports = {
       })
     ]
   },
+  lintOnSave: true,
   runtimeCompiler: true,
   devServer: {
     open: true

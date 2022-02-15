@@ -39,7 +39,6 @@ export default {
     componentA: componentA,
     jsxDemo
   },
-  mounted() {},
   methods: {
     handleRouter() {
       console.log('this.$route :>> ', this.$route);
