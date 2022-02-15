@@ -5,10 +5,11 @@ exports {name, age, sayHello}
 
 // exports导出测试
 const obj = require('./bar')
-console.log(obj)
-console.log(obj.name)
+require('./foo')
+console.log(module)
+/* console.log(obj.name)
 console.log(obj.age)
-obj.sayHello(obj.name)
+obj.sayHello(obj.name) */
 
 // TODO：可以解构，确认返回的是一个对象
 /* const { name, age, sayHello } = require('./bar')
