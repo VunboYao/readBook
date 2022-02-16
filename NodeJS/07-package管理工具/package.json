@@ -1,0 +1,10 @@
+{
+  "name": "yarn-package",
+  "version": "1.0.0",
+  "description": "study",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.26.0"
+  }
+}
