@@ -33,3 +33,11 @@
 ## import()
 
 - 异步加载，返回一个 Promise
+
+# CommonJS 和 ES Module 交互
+
+- 通常情况下，CommonJS 不能加载 ESModule
+  - 因为 CommonJS 是同步加载的，但是 ES Module 必须经过静态分析等，无法在这个时候执行 JavaScript 代码
+  - Node 中不支持
+  - webpack 可以
+- ESModule 可以加载 CommonJS
