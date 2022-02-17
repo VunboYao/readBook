@@ -80,15 +80,24 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+// @ts-ignore
 import TodoButton from './components/slot'
+// @ts-ignore
 import ScopedSlot from "@/components/scopedSlot"
 import AnimationDemo from '@/components/animation.vue'
+// @ts-ignore
 import SetupDemo from "@/components/setup"
+// @ts-ignore
 import MixinCom from '@/components/mixin'
+// @ts-ignore
 import home from "@/components/extends/home"
+// @ts-ignore
 import render from "@/components/render"
+// @ts-ignore
 import JSXDemo from "@/components/JSXDemo"
+// @ts-ignore
 import directive from "@/components/directive"
+import { ref } from 'vue'
 export default {
   name: 'App',
   components: {
@@ -108,6 +117,10 @@ export default {
     return {
       len: this.title
     }
+  },
+  setup(props) {
+    const count = ref(0)
+    console.log('ref, props :>> ', count, props);
   },
   data() {
     return {
