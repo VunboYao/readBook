@@ -19,7 +19,7 @@ fs.stat(filePath, (err, info) => {
 
 // 三：Promise
 fs.promises.stat(filePath).then(res => {
-	console.log('Promise状态信息')
+	console.log(`Promise状态信息`)
 	console.log(res)
 })
 console.log('Promise方式调用信息')
