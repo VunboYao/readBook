@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 
 // 1.创建文件夹
-const filePath = path.resolve(__dirname, 'Yao')
+const filePath = path.resolve(__dirname, 'Vunbo')
 if (!fs.existsSync(filePath)) {
 	fs.mkdir(filePath, err => {
 		console.log(err)
@@ -49,6 +49,6 @@ function getFiles(dirName) {
 getFiles(filePath)
 
 // 3文件夹的重命名
-// fs.rename(filePath, path.resolve(__dirname, 'Yao'), err => {
-// 	console.log(err)
-// })
+/* fs.rename(filePath, path.resolve(__dirname, 'Yao'), err => {
+	console.log(err)
+}) */

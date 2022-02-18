@@ -5,6 +5,8 @@ fs.open(filePath, (err, fd) => {
 	if (err) {
 		throw err
 	} else {
-		console.log(fd)
+		fs.fstat(fd, (err, state) => {
+			console.log(state);
+		})
 	}
 })

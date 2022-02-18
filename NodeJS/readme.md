@@ -41,3 +41,22 @@
   - Node 中不支持
   - webpack 可以
 - ESModule 可以加载 CommonJS
+
+# NodeJS 中 this
+
+this 为空对象({}). 源码内部 call 绑定了 exports, 该值默认赋值是 {}
+
+# yarn
+
+| NPM | Yarn |
+|---|---|
+|npm install | yarn install |
+|npm install xxx|yarn add xxx|
+|npm install --save xx|yarn add xxx|
+|npm install --save-dev xxx|yarn add xxx --dev/-D|
+|npm rebuild|yarn install --force|
+|npm uninstall xxx|yarn remove xxx|
+|npm uninstall --save xxx|yarn remove xxx|
+|npm uninstall --save-dev xxx|yarn remove xxx|
+|npm cache clean|yarn cache clean|
+|rm -rf node_modules && npm install|yarn upgrade|
