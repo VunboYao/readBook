@@ -9,6 +9,7 @@ const { VueRepo } = require('../config/repo-config')
 const commandSpawn = require('../utils/terminal')
 const compiler = require('../utils/compilerEjs')
 const writeFile = require('../utils/writeToFile')
+const mkdirSync = require('../utils/mkdirSync');
 const log = console.log
 
 // callback => promisify(函数） => Promise => async await
@@ -44,10 +45,47 @@ const addCompAction = async (name, dest) => {
 
   // 2.写入文件
   const targetPath = path.resolve(dest, `${name}.vue`)
-  writeFile(targetPath, result)
+
+  if (mkdirSync(dest)) {
+    writeFile(targetPath, result)
+  }
+}
+
+// 添加组件和路由
+const addPageAndRouteAction = async (name, dest) => {
+  // 1.编译ejs模版
+  const data = { name, lowerName: name.toLowerCase() }
+  const pageResult = await compiler('vue-component.ejs', data)
+  const routeResult = await compiler('vue-router.ejs', data)
+
+  // 2.写入文件
+  const targetPagePath = path.resolve(dest, `${name}.vue`)
+  const targetRoutePath = path.resolve(dest, 'route.js')
+
+  if (mkdirSync(dest)) {
+    writeFile(targetPagePath, pageResult)
+    writeFile(targetRoutePath, routeResult)
+  }
+}
+
+const addStoreAction = async (name, dest) => {
+  // 1.编译ejs模版
+  const storeResult = await compiler('vue-store.ejs', {})
+  const typesResult = await compiler('vue-types.ejs', {})
+
+  // 2.写入文件
+  const targetStorePath = path.resolve(dest, `${name}.js`)
+  const targetTypesPath = path.resolve(dest, 'type.js')
+
+  if (mkdirSync(dest)) {
+    writeFile(targetStorePath, storeResult)
+    writeFile(targetTypesPath, typesResult)
+  }
 }
 
 module.exports = {
   createProject,
-  addCompAction
+  addCompAction,
+  addPageAndRouteAction,
+  addStoreAction
 }
