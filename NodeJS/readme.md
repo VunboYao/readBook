@@ -60,3 +60,7 @@ this 为空对象({}). 源码内部 call 绑定了 exports, 该值默认赋值�
 |npm uninstall --save-dev xxx|yarn remove xxx|
 |npm cache clean|yarn cache clean|
 |rm -rf node_modules && npm install|yarn upgrade|
+
+# where & which
+
+快捷查看命令所在的位置：`where npm`
