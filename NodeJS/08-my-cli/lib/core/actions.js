@@ -1,11 +1,14 @@
 const fs = require('fs')
+const path = require('path')
 const { promisify } = require('util') // 利用util中的工具加工传统的回调函数
 
 const download = promisify(require('download-git-repo')) // 加工成Promise
 const chalk = require('chalk')
 
 const { VueRepo } = require('../config/repo-config')
-const { commandSpawn } = require('../utils/terminal')
+const commandSpawn = require('../utils/terminal')
+const compiler = require('../utils/compilerEjs')
+const writeFile = require('../utils/writeToFile')
 const log = console.log
 
 // callback => promisify(函数） => Promise => async await
@@ -33,6 +36,18 @@ const createProject = async (project, others) => {
   await commandSpawn(command, ['run', 'serve'], { cwd: `./${project}` })
 }
 
+
+// 添加组件
+const addCompAction = async (name, dest) => {
+  // 1.编译ejs模版
+  const result = await compiler('vue-component.ejs', { name, lowerName: name.toLowerCase() })
+
+  // 2.写入文件
+  const targetPath = path.resolve(dest, `${name}.vue`)
+  writeFile(targetPath, result)
+}
+
 module.exports = {
-  createProject
+  createProject,
+  addCompAction
 }

@@ -14,6 +14,4 @@ const commandSpawn = (...args) => {
   })
 }
 
-module.exports = {
-  commandSpawn
-}
+module.exports = commandSpawn

@@ -1,0 +1,31 @@
+<template>
+  <div class="<%= data.lowerName %>">
+    <h1>{{ msg }}</h1>
+  </div>
+</template>
+<script>
+  export default {
+    name: '<%= data.name %>',
+    props: {
+      msg: String
+    },
+    components: {},
+    mixins: [],
+    data() {
+      return {
+        msg: '<%= data.lowerName %>'
+      }
+    },
+    created() {
+
+    },
+    methods: {
+
+    }
+  }
+</script>
+<style scoped>
+.<%= data.lowerName %>{
+  color: red;
+}
+</style>
