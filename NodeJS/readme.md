@@ -64,3 +64,7 @@ this 为空对象({}). 源码内部 call 绑定了 exports, 该值默认赋值�
 # where & which
 
 快捷查看命令所在的位置：`where npm`
+
+# process.argv
+
+包含启动 Node.js 进程时传入的命令行参数

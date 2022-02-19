@@ -5,14 +5,18 @@ const { promisify } = require('util') // 利用util中的工具加工传统的�
 const download = promisify(require('download-git-repo')) // 加工成Promise
 const chalk = require('chalk')
 
+const {
+  fsWriteFile,
+  translateName,
+  compilerEjs,
+  createDirSync } = require('../utils/utils')
 const { VueRepo } = require('../config/repo-config')
 const commandSpawn = require('../utils/terminal')
-const compiler = require('../utils/compilerEjs')
-const writeFile = require('../utils/writeToFile')
-const mkdirSync = require('../utils/mkdirSync');
 const log = console.log
 
 // callback => promisify(函数） => Promise => async await
+
+// 0.创建工程
 const createProject = async (project, others) => {
   // 工程提示
   log(chalk.green('vunbo helps you create your project, Please wait a moment...'));
@@ -37,49 +41,70 @@ const createProject = async (project, others) => {
   await commandSpawn(command, ['run', 'serve'], { cwd: `./${project}` })
 }
 
-
-// 添加组件
-const addCompAction = async (name, dest) => {
+// 1.添加组件
+const addCompAction = async (componentName, dest) => {
+  const { name, lowerName } = translateName(componentName)
   // 1.编译ejs模版
-  const result = await compiler('vue-component.ejs', { name, lowerName: name.toLowerCase() })
+  const result = await compilerEjs('vue-component.ejs', { name, lowerName })
 
-  // 2.写入文件
+  // 2.拼接路径
   const targetPath = path.resolve(dest, `${name}.vue`)
 
-  if (mkdirSync(dest)) {
-    writeFile(targetPath, result)
+  if (createDirSync(dest)) {
+    fsWriteFile(targetPath, result)
   }
 }
 
-// 添加组件和路由
-const addPageAndRouteAction = async (name, dest) => {
+// 2.添加页面和路由
+const addPageAndRouteAction = async (pageName, dest) => {
+  const { name, lowerName } = translateName(pageName)
+  const { pageRoutePath, routePath } = handleRouterName(dest)
   // 1.编译ejs模版
-  const data = { name, lowerName: name.toLowerCase() }
-  const pageResult = await compiler('vue-component.ejs', data)
-  const routeResult = await compiler('vue-router.ejs', data)
+  const pageResult = await compilerEjs('vue-component.ejs', { name, lowerName })
+  const routeResult = await compilerEjs('vue-router.ejs', { name, pageRoutePath, routePath })
 
-  // 2.写入文件
+  // 2.写入页面
   const targetPagePath = path.resolve(dest, `${name}.vue`)
-  const targetRoutePath = path.resolve(dest, 'route.js')
+  if (createDirSync(dest)) {
+    fsWriteFile(targetPagePath, pageResult)
+  }
 
-  if (mkdirSync(dest)) {
-    writeFile(targetPagePath, pageResult)
-    writeFile(targetRoutePath, routeResult)
+  // 3.写入路由
+  const routerDirPath = `./src/router/${routePath}`
+  const targetRoutePath = path.resolve(routerDirPath, `${name}.js`)
+  if (createDirSync(routerDirPath)) {
+    fsWriteFile(targetRoutePath, routeResult)
   }
 }
 
+// 3.添加store
 const addStoreAction = async (name, dest) => {
   // 1.编译ejs模版
-  const storeResult = await compiler('vue-store.ejs', {})
-  const typesResult = await compiler('vue-types.ejs', {})
+  const storeResult = await compilerEjs('vue-store.ejs', {})
+  // const typesResult = await compilerEjs('vue-types.ejs', {})
 
   // 2.写入文件
   const targetStorePath = path.resolve(dest, `${name}.js`)
-  const targetTypesPath = path.resolve(dest, 'type.js')
+  // const targetTypesPath = path.resolve(dest, 'type.js')
 
-  if (mkdirSync(dest)) {
-    writeFile(targetStorePath, storeResult)
-    writeFile(targetTypesPath, typesResult)
+  if (createDirSync(dest)) {
+    fsWriteFile(targetStorePath, storeResult)
+    // fsWriteFile(targetTypesPath, typesResult)
+  }
+}
+
+function handleRouterName(dest) {
+  const reg = /(.*)src\/(.*)$/g
+  const regRoute = /(.*)src\/pages\/(.*)$/g
+  let pageRoutePath = dest.replace(reg, (match, $1, $2) => {
+    return $2
+  })
+  let routePath = dest.replace(regRoute, (match, $1, $2) => {
+    return $2
+  })
+  return {
+    pageRoutePath: pageRoutePath,
+    routePath: routePath === 'src/pages' ? '' : routePath
   }
 }
 

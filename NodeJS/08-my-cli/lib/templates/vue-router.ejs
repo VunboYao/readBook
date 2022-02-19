@@ -1,10 +1,6 @@
-// 普通加载路由
-// import <%= data.name %> from './<%= data.name %>.vue'
-// 懒加载路由
-const <%= data.name %> = () => import('./<%= data.name %>.vue')
 export default {
-  path: '/<%= data.lowerName %>',
+  path: '/<%= data.routePath %>',
   name: '<%= data.name %>',
-  component: <%= data.name %>,
+  component: () => import('@/<%= data.pageRoutePath %>/<%= data.name %>.vue'),
   children: []
 }
