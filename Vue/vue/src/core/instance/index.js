@@ -6,6 +6,7 @@ import { lifecycleMixin } from './lifecycle'
 import { warn } from '../util/index'
 
 // 14-Vue构造函数
+// 为什么用es5.利用prototype来分发配置。可以在不同的文件定义原型上的方法
 function Vue (options) {
   if (process.env.NODE_ENV !== 'production' &&
     !(this instanceof Vue)
