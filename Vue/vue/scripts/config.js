@@ -27,6 +27,7 @@ const weexFactoryPlugin = {
   },
 };
 
+// 别名配置
 const aliases = require("./alias");
 const resolve = (p) => {
   // web/xxx.js
@@ -39,6 +40,7 @@ const resolve = (p) => {
   }
 };
 
+// 各版本的入口、出口配置
 const builds = {
   // Runtime only (CommonJS). Used by bundlers e.g. Webpack & Browserify
   "web-runtime-cjs-dev": {
@@ -231,6 +233,7 @@ const builds = {
 };
 
 function genConfig(name) {
+  // 构建rollup的配置
   const opts = builds[name];
   const config = {
     input: opts.entry,
