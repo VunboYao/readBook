@@ -68,3 +68,7 @@ this 为空对象({}). 源码内部 call 绑定了 exports, 该值默认赋值�
 # process.argv
 
 包含启动 Node.js 进程时传入的命令行参数
+
+# process.env.NODE_ENV
+
+process.env下，此属性默认并不存在，自己配置。
