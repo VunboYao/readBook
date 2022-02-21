@@ -27,10 +27,13 @@ function track(target, key) {
   if (!activeEffect) return
   let depsMap = bucket.get(target)
   if (!depsMap) {
+    // 建立一个当前target对应的map: [obj, Map()]
     bucket.set(target, (depsMap = new Map()))
   }
+  // 从target:Map()中获取key:Set()
   let deps = depsMap.get(key)
   if (!deps) {
+    // 建立一个当前key值对应的依赖集合:key: Set([effectFn(), effectFn2()...])
     depsMap.set(key, (deps = new Set()))
   }
   // 把当前激活的副作用函数添加到依赖集合 deps(Set) 中
@@ -41,14 +44,15 @@ function track(target, key) {
 
 // 在 set 函数内调用 trigger 函数触发变化
 function trigger(target, key) {
+  // 获取到Map()
   const depsMap = bucket.get(target)
   if (!depsMap) return
+  // 获取到key：Set()
   const effects = depsMap.get(key)
-  // TODO:避免无限循环 
+  // TODO:避免无限循环
   const effectsToRun = new Set(effects)
   effectsToRun && effectsToRun.forEach(effectFn => effectFn())
 }
-
 // 用一个全局变量存储被注册的富作用函数
 let activeEffect
 // effect 函数用来注册副作用函数
@@ -60,7 +64,6 @@ function effect(fn) {
     activeEffect = effectFn
     fn()
   }
-
   // activeEffect.deps 用来存储所有与该副作用函数相关联的依赖集合Set()
   effectFn.deps = []
   // 执行该副作用函数
@@ -71,11 +74,12 @@ function effect(fn) {
 function cleanup(effectFn) {
   // 遍历 effectFn.deps 数组。由set()组成的数组
   for (let i = 0; i < effectFn.deps.length; i++) {
-    // deps是单个的Set()
+    // 拿到每一个key:Set(),内部存储的是每一个effectFn
     const deps = effectFn.deps[i]
     // 将effectFn从Set()中移除
     deps.delete(effectFn)
   }
+  // 删除了当前effectFn中所有的关联依赖集合Set()
   // 重置 effectFn.deps 数组
   effectFn.deps.length = 0
 }
@@ -89,7 +93,6 @@ effect(function effectFn() {
 // setTimeout(() => {
 // obj.text = 'hello vue3'
 // obj.notExist = 'hello vue3'
-debugger
 obj.ok = false
 obj.text = 'hello vue3'
 console.log('bucket :>> ', bucket);
