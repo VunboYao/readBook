@@ -1,0 +1,22 @@
+{
+  "name": "24-gulp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.17.5",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "gulp-terser": "^2.1.0",
+    "gulp-uglify": "^3.0.2"
+  }
+}
