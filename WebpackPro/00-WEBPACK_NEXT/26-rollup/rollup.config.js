@@ -1,5 +1,10 @@
 import commonjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve'
+import babel from '@rollup/plugin-babel'
+import { terser } from 'rollup-plugin-terser'
+import postcss from 'rollup-plugin-postcss'
+import Vue from 'rollup-plugin-vue'
+import replace from 'rollup-plugin-replace'
 
 export default {
 	input: 'src/main.js',
@@ -12,5 +17,17 @@ export default {
 		},
 	},
 	external: ['lodash'],
-	plugins: [commonjs(), resolve()],
+	plugins: [
+		Vue(),
+		commonjs(),
+		replace({
+			'process.env.NODE_ENV': JSON.stringify('production'),
+		}),
+		resolve(),
+		babel({
+			babelHelpers: 'bundled',
+		}),
+		postcss(),
+		terser(),
+	],
 }
