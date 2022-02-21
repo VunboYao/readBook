@@ -1,6 +1,6 @@
 const path = require('path')
 const fs = require('fs')
-const mime = require('./mime')
+const mime = require('./mime.json')
 
 function readFile(req, res) {
 	const filePath = path.join(__dirname, 'www', req.url)
