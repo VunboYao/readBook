@@ -3,6 +3,11 @@ import legacy from '@vitejs/plugin-legacy'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+  server: {
+    port: 12000,
+    host: true,
+    open: true,
+  },
   plugins: [
     Vue(),
     legacy({
