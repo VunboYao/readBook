@@ -19,7 +19,7 @@
 #### `reactive()`的局限性
 
 - 仅对对象类型有效。对`string`,`number`,和`boolean`无效
-- 必须通过属性访问进行追踪，必须始终保持对该响应式对象的引用。**替换**，**解构**等都会失去响应性
+- **必须通过属性访问进行追踪**，必须始终保持对该响应式对象的引用。**替换**，**解构**等都会失去响应性
 
 #### `ref()`,装载任何值类型.
 
@@ -89,6 +89,78 @@ watch 第一个参数类型
   - 选项式 API 或者没有使用`<script setup>`，被引用的组件实例和该子组件的`this`完全一致
   - 使用了`<script setup>`的组件默认是私有的，父组件无法通过 ref 访问。除非子组件通过`defineExpose`显示暴露
 
-#### 组件
+### 组件
 
 - 推荐`PascalCase`命名
+- 元素位置限制：如`ul, ol, table, select`等。可以通过`is`来解决。
+
+#### prop
+
+- 单向数据流。
+  - 若要更改数据，新定义一个局部数据属性，从props上取值即可
+  - 重新定义一个计算属性
+- 对于数组/对象类型的prop,**仍然可以**更改，但不建议。应该抛出一个事件来通知父组件改变
+- 事件校验：所有抛出事件可以使用对象形式来描述。返回布尔值来表示事件是否合法
+
+#### 自定义v-model
+
+- `modelValue`与`update:modelValue`
+- 通过`computed`计算属性，给出`getter`和`setter`，`get`方法返回`modelValue`属性，而`set`方法抛出相应事件
+
+```vue
+<!-- CustomInput.vue -->
+<script setup>
+import { computed } from 'vue'
+
+const props = defineProps(['modelValue'])
+const emit = defineEmits(['update:modelValue'])
+
+const value = computed({
+  get() {
+    return props.modelValue
+  },
+  set(value) {
+    emit('update:modelValue', value)
+  }
+})
+</script>
+
+<template>
+  <input v-model="value" />
+</template>
+```
+
+#### v-model 的参数
+
+- 默认情况下，`v-model`在组件上都是使用`modelValue`作为prop, 以`update:modelValue`作为对应的事件。可以通过给`v-model`指定一个参数来更改这些名字
+
+```vue
+<MyComponent v-model:title="bookTitle"/>
+```
+
+- 在这个例子中，子组件应该有一个`title`prop，并在变更时向父组件发射`update:title`事件
+
+#### v-model 修饰符
+
+- 可以通过`modelModifiers`prop在组件内访问到父组件传入的v-model修饰符
+- 对于有参数的同时又有修饰符的`v-model`绑定，生成的prop名将是`arg + 'Modifiers'`。
+
+```vue
+<MyComponent v-model:title.capitalize="myText" />
+
+// 对应的声明如下
+const props = defineProps(['title', 'titleModifiers'])
+defineEmits(['update:title])
+console.log(props.titleModifiers) // { capitalize: true }
+```
+
+#### 属性透传
+
+- `inheritAttrs: false`，关闭自动继承 attribute
+- 如果使用了`<script setup>`，需要一个额外的`script`来书写这个选项说明
+- 子组件可以通过`$attrs`访问
+  - 包含了除组件的`props`和`emits`属性外的所有其他 attribute
+  - 没有参数的`v-bind`会将一个对象的所有属性都作为 attribute 应用到目标元素上
+  - 所有透传属性绑定到内部的元素：`inheritAttrs: false`和使用`v-bind=$attrs`
+- 多根节点没有自动 attribute 透传行为.可通过`$attrs`现实绑定
+- `<script setup>` 中可以通过 `useAttrs()`来访问所有透传属性，否则在`setup（）`上下文对象中。 $attrs不是响应式的，可以在`onUpdated()`中结合最新的 `$attrs`执行副作用.**但总是反应为最新透传的attribute**
