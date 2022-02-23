@@ -1,20 +1,18 @@
 <script setup>
+import { watchEffect, ref, reactive, onBeforeMount,onMounted, computed } from 'vue'
 
-import { ref,onMounted } from 'vue'
 const count = ref(0)
-
-
-function increment() {
+function add() {
   count.value++
 }
-onMounted(() => {
-  console.log(`The initial count is ${count.value}`);
-})
 </script>
 
 <template>
-  <button @click="increment">count is {{count}}</button>
+  <div>
+    <h1>setup</h1>
+    <el-button @click="add">
+      Add-{{ count }}
+    </el-button>
+  </div>
 </template>
-
-<style scoped>
-</style>
+<style scoped></style>
