@@ -2,9 +2,11 @@
 import BasicPage from './pages/basic/BasicPage.vue'
 import HelloWorld from './components/HelloWorld.vue'
 import SlotButton from './components/SlotButton.vue';
-import { reactive, ref, watch, provide } from 'vue';
-const count = ref(0)
-provide('message', count)
+import { reactive, ref, unref, watch, provide, onMounted } from 'vue';
+import {useMouse} from './hooks';
+import {vFocus} from '@direct'
+const input = ref(0)
+
 </script>
 
 <template>
@@ -12,9 +14,13 @@ provide('message', count)
     alt="Vue logo"
     src="./assets/logo.png"
   >
-  <div
-    id="container"
+  <input
+    v-model="input"
+    v-focus="input"
+    type="text"
   >
+  <h2>{{ $translate('greetings.hello') }}</h2>
+  <div id="container">
     <HelloWorld class="left" />
     <BasicPage class="right" />
     <!-- <SlotButton class="right">

@@ -183,10 +183,75 @@ watch 第一个参数类型
 defineAsyncComponent: 返回一个 Promise 的加载函数。
 
 ```js
-import {defineAsyncComponent} from 'vue'
-const ProvideTest = defineAsyncComponent(() => { 
-    return new Promise(resolve => { 
-        resolve(import('./../../components/ProvideTest.vue')) 
-    }) 
+import { defineAsyncComponent } from 'vue'
+const ProvideTest = defineAsyncComponent(() => {
+	return new Promise(resolve => {
+		resolve(import('./../../components/ProvideTest.vue'))
+	})
 })
 ```
+
+### 可组合函数
+
+#### 返回值
+
+- 推荐始终从可组合函数中返回一个包含 ref 的对象，在对象解构时可以保持响应性
+
+#### 使用限制
+
+- 若要在使用 `await` 之后还可以调用可组合函数，只能在 `<script setup>`里。
+
+#### vs 混入
+
+混入的缺点：
+
+- 不清晰的属性来源
+- 名称空间冲突
+- 隐式的多个混入间交互
+
+### 自定义指令
+
+- 组件：主要关注构建视图区块
+- 可组合函数：关注有状态的逻辑
+- 自定义指令：封装可重用的对底层 DOM 访问逻辑
+
+- 在`<script setup>`中，以`v`开头的`camelCase`格式的变量，会被用作一个自定义指令
+- 如果不使用`<script setup>`，可以通过`directives`选项注册。
+- 或者全局注册`app.directive('focus', {...})`
+
+- Hook Arguments
+  - el: 指令所绑定的元素
+  - binding:
+    - value: 指令的值
+    - oldValue: `beforeUpdate`,`updated`中可用
+    - arg: 指令参数
+    - modifiers: 指令修饰符
+    - instance: 使用指令的组件实例
+    - dir: 指令定义对象
+  - vnode: vNode
+  - prevNode: `beforeUpdate`,`updated`中可用
+
+> Note: 除了`el`外，应该将这些参数都视为只读的，并一律不更改。若需要在不同的钩子间共享信息，推荐方法是通过元素的`dataset`attribute
+
+#### 指令简写
+
+简写 `mounted`和`updated`行为
+
+```js
+;<div v-color='color'></div>
+
+app.directive('color', (el, binding) => {
+	// mounted和 updated 时调用
+	el.styole.color = binding.value
+})
+```
+
+#### 对象字面量
+
+指令如果需要多个值，可用传递一个 JavaScript 对象字面量
+
+#### 组件上使用
+
+- 组件上使用自定义指令时，始终应用于组件的根节点。
+- 指令不可以通过`v-bind="$attrs"`来传递给一个不同的元素
+- 不推荐在组件上使用自定义指令。
