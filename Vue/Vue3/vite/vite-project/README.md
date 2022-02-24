@@ -97,12 +97,12 @@ watch 第一个参数类型
 #### prop
 
 - 单向数据流。
-  - 若要更改数据，新定义一个局部数据属性，从props上取值即可
+  - 若要更改数据，新定义一个局部数据属性，从 props 上取值即可
   - 重新定义一个计算属性
-- 对于数组/对象类型的prop,**仍然可以**更改，但不建议。应该抛出一个事件来通知父组件改变
+- 对于数组/对象类型的 prop,**仍然可以**更改，但不建议。应该抛出一个事件来通知父组件改变
 - 事件校验：所有抛出事件可以使用对象形式来描述。返回布尔值来表示事件是否合法
 
-#### 自定义v-model
+#### 自定义 v-model
 
 - `modelValue`与`update:modelValue`
 - 通过`computed`计算属性，给出`getter`和`setter`，`get`方法返回`modelValue`属性，而`set`方法抛出相应事件
@@ -110,48 +110,45 @@ watch 第一个参数类型
 ```vue
 <!-- CustomInput.vue -->
 <script setup>
-import { computed } from 'vue'
+	import { computed } from 'vue'
 
-const props = defineProps(['modelValue'])
-const emit = defineEmits(['update:modelValue'])
+	const props = defineProps(['modelValue'])
+	const emit = defineEmits(['update:modelValue'])
 
-const value = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emit('update:modelValue', value)
-  }
-})
+	const value = computed({
+		get() {
+			return props.modelValue
+		},
+		set(value) {
+			emit('update:modelValue', value)
+		},
+	})
 </script>
 
 <template>
-  <input v-model="value" />
+	<input v-model="value" />
 </template>
 ```
 
 #### v-model 的参数
 
-- 默认情况下，`v-model`在组件上都是使用`modelValue`作为prop, 以`update:modelValue`作为对应的事件。可以通过给`v-model`指定一个参数来更改这些名字
+- 默认情况下，`v-model`在组件上都是使用`modelValue`作为 prop, 以`update:modelValue`作为对应的事件。可以通过给`v-model`指定一个参数来更改这些名字
 
 ```vue
-<MyComponent v-model:title="bookTitle"/>
+<MyComponent v-model:title="bookTitle" />
 ```
 
 - 在这个例子中，子组件应该有一个`title`prop，并在变更时向父组件发射`update:title`事件
 
 #### v-model 修饰符
 
-- 可以通过`modelModifiers`prop在组件内访问到父组件传入的v-model修饰符
-- 对于有参数的同时又有修饰符的`v-model`绑定，生成的prop名将是`arg + 'Modifiers'`。
+- 可以通过`modelModifiers`prop 在组件内访问到父组件传入的 v-model 修饰符
+- 对于有参数的同时又有修饰符的`v-model`绑定，生成的 prop 名将是`arg + 'Modifiers'`。
 
 ```vue
 <MyComponent v-model:title.capitalize="myText" />
 
-// 对应的声明如下
-const props = defineProps(['title', 'titleModifiers'])
-defineEmits(['update:title])
-console.log(props.titleModifiers) // { capitalize: true }
+// 对应的声明如下 const props = defineProps(['title', 'titleModifiers']) defineEmits(['update:title]) console.log(props.titleModifiers) // { capitalize: true }
 ```
 
 #### 属性透传
@@ -163,4 +160,33 @@ console.log(props.titleModifiers) // { capitalize: true }
   - 没有参数的`v-bind`会将一个对象的所有属性都作为 attribute 应用到目标元素上
   - 所有透传属性绑定到内部的元素：`inheritAttrs: false`和使用`v-bind=$attrs`
 - 多根节点没有自动 attribute 透传行为.可通过`$attrs`现实绑定
-- `<script setup>` 中可以通过 `useAttrs()`来访问所有透传属性，否则在`setup（）`上下文对象中。 $attrs不是响应式的，可以在`onUpdated()`中结合最新的 `$attrs`执行副作用.**但总是反应为最新透传的attribute**
+- `<script setup>` 中可以通过 `useAttrs()`来访问所有透传属性，否则在`setup（）`上下文对象中。 $attrs不是响应式的，可以在`onUpdated()`中结合最新的 `$attrs`执行副作用.**但总是反应为最新透传的 attribute**
+
+#### 插槽
+
+- 插槽声明：`<slot name="head">默认内容</slot>`
+- 插槽使用：`<template #head>父级调用</template>`
+- 默认插槽：如果同时有具名和默认插槽，没有`template`的将默认绑定到`default`插槽
+- 支持动态插槽
+- 作用域获取：`<template #head={propName}>{{propName}}</template>`
+
+#### 依赖注入
+
+- provide(key, value): 依赖供给
+- inject(key)：依赖注入。**如果注入进来的值就是一个 ref，不会自动解套。使得注入的组件保持了和供给者的响应性链接**
+  - 注入的默认值：`const value = inject(key, string | () =>{})`
+- 变更统一在 `provider`，变更方法也一起下发。可用`readonly`包裹防止变更
+- 大型应用，key 值建议使用 Symbol()。建议一个单独的文件中导出这些注入名 Symbol
+
+#### 异步组件
+
+defineAsyncComponent: 返回一个 Promise 的加载函数。
+
+```js
+import {defineAsyncComponent} from 'vue'
+const ProvideTest = defineAsyncComponent(() => { 
+    return new Promise(resolve => { 
+        resolve(import('./../../components/ProvideTest.vue')) 
+    }) 
+})
+```

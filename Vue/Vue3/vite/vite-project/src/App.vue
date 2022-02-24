@@ -1,25 +1,10 @@
 <script setup>
 import BasicPage from './pages/basic/BasicPage.vue'
 import HelloWorld from './components/HelloWorld.vue'
-
-import { reactive, ref, watch } from 'vue';
-let postFontSize = ref(1)
-
-function changeFont(font) {
-  postFontSize.value += font
-}
-const age = ref(123)
-setInterval(() => {
-  age.value+=1
-},1000)
-watch(postFontSize, (newVal, oldVal) => {
-  styleContainer.fontSize = newVal + 'em'
-})
-let styleContainer = reactive({
-  fontSize: postFontSize.value + 'em'
-})
-function show() {
-}
+import SlotButton from './components/SlotButton.vue';
+import { reactive, ref, watch, provide } from 'vue';
+const count = ref(0)
+provide('message', count)
 </script>
 
 <template>
@@ -29,18 +14,20 @@ function show() {
   >
   <div
     id="container"
-    :style="styleContainer"
   >
-    <HelloWorld
-      class="left"
-      title="Hello cold"
-      name="yyb"
-      :disabled="false"
-      :age="age"
-      @enlarge="changeFont"
-      @click="show"
-    />
+    <HelloWorld class="left" />
     <BasicPage class="right" />
+    <!-- <SlotButton class="right">
+      <template #header="{text}">
+        {{ text }}
+      </template>
+      <template #default="slotProp">
+        {{ slotProp.text }}
+      </template>
+      <template #footer="{text}">
+        {{ text }}
+      </template>
+    </SlotButton> -->
   </div>
 </template>
 
