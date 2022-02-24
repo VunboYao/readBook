@@ -255,3 +255,40 @@ app.directive('color', (el, binding) => {
 - 组件上使用自定义指令时，始终应用于组件的根节点。
 - 指令不可以通过`v-bind="$attrs"`来传递给一个不同的元素
 - 不推荐在组件上使用自定义指令。
+
+### 过渡元素
+
+- mode: 常用 `out-in`
+
+### KeepAlive
+
+- `include`和`exclude` 控制是否需要缓存组件。这两个 prop 的值都是一个以**英文逗号分隔的字符串、一个正则表达式，或是包含这两个类型的一个数组。**
+- 最大缓存实例。`max`,超出后访问次数最少的缓存实例将被销毁
+- 缓存实例生命周期。`onActivated()`和`onDeactivated`两个生命周期函数
+  - onActivated(): **首次加载、每次从缓存中重新被插回 DOM 时调用**
+  - onDeactivated()：**在 DOM 上移除、进入缓存，以及组件卸载时调用**
+
+### Teleport 传送门
+
+- 指定目标 `to` 期望接收到一个 CSS 选择器字符串或者一个真实的 DOM 节点。
+- `disabled` prop 可根据情况禁用
+- 同一个目标上多个传送门，以追加的顺序顺次排列。
+
+```vue
+<template>
+  <button @click="open = true">
+    打开Model
+  </button>
+  <Teleport to="body">
+    <div
+      v-if="open"
+      class="modal"
+    >
+      <p>Hello, this is model</p>
+      <button @click="open = false">
+        Close
+      </button>
+    </div>
+  </Teleport>
+</template>
+```
