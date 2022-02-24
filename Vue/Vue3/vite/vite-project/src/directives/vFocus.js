@@ -1,4 +1,3 @@
-import { nextTick } from 'vue'
 export default {
   // 绑定属性之前
   created: (el, binding) => { },
