@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>About{{ tripleCounter }}</h2>
-  </div>
+  </div> 
 </template>
 
 <script>
@@ -11,7 +11,7 @@ export default {
     const store = useCounterStore()
     setTimeout(() => {
       store.counter = store.counter * 2
-    }, 2000);
+    }, 2000)
     return {
       store
     }

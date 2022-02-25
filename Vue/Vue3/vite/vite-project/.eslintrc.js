@@ -14,6 +14,7 @@ module.exports = {
     // 单行属性时，不换行
     "vue/first-attribute-linebreak": ['error', {
       "singleline": "beside"
-    }]
+    }],
+    "semi": ["error", "never"],
   },
 }
