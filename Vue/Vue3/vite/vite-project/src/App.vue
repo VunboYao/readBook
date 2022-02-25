@@ -1,9 +1,11 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue';
+import ManualRouter from '@page/ManualRouter.vue'
 </script>
 
 <template>
   <HelloWorld />
+  <ManualRouter />
 </template>
 
 <style lang="scss">
