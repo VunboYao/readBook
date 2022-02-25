@@ -276,19 +276,126 @@ app.directive('color', (el, binding) => {
 
 ```vue
 <template>
-  <button @click="open = true">
-    打开Model
-  </button>
-  <Teleport to="body">
-    <div
-      v-if="open"
-      class="modal"
-    >
-      <p>Hello, this is model</p>
-      <button @click="open = false">
-        Close
-      </button>
-    </div>
-  </Teleport>
+	<button @click="open = true">打开Model</button>
+	<Teleport to="body">
+		<div v-if="open" class="modal">
+			<p>Hello, this is model</p>
+			<button @click="open = false">Close</button>
+		</div>
+	</Teleport>
 </template>
 ```
+
+### Suspense
+
+异步组件加载时，统一定制 loading 提示
+
+## 状态管理 Pinia
+
+### VS Vuex3.X/4.X
+
+- `mutations`不再存在，原配合 devTools 不再是一个问题
+- TS 支持更好，不再需要创建自定义的包装 Module
+- 直接调用函数即可
+- 不需要动态的引入 store，默认自动化
+- 不需要嵌套的模块化，同时支持模块间的循环依赖
+- 没有命名模块了。由于扁平化的设计，所有的 store 都可以称为命名的
+
+### 安装 pinina
+
+```js
+import { createPinia } from 'pinia'
+app.use(createPinia())
+```
+
+### 定义 Store
+
+```js
+import { defineStore } from 'pinia'
+
+// 第一个参数是唯一id，组件中可以通过其调用
+export const useStore = defineStore('userInfo', {
+	// other options
+})
+```
+
+**注意**：store 是一个用`reactive`包裹的对象，不能**解构**
+
+- 可以通过 `computed()`给出一个属性，保持其响应性
+- `const doubleValue = computed(() => store.doubleCount)`
+
+**为了实现可以解构获取数据**
+
+- 当仅仅使用 state,不需要调用任何 action 时，可以使用`storeToRefs`
+
+### state
+
+以下实例基于此 Store
+
+```js
+import { defineStore } from 'pinia'
+
+const useStore = defineStore('storeId', {
+	// 建议使用箭头函数
+	state: () => {
+		return {
+			// 所有属性自动拥有类型推断
+			counter: 0,
+			name: 'vunbo',
+			isAdmin: true,
+		}
+	},
+})
+```
+
+#### 访问 state
+
+默认可以直接修改与访问
+
+```js
+const store = useStore()
+
+store.counter++
+```
+
+#### 重置 state
+
+通过调用 store 上的 `$reset()`方法，可以重置状态为初始值
+
+`store.$reset()`
+
+#### 使用 setup()
+
+OptionsAPI 中使用`setup()`
+
+```js
+// store 注册
+import { defineStore } from 'pinia'
+
+const useCounterStore = defineStore('counterStore', {
+  state: () = ({ counter: 0 })
+})
+```
+
+```js
+import { useCounterStore } from './stores/counterStore'
+
+export default {
+	setup() {
+		const counterStore = useCounterStore()
+
+		return { counterStore }
+	},
+	computed: {
+		tripleCounter() {
+			return this.counterStore.counter * 3
+		},
+	},
+}
+```
+
+- 依旧支持`mapState`。提供`mapWritbaleState`可修改 state
+- `setup`中支持`store.$patch({}) || store.$patch(state => {})`修改
+-
+
+## 测试 Vitest
