@@ -6,7 +6,8 @@ export const useStore = defineStore('userInfo', {
   state: (state) => {
     return {
       name: 'yyb',
-      count: 0
+      count: 0,
+      score: 100
     }
   }
 })

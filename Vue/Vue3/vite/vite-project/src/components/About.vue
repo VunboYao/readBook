@@ -1,11 +1,11 @@
 <template>
   <div>
     <h2>About{{ tripleCounter }}</h2>
-  </div> 
+  </div>
 </template>
 
 <script>
-import {useCounterStore} from './../stores/userInfo'
+import {useCounterStore} from '../stores/userInfo'
 export default {
   setup(){
     const store = useCounterStore()

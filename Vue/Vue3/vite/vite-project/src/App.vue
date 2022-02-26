@@ -1,6 +1,6 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
-import ManualRouter from '@page/ManualRouter.vue'
+import ManualRouter from './pages/ManualRouter.vue'
 </script>
 
 <template>

@@ -1,15 +1,22 @@
 <template>
   <div>
     <h2>Home</h2>
+    <el-button @click="patchOne">
+      $patch
+    </el-button>
   </div>
 </template>
 
 <script setup>
-import { useStore } from '../stores/userInfo';
-import { storeToRefs } from 'pinia'
+import { useStore } from '../stores/userInfo'
 let store = useStore()
-let {name, count} = storeToRefs(store)
-count.value = '123'
+const patchOne = () => {
+  store.$patch(state => {
+    state.name='vunbo'
+    state.count = 10
+    state.age = 20
+  })
+}
 </script>
 
 <style lang="scss" scoped>

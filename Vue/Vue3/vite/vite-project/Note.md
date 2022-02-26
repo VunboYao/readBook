@@ -301,7 +301,7 @@ app.directive('color', (el, binding) => {
 - 不需要嵌套的模块化，同时支持模块间的循环依赖
 - 没有命名模块了。由于扁平化的设计，所有的 store 都可以称为命名的
 
-### 安装 pinina
+### 安装 pinia
 
 ```js
 import { createPinia } from 'pinia'
@@ -313,7 +313,7 @@ app.use(createPinia())
 ```js
 import { defineStore } from 'pinia'
 
-// 第一个参数是唯一id，组件中可以通过其调用
+// 第一个参数是唯一id
 export const useStore = defineStore('userInfo', {
 	// other options
 })
@@ -373,7 +373,7 @@ OptionsAPI 中使用`setup()`
 import { defineStore } from 'pinia'
 
 const useCounterStore = defineStore('counterStore', {
-  state: () = ({ counter: 0 })
+  state: () => ({ counter: 0 })
 })
 ```
 
@@ -394,8 +394,35 @@ export default {
 }
 ```
 
-- 依旧支持`mapState`。提供`mapWritbaleState`可修改 state
+- 依旧支持`mapState`
+
+#### 无setup
+
+- 提供`mapWritableState`可修改 state
 - `setup`中支持`store.$patch({}) || store.$patch(state => {})`修改
--
+- `mapWritableState`除非替换整个数组，否则数组类数据无需使用此方法
+
+#### 变更state
+
+- `store.counter++`，直接调用
+
+- 通过方法`$patch`，允许同时传入`state`中的多个变更。支持**对象和函数**
+
+  ```js
+  // 对象
+  store.$patch({
+    counter: store.counter + 1,
+    name: 'Abalam',
+  })
+  
+  // 函数
+  cartStore.$patch((state) => {
+    state.items.push({ name: 'shoes', quantity: 1 })
+    state.hasChanged = true
+  })
+  ```
+
+  
 
 ## 测试 Vitest
+
