@@ -1,10 +1,11 @@
 <script setup>
+import { ref } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
+const msg = ref('Hello Vue3')
 </script>
 
 <template>
-  <HelloWorld />
-  <input v-focus="123">
+  <RouterView />
 </template>
 
 <style lang="scss">

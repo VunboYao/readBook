@@ -1,10 +1,15 @@
-<script setup>
-import { ref } from 'vue'
-</script>
-
 <template>
-  <h2>Hello World</h2>
+  <div>
+    <h2>Component: {{ msg }}</h2>
+  </div>
 </template>
 
-<style scoped>
+<script setup>
+defineProps({
+  msg: String
+})
+</script>
+
+<style lang="scss" scoped>
+
 </style>
