@@ -422,7 +422,31 @@ export default {
   })
   ```
 
+#### 替换state
+
+```js
+// 设置一个新对象(不是整体替换,数据新增)
+store.$state = { counter: 666, name: 'Vunbo}
+```
   
+### getters
+
+- 接收state作为第一个参数，建议使用箭头函数
+- 在TS中使用时，明确注明返回值时，无法使用箭头函数。可以通过this访问数据
+- 访问其他store的getters，可以通过直接引入使用
+- optionsAPI中可以依旧引用mapState
+
+### actions
+
+- 同组件中的`methods`相同
+- 支持async
+- optionsAPI中可以使用`mapActions`
+- 监听actions，通过`const unsubscribe = store.$onAction()`
+	- 调用返回值，可移除监听
+	- 回调函数操作action本身之前执行
+	- `after`在resolve之后执行
+	- `onError`在报错后执行
+	- 传入第二个参数true，可在组件卸载后依旧保持这个监听
 
 ## 测试 Vitest
 

@@ -1,11 +1,10 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
-import ManualRouter from './pages/ManualRouter.vue'
 </script>
 
 <template>
   <HelloWorld />
-  <ManualRouter />
+  <input v-focus="123">
 </template>
 
 <style lang="scss">

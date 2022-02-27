@@ -5,10 +5,11 @@ import { defineStore } from 'pinia'
 export const useStore = defineStore('userInfo', {
   state: (state) => {
     return {
-      name: 'yyb',
-      count: 0,
       score: 100
     }
+  },
+  getters: {
+    doubleCount: state => state.score * 2
   }
 })
 
