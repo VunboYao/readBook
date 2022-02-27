@@ -85,3 +85,9 @@ if (argv[2] === '--environment') { // 判断参数环境
 // package.json 中脚本
 // "argvTest": "node 00HelloWorld.js --environment NODE_ENV:development"
 ```
+
+# 事件循环
+
+`async,await`是 Promise 的一个语法糖（实则是Promise+Generator+iterator）
+- 可以将await关键字后边执行的代码，看作是包裹在`(resolve, reject) => {函数行} 中的代码`, 会立即执行
+- await 的下一条语句，可以看作是`then(res => {函数行})`中的代码
