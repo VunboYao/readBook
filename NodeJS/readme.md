@@ -48,18 +48,18 @@ this 为空对象({}). 源码内部 call 绑定了 exports, 该值默认赋值�
 
 # yarn
 
-| NPM                                | Yarn                  |
-| ---------------------------------- | --------------------- |
-| npm install                        | yarn install          |
-| npm install xxx                    | yarn add xxx          |
-| npm install --save xx              | yarn add xxx          |
-| npm install --save-dev xxx         | yarn add xxx --dev/-D |
+| NPM                                | Yarn                  | pnpm |
+| ---------------------------------- | --------------------- |-------|
+| npm install                        | yarn install          |pnpm add |
+| npm install xxx                    | yarn add xxx          |pnpm add |
+| npm install --save xx              | yarn add xxx          |pnpm add |
+| npm install --save-dev xxx         | yarn add xxx --dev/-D |pnpm add -D xxx |
 | npm rebuild                        | yarn install --force  |
-| npm uninstall xxx                  | yarn remove xxx       |
-| npm uninstall --save xxx           | yarn remove xxx       |
-| npm uninstall --save-dev xxx       | yarn remove xxx       |
+| npm uninstall xxx                  | yarn remove xxx       |pnpm remove |
+| npm uninstall --save xxx           | yarn remove xxx       |pnpm remove -P xx|
+| npm uninstall --save-dev xxx       | yarn remove xxx       |pnpm remove -D xx|
 | npm cache clean                    | yarn cache clean      |
-| rm -rf node_modules && npm install | yarn upgrade          |
+| rm -rf node_modules && npm install | yarn upgrade          |pnpm up --latest|
 
 # where & which
 
