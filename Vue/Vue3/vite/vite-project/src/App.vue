@@ -1,10 +1,10 @@
 <script setup>
-import { ref } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
-const msg = ref('Hello Vue3')
+import { useStore } from './stores/userInfo'
+const store = useStore()
 </script>
 
 <template>
+  <h2>{{ store.doubleCount }}</h2>
   <RouterView />
 </template>
 
