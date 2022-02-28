@@ -1,6 +1,6 @@
 {
-  "name": "vunbo",
-  "version": "1.0.0",
+  "name": "vunbo-util",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "bin": {
