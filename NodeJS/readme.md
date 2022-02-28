@@ -109,7 +109,7 @@ if (argv[2] === '--environment') {
 - nextTicks
 - other 微任务
 - timers 定时器
-- immediate 
+- immediate
 
 ```js
 timers             执行setTimeout() 和 setInterval() 中到期的 callback
@@ -119,3 +119,12 @@ poll               执行与 I/O 相关的回调。（除了close回调，定时
 check              执行 setImmediate的callback
 close              执行close事件的callback, 例如socket.on('close', ()=>{})
 ```
+
+# npm 发布问题
+
+- 地址： `https://registry.npmjs.com`
+- 发布：查看包是否正确，名称是否已重复
+
+# Stream
+
+所有的流都是 EventEmitter 的实例
