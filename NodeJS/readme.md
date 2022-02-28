@@ -128,3 +128,8 @@ close              执行close事件的callback, 例如socket.on('close', ()=>{}
 # Stream
 
 所有的流都是 EventEmitter 的实例
+
+- fs.createReadStream
+- fs.createWriteStream
+- reader.pipe(writer)
+- writer.end('hello world'),相当于 writer 写入并结束,writer.end()
