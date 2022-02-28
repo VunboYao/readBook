@@ -1,17 +1,24 @@
 {
-  "name": "08-my-cli",
+  "name": "vunbo",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "bin": {
     "vunbo": "index.js"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "scripts": {},
+  "keywords": [
+    "vue3",
+    "vite",
+    "vunbo"
+  ],
+  "homepage": "https://github.com/VunboYao/readBook/tree/master/NodeJS/08-my-cli",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VunboYao/readBook/tree/master/NodeJS/08-my-cli"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "VunboYao",
+  "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.2",
     "commander": "^9.0.0",

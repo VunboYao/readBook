@@ -48,18 +48,18 @@ this 为空对象({}). 源码内部 call 绑定了 exports, 该值默认赋值�
 
 # yarn
 
-| NPM | Yarn |
-|---|---|
-|npm install | yarn install |
-|npm install xxx|yarn add xxx|
-|npm install --save xx|yarn add xxx|
-|npm install --save-dev xxx|yarn add xxx --dev/-D|
-|npm rebuild|yarn install --force|
-|npm uninstall xxx|yarn remove xxx|
-|npm uninstall --save xxx|yarn remove xxx|
-|npm uninstall --save-dev xxx|yarn remove xxx|
-|npm cache clean|yarn cache clean|
-|rm -rf node_modules && npm install|yarn upgrade|
+| NPM                                | Yarn                  |
+| ---------------------------------- | --------------------- |
+| npm install                        | yarn install          |
+| npm install xxx                    | yarn add xxx          |
+| npm install --save xx              | yarn add xxx          |
+| npm install --save-dev xxx         | yarn add xxx --dev/-D |
+| npm rebuild                        | yarn install --force  |
+| npm uninstall xxx                  | yarn remove xxx       |
+| npm uninstall --save xxx           | yarn remove xxx       |
+| npm uninstall --save-dev xxx       | yarn remove xxx       |
+| npm cache clean                    | yarn cache clean      |
+| rm -rf node_modules && npm install | yarn upgrade          |
 
 # where & which
 
@@ -71,14 +71,15 @@ this 为空对象({}). 源码内部 call 绑定了 exports, 该值默认赋值�
 
 # process.env.NODE_ENV
 
-process.env下，此属性默认并不存在，自己配置。
+process.env 下，此属性默认并不存在，自己配置。
 
 ```js
 // node xxx --environment NODE_ENV:development
 let argv = process.argv // 获取命令行中的参数
-if (argv[2] === '--environment') { // 判断参数环境
+if (argv[2] === '--environment') {
+	// 判断参数环境
 	let arr = argv[3].split(':') // 切割命令行信息
-	console.log('环境变量设置是：', process.env[arr[0]] = arr[1]) // 设置相关环境变量
+	console.log('环境变量设置是：', (process.env[arr[0]] = arr[1])) // 设置相关环境变量
 	console.log(process.env)
 }
 
@@ -88,6 +89,23 @@ if (argv[2] === '--environment') { // 判断参数环境
 
 # 事件循环
 
-`async,await`是 Promise 的一个语法糖（实则是Promise+Generator+iterator）
-- 可以将await关键字后边执行的代码，看作是包裹在`(resolve, reject) => {函数行} 中的代码`, 会立即执行
+`async,await`是 Promise 的一个语法糖（实则是 Promise+Generator+iterator）
+
+- 可以将 await 关键字后边执行的代码，看作是包裹在`(resolve, reject) => {函数行} 中的代码`, 会立即执行
 - await 的下一条语句，可以看作是`then(res => {函数行})`中的代码
+
+## 阻塞和非阻塞，同步和异步的区别？
+
+- 阻塞和非阻塞对于被调用者来说的：系统调用
+- 同步和异步对于调用者来说
+
+## NodeJS 中的队列
+
+```js
+timers             执行setTimeout() 和 setInterval() 中到期的 callback
+pending callbacks  执行系统操作的回调， 如： TCP, UDP通信的错误callback
+idle,prepare       只在内部使用
+poll               执行与 I/O 相关的回调。（除了close回调，定时器回调和setImmediate（）之外，几乎所有回调都执行
+check              执行 setImmediate的callback
+close              执行close事件的callback, 例如socket.on('close', ()=>{})
+```
