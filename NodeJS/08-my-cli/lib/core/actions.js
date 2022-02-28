@@ -73,7 +73,7 @@ const addPageAndRouteAction = async (pageName, dest) => {
   const routerDirPath = `./src/router/${routePath}`
   const targetRoutePath = path.resolve(routerDirPath, `${name}.js`)
   if (createDirSync(routerDirPath)) {
-    fsWriteFile(targetRoutePath, routeResult)
+    // fsWriteFile(targetRoutePath, routeResult)
   }
 }
 

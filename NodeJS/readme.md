@@ -89,6 +89,8 @@ if (argv[2] === '--environment') {
 
 # 事件循环
 
+连接着应用程序的 JS 和系统调用之间的通道
+
 `async,await`是 Promise 的一个语法糖（实则是 Promise+Generator+iterator）
 
 - 可以将 await 关键字后边执行的代码，看作是包裹在`(resolve, reject) => {函数行} 中的代码`, 会立即执行
@@ -100,6 +102,14 @@ if (argv[2] === '--environment') {
 - 同步和异步对于调用者来说
 
 ## NodeJS 中的队列
+
+### 执行顺序
+
+- 同步
+- nextTicks
+- other 微任务
+- timers 定时器
+- immediate 
 
 ```js
 timers             执行setTimeout() 和 setInterval() 中到期的 callback
