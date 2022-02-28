@@ -70,11 +70,11 @@ const addPageAndRouteAction = async (pageName, dest) => {
   }
 
   // 3.写入路由
-  const routerDirPath = `./src/routers/${routePath}`
+  /* const routerDirPath = `./src/router/${routePath}`
   const targetRoutePath = path.resolve(routerDirPath, `${name}.js`)
   if (createDirSync(routerDirPath)) {
     fsWriteFile(targetRoutePath, routeResult)
-  }
+  } */
 }
 
 // 3.添加store

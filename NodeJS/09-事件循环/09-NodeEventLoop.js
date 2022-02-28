@@ -37,7 +37,7 @@ setTimeout(() => {
     })
 })
 console.log('start');
-setTimeout(() => { 
+setTimeout(() => {
     console.log('setTimeout2');
     Promise.resolve().then(() => {
         console.log('Promise2');
@@ -56,23 +56,23 @@ console.log('end');
 // 微任务 n2 p2
 
 // 以下代码输出的结果是随机的。在NodeJS中指定的延迟时间是有一定的误差的，所以导致了输出结果的问题
-// setTimeout(() => {
-//     console.log('setTimeout');
-// })
-// setImmediate(() => {
-//     console.log('setImmediate');
-// })
+setTimeout(() => {
+  console.log('setTimeout');
+})
+setImmediate(() => {
+  console.log('setImmediate');
+})
 
 // 面试题
 const path = require('path')
 const fs = require('fs')
 
 fs.readFile(path.join(__dirname, '07-core.js'), () => {
-    setTimeout(() => {
-        console.log('setTimeout');
-    })
-    setImmediate(() => {
-        console.log('setImmediate');
-    })
+  setTimeout(() => {
+    console.log('setTimeout');
+  })
+  setImmediate(() => {
+    console.log('setImmediate');
+  })
 })
 // 先 setImmediate 后 setTimeout.因为 readFile在 poll 事件环中， 再执行 check， 最后 timers
