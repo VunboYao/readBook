@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const filePath = path.resolve(__dirname, 'abc.txt')
 
-/* fs.writeFile(
+fs.writeFile(
 	filePath,
 	'\nHello Vunbo',
 	{
@@ -11,9 +11,9 @@ const filePath = path.resolve(__dirname, 'abc.txt')
 	err => {
 		console.log(err)
 	}
-) */
+)
 
-fs.readFile(
+/* fs.readFile(
 	filePath,
 	{
 		encoding: 'utf-8',
@@ -22,3 +22,4 @@ fs.readFile(
 		console.log(data)
 	}
 )
+ */

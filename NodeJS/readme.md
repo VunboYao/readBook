@@ -4,7 +4,7 @@
 
 - node 中实现 CommonJS 的本质是对象的引用赋值
 - exports 默认导出的是一个空对象
-- exports.xxx 导出的任意变量，在任何模块以 exports.xxx 更改后，都可以在其他模块实现变更
+- exports.xxx 导出的任意变量，在任何模块以 importExportsName.xxx 更改后，都可以在其他模块实现变更
 
 # module.exports
 
@@ -48,18 +48,18 @@ this 为空对象({}). 源码内部 call 绑定了 exports, 该值默认赋值�
 
 # yarn
 
-| NPM                                | Yarn                  | pnpm |
-| ---------------------------------- | --------------------- |-------|
-| npm install                        | yarn install          |pnpm add |
-| npm install xxx                    | yarn add xxx          |pnpm add |
-| npm install --save xx              | yarn add xxx          |pnpm add |
-| npm install --save-dev xxx         | yarn add xxx --dev/-D |pnpm add -D xxx |
+| NPM                                | Yarn                  | pnpm              |
+| ---------------------------------- | --------------------- | ----------------- |
+| npm install                        | yarn install          | pnpm add          |
+| npm install xxx                    | yarn add xxx          | pnpm add          |
+| npm install --save xx              | yarn add xxx          | pnpm add          |
+| npm install --save-dev xxx         | yarn add xxx --dev/-D | pnpm add -D xxx   |
 | npm rebuild                        | yarn install --force  |
-| npm uninstall xxx                  | yarn remove xxx       |pnpm remove |
-| npm uninstall --save xxx           | yarn remove xxx       |pnpm remove -P xx|
-| npm uninstall --save-dev xxx       | yarn remove xxx       |pnpm remove -D xx|
+| npm uninstall xxx                  | yarn remove xxx       | pnpm remove       |
+| npm uninstall --save xxx           | yarn remove xxx       | pnpm remove -P xx |
+| npm uninstall --save-dev xxx       | yarn remove xxx       | pnpm remove -D xx |
 | npm cache clean                    | yarn cache clean      |
-| rm -rf node_modules && npm install | yarn upgrade          |pnpm up --latest|
+| rm -rf node_modules && npm install | yarn upgrade          | pnpm up --latest  |
 
 # where & which
 
@@ -100,6 +100,7 @@ if (argv[2] === '--environment') {
 
 - `LibUV`提供了一个线程池
   - 轮训获取结果，将对应的回调放到事件循环(某一个事件队列)中
+
 ## 阻塞和非阻塞，同步和异步的区别？
 
 - 阻塞和非阻塞对于被调用者来说的：系统调用

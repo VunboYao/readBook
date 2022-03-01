@@ -18,14 +18,14 @@ const log = console.log
 
 // 0.创建工程
 const createProject = async (project, others) => {
-  // 工程提示
-  log(chalk.green('vunbo helps you create your project, Please wait a moment...'));
-
   // 0.判断文件是否存在
   if (fs.existsSync(project)) {
     log(chalk.red(`${project} already exists!!!`))
     return
   }
+
+  // 工程提示
+  log(chalk.green('vunbo helps you create your project, Please wait a moment...'));
 
   // 1.clone项目
   await download(VueRepo, project, { clone: true })
