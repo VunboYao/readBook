@@ -2,6 +2,7 @@ const Http = require('http')
 
 // create server
 const server = Http.createServer((req, res) => {
+  console.log(req.method);
   res.write('response one')
   res.end('Hello Http') // 相当于res.write 和 res.close
 })
