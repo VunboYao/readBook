@@ -138,3 +138,17 @@ close              执行close事件的callback, 例如socket.on('close', ()=>{}
 - fs.createWriteStream
 - reader.pipe(writer)
 - writer.end('hello world'),相当于 writer 写入并结束,writer.end()
+
+# express
+
+## 中间件
+
+- `app.use()`或者`app.[method]`，匹配到后，如果未调用**next()**，则只执行第一个匹配到的
+- 连续注册中间件，也需要调用next
+
+## 内置解析请求
+
+- `app.use(express.json())`
+- `app**.**use(express**.**urlencoded({ extended: true }))` *// x-www-form-urlencoded*
+  - extended: true: 使用第三方库: qs  
+  - false: 使用内置的模块：querystring
