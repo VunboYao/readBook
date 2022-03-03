@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text" id="userName">
+  <button id="setname">setting</button>
+  <input type="text" id="text">
+  <button id="btn">Send</button>
+  <div id="container"></div>
+  <script>
+    let ws = null
+    setname.onclick = ()=> {
+      const userName = document.getElementById('userName').value
+      if (!userName) return console.log('name is null')
+      ws = new WebSocket('ws://localhost:8000')
+      ws.onopen = () => {
+        ws.send(JSON.stringify({name: userName, type: 'setname'}))
+      }
+
+      btn.onclick =  () => {
+        ws.send(JSON.stringify({text: text.value, type: 'chat'}))
+        text.value = ''
+        text.focus()
+      }
+
+      ws.onmessage = (e) => {
+        let p = document.createElement('p')
+        const msg = JSON.parse(e.data)
+        p.innerHTML = `${msg.name}:${msg.text}`
+        container.appendChild(p)
+      }
+
+      setname.setAttribute('disabled', true)
+    }
+  
+  </script>
+</body>
+
+</html>
