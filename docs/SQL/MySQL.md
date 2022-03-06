@@ -28,6 +28,10 @@
 
 `show databases;`
 
+## 查看当前正在使用哪个库
+
+`select database();`
+
 ## 数据库增删改查
 
 1. 创建数据库
