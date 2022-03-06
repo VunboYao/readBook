@@ -152,3 +152,9 @@ close              执行close事件的callback, 例如socket.on('close', ()=>{}
 - `app**.**use(express**.**urlencoded({ extended: true }))` *// x-www-form-urlencoded*
   - extended: true: 使用第三方库: qs  
   - false: 使用内置的模块：querystring
+
+# express & koa 的区别
+
+- koa内部的dispatch返回的是一个Promise，在调用next时，可以通过async/await实现同步调用
+- 解决某个中间件的异步请求结果无法同步返回问题。
+- express 内的 next 返回值不是 promise。 异步调用时无法处理
