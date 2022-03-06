@@ -64,10 +64,10 @@ function effect(fn) {
     cleanup(effectFn)
     // effectFn 执行时，将其设置为当前激活的副作用函数
     activeEffect = effectFn
-    // 在调用副作用函数之前将当前副作用函数压入栈中
+    // TODO:在调用副作用函数之前将当前副作用函数压入栈中
     effectStack.push(effectFn)
     fn()
-    // 将当前副作用函数弹出，并把activeEffect还原为之前的值
+    // TODO:将当前副作用函数弹出，并把activeEffect还原为之前的值
     effectStack.pop()
     activeEffect = effectStack[effectStack.length - 1]
   }

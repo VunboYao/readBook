@@ -79,22 +79,23 @@ function effect(fn, options = {}) {
     activeEffect = effectFn
     // 在调用副作用函数之前将当前副作用函数压入栈中
     effectStack.push(effectFn)
-    // 将 fn 的执行结果存储到res中
+    // TODO:将 fn 的执行结果存储到res中
     const res = fn()
     // 将当前副作用函数弹出，并把activeEffect还原为之前的值
     effectStack.pop()
     activeEffect = effectStack[effectStack.length - 1]
+    // TODO:将res作为effectFn的返回值
     return res
   }
   // 将 options 挂载到 effectFn 上
   effectFn.options = options
   // activeEffect.deps 用来存储所有与该副作用函数相关联的依赖集合Set()
   effectFn.deps = []
-  // 只有非lazy的时候，执行该副作用函数
+  // TODO:只有非lazy的时候，执行该副作用函数
   if (!options.lazy) {
     effectFn()
   }
-  // 将副作用函数作为返回值返回
+  // TODO:将副作用函数作为返回值返回
   return effectFn
 }
 

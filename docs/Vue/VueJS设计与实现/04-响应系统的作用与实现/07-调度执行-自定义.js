@@ -57,7 +57,7 @@ function trigger(target, key) {
     }
   })
   effectsToRun.forEach(effectFn => {
-    // 如果一个副作用函数存在调度器，则调用该调度器，并将副作用函数作为参数传递
+    // TODO:如果一个副作用函数存在调度器，则调用该调度器，并将副作用函数作为参数传递
     if (effectFn.options.scheduler) {
       effectFn.options.scheduler(effectFn)
     } else {
@@ -84,7 +84,7 @@ function effect(fn, options = {}) {
     effectStack.pop()
     activeEffect = effectStack[effectStack.length - 1]
   }
-  // 将 options 挂载到 effectFn 上
+  // TODO:将 options 挂载到 effectFn 上
   effectFn.options = options
   // activeEffect.deps 用来存储所有与该副作用函数相关联的依赖集合Set()
   effectFn.deps = []
@@ -105,7 +105,7 @@ function cleanup(effectFn) {
   effectFn.deps.length = 0
 }
 
-// 定义一个任务队列
+// TODO:定义一个任务队列
 const jobQueue = new Set()
 const p = Promise.resolve() // 微任务队列
 

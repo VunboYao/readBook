@@ -51,6 +51,7 @@ function trigger(target, key) {
   // TODO:避免无限循环
   const effectsToRun = new Set()
   effects && effects.forEach(effectFn => {
+    // TODO:避免obj.foo = obj.foo + 1 导致的无限递归调用，栈溢出问题
     if (effectFn !== activeEffect) {
       effectsToRun.add(effectFn)
     }
