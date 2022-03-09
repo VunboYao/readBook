@@ -135,10 +135,7 @@ class MyPromise {
 	}
 
 	finally(fn) {
-		this.then(
-			_ => fn,
-			_ => fn
-		)
+		this.then(fn, fn)
 	}
 
 	static resolve(arg) {
@@ -182,10 +179,7 @@ class MyPromise {
 			const len = promises.length
 			if (len === 0) return resolve()
 			promises.forEach(promise => {
-				promise.then(
-					value => resolve(value),
-					reason => reject(reason)
-				)
+				promise.then(resolve, reject)
 			})
 		})
 	}
@@ -218,11 +212,7 @@ class MyPromise {
 			const reasons = []
 			const len = promises.length
 			promises.forEach(promise => {
-				promise.then(
-					value => {
-						resolve(value)
-					},
-					reason => {
+				promise.then(resolve, reason => {
 						reasons.push(reason)
 						if (reasons.length === len) {
 							reject(new AggregateError(reasons))

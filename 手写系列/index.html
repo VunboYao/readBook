@@ -3,8 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <!-- <script src="./001-03.js"></script> -->
-  <script src="./008-compose.js"></script>
+   <script src="./001-03.js"></script>
+<!--  <script src="./008-compose.js"></script>-->
+  <script>
+    let p = new MyPromise(resolve => {
+      setTimeout(()=> {
+        resolve('success')
+      }, 1500)
+    })
+    let p2 = new MyPromise((resolve,reject) => {
+      setTimeout(() => {
+        reject('error')
+      }, 1000)
+    })
+    let p3 = new MyPromise((resolve,reject) => {
+      setTimeout(() => {
+        resolve('OK')
+      }, 13300)
+    })
+    Promise.race([p,p2, p3]).then(res => {
+      console.log(res)
+    }, err => {
+      console.log(err)
+    })
+  </script>
 </head>
 <body>
 </body>
