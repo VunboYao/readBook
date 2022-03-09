@@ -86,7 +86,7 @@
 						cancel()
 					}
 				} else {
-					timeout = setTimeout(() => {
+					timeout = setTimeout(async () => {
 						try {
 							const result = await func.apply(this, args)
 							res(result)

@@ -20,7 +20,7 @@
 
 			// 3.立即执行
 			if (immediate && !isInvoke) {
-				fn.apply(this, ...args)
+				fn.apply(this, args)
 				isInvoke = true
 			} else {
 				timer = setTimeout(() => {
