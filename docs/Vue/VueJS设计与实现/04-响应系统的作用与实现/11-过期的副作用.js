@@ -174,7 +174,7 @@ function flushJob() {
 
 // =================================
 let finalData
-watch(obj, (newVal, oldVal, onInvalidate) => {
+watch(obj, async (newVal, oldVal, onInvalidate) => {
   let expired = false
   onInvalidate(() => {
     expired = true
