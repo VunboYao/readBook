@@ -1,5 +1,4 @@
 const bucket = new WeakMap()
-
 const data = { foo: 1, bar: 2 }
 
 const obj = new Proxy(data, {
@@ -47,60 +46,44 @@ function trigger(target, key) {
 }
 
 let activeEffect
-const effectStack = []
-
+let effectStack = []
 function effect(fn, options = {}) {
   const effectFn = () => {
     cleanup(effectFn)
     activeEffect = effectFn
     effectStack.push(effectFn)
-    // 将 fn 的执行结果存储到res中
     const res = fn()
     effectStack.pop()
     activeEffect = effectStack[effectStack.length - 1]
-    // 将 res 作为effectFn的返回值
     return res
   }
-  effectFn.options = options
   effectFn.deps = []
-  // 只有非 lazy 的时候，才执行
+  effectFn.options = options
   if (!options.lazy) {
     effectFn()
   }
-  // 将副作用函数作为返回值返回
   return effectFn
 }
 
 function computed(getter) {
-  // value 用来缓存上一次计算的值
   let value
-  // dirty 标志，用来标识是否需要重新计算值，为 true 则意味着“脏”，需要计算
   let dirty = true
 
-  // 把 getter 作为副作用函数，创建一个 lazy 的 effect
   const effectFn = effect(getter, {
     lazy: true,
-    // 添加调度器，在调度器中将 dirty 重置为 true
     scheduler() {
-      // TODO:此处不需要将fn参数传入来执行，因为在下边即将计算值
       if (!dirty) {
         dirty = true
-        // 当计算属性依赖的响应式数据变化时，手动调用 trigger 函数触发响应
         trigger(obj, 'value')
       }
     }
   })
-
   const obj = {
-    // 当读取 value 时才执行 effectFn
     get value() {
-      // 只有“脏”时才计算值，并将得到的值缓存到 value 中
       if (dirty) {
         value = effectFn()
-        // 将 dirty 设置 为 false， 下一次访问直接使用缓存到 value 中的值
         dirty = false
       }
-      // 当读取 value 时， 手动调用 track 函数进行追踪
       track(obj, 'value')
       return value
     }
@@ -118,6 +101,7 @@ function cleanup(effectFn) {
 
 const jobQueue = new Set()
 const p = Promise.resolve()
+
 let isFlushing = false
 function flushJob() {
   if (isFlushing) return
@@ -134,10 +118,6 @@ const sumRes = computed(() => {
   console.log('反复执行')
   return obj.foo + obj.bar
 })
-/* console.log(sumRes.value)
-console.log(sumRes.value)
-obj.foo++
-console.log(sumRes.value) */
 
 effect(() => {
   // 在该副作用函数中读取 sumRes.value

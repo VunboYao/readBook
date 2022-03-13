@@ -84,6 +84,7 @@ function computed(getter) {
     scheduler() {
       // TODO:此处不需要将fn参数传入来执行，因为在下边即将计算值
       if (!dirty) {
+        // TODO：减少无意义的视图更新，数据更改时
         dirty = true
         // 当计算属性依赖的响应式数据变化时，手动调用 trigger 函数触发响应
         trigger(obj, 'value')

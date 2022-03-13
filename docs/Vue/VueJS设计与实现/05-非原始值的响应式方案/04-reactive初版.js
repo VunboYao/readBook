@@ -1,17 +1,58 @@
 const bucket = new WeakMap()
 
-const data = { foo: 1, bar: 2 }
+const TriggerType = {
+  SET: 'SET',
+  ADD: 'ADD',
+  DELETE: 'DELETE'
+}
 
-const obj = new Proxy(data, {
-  get(target, key) {
-    track(target, key)
-    return target[key]
-  },
-  set(target, key, newValue) {
-    target[key] = newValue
-    trigger(target, key)
-  }
-})
+const ITERATE_KEY = Symbol()
+function reactive(obj) {
+  return new Proxy(obj, {
+    get(target, key, receiver) {
+      // 代理对象可以通过 raw 属性访问原始数据
+      if (key === 'raw') {
+        return target
+      }
+      track(target, key)
+      return Reflect.get(target, key, receiver)
+    },
+    set(target, key, newValue, receiver) {
+      // 获取旧值
+      const oldValue = target[key]
+
+      const type = Object.prototype.hasOwnProperty.call(target, key) ? TriggerType.SET : TriggerType.ADD
+      const res = Reflect.set(target, key, newValue, receiver)
+
+      // target === receiver.raw 说明 receiver 就是 target 的代理对象
+      if (target === receiver.raw) {
+        // 比较旧值与新值，不全等且都不是 NaN 的时候，才触发响应
+        if (oldValue !== newValue && (oldValue === oldValue || newValue === newValue)) {
+          trigger(target, key, type)
+        }
+      }
+
+      return res
+    },
+    has(target, key) {
+      track(target, key)
+      return Reflect.has(target, key)
+    },
+    ownKeys(target) {
+      track(target, ITERATE_KEY)
+      return Reflect.ownKeys(target)
+    },
+    deleteProperty(target, key) {
+      const hadKey = Object.prototype.hasOwnProperty.call(target, key)
+      const res = Reflect.deleteProperty(target, key)
+
+      if (res && hadKey) {
+        trigger(target, key, 'DELETE')
+      }
+      return res
+    }
+  })
+}
 
 function track(target, key) {
   if (!activeEffect) return
@@ -27,7 +68,7 @@ function track(target, key) {
   activeEffect.deps.push(deps)
 }
 
-function trigger(target, key) {
+function trigger(target, key, type) {
   const depsMap = bucket.get(target)
   if (!depsMap) return
   const effects = depsMap.get(key)
@@ -37,6 +78,16 @@ function trigger(target, key) {
       effectsToRun.add(effectFn)
     }
   })
+
+  if (type === TriggerType.ADD || type === TriggerType.DELETE) {
+    const iterateEffects = depsMap.get(ITERATE_KEY)
+    iterateEffects && iterateEffects.forEach(effectFn => {
+      if (effectFn !== activeEffect) {
+        effectsToRun.add(effectFn)
+      }
+    })
+  }
+
   effectsToRun.forEach(effectFn => {
     if (effectFn.options.scheduler) {
       effectFn.options.scheduler(effectFn)
@@ -113,11 +164,9 @@ function watch(source, cb, options) {
 
   const job = () => {
     newValue = effectFn()
-    // 在调用回调函数 cb 之前，先调用过期回调
     if (cleanup) {
       cleanup()
     }
-    // 将 onInvalidate 作为回调函数的第三个参数，以便用户使用
     cb(newValue, oldValue, onInvalidate)
     oldValue = newValue
   }
@@ -173,15 +222,15 @@ function flushJob() {
 }
 
 // =================================
-let finalData
-watch(obj, async (newVal, oldVal, onInvalidate) => {
-  let expired = false
-  onInvalidate(() => {
-    expired = true
-  })
+const obj = {}
+const proto = { bar: 1 }
+const child = reactive(obj)
+const parent = reactive(proto)
+// 使用parent作为child的原型
+Object.setPrototypeOf(child, parent)
 
-  const res = await fetch('/path/to/request')
-  if (!expired) {
-    finalData = res
-  }
+effect(() => {
+  console.log(child.bar)
 })
+
+child.bar = 2

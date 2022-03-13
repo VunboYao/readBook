@@ -1,17 +1,74 @@
 const bucket = new WeakMap()
 
-const data = { foo: 1, bar: 2 }
+const TriggerType = {
+  SET: 'SET',
+  ADD: 'ADD',
+  DELETE: 'DELETE'
+}
 
-const obj = new Proxy(data, {
-  get(target, key) {
-    track(target, key)
-    return target[key]
-  },
-  set(target, key, newValue) {
-    target[key] = newValue
-    trigger(target, key)
-  }
-})
+const ITERATE_KEY = Symbol()
+function createReactive(obj, isShallow = false) {
+  return new Proxy(obj, {
+    get(target, key, receiver) {
+      if (key === 'raw') {
+        return target
+      }
+      // 得到原始值结果
+      const res = Reflect.get(target, key, receiver)
+      // 先追踪数据
+      track(target, key)
+
+      // 如果是浅响应，则直接返回原始值
+      if (isShallow) {
+        return res
+      }
+      if (typeof res === 'object' && res !== null) {
+        // 调用 reactive 将结果包装成响应式数据并返回
+        return reactive(res)
+      }
+      return res
+    },
+    set(target, key, newValue, receiver) {
+      const oldValue = target[key]
+
+      const type = Object.prototype.hasOwnProperty.call(target, key) ? TriggerType.SET : TriggerType.ADD
+      const res = Reflect.set(target, key, newValue, receiver)
+
+      if (target === receiver.raw) {
+        if (oldValue !== newValue && (oldValue === oldValue || newValue === newValue)) {
+          trigger(target, key, type)
+        }
+      }
+
+      return res
+    },
+    has(target, key) {
+      track(target, key)
+      return Reflect.has(target, key)
+    },
+    ownKeys(target) {
+      track(target, ITERATE_KEY)
+      return Reflect.ownKeys(target)
+    },
+    deleteProperty(target, key) {
+      const hadKey = Object.prototype.hasOwnProperty.call(target, key)
+      const res = Reflect.deleteProperty(target, key)
+
+      if (res && hadKey) {
+        trigger(target, key, 'DELETE')
+      }
+      return res
+    }
+  })
+}
+
+function reactive(obj) {
+  return createReactive(obj)
+}
+
+function shallowReactive(obj) {
+  return createReactive(obj, true)
+}
 
 function track(target, key) {
   if (!activeEffect) return
@@ -27,7 +84,7 @@ function track(target, key) {
   activeEffect.deps.push(deps)
 }
 
-function trigger(target, key) {
+function trigger(target, key, type) {
   const depsMap = bucket.get(target)
   if (!depsMap) return
   const effects = depsMap.get(key)
@@ -37,6 +94,16 @@ function trigger(target, key) {
       effectsToRun.add(effectFn)
     }
   })
+
+  if (type === TriggerType.ADD || type === TriggerType.DELETE) {
+    const iterateEffects = depsMap.get(ITERATE_KEY)
+    iterateEffects && iterateEffects.forEach(effectFn => {
+      if (effectFn !== activeEffect) {
+        effectsToRun.add(effectFn)
+      }
+    })
+  }
+
   effectsToRun.forEach(effectFn => {
     if (effectFn.options.scheduler) {
       effectFn.options.scheduler(effectFn)
@@ -104,20 +171,16 @@ function watch(source, cb, options) {
 
   let oldValue, newValue
 
-  // cleanup 用来存储用户注册的过期回调
   let cleanup
-  // 定义 onInvalidate 函数
   function onInvalidate(fn) {
     cleanup = fn
   }
 
   const job = () => {
     newValue = effectFn()
-    // 在调用回调函数 cb 之前，先调用过期回调
     if (cleanup) {
       cleanup()
     }
-    // 将 onInvalidate 作为回调函数的第三个参数，以便用户使用
     cb(newValue, oldValue, onInvalidate)
     oldValue = newValue
   }
@@ -173,15 +236,9 @@ function flushJob() {
 }
 
 // =================================
-let finalData
-watch(obj, async (newVal, oldVal, onInvalidate) => {
-  let expired = false
-  onInvalidate(() => {
-    expired = true
-  })
-
-  const res = await fetch('/path/to/request')
-  if (!expired) {
-    finalData = res
-  }
+const obj = shallowReactive({ foo: { bar: 1 } })
+effect(() => {
+  console.log(obj.foo.bar)
 })
+obj.foo = { bar: 2 }
+obj.foo.bar = 3
