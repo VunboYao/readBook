@@ -85,15 +85,9 @@ function cleanup(effectFn) {
 }
 
 effect(function effectFn() {
-  document.body.innerText = obj.ok ? obj.text : 'not'
+  console.log(obj.ok ? obj.text : 'not')
 })
 
 
-// 修改响应数据
-// setTimeout(() => {
-// obj.text = 'hello vue3'
-// obj.notExist = 'hello vue3'
 obj.ok = false
-obj.text = 'hello vue3'
-console.log('bucket :>> ', bucket);
-// }, 1000)
+obj.text = 'hello vue3' // 不会触发副作用函数更新
