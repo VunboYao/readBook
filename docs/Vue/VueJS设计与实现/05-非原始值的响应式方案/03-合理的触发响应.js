@@ -42,7 +42,7 @@ const proxy = new Proxy(data, {
     const res = Reflect.deleteProperty(target, key)
 
     if (res && hadKey) {
-      trigger(target, key, 'DELETE')
+      trigger(target, key, TriggerType.DELETE)
     }
     return res
   }
@@ -220,5 +220,5 @@ effect(() => {
   console.log(proxy.foo)
 })
 
-proxy.foo = 1
-console.log('NaN === NaN :>> ', NaN === NaN);
+proxy.foo = 3
+console.log('NaN === NaN :>> ', NaN === NaN)

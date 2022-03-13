@@ -48,7 +48,7 @@ const proxy = new Proxy(data, {
 
     if (res && hadKey) {
       // 只有当被删除的属性是对象自己的属性并且成功删除时，才触发更新
-      trigger(target, key, 'DELETE')
+      trigger(target, key, TriggerType.DELETE)
     }
     return res
   }

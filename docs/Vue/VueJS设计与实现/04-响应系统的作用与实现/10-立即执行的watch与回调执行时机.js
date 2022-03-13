@@ -1,11 +1,18 @@
 const bucket = new WeakMap()
 
-const data = { foo: 1, bar: 2 }
+const data = {
+  foo: 1,
+  get bar() {
+    // 这里的 this 指向谁？ data本身
+    // 当track中Reflect.get(target, key, receiver)时，this指向proxy
+    return this.foo
+  }
+}
 
-const obj = new Proxy(data, {
-  get(target, key) {
+const proxy = new Proxy(data, {
+  get(target, key, receiver) {
     track(target, key)
-    return target[key]
+    return Reflect.get(target, key, receiver)
   },
   set(target, key, newValue) {
     target[key] = newValue
@@ -104,10 +111,17 @@ function watch(source, cb, options) {
 
   let oldValue, newValue
 
+  let cleanup
+  function onInvalidate(fn) {
+    cleanup = fn
+  }
   // 提取 scheduler 调度函数为一个独立的 job 函数
   const job = () => {
     newValue = effectFn()
-    cb(newValue, oldValue)
+    if (cleanup) {
+      cleanup()
+    }
+    cb(newValue, oldValue, onInvalidate)
     oldValue = newValue
   }
 
@@ -165,13 +179,8 @@ function flushJob() {
 }
 
 // =================================
-watch(obj, (newVal, oldVal) => {
-  console.log('newVal, oldVal :>> ', newVal.foo, oldVal.foo)
-  console.log('data change.')
-}, {
-  // 回调函数会在 watch 创建时立即执行一次
-  // immediate: true,
-  // 回调函数会在 watch 创建时立即执行一次
-  flush: 'post' // 还可以指定为 ‘post' | 'sync'
+effect(() => {
+  console.log(proxy.bar)
 })
-obj.foo++
+
+proxy.foo++

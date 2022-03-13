@@ -161,7 +161,8 @@ function flushJob() {
 }
 
 // =================================
-watch(obj, (newVal, oldVal) => {
-  console.log('newVal, oldVal :>> ', newVal.foo, oldVal.foo)
+watch(() => obj.foo, (newVal, oldVal) => {
+  console.log('newVal, oldVal :>> ', newVal, oldVal)
   console.log('data change.')
 })
+obj.foo++
