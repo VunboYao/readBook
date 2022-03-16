@@ -28,11 +28,11 @@ const createCommands = () => {
   // 添加页面以及路由
   program
     .command('addpage <pageName> [destination...]')
-    .description('add vue page and router config, eg: vunbo addpage Home [-d src/pages]')
+    .description('add vue page and router config, eg: vunbo addpage Home [-d src/views]')
     .action(pageName => {
       const { dest } = program.opts()
       if (handleArgv(dest)) return
-      addPageAndRouteAction(pageName, dest || 'src/pages')
+      addPageAndRouteAction(pageName, dest || 'src/views')
     })
 
   // 添加vuex
