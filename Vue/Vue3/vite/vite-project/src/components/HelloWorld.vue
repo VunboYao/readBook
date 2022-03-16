@@ -6,7 +6,10 @@
 
 <script setup>
 defineProps({
-  msg: String
+  msg: {
+    type: String,
+    default: ''
+  }
 })
 </script>
 

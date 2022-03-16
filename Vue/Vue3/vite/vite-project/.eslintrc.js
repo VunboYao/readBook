@@ -16,5 +16,7 @@ module.exports = {
       "singleline": "beside"
     }],
     "semi": ["error", "never"],
+    "arrow-parens": ["error", "always"], // 箭头函数必须括号
+    "vue/comment-directive": "off", // 去掉html的检测
   },
 }

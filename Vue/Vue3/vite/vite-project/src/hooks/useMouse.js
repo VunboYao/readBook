@@ -4,7 +4,7 @@ export default function () {
   const x = ref(0)
   const y = ref(0)
 
-  useEventListener(window, 'mousemove', e => {
+  useEventListener(window, 'mousemove', (e) => {
     x.value = e.pageY
     y.value = e.pageY
   })

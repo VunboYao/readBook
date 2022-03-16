@@ -7,7 +7,7 @@ export default {
     el.dataset.oldValue = binding.value
   },
   // 元素挂载之后
-  mounted: el => {
+  mounted: (el) => {
     el.focus()
   },
   beforeUpdate(el, binding) { },
