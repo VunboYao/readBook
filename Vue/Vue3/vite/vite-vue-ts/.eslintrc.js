@@ -1,19 +1,4 @@
 module.exports = {
-  root: true,
-  parser: '@typescript-eslint/parser',
-  plugins: [
-    '@typescript-eslint',
-  ],
-  extends: [
-    // 'eslint:recommended',
-    'plugin:vue/vue3-essential',
-    'plugin:vue/vue3-recommended',
-    'plugin:vue/vue3-strongly-recommended',
-    'plugin:@typescript-eslint/recommended',
-    './eslintrc-auto-import.json',
-  ],
-};
-/* module.exports = {
   env: {
     es2021: true,
   },
@@ -33,7 +18,14 @@ module.exports = {
   },
   rules: {
     // off(0) warn(1) error(2)
-
+    "vue/max-attributes-per-line": ["error", {
+      "singleline": {
+        "max": 1
+      },
+      "multiline": {
+        "max": 1
+      }
+    }],
     // 单行属性时，不换行
     "vue/first-attribute-linebreak": ['error', {
       "singleline": "beside"
@@ -43,4 +35,3 @@ module.exports = {
     "vue/comment-directive": "off", // 去掉html的检测
   },
 }
- */
