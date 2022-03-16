@@ -1,6 +1,6 @@
 {
   "name": "vunbo-util",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "一个快速构建vue项目的脚手架",
   "main": "index.js",
   "bin": {
