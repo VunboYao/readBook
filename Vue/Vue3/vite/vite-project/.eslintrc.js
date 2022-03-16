@@ -10,7 +10,14 @@ module.exports = {
   },
   rules: {
     // off(0) warn(1) error(2)
-
+    "vue/max-attributes-per-line": ["error", {
+      "singleline": {
+        "max": 1
+      },
+      "multiline": {
+        "max": 1
+      }
+    }],
     // 单行属性时，不换行
     "vue/first-attribute-linebreak": ['error', {
       "singleline": "beside"

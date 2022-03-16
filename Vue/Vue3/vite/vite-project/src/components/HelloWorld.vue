@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h2>Component: {{ msg }}</h2>
+    <h2 age="20">
+      Component: {{ msg }}
+    </h2>
   </div>
 </template>
 
@@ -14,5 +16,4 @@ defineProps({
 </script>
 
 <style lang="scss" scoped>
-
 </style>
