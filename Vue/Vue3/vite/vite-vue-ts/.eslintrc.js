@@ -1,13 +1,31 @@
 module.exports = {
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: [
+    '@typescript-eslint',
+  ],
+  extends: [
+    // 'eslint:recommended',
+    'plugin:vue/vue3-essential',
+    'plugin:vue/vue3-recommended',
+    'plugin:vue/vue3-strongly-recommended',
+    'plugin:@typescript-eslint/recommended',
+    './eslintrc-auto-import.json',
+  ],
+};
+/* module.exports = {
   env: {
     es2021: true,
   },
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
   // Vue3 官方eslint3件套
   extends: [
     'plugin:vue/vue3-essential',
     'plugin:vue/vue3-recommended',
     'plugin:vue/vue3-strongly-recommended',
-    './eslintrc-auto-import.json'
+    './eslintrc-auto-import.json',
+    "plugin:@typescript-eslint/recommended"
   ],
   parserOptions: {
     ecmaVersion: 12,
@@ -25,3 +43,4 @@ module.exports = {
     "vue/comment-directive": "off", // 去掉html的检测
   },
 }
+ */
