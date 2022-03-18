@@ -5,5 +5,11 @@ const count = ref(2)
 
 <template>
   <h1>{{ msg }}</h1>
-  <button type="button" @click="count++" title2="123">count is: {{ count }}</button>
+  <button
+    type="button"
+    title2="123"
+    @click="count++"
+  >
+    count is: {{ count }}
+  </button>
 </template>

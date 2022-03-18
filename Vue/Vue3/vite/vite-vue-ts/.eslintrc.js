@@ -1,17 +1,18 @@
+
 module.exports = {
   root: true,
   env: {
     es2021: true,
   },
   parser: 'vue-eslint-parser',
-  // plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint'],
   // Vue3 官方eslint3件套
   extends: [
-    "plugin:@typescript-eslint/recommended",
     'plugin:vue/vue3-essential',
     'plugin:vue/vue3-recommended',
     'plugin:vue/vue3-strongly-recommended',
-    './eslintrc-auto-import.json',
+    "plugin:@typescript-eslint/recommended",
+    './.eslintrc-auto-import.json'
   ],
   parserOptions: {
     ecmaVersion: 12,
