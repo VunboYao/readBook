@@ -4,9 +4,9 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" title2="123" />
+  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" ti1="12" />
 </template>
-/
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
