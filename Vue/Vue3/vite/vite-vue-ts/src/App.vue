@@ -3,14 +3,8 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <img
-    alt="Vue logo"
-    src="./assets/logo.png"
-  >
-  <HelloWorld
-    msg="Hello Vue 3 + TypeScript + Vite"
-    ti1="12"
-  />
+  <img alt="Vue logo" src="./assets/logo.png" />
+  <HelloWorld msg="Hello Vue 3 + TypeScript + Vita" sdf="123" ti1="12" />
 </template>
 
 <style>

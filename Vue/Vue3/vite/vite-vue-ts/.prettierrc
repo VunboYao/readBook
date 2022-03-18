@@ -5,5 +5,8 @@
   "singleQuote": true,
   "trailingComma": "none",
   "semi": false,
-  "endOfLine": "lf"
+  "arrowParens": "always",
+  "endOfLine": "lf",
+  "singleAttributePerLine": true,
+  "bracketSameLine": true
 }
