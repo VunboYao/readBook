@@ -10,7 +10,7 @@ export default defineComponent({
       const num = number.value
       return (
         <div>
-          <h2>{num + 1}</h2>
+          <h2>{num + 2}</h2>
         </div>
       )
     }
