@@ -11,8 +11,8 @@ module.exports = {
     'plugin:vue/vue3-essential',
     'plugin:vue/vue3-recommended',
     'plugin:vue/vue3-strongly-recommended',
-    "plugin:@typescript-eslint/recommended",
-    './.eslintrc-auto-import.json'
+    './.eslintrc-auto-import.json',
+    'plugin:@typescript-eslint/recommended'
   ],
   parserOptions: {
     ecmaVersion: 12,
