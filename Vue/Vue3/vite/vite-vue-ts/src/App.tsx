@@ -1,7 +1,6 @@
 export default defineComponent({
   setup() {
     const number = ref(12)
-    const bar = ref('barv')
     setInterval(() => {
       number.value++
     }, 1000)
