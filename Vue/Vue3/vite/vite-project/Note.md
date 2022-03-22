@@ -4,6 +4,18 @@
 
 - resolve.extensions：官方不建议忽略.vue
 
+## 安装
+
+- `pnpm create vite@latest`
+
+## JSX
+
+- 官方插件：`@vitejs/plugin-vue-jsx`
+
+## Vue2支持
+
+- `https://github.com/underfin/vite-plugin-vue2`
+
 ## Vue3
 
 ### 基础
@@ -428,7 +440,7 @@ export default {
 // 设置一个新对象(不是整体替换,数据新增)
 store.$state = { counter: 666, name: 'Vunbo}
 ```
-  
+
 ### getters
 
 - 接收state作为第一个参数，建议使用箭头函数
