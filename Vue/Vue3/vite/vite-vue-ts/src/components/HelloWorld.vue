@@ -1,4 +1,6 @@
-<script setup lang="ts">
+<script
+  setup
+  lang="ts">
 defineProps<{ msg: string }>()
 const count = ref(2)
 </script>
@@ -7,9 +9,7 @@ const count = ref(2)
   <h1>{{ msg }}</h1>
   <button
     type="button"
-    title2="123"
-    @click="count++"
-  >
+    @click="count++">
     count is: {{ count }}
   </button>
 </template>
