@@ -19,35 +19,36 @@ const proxy = new Proxy(data, {
   },
   // 拦截设置操作
   set(target, key, newValue, receiver) {
-    // 如果属性不存在，则说明是在添加新属性，否则是设置已有属性
+    // !如果属性不存在，则说明是在添加新属性，否则是设置已有属性
     const type = Object.prototype.hasOwnProperty.call(target, key) ? TriggerType.SET : TriggerType.ADD
-    // 返回true/false
+    // *返回true/false
     const res = Reflect.set(target, key, newValue, receiver)
 
-    console.log('set :>> ', res)
     trigger(target, key, type)
     return res
   },
-  // 拦截 in 操作符
+  // !拦截 in 操作符
   has(target, key) {
     track(target, key)
     return Reflect.has(target, key)
   },
-  // 拦截 for...in. 修改属性不会对for...in循环产生影响
+  // !拦截 for...in. 修改属性不会对for...in循环产生影响
   ownKeys(target) {
-    // 将副作用函数与ITERATE_KEY关联
+    // TODO:将副作用函数与ITERATE_KEY关联,
+    // * 获取属于自己的键值，这个操作不与任何具体的键进行绑定。因此需要独立构造一个唯一的key作为标识
     track(target, ITERATE_KEY)
     return Reflect.ownKeys(target)
   },
-  // 拦截：delete proxy.foo
+  // !拦截删除操作：delete proxy.foo
   deleteProperty(target, key) {
-    // 检查被操作的属性是否是对象自己的属性
+    // *检查被操作的属性是否是对象自己的属性
     const hadKey = Object.prototype.hasOwnProperty.call(target, key)
-    // 使用 Reflect.deleteProperty 完成属性的删除
+    // *使用 Reflect.deleteProperty 完成属性的删除
     const res = Reflect.deleteProperty(target, key)
+    console.log("🚀 ~ file: 02-Proxy代理Object.js ~ line 48 ~ deleteProperty ~ res", res)
 
     if (res && hadKey) {
-      // 只有当被删除的属性是对象自己的属性并且成功删除时，才触发更新
+      // !只有当被删除的属性是对象自己的属性并且成功删除时，才触发更新
       trigger(target, key, TriggerType.DELETE)
     }
     return res
@@ -68,6 +69,7 @@ function track(target, key) {
   activeEffect.deps.push(deps)
 }
 
+// !新增了第三个属性type来判断属性的类型：新增、删除，修改
 function trigger(target, key, type) {
   const depsMap = bucket.get(target)
   if (!depsMap) return
@@ -79,11 +81,11 @@ function trigger(target, key, type) {
     }
   })
 
-  // TODO:只有当操纵类型为'ADD' 或 'DELETE'时，才触发与 ITERATE_KEY 相关联的副作用函数重新执行
+  // !只有当操纵类型为'ADD' 或 'DELETE'时，才触发与 ITERATE_KEY（ownKeys，for...in） 相关联的副作用函数重新执行
   if (type === TriggerType.ADD || type === TriggerType.DELETE) {
-    // 取得与 ITERATE_KEY 相关联的副作用函数
+    // TODO:取得与 ITERATE_KEY 相关联的副作用函数
     const iterateEffects = depsMap.get(ITERATE_KEY)
-    // 将与 ITERATE_KEY 相关联的副作用函数也添加到 effectsToRun
+    // *将与 ITERATE_KEY 相关联的副作用函数也添加到 effectsToRun
     iterateEffects && iterateEffects.forEach(effectFn => {
       if (effectFn !== activeEffect) {
         effectsToRun.add(effectFn)
@@ -158,9 +160,7 @@ function watch(source, cb, options) {
 
   let oldValue, newValue
 
-  // cleanup 用来存储用户注册的过期回调
   let cleanup
-  // 定义 onInvalidate 函数
   function onInvalidate(fn) {
     cleanup = fn
   }

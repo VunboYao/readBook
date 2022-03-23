@@ -3,8 +3,8 @@ const bucket = new WeakMap()
 const data = {
   foo: 1,
   get bar() {
-    // 这里的 this 指向谁？ data本身
-    // 当track中Reflect.get(target, key, receiver)时，this指向proxy
+    // !这里的 this 指向谁？ data本身
+    // !当track中Reflect.get(target, key, receiver)时，this指向proxy
     return this.foo
   }
 }
@@ -14,7 +14,12 @@ const proxy = new Proxy(data, {
   get(target, key, receiver) {
     // TODO:target是原始对象data
     track(target, key)
-    // 使用 Reflect.get 返回读取到的属性值
+    // // return target[key]
+    /*
+      !使用 Reflect.get 返回读取到的属性值
+      !提供一个对象属性的默认行为
+      ! receiver： 函数调用过程中的this，指向代理对象
+    */
     return Reflect.get(target, key, receiver)
   },
   set(target, key, newValue) {
@@ -114,9 +119,7 @@ function watch(source, cb, options) {
 
   let oldValue, newValue
 
-  // cleanup 用来存储用户注册的过期回调
   let cleanup
-  // 定义 onInvalidate 函数
   function onInvalidate(fn) {
     cleanup = fn
   }
@@ -182,6 +185,7 @@ function flushJob() {
 
 // =================================
 effect(() => {
+  // !如果是直接return target[key].此处的proxy指向了 data.bar。 无代理
   console.log(proxy.bar)
 })
 
