@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 
+    CORS预请求
+      1.默认允许的方法： get post head
+      2.允许的Content-Type:
+        text/plain
+        multipart/form-data
+        application/x-www-form-urlencoded
+      3.其他限制：请求头限制
+    */
+    fetch('http://127.0.0.1:9999', {
+      method: 'put',
+      headers: {
+        'X-Test-Cors': '1234' // 请求头限制
+      }
+    })
+  </script>
+</body>
+
+</html>
