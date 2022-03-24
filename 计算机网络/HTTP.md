@@ -72,7 +72,7 @@ Uniform Resource Locator统一资源定位器
 
 - POST
 
-## 允许的Content-Type
+## fom中允许的Content-Type
 
 - text/plain
 - multipart/form-data
@@ -184,25 +184,118 @@ if (req.url === '/script.js') {
 }
 ```
 
+# Cookie属性
 
+服务器
 
+- 通过Set-Cookie 设置，下次请求会自动带上，键值对、可以设置多个
 
+- max-age和expires设置过期时间
+- secure只在https的时候发送
+- HttpOnly，禁止JS访问。无法通过document.cookie访问
 
+```js
+res.writeHead(200, {
+    'Content-Type': 'text/html',
+    // test.com下的二级域名都可以访问
+    'Set-cookie': ['id=1234;max-age=10;domain=test.com;', 'age=20; HttpOnly']
+})
+res.end(html)
+```
 
+# HTTP长连接
 
+- HTTP1.1中，浏览器TCP最多支持并发6个HTTP连接，需要排队等待
+- Connection: keep-alive。复用TCP连接。close则不会复用
+- HTTP2中，同一个域名下，可以在一个TCP连接中进行并发请求。**信道复用**
 
+# 数据协商
 
+## 请求
 
+- Accept: 想要接收的数据类型
+- Accept-Encoding: 可接收的数据压缩类型
+- Accept-Language: 可接收的语言类型。`q`代表权重。默认1最高
+- User-Agent: 客户端的相关信息
 
+## 返回
 
+- Content-Type:  返回的数据类型
+- Content-Encoding: 对应Accept-Encoding
+- Content-Languate: 对应Accept-Language
 
+**X-Content-Type-Options: "nosniff"**.不主动去解析返回的内容类型来展示
 
+- gzip压缩
 
+```js
+const html = fs.readFileSync('95-form.html')
 
+res.writeHead(200, {
+    'Content-Type': 'text/html',
+    'Content-Encoding': 'gzip'
+})
+res.end(zib.gzipSync(html)) // 压缩内容
+```
 
+- Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryLaNz9X837v8bDBvQ
 
+  ```tex
+  ------WebKitFormBoundaryLaNz9X837v8bDBvQ
+  Content-Disposition: form-data; name="name"
+  
+  12313
+  ------WebKitFormBoundaryLaNz9X837v8bDBvQ
+  Content-Disposition: form-data; name="pwd"
+  
+  1313
+  ------WebKitFormBoundaryLaNz9X837v8bDBvQ--
+  
+  ```
 
+- **multipart/form-data 对请求的数据类型进行分割**
 
+  ```tex
+  针对表单中元素、文件上传时分割
+  
+  ------WebKitFormBoundarym8UkYI125mkwfEO9
+  Content-Disposition: form-data; name="name"
+  
+  12312
+  ------WebKitFormBoundarym8UkYI125mkwfEO9
+  Content-Disposition: form-data; name="pwd"
+  
+  321313
+  ------WebKitFormBoundarym8UkYI125mkwfEO9
+  Content-Disposition: form-data; name="file"; filename="开发手册.pdf"
+  Content-Type: application/pdf
+  
+  
+  ------WebKitFormBoundarym8UkYI125mkwfEO9--
+  ```
 
+# Redirect
 
+- 服务器返回报文头中：**Location**
+- 301-永久跳转。重定向的路径会被缓存。后续会从缓存中读取。**不会去服务器，若服务器更新，也无法感知**（**除非清缓存**）
+- 302-临时跳转。**每次都需要经过服务器**
+
+```js
+http.createServer((req, res) => {
+  if (req.url === '/') {
+    res.writeHead(302, {
+      'Location': '/new' // 同域
+    })
+    res.end('')
+  }
+
+  if (req.url === '/new') {
+    res.writeHead(302, {
+      'Content-Type': 'text/html'
+    })
+    res.end('<h2>Hello World</h2>')
+  }
+
+}).listen(8888)
+```
 
