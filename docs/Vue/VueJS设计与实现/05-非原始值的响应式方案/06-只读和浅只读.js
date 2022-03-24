@@ -7,13 +7,14 @@ const TriggerType = {
 }
 
 const ITERATE_KEY = Symbol()
+// todo:增加第三个参数，默认非只读
 function createReactive(obj, isShallow = false, isReadonly = false) {
   return new Proxy(obj, {
     get(target, key, receiver) {
       if (key === 'raw') {
         return target
       }
-      // 非只读的时候才需要建立响应联系
+      // !非只读的时候才需要建立响应联系(追踪变化)
       if (!isReadonly) {
         track(target, key)
       }
@@ -22,13 +23,13 @@ function createReactive(obj, isShallow = false, isReadonly = false) {
         return res
       }
       if (typeof res === 'object' && res !== null) {
-        // 如果数据为制度，则调用 readonly 对值进行包装
+        // todo:如果数据为只读，则调用 readonly 对值进行包装(递归调用readonly)
         return isReadonly ? readonly(res) : reactive(res)
       }
       return res
     },
     set(target, key, newValue, receiver) {
-      // 如果是只读的，则打印警告信息
+      // !如果是只读的，则打印警告信息
       if (isReadonly) {
         console.warn(`属性${key}是只读的`)
         return true
@@ -55,7 +56,7 @@ function createReactive(obj, isShallow = false, isReadonly = false) {
       return Reflect.ownKeys(target)
     },
     deleteProperty(target, key) {
-      // 如果是只读的，则打印警告信息
+      // !如果是只读的，则打印警告信息
       if (isReadonly) {
         console.warn(`属性${key}是只读的`)
         return true
@@ -71,12 +72,12 @@ function createReactive(obj, isShallow = false, isReadonly = false) {
   })
 }
 
+// *只读
 function readonly(obj) {
   return createReactive(obj, false, true)
 }
-
+// *浅只读
 function shallowReadonly(obj) {
-  // 浅只读
   return createReactive(obj, true, true)
 }
 

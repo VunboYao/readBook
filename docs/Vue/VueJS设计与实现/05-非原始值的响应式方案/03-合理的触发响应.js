@@ -23,7 +23,7 @@ const proxy = new Proxy(data, {
     const type = Object.prototype.hasOwnProperty.call(target, key) ? TriggerType.SET : TriggerType.ADD
     const res = Reflect.set(target, key, newValue, receiver)
 
-    // 比较旧值与新值，不全等且都不是 NaN 的时候，才触发响应
+    // !比较旧值与新值，不全等且都不是 NaN 的时候，才触发响应
     if (oldValue !== newValue && (oldValue === oldValue || newValue === newValue)) {
       trigger(target, key, type)
     }

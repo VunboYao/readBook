@@ -7,23 +7,25 @@ const TriggerType = {
 }
 
 const ITERATE_KEY = Symbol()
+
+// *封装 createReactive 函数，默认isShallow=false，非浅响应
 function createReactive(obj, isShallow = false) {
   return new Proxy(obj, {
     get(target, key, receiver) {
       if (key === 'raw') {
         return target
       }
-      // 得到原始值结果
+      // *得到原始值结果
       const res = Reflect.get(target, key, receiver)
       // 先追踪数据
       track(target, key)
 
-      // 如果是浅响应，则直接返回原始值
+      // !如果是浅响应，则直接返回原始值
       if (isShallow) {
         return res
       }
       if (typeof res === 'object' && res !== null) {
-        // 调用 reactive 将结果包装成响应式数据并返回
+        // *调用 reactive 将结果包装成响应式数据并返回
         return reactive(res)
       }
       return res

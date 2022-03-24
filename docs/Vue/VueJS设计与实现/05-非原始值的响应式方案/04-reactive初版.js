@@ -7,10 +7,11 @@ const TriggerType = {
 }
 
 const ITERATE_KEY = Symbol()
+// * 封装一个reactive函数
 function reactive(obj) {
   return new Proxy(obj, {
     get(target, key, receiver) {
-      // 代理对象可以通过 raw 属性访问原始数据
+      // !代理对象可以通过 raw 属性访问原始数据
       if (key === 'raw') {
         return target
       }
@@ -24,7 +25,7 @@ function reactive(obj) {
       const type = Object.prototype.hasOwnProperty.call(target, key) ? TriggerType.SET : TriggerType.ADD
       const res = Reflect.set(target, key, newValue, receiver)
 
-      // target === receiver.raw 说明 receiver 就是 target 的代理对象
+      // todo:target === receiver.raw 说明 receiver 就是 target 的代理对象
       if (target === receiver.raw) {
         // 比较旧值与新值，不全等且都不是 NaN 的时候，才触发响应
         if (oldValue !== newValue && (oldValue === oldValue || newValue === newValue)) {
