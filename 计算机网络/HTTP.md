@@ -299,3 +299,53 @@ http.createServer((req, res) => {
 }).listen(8888)
 ```
 
+# Content-Security-Policy
+
+## 作用
+
+- 限制资源获取
+- 报告资源获取越权
+
+## 限制方式
+
+- default-src限制全局
+- 制定资源类型
+  - Connect-src
+  - img-src
+  - font-src
+  - frame-src
+  - style-src
+  - script-src
+  - media-src
+
+该策略禁止任何资源的加载，除了来自`cdn.example.com的样式表。`
+
+```js
+Content-Security-Policy: default-src 'none'; style-src cdn.example.com; report-uri /_/csp-reports
+```
+
+https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CSP
+
+## 描述策略
+
+- 一个策略由一系列策略指令所组成，每个策略指令都描述了一个针对某个特定类型资源以及生效范围的策略
+- 策略应当包含一个`default-src`策略指令
+
+```
+Content-Security-Policy: default-src 'self'; script-src https://example.com
+```
+
+​	与下列代码等价：
+
+```
+Content-Security-Policy: connect-src 'self';
+                         font-src 'self';
+                         frame-src 'self';
+                         img-src 'self';
+                         manifest-src 'self';
+                         media-src 'self';
+                         object-src 'self';
+                         script-src https://example.com;
+                         style-src 'self';
+                         worker-src 'self'
+```
