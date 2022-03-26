@@ -108,7 +108,7 @@ const server = Http.createServer((req, res) => {
 ## 可缓存性
 
 - public：返回的内容，经过的代理服务器、客户端等，任何地方均可以缓存
-- private：只有发起请求的客户端才可以缓存
+- private：只有发起请求的客户端才可以缓存.**代理服务器不能缓存**
 - no-cache：任何一个节点都不可以缓存。**可以在本地缓存，但是每次发起的请求需要去服务器验证，验证通过后才可以使用缓存。**
 
 ## 到期
@@ -387,3 +387,31 @@ master和worker两个角色
 - master只有一个（管理者）
 - worker有多个，独立的进程。减少异常退出带来的风险
 - worker争抢机制
+
+## 配置实例
+
+```conf
+server {
+  listen        80;
+  server_name   test.com; // 监听需要被代理的地址
+
+  location / {
+    proxy_pass  http://127.0.0.1:8888; // 目标地址
+    proxy_set_header Host $host; // 将真实的test.com传到服务端
+  }
+}
+
+
+server {
+  listen        80;
+  server_name   a.test.com; // 监听需要被代理的地址
+
+  location / {
+    proxy_pass  http://127.0.0.1:8888; // 目标地址
+    proxy_set_header Host $host; // 将真实的a.test.com传到服务端
+  }
+}
+```
+
+- Host: 监听客户端的host, 判断需要代理到什么地方
+

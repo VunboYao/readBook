@@ -13,7 +13,7 @@ http.createServer((req, res) => {
 
   if (req.url === '/new') {
     res.writeHead(302, {
-      'Content-Type': 'text/html
+      'Content-Type': 'text/html'
     })
     res.end('<h2>Hello World</h2>')
   }
