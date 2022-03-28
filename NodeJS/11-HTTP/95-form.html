@@ -1,28 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+
 <body>
-<form id="form2" action="/form" enctype="multipart/form-data" method="post">
-  <input type="text" name="name"/>
-  <input type="password" name="pwd">
-  <input type="file" name="file">
-  <input type="submit" id="sumbit">
-</form>
-<script>
-  let tt = document.getElementById('form2')
-  tt.addEventListener('submit', e => {
-    e.preventDefault()
-    let formData = new FormData(tt)
-    fetch('/form', {
-      method: 'POST',
-      body: formData
+  <img src="./foo.png" alt="">
+  <form id="form2" action="/form" enctype="multipart/form-data" method="post">
+    <input type="text" name="name" />
+    <input type="password" name="pwd">
+    <input type="file" name="file">
+    <input type="submit" id="sumbit">
+  </form>
+  <div>This is content, data is <span id="data"></span></div>
+  <button id="btn">ClickMe</button>
+  <script>
+    let index = 0
+    function doReq() {
+      document.getElementById('data').innerHTML = ''
+      fetch('/data', {
+        headers: {
+          'X-Test-Cache': index++
+        }
+      }).then(res => {
+        return res.text()
+      }).then(text => {
+        document.getElementById('data').innerHTML = text
+      })
+    }
+    document.getElementById('btn').onclick = doReq
+    let tt = document.getElementById('form2')
+    tt.addEventListener('submit', e => {
+      e.preventDefault()
+      let formData = new FormData(tt)
+      fetch('/form', {
+        method: 'POST',
+        body: formData
+      })
     })
-  })
-</script>
+  </script>
 </body>
+
 </html>
