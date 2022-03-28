@@ -16,6 +16,38 @@
 
 - `https://github.com/underfin/vite-plugin-vue2`
 
+## CSS
+
+- `https://cn.vitejs.dev/guide/features.html#import-inlining-and-rebasing`
+
+- 预处理器：默认支持。需要安装相应的预处理器依赖
+  - `npm add -D sass`
+  - `npm add -D less`
+
+- **由于 Stylus API 限制，`@import` 别名和 URL 变基不支持 Stylus。**
+
+## TS
+
+- 天然支持`.ts`文件
+- 但不执行任何类型检查
+- vue中使用：安装：`vue-tsc`.
+- 脚本：`vue-tsc --noEmit && vite build`
+- TS配置文件：isolatedModules： 2.5.0版本开始，默认为`true`
+  - 地址：`https://cn.vitejs.dev/guide/features.html#typescript-compiler-options`
+- TS配置文件：`https://cn.vitejs.dev/guide/features.html#client-types`。使TS能够支持Vite默认的API
+  - Asset imports
+  - env： `import.meta.env`
+  - hot：`import.meta.hot`
+
+## 静态资源处理
+
+`https://cn.vitejs.dev/guide/features.html#static-assets`
+
+- url：返回路径
+- raw: 以字符串形式加载资源
+- worker：加载为Web Worker
+- worker&inline: 构建 Web Worker 时内联为 base64 字符串
+
 ## Vue3
 
 ### 基础

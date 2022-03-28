@@ -8,8 +8,10 @@ const store = useStore()
   <RouterView />
 </template>
 
-<style lang="scss">
-
+<style>
+:root {
+  --main-bg-color: brown;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -17,6 +19,7 @@ const store = useStore()
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  background-color: var(--main-bg-color);
 }
 
 </style>
