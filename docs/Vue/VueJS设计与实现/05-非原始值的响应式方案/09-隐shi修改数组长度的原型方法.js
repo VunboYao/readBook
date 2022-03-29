@@ -1,10 +1,41 @@
 const bucket = new WeakMap()
-
+const reactiveMap = new Map()
 const TriggerType = {
   SET: 'SET',
   ADD: 'ADD',
   DELETE: 'DELETE'
 }
+const originMethod = Array.prototype.includes
+const arrayInstrumentations = {}
+!['includes', 'indexOf', 'lastIndexOf'].forEach(method => {
+  const originMethod = Array.prototype[method]
+  arrayInstrumentations[method] = function (...args) {
+    let res = originMethod.apply(this, args)
+
+    if (res === false) {
+      res = originMethod.apply(this.raw, args)
+    }
+    // 返回最终结果
+    return res
+  }
+})
+// !一个标记变量，代表是否进行追踪。默认值为 true，即允许追踪
+let shouldTrack = true
+// 重写数组的 push 方法 
+!['push', 'pop', 'shift', 'unshift', 'splice'].forEach(method => {
+  // 取得原始 push 方法
+  const originMethod = Array.prototype[method]
+  // 重写
+  arrayInstrumentations[method] = function (...args) {
+    // 在调用原始方法之前，禁止追踪
+    shouldTrack = false
+    // push 方法的默认行为
+    let res = originMethod.apply(this, args)
+    // 在调用原始方法之后，恢复原来的行为，即允许追踪
+    shouldTrack = true
+    return res
+  }
+})
 
 const ITERATE_KEY = Symbol()
 function createReactive(obj, isShallow = false, isReadonly = false) {
@@ -13,7 +44,11 @@ function createReactive(obj, isShallow = false, isReadonly = false) {
       if (key === 'raw') {
         return target
       }
-      // todo:如果key的类型是 symbol，不进行追踪
+
+      if (Array.isArray(target) && arrayInstrumentations.hasOwnProperty(key)) {
+        return Reflect.get(arrayInstrumentations, key, receiver)
+      }
+
       if (!isReadonly && typeof key !== 'symbol') {
         track(target, key)
       }
@@ -32,17 +67,17 @@ function createReactive(obj, isShallow = false, isReadonly = false) {
         return true
       }
       const oldValue = target[key]
-      // todo:如果属性不存在，则说明是在添加新的属性，否则是设置已有属性
+      // 如果属性不存在，则说明是在添加新的属性，否则是设置已有属性
       const type = Array.isArray(target)
         ? Number(key) < target.length ? TriggerType.SET : TriggerType.ADD
-        // todo:如果代理目标是数组，则检测被设置的索引值是否小于数组长度
-        // todo:如果是，则视作 SET 操作， 否则是 ADD 操作
+        // 如果代理目标是数组，则检测被设置的索引值是否小于数组长度
+        // 如果是，则视作 SET 操作， 否则是 ADD 操作
         : Object.prototype.hasOwnProperty.call(target, key) ? TriggerType.SET : TriggerType.ADD
 
       const res = Reflect.set(target, key, newValue, receiver)
       if (target === receiver.raw) {
         if (oldValue !== newValue && (oldValue === oldValue || newValue === newValue)) {
-          // todo:增加第四个参数，即触发响应的新值
+          // 增加第四个参数，即触发响应的新值
           trigger(target, key, type, newValue)
         }
       }
@@ -54,7 +89,7 @@ function createReactive(obj, isShallow = false, isReadonly = false) {
       return Reflect.has(target, key)
     },
     ownKeys(target) {
-      // todo如果操作目标是数组， 则使用 length 属性作为key并建立响应联系
+      // 如果操作目标是数组， 则使用 length 属性作为key并建立响应联系
       track(target, Array.isArray(target) ? 'length' : ITERATE_KEY)
       return Reflect.ownKeys(target)
     },
@@ -84,7 +119,15 @@ function shallowReadonly(obj) {
 }
 
 function reactive(obj) {
-  return createReactive(obj)
+  // todo:优先通过原始对象obj寻找之前创建的代理对象，如果找到了，直接返回已有的代理对象
+  const existionProxy = reactiveMap.get(obj)
+  if (existionProxy) return existionProxy
+
+  // 否则，创建新的代理对象
+  const proxy = createReactive(obj)
+  // 存储到Map中，从而帮忙重复创建
+  reactiveMap.set(obj, proxy)
+  return proxy
 }
 
 function shallowReactive(obj) {
@@ -92,7 +135,8 @@ function shallowReactive(obj) {
 }
 
 function track(target, key) {
-  if (!activeEffect) return
+  // todo: 当禁止追踪时，直接返回
+  if (!activeEffect || !shouldTrack) return
   let depsMap = bucket.get(target)
   if (!depsMap) {
     bucket.set(target, (depsMap = new Map()))
@@ -111,10 +155,10 @@ function trigger(target, key, type, newValue) {
   const effects = depsMap.get(key)
   const effectsToRun = new Set()
 
-  // todo:如果操作目标是数组，并且修改了数组的length属性
+  // 如果操作目标是数组，并且修改了数组的length属性
   if (Array.isArray(target) && key === 'length') {
-    // todo:对于索引大于或等于新的 length 值的元素，
-    // todo:需要把所有相关联的副作用函数取出并添加到 effectsToRun 中待执行
+    // 对于索引大于或等于新的 length 值的元素，
+    // 需要把所有相关联的副作用函数取出并添加到 effectsToRun 中待执行
     depsMap.forEach((effects, key) => {
       if (key >= newValue) {
         effects.forEach(effectFn => {
@@ -125,11 +169,11 @@ function trigger(target, key, type, newValue) {
       }
     })
   }
-  // todo:当操作类型为 ADD 并且目标对象是数组时，应该取出并执行那些与 length 属性相关联的副作用函数
+  // 当操作类型为 ADD 并且目标对象是数组时，应该取出并执行那些与 length 属性相关联的副作用函数
   if (type === TriggerType.ADD && Array.isArray(target)) {
-    // *取出与 length 相关联的副作用函数
+    // 取出与 length 相关联的副作用函数
     const lengthEffects = depsMap.get('length')
-    // *将这些副作用函数添加到 effectsToRun 中，待执行
+    // 将这些副作用函数添加到 effectsToRun 中，待执行
     lengthEffects && lengthEffects.forEach(effectFn => {
       if (effectFn !== activeEffect) {
         effectsToRun.add(effectFn)
@@ -284,32 +328,11 @@ function flushJob() {
 }
 
 // =================================
-const arr = reactive(['foo'])
-
+const arr = reactive([])
 effect(() => {
-  /* for (const key in arr) {
-    console.log(key)
-  } */
-  for (const val of arr.values()) {
-    console.log('val :>> ', val);
-  }
+  arr.push(1)
 })
-arr[1] = 'bar'
-arr.length = 0
-
-/* const obj2 = {
-  val: 0,
-  [Symbol.iterator]() {
-    return {
-      next() {
-        return {
-          value: obj2.val++,
-          done: obj2.val > 10 ? true : false
-        }
-      }
-    }
-  }
-}
-for (const value of obj2) {
-  console.log(value)
-} */
+effect(() => {
+  arr.push(1)
+})
+console.log(arr);
