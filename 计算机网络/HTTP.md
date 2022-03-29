@@ -114,7 +114,7 @@ const server = Http.createServer((req, res) => {
 ## 到期
 
 - `max-age=<seconds>`，设置多少秒后才会过期，客户端才会再次重新请求
-- `s-maxage=<seconds>`, 与max-age一样，但是只在代理服务器上生效
+- `s-maxage=<seconds>`, 与max-age一样，**但是只在代理服务器上生效**
 - `max-stale=<seconds>`, 发起请求方主动带的请求头。即便缓存已过期，也不去请求新的。浏览器端用不到。
 
 ## 重新验证
@@ -414,4 +414,112 @@ server {
 ```
 
 - Host: 监听客户端的host, 判断需要代理到什么地方
+
+## 代理缓存
+
+```conf
+proxy_cache_path cache levels=1:2 keys_zone=my_cache:10m; // 配置缓存
+
+server {
+	listen 80;
+	server_name test.com;
+
+	location / {
+    proxy_cache my_cache; // 使用缓存
+		proxy_pass http://127.0.0.1:8888;
+		#proxy_set_header Host $host;
+	}
+}
+```
+
+## Vary请求头
+
+通过设置该请求头，必须每次请求头相同时，才会缓存
+
+```js
+// Server
+res.writeHead(200, {
+    'Content-Type': 'text/html',
+    'Cache-Control': 's-maxage=200',
+    'Vary': 'X-Test-Cache'
+})
+res.end('success')
+
+// Client
+fetch('/data', {
+    headers: {
+        'X-Test-Cache': index++ // 每次变更，不会缓存
+    }
+}).then(res => {
+    return res.text()
+}).then(text => {
+    document.getElementById('data').innerHTML = text
+})
+```
+
+# HTTPS
+
+1. 客户端发起：随机数+（支持的）加密套件
+2. 服务端返回：随机数+（选择的）加密套件
+3. 服务端返回：（公钥）证书
+4. 客户端发起：通过公钥加密的随机数发起，服务端通过私钥解密
+
+```js
+proxy_cache_path cache levels=1:2 keys_zone=my_cache:10m; // 缓存配置
+
+server { // 默认指向HTTPS
+  listen 80 default_server;
+  listen [::]:80 default_server;
+  server_name test.com;
+  return 302 https://$server_name$request_uri;
+}
+
+server {
+	listen 443;
+	server_name test.com;
+
+  ssl on; // 开启HTTPS
+  ssl_certificate_key ../localhost-privkey.pem;
+  ssl_certificate ../localhost-cert.pem;
+
+	location / {
+    proxy_cache my_cache;
+		proxy_pass http://127.0.0.1:8888;
+		proxy_set_header Host $host;
+	}
+}
+```
+
+# HTTP2
+
+- 信道复用
+- 分帧传输
+- Server Push：服务端向客户端推送消息
+
+```js
+proxy_cache_path cache levels=1:2 keys_zone=my_cache:10m;
+
+server {
+  listen 80 default_server;
+  listen [::]:80 default_server;
+  server_name test.com;
+  return 302 https://$server_name$request_uri;
+}
+
+server {
+	listen 443 http2; # 通过nginx开启http2
+	server_name test.com;
+  http2_push_preload on; # HTTP2  push 资源
+
+  ssl on;
+  ssl_certificate_key ../localhost-privkey.pem;
+  ssl_certificate ../localhost-cert.pem;
+
+	location / {
+    proxy_cache my_cache;
+		proxy_pass http://127.0.0.1:8888;
+		proxy_set_header Host $host;
+	}
+}
+```
 
