@@ -367,7 +367,7 @@ Content-Security-Policy: connect-src 'self';
 
 ## 动静分离
 
-为了加快网站的解析速度，可以把同态页面和静态页面由不同的服务器来解析，加快解析速度。降低原来单个服务器的压力
+为了加快网站的解析速度，可以把动态页面和静态页面由不同的服务器来解析，加快解析速度。降低原来单个服务器的压力
 
 - 一种是纯粹把静态文件独立成单独的域名，放在独立的服务器上
 - 一种是动态跟静态混合在一起发布，通过nginx来分开
@@ -467,7 +467,7 @@ fetch('/data', {
 ```js
 proxy_cache_path cache levels=1:2 keys_zone=my_cache:10m; // 缓存配置
 
-server { // 默认指向HTTPS
+server { // 默认指向HTTP
   listen 80 default_server;
   listen [::]:80 default_server;
   server_name test.com;

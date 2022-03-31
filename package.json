@@ -1,29 +1,15 @@
 {
-  "name": "read-book",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^7.0.4"
   },
-  "scripts": {
-    "commit": "cz",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "script": {
+	"lint": "",
+	"cz": "cz"
   },
   "config": {
     "commitizen": {
-      "path": "cz-conventional-changelog"
+      "path": "./node_modules/cz-conventional-changelog"
     }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/VunboYao/readBook.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/VunboYao/readBook/issues"
-  },
-  "homepage": "https://github.com/VunboYao/readBook#readme"
+  }
 }

@@ -48,6 +48,19 @@
 - worker：加载为Web Worker
 - worker&inline: 构建 Web Worker 时内联为 base64 字符串
 
+## env环境变量
+
+## HMR热更新功能
+
+## glob-import批量导入功能(vite特有的)
+
+## 预编译
+
+- CJS => ESM
+- 性能。将多个ESM依赖转换为单个模块，提高页面加载性能
+- vite.config.js配置
+- 缓存
+
 ## Vue3
 
 ### 基础
