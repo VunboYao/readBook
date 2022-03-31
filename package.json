@@ -1,11 +1,14 @@
 {
+  "name": "read-book",
+  "version": "0.0.1",
+  "private": "true",
+  "scripts": {
+    "lint": "",
+    "cz": "cz"
+  },
   "devDependencies": {
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^7.0.4"
-  },
-  "scripts": {
-	"lint": "",
-	"cz": "cz"
   },
   "config": {
     "commitizen": {
