@@ -12,5 +12,9 @@
     "react"
   ],
   "author": "vunbo",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.19.2",
+    "eslint": "^8.12.0"
+  }
 }
