@@ -1,0 +1,16 @@
+{
+  "name": "all-in-webpack",
+  "version": "1.0.0",
+  "description": "manually config project with webpack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webpack",
+    "vue",
+    "react"
+  ],
+  "author": "vunbo",
+  "license": "ISC"
+}
