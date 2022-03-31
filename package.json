@@ -3,7 +3,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^7.0.4"
   },
-  "script": {
+  "scripts": {
 	"lint": "",
 	"cz": "cz"
   },
