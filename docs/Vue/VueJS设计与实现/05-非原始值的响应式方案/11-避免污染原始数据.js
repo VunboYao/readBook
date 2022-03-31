@@ -1,76 +1,81 @@
 const bucket = new WeakMap()
-
+const reactiveMap = new Map()
 const TriggerType = {
   SET: 'SET',
   ADD: 'ADD',
   DELETE: 'DELETE'
 }
 
+// * 定义一个对象，将自定义的 add 方法定义到该对象下
+const mutableInstrumentations = {
+  add(key) {
+    // * this 仍然指向的是代理对象，通过 raw 属性获取原始数据对象
+    const target = this.raw
+    // 通过原始数据对象执行 add 方法删除具体的值
+    // 通过target直接调用并执行，不再需要 .bind
+    const res = target.add(key)
+
+    const hadKey = target.has(key)
+    // 只有值不存在的情况下，才需要触发响应
+    if (!hadKey) {
+      // 调用 trigger 函数触发响应，并指定操作类型为 ADD
+      trigger(target, key, TriggerType.ADD)
+    }
+    return res
+  },
+  // * 同理实现 delete
+  delete(key) {
+    const target = this.raw
+    const hadKey = target.has(key)
+    const res = target.delete(key)
+    if (hadKey) {
+      trigger(target, key, TriggerType.DELETE)
+    }
+    return res
+  },
+  get(key) {
+    const target = this.raw
+    const had = target.has(key)
+    // *追踪依赖，建立响应联系
+    track(target, key)
+    // 如果存在，则返回结果。
+    if (had) {
+      const res = target.get(key)
+      return typeof res === 'object' ? reactive(res) : res
+    }
+  },
+  set(key, value) {
+    const target = this.raw
+    const had = target.has(key)
+    const oldValue = target.get(key)
+    // !获取原始数据，由于 value 本身可能已经是原始数据，所以此时value.raw 不存在，则直接使用 value
+    const rawValue = value.raw || value
+    target.set(key, rawValue)
+    if (!had) {
+      trigger(target, key, TriggerType.ADD)
+    } else if (oldValue !== value || (oldValue === oldValue && value === value)) {
+      trigger(target, key, TriggerType.SET)
+    }
+  }
+}
+
 const ITERATE_KEY = Symbol()
 function createReactive(obj, isShallow = false, isReadonly = false) {
   return new Proxy(obj, {
     get(target, key, receiver) {
-      if (key === 'raw') {
-        return target
-      }
-      // todo:如果key的类型是 symbol，不进行追踪
-      if (!isReadonly && typeof key !== 'symbol') {
-        track(target, key)
-      }
-      const res = Reflect.get(target, key, receiver)
-      if (isShallow) {
-        return res
-      }
-      if (typeof res === 'object' && res !== null) {
-        return isReadonly ? readonly(res) : reactive(res)
-      }
-      return res
-    },
-    set(target, key, newValue, receiver) {
-      if (isReadonly) {
-        console.warn(`属性${key}是只读的`)
-        return true
-      }
-      const oldValue = target[key]
-      // todo:如果属性不存在，则说明是在添加新的属性，否则是设置已有属性
-      const type = Array.isArray(target)
-        ? Number(key) < target.length ? TriggerType.SET : TriggerType.ADD
-        // todo:如果代理目标是数组，则检测被设置的索引值是否小于数组长度
-        // todo:如果是，则视作 SET 操作， 否则是 ADD 操作
-        : Object.prototype.hasOwnProperty.call(target, key) ? TriggerType.SET : TriggerType.ADD
 
-      const res = Reflect.set(target, key, newValue, receiver)
-      if (target === receiver.raw) {
-        if (oldValue !== newValue && (oldValue === oldValue || newValue === newValue)) {
-          // todo:增加第四个参数，即触发响应的新值
-          trigger(target, key, type, newValue)
-        }
-      }
+      // * 如果读取的是 raw 属性，则返回原始数据对象 target
+      if (key === 'raw') return target
 
-      return res
-    },
-    has(target, key) {
-      track(target, key)
-      return Reflect.has(target, key)
-    },
-    ownKeys(target) {
-      // todo如果操作目标是数组， 则使用 length 属性作为key并建立响应联系
-      track(target, Array.isArray(target) ? 'length' : ITERATE_KEY)
-      return Reflect.ownKeys(target)
-    },
-    deleteProperty(target, key) {
-      if (isReadonly) {
-        console.warn(`属性${key}是只读的`)
-        return true
+      // *如果读取的是 size 属性。 指定第三个参数 receiver 为原始对象 target 从而修复问题
+      if (key === 'size') {
+        // !建立响应关系
+        track(target, ITERATE_KEY)
+        return Reflect.get(target, key, target)
       }
-      const hadKey = Object.prototype.hasOwnProperty.call(target, key)
-      const res = Reflect.deleteProperty(target, key)
-
-      if (res && hadKey) {
-        trigger(target, key, 'DELETE')
-      }
-      return res
-    }
+      // 返回定义在mutableInstrumentations对象下的方法
+      return mutableInstrumentations[key]
+    },
   })
 }
 
@@ -79,12 +84,16 @@ function readonly(obj) {
 }
 
 function shallowReadonly(obj) {
-  // 浅只读
   return createReactive(obj, true, true)
 }
 
 function reactive(obj) {
-  return createReactive(obj)
+  const existionProxy = reactiveMap.get(obj)
+  if (existionProxy) return existionProxy
+
+  const proxy = createReactive(obj)
+  reactiveMap.set(obj, proxy)
+  return proxy
 }
 
 function shallowReactive(obj) {
@@ -92,7 +101,7 @@ function shallowReactive(obj) {
 }
 
 function track(target, key) {
-  if (!activeEffect) return
+  if (!activeEffect || !shouldTrack) return
   let depsMap = bucket.get(target)
   if (!depsMap) {
     bucket.set(target, (depsMap = new Map()))
@@ -111,10 +120,7 @@ function trigger(target, key, type, newValue) {
   const effects = depsMap.get(key)
   const effectsToRun = new Set()
 
-  // todo:如果操作目标是数组，并且修改了数组的length属性
   if (Array.isArray(target) && key === 'length') {
-    // todo:对于索引大于或等于新的 length 值的元素，
-    // todo:需要把所有相关联的副作用函数取出并添加到 effectsToRun 中待执行
     depsMap.forEach((effects, key) => {
       if (key >= newValue) {
         effects.forEach(effectFn => {
@@ -125,11 +131,8 @@ function trigger(target, key, type, newValue) {
       }
     })
   }
-  // todo:当操作类型为 ADD 并且目标对象是数组时，应该取出并执行那些与 length 属性相关联的副作用函数
   if (type === TriggerType.ADD && Array.isArray(target)) {
-    // *取出与 length 相关联的副作用函数
     const lengthEffects = depsMap.get('length')
-    // *将这些副作用函数添加到 effectsToRun 中，待执行
     lengthEffects && lengthEffects.forEach(effectFn => {
       if (effectFn !== activeEffect) {
         effectsToRun.add(effectFn)
@@ -284,32 +287,10 @@ function flushJob() {
 }
 
 // =================================
-const arr = reactive(['foo'])
+const p1 = reactive(new Map([['key', 1]]))
 
 effect(() => {
-  /* for (const key in arr) {
-    console.log(key)
-  } */
-  for (const val of arr.values()) {
-    console.log('val :>> ', val);
-  }
+  console.log(p1.get('key'));
 })
-arr[1] = 'bar'
-arr.length = 0
 
-/* const obj2 = {
-  val: 0,
-  [Symbol.iterator]() {
-    return {
-      next() {
-        return {
-          value: obj2.val++,
-          done: obj2.val > 10 ? true : false
-        }
-      }
-    }
-  }
-}
-for (const value of obj2) {
-  console.log(value)
-} */
+p.set('key', 2)

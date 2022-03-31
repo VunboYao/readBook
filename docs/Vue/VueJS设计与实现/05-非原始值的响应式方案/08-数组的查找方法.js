@@ -30,8 +30,8 @@ function createReactive(obj, isShallow = false, isReadonly = false) {
         return target
       }
 
-      // 如果操作目标对象是数组，并且key存在于 arrayInstrumentations 上，
-      // 那么返回定义在 arrayInstrumentations 上的值
+      // todo:如果操作目标对象是数组，并且key存在于 arrayInstrumentations 上，
+      // todo:那么返回定义在 arrayInstrumentations 上的值
       if (Array.isArray(target) && arrayInstrumentations.hasOwnProperty(key)) {
         return Reflect.get(arrayInstrumentations, key, receiver)
       }
@@ -106,7 +106,7 @@ function shallowReadonly(obj) {
 }
 
 function reactive(obj) {
-  // 优先通过原始对象obj寻找之前创建的代理对象，如果找到了，直接返回已有的代理对象
+  // todo:优先通过原始对象obj寻找之前创建的代理对象，如果找到了，直接返回已有的代理对象
   const existionProxy = reactiveMap.get(obj)
   if (existionProxy) return existionProxy
 
