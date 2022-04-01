@@ -6,9 +6,12 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, './dist'),
     clean: true,
+    // webpack5 export asset fileName
+    assetModuleFilename: 'img/[name].[hash:6][ext]',
   },
   module: {
     rules: [
+      // !css
       {
         test: /\.css$/,
         // loader: 'css-loader', // 简写1：只有一个laoder时
@@ -35,6 +38,7 @@ module.exports = {
           },
         ],
       },
+      // !less
       {
         test: /\.less$/,
         use: [
@@ -42,6 +46,30 @@ module.exports = {
           'css-loader',
           'less-loader',
         ],
+      },
+      // !图片
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        // type: 'asset/resource', // ! === file-loader
+        type: 'asset', // ! === url-loader
+        // * config the filename
+        generator: {
+          filename: 'imgs/[name].[hash:6][ext]',
+        },
+        // * like url-loader limit
+        parser: {
+          dataUrlCondition: {
+            maxSize: 10 * 1024,
+          },
+        },
+      },
+      // !字体文件
+      {
+        test: /\.(ttf|eot|woff2?)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'font/[name].[hash:6][ext]',
+        },
       },
     ],
   },
