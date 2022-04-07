@@ -15,7 +15,7 @@
 - `let arr3:(number|string)[]`, 只能存储字符串类型和数值类型的数组
 - `let arr4:any[]`, 存储任意类型的数据
 
-2. `Array`泛型建立数组
+2. **`Array`泛型建立数组**
 
 - `let arr:Array<number>`, 只能存储数值类型的数组
 - **推荐使用`[]`，一方面可以避免与 JSX 的语法冲突，另一方面可以减少不少代码量**
@@ -23,78 +23,6 @@
 3. 元祖类型: 保存定长定数据类型的数据
 
 - `let arr5:[string, boolean, number]`, 表示一个可以存放三个元素的数组。分别是字符串、布尔值、数值
-
-## 枚举类型
-
-1. 表示固定的几个取值。例如：一年四季、人的性别
-
-```typescript
-// 定义了一个名称叫做Gender的枚举类型，这个枚举类型的取值有两个，分别是Male和Female
-enum Gender {
-  Male,
-  Female,
-}
-let val: Gender // 定义的变量val，只能保存Male或Female
-val = Gender.Male
-val = Gender.false // error
-```
-
-2. 枚举类型的本质是数值类型，所以可赋值一个数值
-
-```typescript
-val = 123 // 不会报错
-console.log(Gender.Male) // 0
-console.log(Gender.Female) // 1
-```
-
-3. 枚举类型的取值，默认从上至下，从 0 开始递增
-
-- 虽然默认从 0 开始递增，但可以手动指定枚举的取值
-- 如果手动指定了前面枚举的取值，后面的枚举值的取值会根据前面的递增
-- 如果手动指定了后面枚举的取值，前面的枚举值的取值不会被影响
-- 同时修改多个枚举值的取值，修改的是什么最后就是什么
-
-```typescript
-// 递增
-enum Size {
-  small = 3,
-  big,
-}
-console.log(Size.small) // 3
-console.log(Size.big) // 4 从3开始递增
-
-// 前面的无影响
-enum Size {
-  small,
-  big = 100,
-}
-console.log(Size.small) // 0
-console.log(Size.big) // 100
-```
-
-4. 底层原理
-
-- 可以通过枚举值拿到对应的数字
-- 可以通过对应的数字拿到枚举值
-
-```typescript
-enum Size {
-  small = 2,
-  big = 4,
-}
-console.log(Size.small) // 2
-console.log(Size[2]) // small
-
-// 源码分析
-var Size
-;(function (Size) {
-  Size[(Size['small'] = 2)] = 'small'
-  Size[(Size['big'] = 4)] = 'big'
-})(Size || (Size = {}))
-
-// 本质Size["small"] = 2 赋值语句的结果为2
-// 然后传递给外层: Size[2] = "small"
-```
 
 ## any、void 类型
 
@@ -245,6 +173,128 @@ const readOnlyArr = [0, 1] as const;
   const myName = userInfo.name ?? `my name is ${userInfo.name}` // 空值合并
   ```
 
+5. 类型守卫
+   1. `in`操作符
+   2. `if`判断语句
+
+# 枚举类型
+
+## 数字枚举
+
+1. 表示固定的几个取值。例如：一年四季、人的性别
+
+```typescript
+// 定义了一个名称叫做Gender的枚举类型，这个枚举类型的取值有两个，分别是Male和Female
+enum Gender {
+  Male,
+  Female,
+}
+let val: Gender // 定义的变量val，只能保存Male或Female
+val = Gender.Male
+val = Gender.false // error
+```
+
+2. 枚举类型的本质是数值类型，所以可赋值一个数值
+
+```typescript
+val = 123 // 不会报错
+console.log(Gender.Male) // 0
+console.log(Gender.Female) // 1
+```
+
+3. 枚举类型的取值，默认从上至下，从 0 开始递增
+
+- 虽然默认从 0 开始递增，但可以手动指定枚举的取值
+- 如果手动指定了前面枚举的取值，后面的枚举值的取值会根据前面的递增
+- 如果手动指定了后面枚举的取值，前面的枚举值的取值不会被影响
+- 同时修改多个枚举值的取值，修改的是什么最后就是什么
+
+```typescript
+// 递增
+enum Size {
+  small = 3,
+  big,
+}
+console.log(Size.small) // 3
+console.log(Size.big) // 4 从3开始递增
+
+// 前面的无影响
+enum Size {
+  small,
+  big = 100,
+}
+console.log(Size.small) // 0
+console.log(Size.big) // 100
+```
+
+4. 底层原理
+
+- 可以通过枚举值拿到对应的数字
+- 可以通过对应的数字拿到枚举值
+
+```typescript
+enum Size {
+  small = 2,
+  big = 4,
+}
+console.log(Size.small) // 2
+console.log(Size[2]) // small
+
+// 源码分析
+var Size
+;(function (Size) {
+  Size[(Size['small'] = 2)] = 'small'
+  Size[(Size['big'] = 4)] = 'big'
+})(Size || (Size = {}))
+
+// 本质Size["small"] = 2 赋值语句的结果为2
+// 然后传递给外层: Size[2] = "small"
+```
+
+## 字符串枚举
+
+## 常量枚举
+
+```ts
+const enum Day {
+  SUNDAY,
+  MONDAY
+}
+const work = (d: Day) => {
+  switch (d) {
+    case Day.SUNDAY:
+      return 'take a rest'
+    case Day.MONDAY:
+      return 'work hard'
+  }
+}
+
+// 转移为 JavaScript 后
+const enum Day {
+  SUNDAY,
+  MONDAY
+}
+const work = (d: Day) => {
+  switch (d) {
+    case Day.SUNDAY:
+      return 'take a rest'
+    case Day.MONDAY:
+      return 'work hard'
+  }
+}
+```
+
+## 外部枚举
+
+- 外部`xxx.d.ts`中通过 `declare` 描述一个在其他地方定义变量
+- 主要用于在不显示引入定义枚举的模块情况下，可以直接使用该枚举类型
+
+## info
+
+- 常量命名、结构顺序都一致的两个枚举，即便转译为 JS 后，同名成员的值仍然一样。但在TS看来，它们不相同、不满足恒等。
+- 使用常量枚举管理相关的常量，能提高代码的可读性和易维护性
+- 不要使用其他任何类型替换所使用的枚举成员
+
 # 空值合并
 
 - `??`是一个逻辑操作符，当左侧的操作数为null和undefined时，返回右侧操作数。否则返回左侧操作数
@@ -278,7 +328,22 @@ say(obj)
 1. 可选属性：接口里的属性不全都是必需的。 有些是只在某些条件下存在，或者根本不存在
 
 - 可以对可能存在的属性进行预定义
+
 - 带有可选属性的接口与普通的接口定义差不多，只是在可选属性名字定义的后面加一个`?`符号
+
+  ```tsx
+  interface ProgramLanguage {
+    name: string
+    age?: () => number
+  }
+  function Study(language: ProgramLanguage) {
+    console.log(`${language.name}-${language.age?.()}`); 
+    // 值可能是 undefined。使用类型守卫或者 Optional Chain
+  }
+  ```
+
+  
+
 - **使用接口定义限定了变量或形参，在给变量或形参赋值时，赋予的值必须和接口限定的一样，多一个少一个都不行**
 
 ```typescript
@@ -575,10 +640,10 @@ console.log(add15(10))
 
 ## interface 与 type 的区别
 
-- 重复定义的接口类型，会叠加。别名不可以
-- 接口类型只能声明对象, 类型别名可以声明元组、联合类型、交叉类型、原始类型，对象等。
+- **重复定义的接口类型，会叠加。别名不可以**
+- 接口类型只能声明对象, 类型别名可以声明元组、联合类型、交叉类型、原始类型，对象等。支持 **extends**
 - **索引签名**
-  - interface：虽然属性可以与索引签名进行混用，但是属性的类型必须是对应的数字索引或字符串索引的类型的子集，否则会出现错误提示
+  - interface：虽然属性可以与索引签名进行混用，但是属性的类型必须是对应的数字索引或字符串索引的类型的**子集**，否则会出现错误提示
 
 ## 联合类型
 
@@ -604,7 +669,7 @@ console.log(add15(10))
 
 - TypeScript 对这样的场景做了缩减，它把字面量类型、枚举成员类型缩减掉，只保留原始类型、枚举类型等父类型，这是合理的“优化”
 
-  - 可是这个缩减，却极大地削弱了 IDE 自动提示的能力，如下代码所示
+  - **可是这个缩减，却极大地削弱了 IDE 自动提示的能力**，如下代码所示
 
     ```typescript
     type BorderColor = 'black' | 'red' | 'green' | 'yellow' | 'blue' | string; // 类型缩减成 string
@@ -615,18 +680,20 @@ console.log(add15(10))
 
 - 如何定义如下所示 age 属性是数字类型，而其他不确定的属性是字符串类型的数据结构对象？
 
+  - **也可以用interface的extends**
+  
   - ```typescript
     {
       age: 1, // 数字类型
       anyProperty: 'str' // 其他不确定的属性都是字符串类型
       ...
-    }
+  }
     ```
 
   - **用到两个接口的联合类型及类型缩减，这个问题的核心在于找到一个既是 number 的子类型，这样 age 类型缩减之后的类型就是 number；同时也是 string 的子类型，这样才能满足属性和 string 索引类型的约束关系**
 
     - *never 有一个特性是它是所有类型的子类型，自然也是 number 和 string 的子类型，所有如下所示：*
-
+  
     - ```typescript
       type UnionInterface = {
         age: number
@@ -640,9 +707,9 @@ console.log(add15(10))
       let person:UnionInterface = {
         age: 12,
         string: 'string'
-      }
+    }
       ```
-
+  
       
 
 # 泛型
@@ -677,15 +744,15 @@ console.log(res15)
 interface LengthInterface {
   length: number
 }
-let getArray16 = <T extends LengthInterface>(value: T, items: number = 5): T[] => {
+const getArray16 = <T extends LengthInterface>(value: T, items = 5): T[] => {
   return new Array(items).fill(value)
 }
 
-let arr16 = getArray16<string>('abc')
+const arr16 = getArray16<string>('abc')
 // let arr16 = getArray16<number>(12) // 泛型约束，number类型不满足
 // 泛型具体的类型可以不指定， 如果没有指定，那么就会根据传递的泛型参数自动推导出来
 // let arr16 = getArray16(5, 3) // [5, 5, 5]
-let res16 = arr16.map(item => item.length)
+const res16 = arr16.map((item) => item.length)
 console.log(res16)
 ```
 
@@ -932,5 +999,57 @@ cache26.add(3)
 cache26.add(5)
 cache26.add(1)
 console.log(cache26.all());
+```
+
+# 泛型类型
+
+类型本身可以被定义为拥有不明确的类型参数的泛型，可以接收明确类型作为入参。从而衍生出更具体的类型。
+
+```ts
+function reflect<P>(param: P): P {
+  return param
+}
+const reflectFn: <P>(param: P) => P = reflect
+```
+
+**可以把reflectFn的类型注解提取为一个能被复用的类型别名或者接口**
+
+```ts
+type ReflectFuncton = <P>(param: P) => P;
+interface IReflectFuncton {
+  <P>(param: P): P
+}
+
+const reflectFn2: ReflectFuncton = reflect;
+const reflectFn3: IReflectFuncton = reflect;
+```
+
+将**类型入参**的**定义移动到类型别名或者接口名称后**，此时定义的一个**接收具体类型入参**后返回一个新类型的类型就是**泛型类型**
+
+```ts
+type GenericReflectFunction<P> = (param: P) => P;
+interface IGenericReflectFunction<P> {
+  (param: P): P;
+}
+
+const reflectFn4: GenericReflectFunction<string> = reflect; // 具象化泛型
+const reflectFn5: IGenericReflectFunction<number> = reflect; // 具象化泛型
+
+const reflectFn3Return = reflectFn4('string'); // 入参和返回值都必须是 string 类型
+const reflectFn4Return = reflectFn5(1); //  入参和返回值都必须是 number 类型
+```
+
+**用类型操作符进行运算表达，使泛型可以根据入参的类型衍生出各异的类型**
+
+- 如果入参是联合类型，则会被拆解成一个个独立的（原子）类型进行类型运算
+
+```ts
+type BS = string | boolean
+type SONA<E> = E extends string | number ? E[] : E
+type SArray = SONA<string> // string[]
+type NArray = SONA<number> // number[]
+type NeverGot = SONA<boolean> // boolean
+type SS = SONA<BS> // boolean | string[]
+type BORG = BS extends string | number ? BS[] : BS // string | boolean
 ```
 
