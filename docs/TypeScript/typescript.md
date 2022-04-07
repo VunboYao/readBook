@@ -30,6 +30,7 @@
 
 - 表示任意类型，当不清楚某个值的具体类型时使用
 - 任何类型数据都可以赋值给 any 类型
+- any 也可以赋值给出了never之外的任意其他类型
 
 ```typescript
 let value: any // 定义了一个可以保存任意类型数据的变量
@@ -173,11 +174,10 @@ const readOnlyArr = [0, 1] as const;
   const myName = userInfo.name ?? `my name is ${userInfo.name}` // 空值合并
   ```
 
-5. 类型守卫
-   1. `in`操作符
-   2. `if`判断语句
-
 # 枚举类型
+
+- 枚举和其他任何枚举、类型都不可比较，除了数字枚举可以与数字类型比较之外
+- 数字枚举极其不稳定
 
 ## 数字枚举
 
@@ -687,7 +687,7 @@ console.log(add15(10))
       age: 1, // 数字类型
       anyProperty: 'str' // 其他不确定的属性都是字符串类型
       ...
-  }
+    }
     ```
 
   - **用到两个接口的联合类型及类型缩减，这个问题的核心在于找到一个既是 number 的子类型，这样 age 类型缩减之后的类型就是 number；同时也是 string 的子类型，这样才能满足属性和 string 索引类型的约束关系**
@@ -707,7 +707,7 @@ console.log(add15(10))
       let person:UnionInterface = {
         age: 12,
         string: 'string'
-    }
+      }
       ```
   
       
@@ -1051,5 +1051,166 @@ type NArray = SONA<number> // number[]
 type NeverGot = SONA<boolean> // boolean
 type SS = SONA<BS> // boolean | string[]
 type BORG = BS extends string | number ? BS[] : BS // string | boolean
+```
+
+# 类型守卫
+
+触发类型缩小。还可以用来区分类型集合中的不同成员
+
+> 类型集合一般包括联合类型和枚举类型。
+
+## 如何区分联合类型
+
+- switch
+
+- 字面量恒等
+
+- typeof
+
+- instanceof
+
+- in
+
+- 自定义类型守卫
+
+  - 通过类型谓词 is，封装一个 isDog 函数来区分 Dog 和 Cat
+
+    ```ts
+    interface Dog {
+      wang: string
+    }
+    interface Cat {
+      miao: string
+    }
+    const isDog = function (animal: Dog | Cat): animal is Dog {
+      return 'wang' in animal
+    }
+    
+    const getName = (animal: Dog | Cat) => {
+      if (isDog(animal)) {
+        return animal.wang
+      }
+    }
+    ```
+
+## 如何区别枚举类型
+
+```ts
+enum A {
+  one,
+  two,
+}
+enum B {
+  one,
+  two,
+}
+
+const cpWithNumber = (param: A) => {
+  if (param === 1) {
+    // bad 数字枚举不稳定
+    return param
+  }
+}
+
+const cpWithOtherEnum = (param: A) => {
+  if (param === (B.two as unknown as A)) {
+    // alter bad 一旦A和B的结构出现了任何差异，会导致异常
+    return param
+  }
+}
+
+const cpWithSelf = (param: A) => {
+  if (param === A.two) {
+    // good 和自身比较是最合适的。类型缩小
+    return param
+  }
+}
+```
+
+# 类型兼容
+
+## 子类型
+
+- 所有的子类型与它的父类型都兼容
+- 由子类型组成的**联合类型**也可以兼容它们**父类型组成的联合类型**
+
+```tsx
+let ICPar: IPar | CPar;
+let ICChild: IChild | CChild;
+ICPar = ICChild; // ok
+```
+
+## 结构类型
+
+- 如果两个类型的结构一致，则它们是互相兼容的。比如拥有相同类型的属性、方法的**接口类型或类**，则可以互相赋值
+
+- 两个接口类型或者类，如果其中一个类型不仅拥有另外一个类型全部的属性和方法，还包含其他的属性和方法，那么前者可以兼容后者
+
+```ts
+interface I1 {
+  name: string
+}
+interface I2 {
+  id: number
+  name: string
+}
+class C2 {
+  id = 1
+  name = '1'
+}
+let O1: I1
+let O2: I2
+let InstC2: C2
+O1 = O2
+O1 = InstC2
+```
+
+- 虽然包含多余属性id的变量O2可以赋值给变量O1，但是如果我们直接将一个与变量O2完全一样结构的对象字面量赋值给变量O1，则会提示一个ts(2322)类型不兼容的错误。这就是对面字面的freshness特性。
+
+  **一个对象字面量没有被变量接收时，它将处于一种freshness新鲜的状态。这时TS会对对象字面量的赋值操作进行严格的类型检测，只有目标变量的类型与对象字面量的类型完全一致时，对象字面量才可以赋值给目标变量，否则会提示类型错误**
+
+```tsx
+O1 = {
+  id: 2, // ts 2322
+  name: 'name',
+}
+const O3 = {
+  id: 2,
+  name: 'name',
+}
+O1 = O3 // ok 使用变量接收对象字面量
+O1 = {
+  id: 2,
+  name: 'name',
+} as I2 // 类型断言
+```
+
+- 判断两个类是否兼容时，可以完全忽略其构造函数及静态属性和方法是否兼容，只需要比较类实例的属性和方法是否兼容即可。如果两个类包含私有、受保护的属性和方法，则仅当这些属性和方法源自同一个类，才兼容
+
+## 可继承和可实现
+
+类型兼容性决定了接口类型和类是否可以通过extends继承另外一个接口类型或者类，以及类是否可以通过 implements实现接口
+
+```ts
+interface I1 {
+  name: number
+}
+interface I2 extends I1 {
+  // ts(2430) name属性不兼容
+  name: string
+}
+class C1 {
+  name = '1'
+  private id = 1
+}
+class C2 extends C1 {
+  // ts(2415) 私有属性
+  name = '2'
+  private id = 1
+}
+class C3 implements I1 {
+  name = '' // ts(2416) 属性冲突
+}
+
 ```
 
