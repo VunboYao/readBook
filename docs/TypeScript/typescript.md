@@ -1214,3 +1214,186 @@ class C3 implements I1 {
 
 ```
 
+## 变形
+
+指根据类型之间的子类型关系推断基于它们构造的更复杂类型之间的子类型关系
+
+### 协变
+
+协变也就是说如果 Dog 是 Animal 的子类型，则 F(Dog) 是 F(Animal) 的子类型，这意味着在构造的复杂类型中保持了一致的子类型关系
+
+**接口类型的属性、数组类型、函数返回值的类型都是协变的**
+
+### 逆变
+
+严格模式下，函数参数类型是逆变的。如果 Dog 是 Animal 的子类型，则 F(Dog) 是 F(Animal) 的父类型，这与协变正好反过来
+
+### 双向协变
+
+**非严格模式下**，函数参数类型就是双向协变的。
+
+### 不变
+
+不变即只要是不完全一样的类型，它们一定是不兼容的
+
+## 函数类型兼容性
+
+### 返回值
+
+返回值类型是协变的。所以在参数类型兼容的情况下，函数的子类型关系与返回值子类型关系一致。**返回值类型兼容，则函数兼容**
+
+### 参数类型
+
+参数类型是逆变的。所以在参数个数相同、返回值类型兼容的情况下，函数子类型关系与参数子类型关系是反过来的（逆变）
+
+### 参数个数
+
+在索引位置相同的参数和返回值类型兼容的前提下，函数兼容性取决于参数个数，参数个数少的兼容个数多
+
+（参数少的赋值给参数多的安全。）
+
+```ts
+let lessP = (one: number) => void 0
+let moreP = (one: number, two: string) => void 0
+moreP = lessP // ok
+lessP = moreP // ts2322
+```
+
+### 可选和剩余参数
+
+可选参数可以兼容剩余参数、不可选参数
+
+# 增强类型系统
+
+## declare 变量
+
+`declare (var|let|const) 变量名称：变量类型`
+
+## 声明函数
+
+声明函数的语法与声明变量类型的语法相同，不同的是 declare 关键字后面需要跟 function 关键字
+
+`declare function toString(x:number):string`
+
+**使用declare关键字时，不需要编写声明的变量、函数、类的具体实现，只需要声明其类型即可**
+
+## 声明类
+
+只需要声明类的属性、方法的类型即可
+
+```ts
+declare class Person {
+  public name: string
+  private age: number
+  constructor(name: string)
+  getAge(): number
+}
+```
+
+## 声明枚举
+
+只需要定义枚举的类型，不需要定义枚举的值
+
+## declare 模块
+
+**声明模块的语法**： `declare module '模块名' {}`
+
+在模块声明的内部，只需要使用 export 导出对应库的类、函数即可
+
+## declare 文件
+
+因为TS并不知道我们通过import导入的文件是什么类型，所以需要使用 declare 声明导入的文件类型
+
+```ts
+declare module '*.jpg' {
+  const src: string;
+  export default src;
+}
+
+declare module '*.png' {
+  const src: string;
+  export default src;
+}
+```
+
+## declare namespace
+
+不同于声明模块，命名空间一般用来表示具有很多子属性或者方法的全局对象变量
+
+**可以将声明命名空间简单看作是声明一个更复杂的变量**
+
+```TS
+declare namespace $ {
+  const version: number;
+  function ajax(settings?: any): void;
+}
+$.version; // => number
+$.ajax();
+```
+
+## 声明文件
+
+在TS中，存在类型、值、命名空间这三个核心概念。
+
+### 类型
+
+- 类型别名声明
+- 接口声明
+- 类声明
+- 枚举声明
+- 导入的类型声明
+
+### 值
+
+- var, let, const 声明
+- namespace、module包含值的说明
+- 枚举声明
+- 类声明
+- 导入的值
+- 函数声明
+
+## 合并接口
+
+- 接口的非函数成员类型必须完全一样
+- **后面声明的接口具有更高的优先级**
+
+## 不可合并
+
+定义一个类类型，相当于定义了一个类，又定义了一个类的类型。对于这个类既是值又是类型的特殊对象不能合并
+
+# 官方工具
+
+## 接口类型
+
+- `Partical`：所有属性变为可选的
+- `Required`： 与 `Partical` 相反，所有属性变为必须的
+- `Readonly`： 所有属性设置为只读的
+- `Pick`: 从给定的类型中选取出指定的键值，组成一个新的类型
+- `Omit`：与 `Pick` 类型相反。返回去除指定的键值之后返回的新类型
+
+## 联合类型
+
+- `Exclude`: 从联合类型中去除指定的类型
+- `Extract`：与 `Exclude` 相反，从联合类型中提取指定的类型。基于 `Extract` 可实现一个获取接口类型交集的工具类型
+- `NonNullable`： 从联合类型中去除 null 或者 undefined
+- `Record`：生成接口类型，使用传入的泛型参数分别作为接口类型的属性和值。`Record` 类型接收两个泛型参数：
+  - 第一个参数作为接口类型的属性
+  - 第二个参数作为接口类型的属性值
+- `keyof any`： 指代可以作为对象健的属性。`type T = keyof any; => string | number | symbol`
+
+## 函数类型
+
+- `ConstructorParameters`： 用来获取构造函数的构造参数
+- `infer`: ???
+- `Parameters`: 获取函数的参数并返回序对
+- `ReturnType`：获取函数的返回类型
+- `ThisParameterType`: 获取函数的 this 参数类型
+- `ThisType`: 可以在对象字面量中指定 this 的类型
+- `OmitThisParameter`: 去除函数类型中的 this 类型
+
+## 字符串类型
+
+- `Uppercase`: 转换为大写
+- `Lowercase`: 转换为小写
+- `Capitalize`: 第一个字母大写
+- `Uncapitalize`: 第一个字母小写
