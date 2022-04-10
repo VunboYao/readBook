@@ -62,7 +62,10 @@ variable = null
 
 ## unknown
 
-与 any 不同的是，unknown 在类型上更安全。比如我们可以将任意类型的值赋值给 unknown，**但 unknown 类型的值只能赋值给 unknown 或 any**
+与 any 不同的是，unknown 在类型上更安全。
+
+- 比如我们可以将任意类型的值赋值给 unknown，
+- **unknown 类型的值只能赋值给 unknown 或 any**
 
 ```typescript
 let result: unknown;
@@ -77,7 +80,13 @@ let anything: any = result; // 不会提示错误
   result.toFixed() // error: ts(2571)
   ```
 
-- 所有类型的缩小手段对 unknown 都有效
+- 所有类型的缩小手段对 unknown 都有效。最终是其他任何类型
+
+- 除了any外，与其他任何类型组成的联合类型最后都是unknown类型
+
+- never 类型是 unknown 类型的子类型
+
+- `keyof unknown` 等于 never
 
 ## never 类型与 object 类型
 
@@ -1372,12 +1381,14 @@ $.ajax();
 
 # 官方工具
 
+映射类型，可以通过 +/- 来指定添加/删除 只读和可选修饰符
+
 ## 接口类型
 
-- `Partical`：所有属性变为可选的
+- `Partical`：所有属性变为可选的。**映射类型**
 - `Required`： 与 `Partical` 相反，所有属性变为必须的
-- `Readonly`： 所有属性设置为只读的
-- `Pick`: 从给定的类型中选取出指定的键值，组成一个新的类型
+- `Readonly`： 所有属性设置为只读的。**映射类型**
+- `Pick`: 从给定的类型中选取出指定的键值，组成一个新的类型。**映射类型**
 - `Omit`：与 `Pick` 类型相反。返回去除指定的键值之后返回的新类型
 
 ## 联合类型
@@ -1385,7 +1396,7 @@ $.ajax();
 - `Exclude`: 从联合类型中去除指定的类型
 - `Extract`：与 `Exclude` 相反，从联合类型中提取指定的类型。基于 `Extract` 可实现一个获取接口类型交集的工具类型
 - `NonNullable`： 从联合类型中去除 null 或者 undefined
-- `Record`：生成接口类型，使用传入的泛型参数分别作为接口类型的属性和值。`Record` 类型接收两个泛型参数：
+- `Record`：生成接口类型，使用传入的泛型参数分别作为接口类型的属性和值。**将一个类型的所有属性值都映射到另一个类型上并创造出一个新的类型**。`Record` 类型接收两个泛型参数：
   - 第一个参数作为接口类型的属性
   - 第二个参数作为接口类型的属性值
 - `keyof any`： 指代可以作为对象健的属性。`type T = keyof any; => string | number | symbol`
@@ -1393,7 +1404,6 @@ $.ajax();
 ## 函数类型
 
 - `ConstructorParameters`： 用来获取构造函数的构造参数
-- `infer`: ???
 - `Parameters`: 获取函数的参数并返回序对
 - `ReturnType`：获取函数的返回类型
 - `ThisParameterType`: 获取函数的 this 参数类型
@@ -1406,3 +1416,25 @@ $.ajax();
 - `Lowercase`: 转换为小写
 - `Capitalize`: 第一个字母大写
 - `Uncapitalize`: 第一个字母小写
+
+# 工具
+
+## keyof
+
+获取某种类型的所有key值集合
+
+## 条件类型（三目运算）
+
+判断前面一个类型是否是后面一个类型或者**能赋值给后面一个类型**
+
+如果是就返回第一个结果，如果不是就返回第二个结果
+
+语法：T **extends** U ? X : Y
+
+## infer
+
+- `extends` 语句中待推断的类型变量。
+
+- 在条件类型中定义新的类型。
+
+- **条件类型中的类型判断**，前置条件，它一定是出现在条件类型中的
