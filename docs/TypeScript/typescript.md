@@ -128,6 +128,14 @@ obj = {
 console.log(obj) // Object { name: "yyb", age: 12 }
 ```
 
+## null 和 undefined
+
+- 可以将null和undefined赋值给任意类型
+- 默认情况可以相互赋值
+- **如果不想把 null 和 undefined 赋值给其他的类型，可以开启 strickNullChecks**
+  - 如果开启了strickNullChecks，还想把 null 和 undefined 赋值给其他的类型.就必须在声明的时候使用联合类型
+  - 对于可选属性和可选参数而言，如果开启了 strickNullChecks，默认情况下数据类型就是联合类型。当前的类型 + undefined类型
+
 ## 类型断言
 
 明确告诉编译器，不用帮我检查。将一种类型强制转换成另一种类型
@@ -155,7 +163,7 @@ let str = 'str' as const;
 const readOnlyArr = [0, 1] as const;
 ```
 
-4. 方式四：非空断言：值后边添加`‘！’`断言操作符。排除值为null、undefined的情况。
+4. 方式四：非空断言：值后边添加`!`断言操作符。排除值为null、undefined的情况。
    1. 建议使用“类型守卫“代替非空断言
 
 企业中使用第二种，当你在 TypeScript 里使用 JSX 时，只有 as 语法断言是被允许的。**
@@ -644,6 +652,7 @@ console.log(add15(10))
 - 接口类型只能声明对象, 类型别名可以声明元组、联合类型、交叉类型、原始类型，对象等。支持 **extends**
 - **索引签名**
   - interface：虽然属性可以与索引签名进行混用，但是属性的类型必须是对应的数字索引或字符串索引的类型的**子集**，否则会出现错误提示
+- **两者相互兼容**
 
 ## 联合类型
 
@@ -1065,9 +1074,9 @@ type BORG = BS extends string | number ? BS[] : BS // string | boolean
 
 - 字面量恒等
 
-- typeof
+- typeof，只能用于`===` 或 `!==`，只能保护 `number/string/boolean/symbol`
 
-- instanceof
+- instanceof，针对 object
 
 - in
 
