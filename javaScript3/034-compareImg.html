@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      position: relative;
+      height: 100vh;
+      width: 100vh;
+    }
+    .x-left {
+      position: absolute;
+      top: 50px;
+      left: 200px;
+      height: 300px;
+      width: 300px;
+      border: 1px solid red;
+    }
+    .x-right {
+      position: absolute;
+      top: 50px;
+      left: 800px;
+      height: 300px;
+      width: 300px;
+      border: 1px solid red;
+    }
+    .big-img {
+      position: absolute;
+      top: 0;
+      left: 10px;
+      width: 500px;
+      height: 500px;
+      border: 1px solid blue;
+      color: blue;
+      cursor: move;
+    }
+  </style>
+</head>
+<body>
+  <h2></h2>
+  <div class="x-left">Origin Data</div>
+  <div class="x-right">
+    <div class="big-img" id="move">big Data, over the parent</div>
+  </div>
+<script>
+  const t = document.getElementById('move')
+  let origin = document.querySelector('.x-right')
+  function getStyle(dom, attr) {
+    return getComputedStyle(dom, null)[attr]
+  }
+  t.onmousedown = function (e) {
+    let originLeft = getStyle(origin, 'left')
+    let startX = e.clientX
+    t.onmousemove = function (e) {
+      let currentL = e.target.offsetLeft
+      let x = e.clientX
+      let dis = x - startX
+      t.style.cssText = `left: ${parseInt(dis)}px`
+      document.querySelector('h2').innerHTML = dis
+      t.onmouseup = function () {
+        t.onmousedown = null
+        t.onmousemove = null
+      }
+    }
+  }
+</script>
+</body>
+</html>
