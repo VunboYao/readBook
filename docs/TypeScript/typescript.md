@@ -1386,29 +1386,178 @@ $.ajax();
 ## 接口类型
 
 - `Partical`：所有属性变为可选的。**映射类型**
+
+  ```ts
+  type Partical<T> = {
+      [P in keyof T]?: T[P]
+  }
+  ```
+
 - `Required`： 与 `Partical` 相反，所有属性变为必须的
+
+  ```ts
+  type Required<T> = {
+      [P in keyof T]-?: T[P]
+  }
+  ```
+
 - `Readonly`： 所有属性设置为只读的。**映射类型**
+
+  ```ts
+  type Readonly<T> = {
+      readonly [P in keyof T]-?: T[P]
+  }
+  ```
+
 - `Pick`: 从给定的类型中选取出指定的键值，组成一个新的类型。**映射类型**
+
+  ```tsx
+  type Pick<T, K extends keyof T> = {
+      [P in K]: T[P]
+  }
+  ```
+
 - `Omit`：与 `Pick` 类型相反。返回去除指定的键值之后返回的新类型
+
+  ```tsx
+  type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+  type NewPerson = Omit<Person, 'name' | 'age'>
+  ```
+
+  ```tsx
+  type Omit<T, K extends string | number | symbol> = {
+      [P in Exclude<keyof T, K>]: T[P]
+  }
+  ```
 
 ## 联合类型
 
 - `Exclude`: 从联合类型中去除指定的类型
+
+  ```tsx
+  type Exclude<T, U> = T extends U ? never : T
+  ```
+
+  ```TSX
+  type NewPerson = Omit<Person, 'weight'>
+  // 相当于
+  type NewPerson = Pick<Person, Exclude<keyof Person, 'weight'>>
+  // 其中
+  type ExcludeKeys = Exclude<keyof Person, 'weight'> // name | age
+  ```
+
 - `Extract`：与 `Exclude` 相反，从联合类型中提取指定的类型。基于 `Extract` 可实现一个获取接口类型交集的工具类型
+
+  ```tsx
+  type Extract<T, U> = T extends U ? T : never
+  ```
+
+  **实现一个接口交集**
+
+  ```tsx
+  interface Person {
+      name: string
+      age?: number
+      weight?: number
+  }
+  interface NewPerson {
+      name: string
+  }
+  type Intersect<T, U> = {
+      [K in Extract<keyof T, keyof U>]: T[K]
+  }
+  type T = Intersect<Person, NewPerson> // type T = { name: string }
+  ```
+
 - `NonNullable`： 从联合类型中去除 null 或者 undefined
+
+  ```TSX
+  type NonNullable<T> = T extends null | undefined ? never : T
+  type NonNUllable2<T> = Exclude<T, null | undefined>
+  ```
+
 - `Record`：生成接口类型，使用传入的泛型参数分别作为接口类型的属性和值。**将一个类型的所有属性值都映射到另一个类型上并创造出一个新的类型**。`Record` 类型接收两个泛型参数：
   - 第一个参数作为接口类型的属性
   - 第二个参数作为接口类型的属性值
+  
+  ```tsx
+  type Record<K extends string | number | symbol, T> = {
+      [P in K]: T
+  }
+  type MenuKey = 'home' | 'about' | 'more'
+  interface Menu {
+      label: string
+      hidden?: boolean
+  }
+  const menus: Record<MenuKey, Menu> = {
+      about: { label: 'about' },
+      home: { label: 'about' },
+      more: { label: 'about' },
+  }
+  ```
+  
 - `keyof any`： 指代可以作为对象健的属性。`type T = keyof any; => string | number | symbol`
 
 ## 函数类型
 
 - `ConstructorParameters`： 用来获取构造函数的构造参数
+
+  ```TSX
+  type ConstructorParameters<T extends new (...args: any) => any> =
+      T extends new (...args: infer P) => any ? P : never
+  class Person {
+      constructor(name: string, age?: number) {}
+  }
+  type T = ConstructorParameters<typeof Person>
+  ```
+
 - `Parameters`: 获取函数的参数并返回序对
+
+  ```jsx
+  type Parameters<T extends (...args: any) => any> = T extends (
+      ...args: infer P
+  ) => any
+      ? P
+  	: never
+  type T0 = Parameters<() => void> // []
+  type T1 = Parameters<(x: number, y?: string) => void> // [x: number, y?: string | undefined]
+  ```
+
 - `ReturnType`：获取函数的返回类型
-- `ThisParameterType`: 获取函数的 this 参数类型
-- `ThisType`: 可以在对象字面量中指定 this 的类型
+
+  ```tsx
+  type ReturnType<T extends (...args: any) => any> = T extends (
+  	...args: any
+  ) => infer R
+      ? R
+  	: never
+  type T0 = ReturnType<() => number> // number
+  type T1 = ReturnType<(x: number, y?: string) => void> // void
+  ```
+
+- `ThisParameterType`: 获取函数的 **this 参数类型**
+
+  ```tsx
+  type ThisParameterType<T> = T extends (this: infer U, ...args: any[]) => any
+      ? U
+  : unknown
+  type T = ThisParameterType<(this: number, x: number) => void> // number
+  ```
+
+- `ThisType`: 可以在对象字面量中**指定 this 的类型**
+
 - `OmitThisParameter`: 去除函数类型中的 this 类型
+
+  ```tsx
+  type OmitThisParameter<T> = unknown extends ThisParameterType<T>
+  	? T
+  	: T extends (...args: infer A) => infer R
+      ? (...args: A) => R
+  	: T
+  type T = OmitThisParameter<(this: number, x: number) => string> // (x:number) => string
+  ```
+
+  
 
 ## 字符串类型
 
@@ -1423,7 +1572,7 @@ $.ajax();
 
 获取某种类型的所有key值集合
 
-## 条件类型（三目运算）
+## extends条件类型（三目运算）
 
 判断前面一个类型是否是后面一个类型或者**能赋值给后面一个类型**
 
@@ -1434,7 +1583,7 @@ $.ajax();
 ## infer
 
 - `extends` 语句中待推断的类型变量。
-
 - 在条件类型中定义新的类型。
-
 - **条件类型中的类型判断**，前置条件，它一定是出现在条件类型中的
+- 如果真实的参数类型和 infer 匹配的一致，就返回匹配到的这个类型
+
