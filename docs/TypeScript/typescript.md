@@ -1570,7 +1570,7 @@ $.ajax();
 
 ## keyof
 
-获取某种类型的所有key值集合
+获取某种类型的所有key值集合.**对象属性名、索引名、索引签名的类型**
 
 ## extends条件类型（三目运算）
 
@@ -1580,10 +1580,104 @@ $.ajax();
 
 语法：T **extends** U ? X : Y
 
+## 分配条件类型
+
+- **泛型中：**在条件类型中，如果入参是联合类型，则会被拆解为一个个独立的原子类型，然后再进行类型运算
+
+- **非泛型中**，入参会被当成一个整体对待。
+
+  ```tsx
+  type BooleanOrString = string | boolean;
+  type StringOrNumberArray<E> = E extends string | number ? E[] : E;
+  type WhatIsThis = StringOrNumberArray<BooleanOrString>; // boolean | string[]
+  type BooleanOrStringGot = BooleanOrString extends string | number ? BooleanOrString[] : BooleanOrString; //  string | boolean
+  ```
+
+- 通过某些手段强制类型入参变成一个整体，可以解除类型分配
+
+  ```tsx
+  type StringOrNumberArray<E> = [E] extends [string | number] ? E[] : E
+  type WhatIsThis = StringOrNumberArray<string | boolean> // string | boolean
+  // 使用 [] 将入参 E 包起来，即便入参是联合类型 string | boolean，也会被当成一个整体对待，所以第 2 行返回的是 string | boolean。
+  ```
+
+- never 是不能分配的底层类型，如果作为入参以原子形式出现在条件判断 extends 关键字左侧，则实际化得到的类型也是 never
+
 ## infer
 
 - `extends` 语句中待推断的类型变量。
 - 在条件类型中定义新的类型。
 - **条件类型中的类型判断**，前置条件，它一定是出现在条件类型中的
 - 如果真实的参数类型和 infer 匹配的一致，就返回匹配到的这个类型
+
+```tsx
+type isArray = ElementTypeOfObj<{ name: 'name'; id: 1; age: 30 }> // [name, 1]
+type isNever = ElementTypeOfObj<number> // never
+```
+
+## typeof
+
+- 表达式上下文中使用时，用来获取表达式值的类型
+- 如果在类型上下文中使用，则是**用来获取变量或者属性的类型**。
+
+## in 映射类型
+
+使用索引签名语法和 **in**关键字限定对象属性的范围
+
+```ts
+type SpecifiedKeys = 'id' | 'name';
+type TargetType = {
+  [key in SpecifiedKeys]: any;
+}; // { id: any; name: any; }
+```
+
+- **只能在类型别名定义中使用 in, 如果在接口中使用，则会提示一个ts(1169)的错误**
+- 定义类型时，可以组合使用 `in` 和 `keyof`。基于已有的类型创建一个新类型，**使得新类型与已有类型保持一致的只读、可选特性，这样的泛型被称为映射类型**
+
+ ```ts
+ interface SourceInterface {
+   readonly id: number;
+   name?: string;
+ }
+ type TargetType = {
+   [key in keyof SourceInterface]: SourceInterface[key];
+ }; // { readonly id: number; name?: string | undefined }
+ type TargetGenericType<S> = {
+   [key in keyof S]: S[key];
+ };
+ type TargetInstance = TargetGenericType<SourceInterface>; // { readonly id: number; name?: string | undefined }
+ 
+ ```
+
+## Merge
+
+基于映射类型将类型入参A和B合并为一个类型的泛型Merge<A,B>
+
+```tsx
+type Merge<A, B> = {
+  [key in keyof A | keyof B]: key extends keyof A
+  	? key extends keyof B
+  		? A[key] | B[key]
+  		: A[key]
+  	: key extends keyof B
+  	? B[key]
+  	: never
+}
+type Merged = Merge<{ id: number; name: string }, { id: string; age: number }>
+```
+
+## ReturnTypeOfResolved
+
+ReturnTypeOfResolved 和官方 ReturnType 的区别：如果入参 F 的返回类型是泛型 Promise 的实例，则返回 Promise 接收的入参。
+
+```tsx
+// type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : any;
+type RetrunTypeOfResolved<F extends (...args: any) => any> = F extends (
+	...args: any
+) => Promise<infer R>
+	? R
+	: ReturnType<F>
+type isNumber = RetrunTypeOfResolved<() => number>
+type isString = RetrunTypeOfResolved<() => Promise<string>>
+```
 

@@ -1,147 +1,160 @@
 {
-  // !接口类型
-  interface Person {
-    name: string
-    age?: number
-    weight?: number
-  }
-  /*   type Partial<T> = {
-    [P in keyof T]?: T[P]
-  }
-  type PartialPerson = Partial<Person> */
-
-  /* type Required<T> = {
-    [P in keyof T]?: T[P]
-  }
-  type RequiredPerson = Required<Person> */
-
-  /* type Readonly<T> = {
-    readonly [P in keyof T]: T[P]
-  }
-  type ReadonlyPerson = Readonly<Person> */
-
-  type Pick<T, K extends keyof T> = {
-    [P in K]: T[P]
-  }
-  type NerPerson = Pick<Person, 'name' | 'age'>
-
-  /* // type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>
-  type Omit<T, K extends string | number | symbol> = {
-    [P in Exclude<keyof T, K>]: T[P]
-  }
-  type NewPerson = Omit<Person, 'weight'> */
+  type BooleanOrString = string | boolean
+  type StringOrNumberArray<E> = [E] extends string | number ? E[] : E
+  type WhatIsThis = StringOrNumberArray<string | boolean>
+  type BooleanOrStringGot = BooleanOrString extends string | number
+    ? BooleanOrString[]
+    : BooleanOrString
+  type GetNever = StringOrNumberArray<never>
 }
-
 {
-  // !联合类型
-  interface Person {
-    name: string
-    age?: number
-    weight?: number
-  }
-  /* type Exclude<T, U> = T extends U ? never : T
-  type T = Exclude<'a' | 'b' | 'c', 'a'>
-  // type NerPerson = Omit<Person, 'weight'>
-  // 相当于
-  type NerPerson = Pick<Person, Exclude<keyof Person, 'weight'>>
-  // 其中
-  type Excludekeys = Exclude<keyof Person, 'weight'> // => 'name'|'age' */
-
-  /*   type Extract<T, U> = T extends U ? T : never
-  type T = Extract<'a' | 'b' | 'c', 'a'> //=> 'a'
-  // 相当于 交集
-  type X = ('a' | 'b' | 'c') & 'a'
-
-  type Intersect<T, U> = {
-    [K in Extract<keyof T, keyof U>]: T[K]
-  }
-  interface NewPerson {
-    name: string
-    age?: number
-  }
-  type T1 = Intersect<Person, NewPerson> */
-
-  // type NonNullable<T> = T extends null | undefined ? never : T
-  // 等价于
-  /* type NonNullable<T> = Exclude<T, null | undefined>
-  type T = NonNullable<'a' | null | 'b' | undefined> */
-
-  type Record<K extends keyof any, T> = {
-    [P in K]: T
-  }
-
-  type MenuKey = 'home' | 'about' | 'more'
-  interface Menu {
-    label: string
-    hidden?: boolean
-  }
-  const menus: Record<MenuKey, Menu> = {
-    about: { label: 'about' },
-    home: { label: 'home' },
-    more: { label: 'more', hidden: true },
-  }
-  type T = keyof any // => string | number | symbol
-}
-
-{
-  // !函数类型
-  /* type ConstructorParameters<T extends new (...args: any) => any> =
-    T extends new (...args: infer P) => any ? P : never */
-  /* class Person {
-    constructor(name: string, age?: number) {}
-  }
-  type dd = typeof Person
-  type T = ConstructorParameters<typeof Person> */
-  /* type Parameters<T extends (...args: any) => any> = T extends (
-    ...args: infer P
-  ) => any
-    ? P
+  type GetSNums = never extends number
+    ? number[]
+    : never extends string
+    ? string[]
     : never
-  type T0 = Parameters<() => void>
-  type T1 = Parameters<(x: number, y?: number) => void> */
-  /* type ReturnType<T extends (...args: any) => any> = T extends (
-    ...args: any
-  ) => infer R
-    ? R
-    : any
-  type To = ReturnType<() => void>
-  type T1 = ReturnType<() => string> */
-  /* type ThisParameterType<T> = T extends (this: infer U, ...args: any[]) => any
-    ? U
-    : unknown
-  type T = ThisParameterType<(this: number, x: number) => void> */
-  /*   type ObjectDescription<D, M> = {
-    data?: D
-    methods?: M & ThisType<D & M>
-  }
-  function makeObject<D, M>(desc: ObjectDescription<D, M>): D & M {
-    const data: object = desc.data || {}
-    const methods: object = desc.methods || {}
-    return { ...data, ...methods } as D & M
-  }
-  const obj = makeObject({
-    data: { x: 0, y: 0 },
-    methods: {
-      moveBy(dx: number, dy: number) {
-        this.x += dx
-        this.y += dy
-      },
-    },
-  })
-  obj.x = 10
-  obj.y = 20
-  obj.moveBy(5, 5) */
-  /* type OmitThisParameter<T> = unknown extends ThisParameterType<T>
-    ? T
-    : T extends (...args: infer A) => infer R
-    ? (...args: A) => R
-    : T
-  type T = OmitThisParameter<(this: number, x: number) => string> */
+}
+{
+  type UseFulNeverX<T> = T extends {} ? T[] : []
+  type UselessNeverX<T, S> = S extends {} ? S[] : []
+  type UseLessNeverY<T, S> = S extends {} ? T[] : []
+  type UseLessNeverZ<T> = [T] extends [{}] ? T[] : []
+  type ThisIsNeverX = UseFulNeverX<never>
+  type ThisIsNotNeverX = UselessNeverX<never, string>
+  type ThisIsNotNeverY = UseLessNeverY<never, string>
+  type ThisIsNotNeverZ = UseLessNeverZ<never>
+}
+{
+  type ElementTypeOfArray<T> = T extends (infer E)[] ? E : never
+  type isNumber = ElementTypeOfArray<number[]>
+  // type isNever = ElementTypeOfArray<number>
+  type ElementTypeOfObj<T> = T extends { name: infer E; id: infer I }
+    ? [E, I]
+    : never
+  type isArray = ElementTypeOfObj<{ name: 'name'; id: 1; age: 30 }> // [name, 1]
+  type isNever = ElementTypeOfObj<number> // never
 }
 
 {
-  //!字符串类型
-  // type Uppercase<S extends string> = intrinsic
-  // type Lowercase<S extends string> = intrinsic
-  // type Capitalize<S extends string> = intrinsic
+  interface MixedObject {
+    animal: {
+      type: 'animal' | 'dog' | 'cat'
+      age: number
+    }
+    [name: number]: {
+      type: string
+      age: number
+      nickname: string
+    }
+    [name: string]: {
+      type: string
+      age: number
+    }
+  }
+  type animal = MixedObject['animal']
+  type animalType = MixedObject['animal']['type']
+  type numberIndex = MixedObject[number]
+  type numberIndex0 = MixedObject[0]
+  type stringIndex = MixedObject[string]
+  type stringIndex0 = MixedObject['string']
+  type MixedObjectKeys = keyof MixedObject
+  type animalKeys = keyof animal
+  type numberIndexKeys = keyof numberIndex
+}
+{
+  const animal = {
+    id: 1,
+    name: 'animal',
+  }
+  type Animal = typeof animal
+  const animalFun = () => animal
+  type ANim = typeof animalFun
+}
+
+{
+  type SpecifiedKeys = 'id' | 'name'
+  type TargetType = {
+    [key in SpecifiedKeys]: any
+  }
+  type TargetGeneric<O extends string | number | symbol> = {
+    [key in O]: any
+  }
+  type TargetInstance = TargetGeneric<SpecifiedKeys>
+  interface SI {
+    readonly id: number
+    name?: string
+  }
+  type TT = {
+    [key in keyof SI]: SI[key]
+  }
+  type TGT<S> = {
+    [key in keyof S]: S[key]
+  }
+  type TI = TGT<SI>
+  type TGTA<S> = {
+    [key in keyof S as Exclude<key, 'id'>]: S[key]
+  }
+  type TGTAS = TGTA<SI>
+}
+
+{
+  type ESN = Exclude<1 | 2, 1>
+  type ESS = Exclude<'id' | 'name', 'id'>
+  type ESB = Exclude<boolean, true>
+}
+
+{
+  type RetrunTypeOfResolved<F extends (...args: any) => any> = F extends (
+    ...args: any
+  ) => Promise<infer R>
+    ? R
+    : ReturnType<F>
+  type isNumber = RetrunTypeOfResolved<() => number>
+  type isString = RetrunTypeOfResolved<() => Promise<string>>
+}
+
+{
+  type Merge<A, B> = {
+    [key in keyof A | keyof B]: key extends keyof A
+      ? key extends keyof B
+        ? A[key] | B[key]
+        : A[key]
+      : key extends keyof B
+      ? B[key]
+      : never
+  }
+  type Merged = Merge<{ id: number; name: string }, { id: string; age: number }>
+}
+
+{
+  type EqualV1<S, T> = S extends T ? (T extends S ? true : false) : false
+  type ExampleV11 = EqualV1<1 | (number & {}), number>
+  type ExampleV12 = EqualV1<never, never>
+
+  type EqualV2<S, T> = [S] extends [T]
+    ? [T] extends [S]
+      ? true
+      : false
+    : false
+  type ExampleV21 = EqualV2<1 | (number & {}), number>
+  type ExampleV22 = EqualV2<never, never>
+  type ExampleV23 = EqualV2<any, number>
+
+  type IsAny<T> = 0 extends 1 & T ? true : false
+  type EqualV3<S, T> = IsAny<S> extends true
+    ? IsAny<T> extends true
+      ? true
+      : false
+    : IsAny<T> extends true
+    ? false
+    : [S] extends [T]
+    ? [T] extends [S]
+      ? true
+      : false
+    : false
+  type ExampleV31 = EqualV3<1 | (number & {}), number>
+  type ExampleV32 = EqualV3<never, never>
+  type ExampleV34 = EqualV3<any, any> // true
+  type ExampleV33 = EqualV3<any, number> // false
+  type ExampleV35 = EqualV3<never, any> // false
 }
