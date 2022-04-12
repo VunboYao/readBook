@@ -163,10 +163,11 @@ class Compiler {
     // 2.遍历循环取到每一个元素
     let node = app.firstChild
     while (node) {
-      //注意点：只要将元素添加到了文档碎片中，那么这个元素就会自动从网页上消失
+      //todo:注意点：只要将元素添加到了文档碎片中，那么这个元素就会自动从网页上消失
       fragment.appendChild(node)
       node = app.firstChild
     }
+    // 3.返回存储了所有元素的文档碎片对象
     return fragment
   }
   buildTemplate(fragment) {
@@ -205,11 +206,11 @@ class Compiler {
   }
   buildText(node) {
     // {{}} 正则判断
-    const context = node.textContent
+    const content = node.textContent
     // TODO：此处正则可以不需要转义
     const reg = /{{(.+?)}}/gi
-    if (reg.test(context)) {
-      CompilerUtil['content'](node, context, this.vm)
+    if (reg.test(content)) {
+      CompilerUtil['content'](node, content, this.vm)
     }
   }
 }

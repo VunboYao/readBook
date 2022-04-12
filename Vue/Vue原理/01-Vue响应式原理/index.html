@@ -9,7 +9,7 @@
       function getType(obj) {
         const type = typeof obj
         if (type !== 'object') return type
-        return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, (match, $1) => {
+        return Object.prototype.toString.call(obj).replace(/^\[object (\S+)]$/, (match, $1) => {
           return $1.toLocaleLowerCase()
         })
       }
@@ -64,12 +64,6 @@
       obj.name = { a: 'yaoming' }
       obj.name.a = 'vunboyao'
 
-      // TODO: replace 方法。根据g标识符多次匹配
-      let str = 'bancan'
-      const c = str.replace(/an/gi, (...args) => {
-				return '11'
-			})
-			console.log(c)
     </script>
   </body>
 </html>
