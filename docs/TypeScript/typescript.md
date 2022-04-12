@@ -88,6 +88,11 @@ let anything: any = result; // 不会提示错误
 
 - `keyof unknown` 等于 never
 
+- **any 和 unknown 可以被断言成任何类型，反过来任何类型也都可以被断言成 any 或 unknown。**
+
+  - ```鹿 as unknown as 马```
+
+
 ## never 类型与 object 类型
 
 never 类型表示的是那些永不存在的值的类型;一般用于抛出异常或根本不可能有返回值的函数
@@ -1680,4 +1685,72 @@ type RetrunTypeOfResolved<F extends (...args: any) => any> = F extends (
 type isNumber = RetrunTypeOfResolved<() => number>
 type isString = RetrunTypeOfResolved<() => Promise<string>>
 ```
+
+# 错误码
+
+- TS2456，由于类型别名循环引用了自身造成的类型错误
+
+- TS2554，由于行参和实参个数不匹配造成的
+
+- TS2794，Promise 构造的 resolve 参数不再是默认可选的，必须传入。如果不需要参数，需要给 Promise 的泛型参数传入 void 即可
+
+  ```tsx
+  new Promise((resolve) => {
+    resolve(); // TS2794: Expected 1 arguments, but got 0. Did you forget to include 'void' in your type argument to 'Promise'? 
+  });
+  
+  new Promise<void>((resolve) => {
+    resolve();
+  });
+  ```
+
+- TS1169，在接口类型(interface)定义中由于使用了非字面量或者非唯一 symbol 类型作为属性名造成的
+
+  - **只能在类型别名(type)定义中使用 in, 如果在接口中使用**，会报错
+
+  ```tsx
+  interface Obj {
+    [key in 'id' | 'name']: any; // TS1169: A computed property name in an interface must refer to an expression whose type is a literal type or a 'unique symbol' type.
+  };
+  
+  type Obj = {
+    [key in 'id' | 'name']: any;
+  };
+  ```
+
+- TS2345，传参时，类型不兼容
+
+- TS2589，泛型实例化递归嵌套过深造成
+
+- TS2322，字符串字面量类型
+
+  ```tsx
+  interface CSSProperties {
+    display: 'block' | 'flex' | 'grid';
+  }
+  const style = {
+    display: 'flex',
+  };
+  // TS2322: Type '{ display: string; }' is not assignable to type 'CSSProperties'.
+  //  Types of property 'display' are incompatible.
+  //   Type 'string' is not assignable to type '"block" | "flex" | "grid"'.
+  const cssStyle: CSSProperties = style;
+  ```
+
+  style 的类型被自动推断成了 `{display: string}`，string 类型自然无法兼容字符串字面量类型 'block'|'flex'|'grid'，所以变量 style 不能赋值给 cssStyle.
+
+  ```ts
+  // 方法 1
+  const style: CSSProperties = {
+    display: 'flex',
+  };
+  
+  // 方法 2
+  const style = {
+    display: 'flex' as 'flex',
+  };
+  // typeof style = { display: 'flex' }
+  ```
+
+- TS2352，类型收缩错误
 
