@@ -14,8 +14,8 @@
 </template>
 <script>
 export default {
-  created() {
-    console.log(this.$store)
+  created () {
+    console.log(this.$router, this.$route);
   },
   methods: {
     getValue() {
