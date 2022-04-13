@@ -111,7 +111,7 @@ VunRouter.install = function(_Vue) {
       let component = null
       // const route = this.$router.constructorOptions.routes.find( route => route.path === this.$router.current)
       // 从匹配数组中获取
-      console.log(this.$router.matched, depth)
+      // console.log(this.$router.matched, depth)
       const route = this.$router.matched[depth]
       if (route) component = route.component
       return h(component)

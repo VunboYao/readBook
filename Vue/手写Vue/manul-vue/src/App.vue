@@ -5,18 +5,21 @@
       <router-link to="/about">About</router-link>|
       <router-link to="/about/info">AboutInfo</router-link>
     </div>
-    <p @click="$store.commit('add')">{{$store.state.counter}}</p>
-    <p @click="$store.dispatch('add')">async{{$store.state.counter}}</p>
     <p>double: {{$store.getters.doubleState}}</p>
+    <p @click="$store.commit('add', 2)">{{$store.state.counter}}</p>
+    <p @click="$store.dispatch('add', 3)">async{{$store.state.counter}}</p>
     <button @click="getValue">getValue</button>
     <router-view/>
   </div>
 </template>
 <script>
 export default {
+  created() {
+    console.log(this.$store)
+  },
   methods: {
     getValue() {
-      console.log(this.$store.getters.doubleState)
+      // console.log(this.$store.getters.doubleState)
     }
   }
 }
