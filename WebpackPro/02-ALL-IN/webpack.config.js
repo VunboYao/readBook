@@ -11,6 +11,15 @@ module.exports = {
     // webpack5 export asset fileName
     assetModuleFilename: 'img/[name].[hash:6][ext]',
   },
+  resolve: {
+    extensions: ['.ts', '.js', '...'],
+  },
+  devServer: {
+    port: 7999,
+    open: false,
+    compress: true,
+    hot: true,
+  },
   module: {
     rules: [
       // !css
@@ -72,6 +81,12 @@ module.exports = {
         generator: {
           filename: 'font/[name].[hash:6][ext]',
         },
+      },
+      // !ts配置
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: ['ts-loader'],
       },
     ],
   },

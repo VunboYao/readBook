@@ -1,4 +1,3 @@
-
 import imgSrc from './../assets/a.jpeg'
 
 const img = new Image()

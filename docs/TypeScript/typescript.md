@@ -43,7 +43,7 @@ value = [1, 2, 3]
 2. void 类型
 
 - void 与 any 正好相反，表示没有任何类型，一般用于函数返回值
-- **在 TS 中只有 null 和 undefined 可以赋值给 void 类型**
+- **在 TS 中只有 null(strickNullChecks: false 时) 和 undefined 可以赋值给 void 类型**
 - **null 和 undefined 是所有类型的子类型，所以可以将 null 和 undefined 赋值给任意类型**
 
 ```typescript
@@ -1197,11 +1197,11 @@ O1 = {
   id: 2, // ts 2322
   name: 'name',
 }
-const O3 = {
+const O2 = {
   id: 2,
   name: 'name',
 }
-O1 = O3 // ok 使用变量接收对象字面量
+O1 = O2 // ok 使用变量接收对象字面量
 O1 = {
   id: 2,
   name: 'name',
