@@ -4,6 +4,7 @@ const { DefinePlugin } = require('webpack')
 module.exports = {
   entry: './src/index.js',
   mode: 'development',
+  devtool: 'source-map',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, './dist'),
@@ -87,6 +88,15 @@ module.exports = {
         test: /\.ts$/,
         exclude: /node_modules/,
         use: ['ts-loader'],
+      },
+      {
+        test: /\.js$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [['@babel/preset-env']],
+          },
+        },
       },
     ],
   },
