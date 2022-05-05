@@ -372,6 +372,8 @@ function createRenderer() {
         container.innerHTML = ''
       }
     }
+    // 把 vnode 存储到 container._vnode 下，即后续渲染中的旧 vnode
+    container._vnode = vnode
   }
   function patch(n1, n2, container) {
     // n1:旧 vnode

@@ -393,6 +393,7 @@ function createRenderer(options) {
     // const el = document.createElement(vnode.type)
     // !调用 createElement 函数创建元素
     const el = createElement(vnode.type)
+    // 处理子节点，如果子节点是字符串，代表元素具有文本节点
     if (typeof vnode.children === 'string') {
       // el.textContent = vnode.children
       // ! 调用 setElementText 设置元素的文本节点
@@ -414,14 +415,35 @@ const vnode = {
   children: 'hello vue'
 }
 const renderer = createRenderer({
+  // 用于创建元素
   createElement(tag) {
     return document.createElement(tag)
   },
+  // 用于设置元素的文本节点
   setElementText(el, text) {
     el.textContent = text
   },
+  // 用于在给定的 parent 下添加指定元素
   insert(el, parent, anchor = null) {
     parent.insertBefore(el, anchor)
   }
 })
 renderer.render(vnode, document.querySelector('#app'))
+
+const render2 = createRenderer({
+  createElement(tag) {
+    console.log(`create element ${tag}`);
+    return { tag }
+  },
+  setElementText(el, text) {
+    console.log(`setting ${JSON.stringify(el)} content: ${text}`);
+    el.text = text
+  },
+  insert(el, parent, anchor = null) {
+    console.log(`add ${JSON.stringify(el)} to ${JSON.stringify(parent)} bottom`);
+    parent.children = el
+  }
+})
+
+const container = { type: 'root' }
+render2.render(vnode, container)
