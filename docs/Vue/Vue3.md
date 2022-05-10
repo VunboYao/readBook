@@ -121,7 +121,7 @@ watch 第一个参数类型
   - 指明：`flush: 'post'`
   - 后置刷新的 watchEffect() 有个更方便的别名 watchPostEffect()
 
-- 停止定时器：异步创建的并不会自定停止。
+- 停止定时器：异步创建的并不会自动停止。
 
   - 手动停止。调用 watch 和 watchEffect 返回的函数
 
