@@ -374,6 +374,7 @@ function createRenderer(options) {
         container.innerHTML = ''
       }
     }
+    container._vnode = vnode
   }
   function patch(n1, n2, container) {
     // n1:旧 vnode

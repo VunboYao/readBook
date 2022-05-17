@@ -438,8 +438,10 @@ const renderer = createRenderer({
       // get typeof DOM Properties
       const type = typeof el[key]
       // ! 解决disabled的value为空字符串时（‘’）,也禁用
+      if(key === 'class'){
+        el.className = nextValue || ''
+      } else if (type === 'boolean' && nextValue === '') {
       // if type === boolean, and value === '', then Correction true
-      if (type === 'boolean' && nextValue === '') {
         el[key] = true
       } else {
         el[key] = nextValue

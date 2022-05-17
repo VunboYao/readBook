@@ -372,10 +372,17 @@ function createRenderer(options) {
       patch(container._vnode, vnode, container)
     } else {
       if (container._vnode) {
-        container.innerHTML = ''
+        // call unmount func to remove vnode
+        unmount(container._vnode)
       }
     }
     container._vnode = vnode
+  }
+  function unmount(vnode) {
+    // 根据 vnode 获取要卸载的真实 DOM 元素
+    const parent = vnode.el.parentNode
+    // call removeChild
+    if (parent) parent.removeChild(el)
   }
   function patch(n1, n2, container) {
     // n1:旧 vnode
@@ -390,7 +397,8 @@ function createRenderer(options) {
   }
 
   function mountElement(vnode, container) {
-    const el = createElement(vnode.type)
+    // 让 vnode.el 引用真实 DOM 元素
+    const el = vnode.el = createElement(vnode.type)
 
     // todo:children
     if (typeof vnode.children === 'string') {
@@ -438,8 +446,10 @@ const renderer = createRenderer({
       // get typeof DOM Properties
       const type = typeof el[key]
       // ! 解决disabled的value为空字符串时（‘’）,也禁用
-      // if type === boolean, and value === '', then Correction true
-      if (type === 'boolean' && nextValue === '') {
+      if (key === 'class') {
+        el.className = nextValue || ''
+      } else if (type === 'boolean' && nextValue === '') {
+        // if type === boolean, and value === '', then Correction true
         el[key] = true
       } else {
         el[key] = nextValue
