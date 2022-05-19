@@ -1,4 +1,4 @@
-# 基础
+#  基础
 
 ## 基础数据类型
 
@@ -662,8 +662,9 @@ console.log(add15(10))
 
 ## interface 与 type 的区别
 
-- **重复定义的接口类型，会叠加。别名不可以**
-- 接口类型只能声明对象, 类型别名可以声明元组、联合类型、交叉类型、原始类型，对象等。支持 **extends**
+- **重复定义的接口类型，会自动合并特性。别名不可以**
+- 接口类型只能声明对象, 类型别名可以声明元组、联合类型、交叉类型、原始类型，对象等。支持 **extends**扩展
+- type 支持交叉运算符**（&）**来扩展已定义的接口类型
 - **索引签名**
   - interface：虽然属性可以与索引签名进行混用，但是属性的类型必须是对应的数字索引或字符串索引的类型的**子集**，否则会出现错误提示
 - **两者相互兼容**
@@ -678,6 +679,12 @@ console.log(add15(10))
 
 - 多个类型合并成一个类型，合并后的类型将拥有所有成员类型的特性
 - **原始类型、字面量类型、函数类型等原子类型合并成交叉类型，是没有任何用处的。因为任何类型都不能满足同时属于多种原子类型，比如既是 string 类型又是 number 类型。最终为 never**
+- 交叉运算符的特性
+  - 唯一性：`A & A 等价于 A`
+  - 满足交换律：`A & B 等价于 B & A`
+  - 满足结合律：`（A & B) & C 等价于 A & (B & C)`
+  - 父类型收敛：`如果 B 是 A 的父类型，则 A & B 将被收敛成 A 类型`
+
 
 ## 合并接口类型
 
@@ -1587,7 +1594,7 @@ $.ajax();
 
 ## 分配条件类型
 
-- **泛型中：**在条件类型中，如果入参是联合类型，则会被拆解为一个个独立的原子类型，然后再进行类型运算
+- **泛型中：**在条件类型中，如果入参是**联合类型，则会被拆解为一个个独立的原子类型**，然后再进行类型运算
 
 - **非泛型中**，入参会被当成一个整体对待。
 
@@ -1599,6 +1606,8 @@ $.ajax();
   ```
 
 - 通过某些手段强制类型入参变成一个整体，可以解除类型分配
+
+- **如果分布式条件类型中，T 类型是“裸”类型，即没有被T[], [T], Promise<T\>包装过**，则不会被分解成多个分支进行比较
 
   ```tsx
   type StringOrNumberArray<E> = [E] extends [string | number] ? E[] : E
@@ -1614,6 +1623,22 @@ $.ajax();
 - 在条件类型中定义新的类型。
 - **条件类型中的类型判断**，前置条件，它一定是出现在条件类型中的
 - 如果真实的参数类型和 infer 匹配的一致，就返回匹配到的这个类型
+- **仅条件类型的“extends"子语句中才允许“infer“声明**
+- infer声明的变量，只能在条件类型的**true分支中可用**
+
+```javascript
+type Unpacked<T> =
+  T extends (infer U)[] ? U :
+  T extends (...args: any[]) => infer U ? U :
+  T extends Promise<infer U> ? U : T
+
+type T0 = Unpacked<string> // string
+type T1 = Unpacked<string[]> // string
+type T2 = Unpacked<() => string> // string
+type T3 = Unpacked<Promise<string>> // string
+type T4 = Unpacked<Promise<string>[]> // Promise<string>
+type T5 = Unpacked<Unpacked<Promise<string>[]>> // string . 命中第一个数组 => Promise<string> 命中第三个
+```
 
 ```tsx
 type isArray = ElementTypeOfObj<{ name: 'name'; id: 1; age: 30 }> // [name, 1]
