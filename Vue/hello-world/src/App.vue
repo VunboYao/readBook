@@ -39,6 +39,9 @@ export default {
     componentA: componentA,
     jsxDemo
   },
+  created() {
+    this.faceTest()
+  },
   methods: {
     handleRouter() {
       console.log('this.$route :>> ', this.$route);
@@ -61,6 +64,30 @@ export default {
     show() {
       this.$showLoading();
     },
+    faceTest() {
+      console.log(1)
+      // eslint-disable-next-line no-unused-vars
+      let promise = new Promise((resolve, reject) => {
+        console.log(2)
+        this.$nextTick(() => {
+          console.log(3)
+          setTimeout(() => {
+            console.log(4)
+          },0)
+          console.log(5)
+          resolve()
+        })
+        setTimeout(() => {
+          console.log(6)
+        },1000)
+        console.log(7)
+      })
+      console.log(8)
+      promise.then(() => {
+        console.log(9)
+      })
+      console.log(10)
+    }
   },
 };
 </script>
