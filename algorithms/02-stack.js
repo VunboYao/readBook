@@ -39,3 +39,20 @@ console.log(stack.isEmpty());
 console.log(stack.pop());
 console.log(stack.size());
 console.log(stack.toString());
+
+
+// 十进制转二进制
+function dec2Bin(decNumber) {
+  let stack = new Stack()
+  while (decNumber > 0) {
+    stack.push(decNumber % 2)
+    decNumber = Math.floor(decNumber / 2)
+  }
+
+  let binaryString = ''
+  while (!stack.isEmpty()) {
+    binaryString += stack.pop()
+  }
+  return binaryString
+}
+console.log(dec2Bin(10))
