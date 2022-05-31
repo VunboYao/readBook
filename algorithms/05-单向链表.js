@@ -37,7 +37,7 @@ class LinkedList {
     const node = new Node(element)
     // 3判断插入的位置是否是第一个
     if (position === 0) {
-      newNode.next = this.head // 新的指向原来的第一个
+      node.next = this.head // 新的指向原来的第一个
       this.head = node // head指向新的
     } else {
       let index = 0
@@ -144,6 +144,7 @@ linkDemo.append('Ben')
 linkDemo.append('Anna')
 linkDemo.append('Emma')
 linkDemo.insert(2, 'Lisa')
+linkDemo.insert(0, 'Yao')
 let str = linkDemo.toString()
 console.log(`length: ${linkDemo.size()}`);
 console.log(`toString: ${str}`);
