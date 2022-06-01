@@ -8,6 +8,7 @@ specifiers:
   '@vunbo/config-ts': ^1.0.4
   '@vunbo/eslint-config': ^1.0.3
   babel-loader: ^8.2.4
+  copy-webpack-plugin: ^11.0.0
   css-loader: ^6.7.1
   eslint: ^8.12.0
   file-loader: ^6.2.0
@@ -37,6 +38,7 @@ devDependencies:
   '@vunbo/config-ts': 1.0.4
   '@vunbo/eslint-config': 1.0.3_jzhokl4shvj5szf5bgr66kln2a
   babel-loader: 8.2.4_vs5hf2sl7hjtttp43d2vzw3qay
+  copy-webpack-plugin: 11.0.0_webpack@5.72.0
   css-loader: 6.7.1_webpack@5.72.0
   eslint: 8.13.0
   file-loader: 6.2.0_webpack@5.72.0
@@ -2559,6 +2561,21 @@ packages:
       is-what: 3.14.1
     dev: true
 
+  /copy-webpack-plugin/11.0.0_webpack@5.72.0:
+    resolution: {integrity: sha512-fX2MWpamkW0hZxMEg0+mYnA40LTosOSa5TqZ9GYIBzyJa9C3QUaMPSE2xAi/buNr8u89SfD9wHSQVBzrRa/SOQ==}
+    engines: {node: '>= 14.15.0'}
+    peerDependencies:
+      webpack: ^5.1.0
+    dependencies:
+      fast-glob: 3.2.11
+      glob-parent: 6.0.2
+      globby: 13.1.1
+      normalize-path: 3.0.0
+      schema-utils: 4.0.0
+      serialize-javascript: 6.0.0
+      webpack: 5.72.0_webpack-cli@4.9.2
+    dev: true
+
   /core-js-compat/3.22.0:
     resolution: {integrity: sha512-WwA7xbfRGrk8BGaaHlakauVXrlYmAIkk8PNGb1FDQS+Rbrewc3pgFfwJFRw6psmJVAll7Px9UHRYE16oRQnwAQ==}
     dependencies:
@@ -3648,6 +3665,17 @@ packages:
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       array-union: 3.0.1
+      dir-glob: 3.0.1
+      fast-glob: 3.2.11
+      ignore: 5.2.0
+      merge2: 1.4.1
+      slash: 4.0.0
+    dev: true
+
+  /globby/13.1.1:
+    resolution: {integrity: sha512-XMzoDZbGZ37tufiv7g0N4F/zp3zkwdFtVbV3EHsVl1KQr4RPLfNoT068/97RPshz2J5xYNEjLKKBKaGHifBd3Q==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
       dir-glob: 3.0.1
       fast-glob: 3.2.11
       ignore: 5.2.0
