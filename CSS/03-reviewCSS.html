@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    li {
+      line-height: 1.8;
+    }
+
+    .text-transform {
+      text-transform: capitalize;
+    }
+  </style>
+</head>
+
+<body>
+  <ol>
+    <li class="text-transform">text-transform: 转换单词的大小写</li>
+    <li>text-align: 设置行内元素 => 生效
+      <ul>
+        <li>justify: 两端对齐,多行才有效。但是最后一行不生效</li>
+        <li>text-align-last: 可以设置最后一行两端对齐</li>
+      </ul>
+    </li>
+    <li>link 和 @import 的区别： 后者会阻塞</li>
+    <li>word-spacing: 单词间距</li>
+    <li>百分比: 每个元素 refer(参考) 的不同,MDN看</li>
+    <li>font-family: 加引号的区分：多个单词， unicode编码的</li>
+    <li>font-style: italic 文字斜体(用字体设计时的专有斜体)。 oblique:倾斜（不管有没有专门的，都倾斜）</li>
+    <li>font-variant: 大小字母以小写的高度展示</li>
+    <li>line-height: 两行文字基线(baseline)之间的间距
+      <ul>
+        <li>top</li>
+        <li>middle</li>
+        <li>baseline</li>
+        <li>bottom</li>
+        <li>上一行的bottom到下一行顶线top的距离,就是行距</li>
+        <li>纯数字时是font-size的倍数</li>
+      </ul>
+    </li>
+    <li>font: 【font-weight || font-variant || font-style】 font-size/line-height font-family
+      <ul>
+        <li>前三个顺序无所谓，可以省略</li>
+        <li>line-height 可以省略。 写则必须在font-size后边</li>
+        <li>font-size、 font-family 不可以调换顺序，不可以省略</li>
+      </ul>
+    </li>
+    <li>[att]:拥有某一个属性</li>
+    <li>[att=val]: 属性等于某个值</li>
+    <li>目标伪类：:target, http://xxxx/xxx/xx#demo, id为demo时</li>
+    <li>否定伪类：:not(xxx)</li>
+    <li>伪类顺序： link,visited,focus,hover,active => love fuck hate</li>
+    <li>伪元素：::first-line ::first-letter</li>
+    <li>伪元素：::after ::before, content: '', 不能省略,默认生成的是行内元素</li>
+  </ol>
+</body>
+
+</html>
