@@ -8,4 +8,5 @@ type Moo<T, K extends keyof T> = {
   [P in K]: T[P]
 }
 
-type xx = Moo<person, 'age'|'gender'>
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type xx = Moo<person, 'age' | 'gender'>
