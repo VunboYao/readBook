@@ -1,6 +1,4 @@
-#  GitFlow
-
-![1610533941465](C:\Users\VunboYao\AppData\Roaming\Typora\typora-user-images\1610533941465.png)
+# GitFlow
 
 - master: 保存上线版本
 - develop: 开发分支
@@ -12,7 +10,7 @@
 
 # 优点
 
-​		**利用gitFlow工作流程，功能点通过不同分支处理开发，方便问题定位，版本回退，缺陷修复。减少各类人为操作移动生产代码，避免代码遗漏，缺失导致的生产问题。**
+​  **利用gitFlow工作流程，功能点通过不同分支处理开发，方便问题定位，版本回退，缺陷修复。减少各类人为操作移动生产代码，避免代码遗漏，缺失导致的生产问题。**
 
 主要包含的命令操作：
 
@@ -47,8 +45,6 @@
     git branch newFeature/A // 创建新分支
     ```
 
-    
-
   - 开发完成: 合并 **当前分支newFeature/A** 代码至 **功能分支develop**，
 
     ```c
@@ -74,4 +70,3 @@
 
     3. 重复（1，2）直到通过为止
     4. **合并release/FeatureA至develop与master分支**。此处与直接测试通过不同，需要将测试分支中通过后的版本合并回develop总开发分支与生产分支。同时删除功能分支newFeature/A
-

@@ -57,7 +57,7 @@ ReactDOM.render(VDOM, document.getElementById('APP'), [回调函数])
    - Function test (){}
 2. 语句（代码）
 
-   - if（）{}	
+   - if（）{}
 
    - for（）{}
 
@@ -136,8 +136,6 @@ state 是组件对象最重要的属性，值是对象（可包含多个 key-val
     }
     // 1
     ```
-
-    
 
 - 更改方式：
 
@@ -257,8 +255,8 @@ class Person extends React.Component {
     render(){
         return (
             <>
-            	<input ref="inputNode" placeholder="Please input your value" />
-            	<button onClick={this.showData}>Confirm</button>
+             <input ref="inputNode" placeholder="Please input your value" />
+             <button onClick={this.showData}>Confirm</button>
             </>
         )
     }
@@ -367,12 +365,12 @@ class Person extends React.Component {
 
 ```react
 const FnRef = React.forwardRef(function (props, fnRef) {
-		return (
-				<>
-					<h4>函数式获取到的props:{props.name}</h4>
-					<h4 ref={fnRef}>我是函数式的ref</h4>
-				</>
-		)
+  return (
+    <>
+     <h4>函数式获取到的props:{props.name}</h4>
+     <h4 ref={fnRef}>我是函数式的ref</h4>
+    </>
+  )
 })
 
 // 可通过this.fnRef直接获取到对用dom内容
@@ -517,9 +515,9 @@ const FnRef = React.forwardRef(function (props, fnRef) {
   ```react
   // 封装父组件生成：内置consumer，并想子组件传递props
   const GenFather = function (Son) {
-  	return class father extends PureComponent{
-  		render() {
-  			return (
+   return class father extends PureComponent{
+    render() {
+     return (
                   <Consumer>
                       {
                           value => {
@@ -527,13 +525,11 @@ const FnRef = React.forwardRef(function (props, fnRef) {
                           }
                       }
                   </Consumer>
-  			)
-  		}
-  	}
+     )
+    }
+   }
   }
   ```
-
-  
 
 ## 路由
 
@@ -601,7 +597,7 @@ export default class MyNavLink extends PureComponent {
 
 ### **多级路径刷新页面样式丢失**
 
-- public/index.html 中 引入样式时不写 `./` 写` /` （常用）
+- public/index.html 中 引入样式时不写 `./` 写`/` （常用）
 - public/index.html 中 引入样式时不写 `./` 写 `%PUBLIC_URL%` （常用）
 - 使用 HashRouter
 
@@ -754,7 +750,7 @@ export default withRouter(Header)
 
 **action.js：**
 
-- 作用：**通知reducer “让改变发生“ **
+- 作用：**通知reducer “让改变发生“**
 
 - 明确：延迟的动作不想交给组件自身，想交给 action
 - 何时需要异步 action：想要对状态进行操作，但是具体的数据靠异步任务返回。
@@ -1093,7 +1089,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
    const XxxContext = React.createContext(defaultValue)
    ```
 
-   1. **只有**当组件所处的树中没有匹配到 Provider 时，其 defaultValue 参数才会生效 
+   1. **只有**当组件所处的树中没有匹配到 Provider 时，其 defaultValue 参数才会生效
    2. 将 `undefined`传递给 `Provider` 的 value 时，消费组件的 **`defaultValue`** 不会生效
 
 2. 渲染子组时，外面包裹 xxxContext.Provider, 通过 value 属性给后代组件传递数据
@@ -1123,9 +1119,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
    <xxxContext.Consumer>
        {
            value => ( // value就是context中的value数据
-           	要显示的内容
+            要显示的内容
            )
-   	}
+    }
    </xxxContext.Consumer>
    ```
 
@@ -1285,7 +1281,7 @@ componentDidCatch(error, info) {
 
 ### **生命周期新 API**
 
-- **`getDerivedStateFromProps` **不是 `componentWillMount`的替代品
+- **`getDerivedStateFromProps`**不是 `componentWillMount`的替代品
 - 初衷不是试图替换掉 `componentWillMount`, 而是试图替换掉 `componentWillReceiveProps`, 唯一目的**使用 props 来派生/更新 state**
 - **getDerivedStateFromProps 是一个静态方法**。静态方法不依赖组件实例而存在，因此在这个方法内部是**访问不到 this**的。
 - 接收两个参数：props 和 state, 分别代表当前组件接收到的来自父组件的 props 和当前组件自身的 state；返回一个对象 或 `null`

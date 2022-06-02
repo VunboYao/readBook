@@ -6,7 +6,7 @@
 - num use 版本号 选择指定版本的Node.js
 - nvm list available 查看可下载版本
 
-#  Yarn
+# Yarn
 
 - npm install -g yarn 全局安装
 - yarn --version 查看版本
@@ -41,7 +41,7 @@
 - 可以省略后缀
 - 先.js, .json, .node 文件
 - 导入自定义模块时,必须添加路径
-      
+
 # NPM 包管理
 
 ## 全局管理
@@ -56,22 +56,22 @@
 - npm config list 查看配置
 - npm init -y 初始化 package.json
 - npm install xxx (生产环境包依赖)等同于 npm install xxx --save  
-- npm install xxx --save-dev (安装开发环境包依赖) 
+- npm install xxx --save-dev (安装开发环境包依赖)
 - npm install === npm install --development 安装开发依赖
 - npm install --production 安装生产依赖
 - npm update 更新包
 - npm uninstall xxx 卸载包
 - `npm list -g --depth 0` 查看全局安装的包
 - 版本差异:
-    - `x.y.z`
-        - 第一个数字是主版本
-        - 第二个数字是次版本
-        - 第三个数字是补丁版本
-        - `^`，表示更新**补丁版本**、**次版本**
-        - `~`，表示更新**补丁版本**
-    - '5.0.3', 表示指定安装的 5.0.3 版本
-    - '~5.0.3', 表示安装 5.0.X 中最新的版本
-    - '^5.0.3', 表示安装 5.X.X 中最新的版本
+  - `x.y.z`
+    - 第一个数字是主版本
+    - 第二个数字是次版本
+    - 第三个数字是补丁版本
+    - `^`，表示更新**补丁版本**、**次版本**
+    - `~`，表示更新**补丁版本**
+  - '5.0.3', 表示指定安装的 5.0.3 版本
+  - '~5.0.3', 表示安装 5.0.X 中最新的版本
+  - '^5.0.3', 表示安装 5.X.X 中最新的版本
 
 # fs
 
@@ -266,8 +266,6 @@ let a = new CreateProject(__dirname, 'taobao')
 a.initProject()
 ```
 
-
-
 ## 读写流实现拷贝
 
 - readStream.pipe(writeStream), 读取流管道方法实现拷贝
@@ -321,8 +319,6 @@ let readStream = fs.createReadStream(readUrl)
 let writeStream = fs.createWriteStream(writeUrl)
 readStream.pipe(writeStream)
 ```
-
-
 
 # 核心原理
 
@@ -403,7 +399,7 @@ console.log(aModule);
 
 - NodeJS 中 this 为什么是空对象？
 - **答：call(module.exports)传入的 exports 默认为空**
-- NodeJS中为什么可以直接用exports, require, module, __filename, __dirname
+- NodeJS中为什么可以直接用exports, require, module, __filename,__dirname
 - **答：因为以上都是直接传入包装函数的参数**
 - NodeJS中为什么不能直接给exports赋值， 而可以给module.exports赋值
 - **答：exports 指向 module.exports 的对象，如果直接赋值，将中断对象的连接关系，从而不再相等。**
@@ -471,8 +467,6 @@ fs.readFile(path.join(__dirname, '07-core.js'), () => {
 // 先 setImmediate 后 setTimeout.因为 readFile在 poll 事件环中， 再执行 check， 最后 timers
  ```
 
-
-
 # npm 包发布
 
 - npm addUser
@@ -496,7 +490,7 @@ fs.readFile(path.join(__dirname, '07-core.js'), () => {
   >
   > `bin:{`
   >
-  > ​	'demo': 'index.js'
+  > ​ 'demo': 'index.js'
   >
   > `}`
 
@@ -710,4 +704,3 @@ Http.createServer((req, res) => {
   })
 }).listen(Port)
 ```
-
