@@ -36,7 +36,6 @@
 
 - <font color="#FFC600">警示: #FFC600</font>
 
-
 # 微信
 
 ## 字体颜色
@@ -49,15 +48,15 @@
 
 - <font color="#576b95">链接用色: #576b95, rgb(87,107,149)</font>
 
-    - Press: 20%
-    - Disable: 10%
+  - Press: 20%
+  - Disable: 10%
 - <font color="#09bb07">完成用色: #09bb07, rgb(9,187,7)</font>
 
-    - Press: 20%
-    - Disable: 10%
+  - Press: 20%
+  - Disable: 10%
 - <font color="#e64343">出错用色: #e64343, rgb(230,67,64)</font>
 - Press: 20%
-    - Disable: 10%
+  - Disable: 10%
 
 ![](C:\Users\Yao\Desktop\8Font.color.03f7bed7.png)
 
@@ -66,11 +65,11 @@
 ## 按钮文字颜色
 
 - <font color="rgba(255,255,255,1)">白色: rgba(255,255,255,1), #fff</font>
-    - rgba(255,255,255,.6)
-    - rgba(255,255,255,.3)
+  - rgba(255,255,255,.6)
+  - rgba(255,255,255,.3)
 
 - <font color="rgba(0,0,0,1)">黑色: rgba(0,0,0,1), #000</font>
-     - rgba(0,0,0,.6)
+  - rgba(0,0,0,.6)
   - rgba(0,0,0,.3)
 
 ## 字体大小

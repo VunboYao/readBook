@@ -95,4 +95,3 @@ Function.prototype.bind = function(context, ...args) {
 | 方法功能  | 函数调用改变this | 函数调用改变this | 函数调用改变this |
 | 返回结果  |     直接执行     |     直接执行     |  返回待执行函数  |
 | 底层实现  |    通过`eval`    |    通过`eval`    | 间接调用`apply`  |
-

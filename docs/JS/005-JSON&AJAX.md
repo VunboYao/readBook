@@ -208,6 +208,7 @@ xhr.onreadystatechange = function() {
 
 - xhr.abort().接收到响应之前，可以通过调用该方法来取消异步请求。
 - IE 兼容老版本，5，6
+
   ```
   // 1.创建对象
   let xhr;
@@ -217,7 +218,9 @@ xhr.onreadystatechange = function() {
       xhr = new ActiveXObject('Microsoft.XMLHTTP');
   }
   ```
+
 - 在 IE 浏览器中，缓存问题，当修改内容后，仍然是第一次的内容。所以需要保证每次请求的内容都不一样。
+
   ```
   xhr.open("GET","01.txt?t="+(new Date().getTime()),true);
   // 或者 Math.random()
@@ -658,6 +661,7 @@ message 事件返回的 event.data 值为 "bar" ，第三个 message 事件返�
   > 因为 Web Sockets 只能通过连接发送纯文本数据，所以对于复杂的数据结构，在通过连接发送之前，必须进行序列化
 
 - 当服务器向客户端发来消息时，WebSocket 对象就会触发 message 事件。返回的数据保存在 event.data 中
+
   ```
   socket.onmessage = function (ev) {
       console.log(ev.data);
@@ -729,12 +733,15 @@ Web Sockets 是一种与服务器进行全双工、双向通信的信道。与�
 在任何值上调用 Object 原生的 toString() 方法，都会返回一个 **[object NativeConstructorName]** 格式的字符串。每个类在内部都有一个[[Class]]属性，这个属性中就指定了上述字符串中的构造函数名。
 
 - 由于原生数组的构造函数名与全局作用域无关，因此使用 toString() 就能保证返回一致的值。
+
   ```
   function isArray(value) {
       return Object.prototype.toString.call(value) === '[object Array]'
   }
   ```
+
 - 同样，也可以基于这一思路来测试某个值是不是原生函数或正则表达式：
+
   ```
   function isFunction(value) {
       return Object.prototype.toString.call(value) === '[object Function]'
@@ -920,9 +927,9 @@ cookie 由浏览器保存的以下几块信息构成
 - 名称： 一个唯一确定 cookie 的名称。cookie 名称是不区分大小写的，所以 myCookie 和 MyCookie 被认为是同一个 cookie. 然而，实践中最好将 cookie 名称看作是区分大小写的，因为某些服务器会这样处理 cookie。cookie 的名称必须是经过 URL 编码的
 - 值：储存在 cookie 中的字符串值。值必须被 URL 编码。
 - 域：cookie 对于哪个域是有效的。所有向该域发送的请求中都会包含这个 cookie 信息。这个值可以包含子域（subdomain，如 www.wrox.com ），也可以不包含它（如. wrox.com ，则对于 wrox.com 的所有子域都有效）。如果没有明确设定，那么这个域会被认作来自设置 cookie 的那个域
-- 路径：对于指定域中的那个路径，应该向服务器发送 cookie。例如，你可以指定 cookie 只有从 http://www.wrox.com/books/ 中才能访问，那么 http://www.wrox.com 的页面就不会发送 cookie 信息，即使请求都是来自同一个域的。
+- 路径：对于指定域中的那个路径，应该向服务器发送 cookie。例如，你可以指定 cookie 只有从 <http://www.wrox.com/books/> 中才能访问，那么 <http://www.wrox.com> 的页面就不会发送 cookie 信息，即使请求都是来自同一个域的。
 - 失效时间：表示 cookie 何时应该被删除的时间戳（也就是，何时应该停止向服务器发送这个 cookie）。默认情况下，浏览器会话结束时即将所有 cookie 删除；不过也可以自己设置删除时间。这个值是个 GMT 格式的日期（Wdy, DD-Mon-YYYY HH:MM:SS GMT），用于指定应该删除 cookie 的准确时间。因此，cookie 可在浏览器关闭后依然保存在用户的机器上。如果你设置的失效日期是个以前的时间，则 cookie 会被立刻删除
-- 安全标志：指定后，cookie 只有在使用 SSL 连接的时候才发送到服务器。例如，cookie 信息只能发送给 https://www.wrox.com ，而 http://www.wrox.com 的请求则不能发送 cookie。
+- 安全标志：指定后，cookie 只有在使用 SSL 连接的时候才发送到服务器。例如，cookie 信息只能发送给 <https://www.wrox.com> ，而 <http://www.wrox.com> 的请求则不能发送 cookie。
 
 ```
 HTTP/1.1 200 OK
@@ -949,11 +956,14 @@ Other-header: other-header-value
 - document.cookie 返回当前页面可用的（根据 cookie 的域、路径、失效时间和安全设置）所有 cookie 的字符串，一系列由分号隔开的名值对儿
 - **所有名字和值都是经过 URL 编码的，所以必须使用 decodeURIComponent() 来解码。**
 - 设置 document.cookie 并不会覆盖 cookie，除非设置的 cookie 的名称已经存在.和 Set-Cookie 头中使用的格式一样。
+
   ```javascript
   document.cookie = encodeURIComponent('name') + '=' + encodeURIComponent('Nicholas姚')
   console.log(decodeURIComponent(document.cookie))
   ```
+
 - 要给被创建的 cookie 指定额外的信息，只要将参数追加到该字符串，和 Set-Cookie 头中的格式一样
+
   ```javascript
   document.cookie = encodeURIComponent('name') + '=' + encodeURIComponent('Nicholas') + '; domain=.wrox.com; path=/'
   ```
