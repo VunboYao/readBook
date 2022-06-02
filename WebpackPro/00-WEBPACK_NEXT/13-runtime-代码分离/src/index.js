@@ -25,10 +25,10 @@ const button = document.createElement('button')
 button.innerHTML = 'LoadEle'
 button.addEventListener('click', () => {
   // 1.懒加载
-/*  import(/!* webpackChunkName: 'lazy' *!/'./lazy').then((res) => {
-    document.body.appendChild(res.default)
-  }) */
-  // 2.TODO:预获取。浏览器限制时下载
+  /*  import(/!* webpackChunkName: 'lazy' *!/'./lazy').then((res) => {
+      document.body.appendChild(res.default)
+    }) */
+  // 2.TODO:预获取。浏览器闲置时下载
   /* import(
     /!* webpackChunkName: 'prefetch' *!/
     /!* webpackPrefetch: true *!/

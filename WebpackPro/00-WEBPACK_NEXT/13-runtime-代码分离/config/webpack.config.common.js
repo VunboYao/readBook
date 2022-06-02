@@ -42,7 +42,7 @@ const config = {
       // 缓存组
       cacheGroups: {
         vendors: {
-          test: /[\\/]node_modules[\\/]/,
+          test: /[\\/]node_modules[\\/]/, // 此处应该是个路径
           // name: 'vendor-chunks.js', // 固定的名字
           filename: '[id]_vendors.js',
           priority: -20, // 优先级
