@@ -14,10 +14,10 @@
 
   ```js
     function getElementLeft(element) {
-    	let actualLeft = element.offsetLeft
+     let actualLeft = element.offsetLeft
       let current = element.offsetParent
       while (current !== null) {
-    		actualLeft += current.offsetLeft
+      actualLeft += current.offsetLeft
         current = current.offsetParent
       }
       return actualLeft
@@ -54,14 +54,14 @@
 - 每个节点都有一个`parentNode`属性，指向其父元素。`childNodes`中所有节点都有同一个父元素
 - `childNodes`中每个节点都是同一列表中其他节点的同胞节点。`previousSibling`和`nextSibling`
 
--  `firstChild` 和 `lastChild` 分别指向`childNodes` 中的第一个和最后一个子节点
+- `firstChild` 和 `lastChild` 分别指向`childNodes` 中的第一个和最后一个子节点
 - **`hasChildNodes（）`**，如果方法返回true, 说明有一个或多个子节点。
 
 - **`ownerDocument`** 每个节点都有该属性。指向代表整个文档的文档节点的指针。
 
 ## 操纵节点
 
--  **`appendChild()`** 方法用于在 `childNodes `列表末尾添加节点，并**返回新添加的节点**
+- **`appendChild()`** 方法用于在 `childNodes`列表末尾添加节点，并**返回新添加的节点**
 
 - **`insertBefore()`** 方法接收两个参数：要插入的节点和参照节点，**要插入的节点会变成参照节点的**
   **前一个同胞节点，并被返回**
@@ -115,7 +115,7 @@
 
 - `document.anchors`包含文档中所有带 name 属性的 `<a>` 元素
 - `document.forms` 包含文档中所有 `<form>` 元素（与 `document.getElementsByTagName ("form")`返回的结果相同）
-- `document.images` 包含文档中所有 `<img>` 元素（与` document.getElementsByTagName ("img")`返回的结果相同）
+- `document.images` 包含文档中所有 `<img>` 元素（与`document.getElementsByTagName ("img")`返回的结果相同）
 
 - `document.links` 包含文档中所有带 `href` 属性的 `<a>` 元素。
 
@@ -128,7 +128,7 @@
 
 ### 获取元素的属性
 
-- ` getAttribute()`， 属性名与它们实际的属性名是一样的，因此**针对类名传`class`**。**也能取得不是 HTML 语言正式属性的自定义属性的值**
+- `getAttribute()`， 属性名与它们实际的属性名是一样的，因此**针对类名传`class`**。**也能取得不是 HTML 语言正式属性的自定义属性的值**
 - `setAttribute()`， 接收两个参数：要设置的属性名和属性的值
 
 - `removeAttribute()`
@@ -154,8 +154,8 @@
 
 - `querySelector()`，接收 CSS 选择符参数，返回匹配该模式的第一个后代元素，如果没有匹配
   项则返回 `null`
-- ` querySelectorAll()`.接收一个用于查询的参数，但它会返回所有匹配的节点，而不止一个**.这个方法返回的是一个 `NodeList` 的静态实例。非“实时”的查询**
-- `matches`，使用这个方法可以方便地检测某个元素会不会被 `querySelector()` 或 `querySelectorAll() `方法返回。匹配则返回true, 否则返回 false
+- `querySelectorAll()`.接收一个用于查询的参数，但它会返回所有匹配的节点，而不止一个**.这个方法返回的是一个 `NodeList` 的静态实例。非“实时”的查询**
+- `matches`，使用这个方法可以方便地检测某个元素会不会被 `querySelector()` 或 `querySelectorAll()`方法返回。匹配则返回true, 否则返回 false
 
 ## 元素遍历
 
@@ -233,7 +233,7 @@ Element Traversal API 为 DOM 元素添加了 5 个属性**IE9及以上，现代
 
 ## 计算样式
 
-- `document.defaultView`, 该属性返回当前 `document `对象所关联的 `window` 对象，如果没有，会返回 `null`。只读
+- `document.defaultView`, 该属性返回当前 `document`对象所关联的 `window` 对象，如果没有，会返回 `null`。只读
 - **`getComputedStyle()`**方法返回一个 `CSSStyleDeclaration`对象，包含元素的计算样式。**只读**。包含自身style属性的样式与`<style></style>`表中样式，以及`<link>`引入的样式
 
 ## 操作样式表

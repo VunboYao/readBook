@@ -1,11 +1,17 @@
 # HTML
+
 ## H5新标签使用
+
 - section 标签会改变 h1-h6的语义。section 的嵌套会使得其中的 h1-h6 下降一级
 - header, 如其名，通常出现在前部，表示导航或者介绍性的内容。
 - footer, 通常出现在尾部，包含一些作者信息、相关链接、版权信息等
+
 > header 和 footer 一般都是放在 article 或者 body 的直接子元素，但是标准中并没有明确规定， footer 也可以和 aside, nav,section 相关联。
+
 - aside 表示跟文章主体不那么相关的部分，可能包含导航、广告等工具性质的内容。
+
 > aside 很容易被理解为侧边栏，实际上二者是包含关系，侧边栏是 aside，aside 不一定是侧边栏
+
 - aside 和 header 中都可能出现导航（nav 标签），二者的区别是，header 中的导航多数是到文章自己的目录，而 aside 中的导航多数是到关联页面或者整站地图。
 - address，定义文档或文章的作者联系信息。一般在 footer 元素中。一般只关联到 article 和 body
 - dl 标签定义了定义列表（definition list).结合 dt（定义列表中的项目）和 dd（描述列表中的项目）
@@ -69,17 +75,20 @@
 ```
 
 ## 图片底部缝隙
+
 - **产生原因：图片或者表单等行内块元素，他的底线会和父级盒子的基线对齐(即默认vertical-align: baseline)。这样会造成一个问题，就是图片底侧会有一个空白缝隙**
 - 父级fontSize: 0;
 - 图片行内元素转换为块级元素：display: block
 - img 设置底线对齐方式。vertical-align: top | bottom | middle
 
 ## border-radius
+
 - 当边框圆角的值 > 边框宽度的时候，外边框和内边框都会变成圆角
 - 当边框圆角 <= 外边框宽度的时候，外边框是圆角，内边框是直角
 - 圆角接受两个参数：水平 垂直（省略则都为同一个值）。椭圆各为宽高一半
 
 ## object-fit
+
 属性|介绍
 ---|---
 fill|被替换的内容正好填充元素的内容框。整个对象将完全填充此框。如果对象的宽高比与内容框不相匹配，那么该对象将被拉伸以适应内容框
@@ -89,12 +98,15 @@ none|被替换的内容将保持其原有的尺寸。
 scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它们两个之间谁得到的对象尺寸会更小一些。
 
 ## 背景图片核心内容居中
+
 - background-position: center 0;
 
 ## 浮动元素字围现象
+
 - 浮动元素不会盖住未浮动元素中的文字。
 
 ## CSS查漏补缺
+
 1. resize: none|both|horizontal|vertical
     - 制定一个div元素，允许用户调整大小。
     - none：用户无法调整元素的尺寸
@@ -209,6 +221,7 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
                     height: 60px;
                 }
     ```
+
 7. padding, margin 扩展注意点
     - CSS padding, margin 属性的百分比数值是相对于其父元素的 width 计算的，如果改变了父元素的 width，则它们也会改变
     - 在 grid 布局中, 每个子项(padding-bottom)所相对的计算的宽度已经划分好了, 为当前子项, 并不是父元素的宽度.
@@ -285,14 +298,17 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
 14. 多个相同类型,实现单个选中态选中时, **radio 隐藏**, 实现选中效果. 无需 JavaScript. 语义好, 包括对辅助设备. 开发便捷. **类似标签,爱好,等采用 checkbox**
 
 ## 定位注意点
+
 - 如果一个绝对定位的元素是以body作为参考点，那么其实是以网页首屏的宽度和高度作为参考点，而不是以整个网页的宽度和高度作为参考点。
 - 绝对定位的元素会忽略祖先元素的padding
 - 只有定位元素才可以设置 z-index
 
 ## 1px 边框移动端实现方式
+
 - 渐变实现, 默认从上到下, linear-gradient(transparent 50%, red 50%);  1px 红线
 - 缩放 + 边框, scaleY(.5) + 1px solid red;
 - 四周边框同时设置
+
     ```
     width: 200%;
     height: 200%;
@@ -304,6 +320,7 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
 # JavaScript
 
 ## 关系运算符
+
 - undefined 派生于 null, null == undefined // true
 - null == 0 // false
 - undefined == 0 // false undefined 转数字为 NaN
@@ -312,23 +329,26 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
 - 一元算数符, + , - 会将操作数转换成数字/NaN
 
 ## 条件语句
+
 - switch/case 判断的是 ===
 - for 循环输出嵌套
-    - 如果尖朝下,修改内循环的初始化表达式为外循环初始化表达式的变量
-    - 如果尖朝上,内改内循环的条件表达式为外循环初始化表达式的变量
+  - 如果尖朝下,修改内循环的初始化表达式为外循环初始化表达式的变量
+  - 如果尖朝上,内改内循环的条件表达式为外循环初始化表达式的变量
 
 ## 数组
+
 - push/unshift方法返回值是数组新的长度
 - pop/shift 方法返回值是删除的数据
 - fill(),用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。不包括终止索引。
 - 遍历方法:
-    - for
-    - for/of
-    - forEach
+  - for
+  - for/of
+  - forEach
 - findIndex(), 传入一个函数,包含是三个参数(current, index, arr). 返回找到的值的索引. 没有则 -1
 - find(), 同 findIndex() 参数, 返回找到的元素. 没有则返回 undefined
 - delete 删除数组, 数组的 length 属性不会发生变化
 - 模拟 map 的实现
+
     ```
     Array.prototype.myMap = function (fn) {
         let _temp = []
@@ -344,7 +364,9 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
     })
     console.log(b);
     ```
+
 - 模拟 filter 的实现
+
     ```
     Array.prototype.myFilter = function (fn) {
         let _temp = []
@@ -362,7 +384,9 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
     })
     console.log(b);
     ```
+
 - 模拟 forEach 的实现
+
     ```
     Array.prototype.myforEach = function (fn) {
         for(let i = 0; i < this.length; i++) {
@@ -375,7 +399,9 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
         console.log(item,index,arr);
     })
     ```
+
 - 模拟 findIndex 的实现
+
     ```
     Array.prototype.myFindIndex = function (fn) {
         let _temp;
@@ -400,7 +426,9 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
     })
     console.log(b)
     ```
+
 - 模拟 find 的实现
+
     ```
     Array.prototype.myFind = function (fn) {
         let _temp;
@@ -423,7 +451,9 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
     })
     console.log(b)
     ```
+
 - 模拟 some 的实现
+
     ```
      Array.prototype.some = function (fn) {
          let _temp
@@ -441,7 +471,9 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
      })
      console.log(b)
     ```
+
 - 模拟 every 的实现
+
     ```
     Array.prototype.some = function (fn) {
         let _temp = []
@@ -467,17 +499,18 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
 - 继承时: 指定 constructor
 - 在给一个对象不存在的属性设置值的时候,不会去原型中查找,如果当前对象没有就会给当前对象新增一个不存在的属性.
 - 属性和方法的分类:
-    - 通过实例对象访问的属性,实例属性
-    - 通过实例调用的方法,实例方法
-    - 通过构造函数访问的属性,静态属性
-    - 通过构造函数调用的方法,静态方法
+  - 通过实例对象访问的属性,实例属性
+  - 通过实例调用的方法,实例方法
+  - 通过构造函数访问的属性,静态属性
+  - 通过构造函数调用的方法,静态方法
 - 继承: A is a B
 - 继承终极方案:
-    - 在子类的构造函数中通过 call 借助父类的构造函数
-    - 将子类的原型对象修改为父类的实例对象
+  - 在子类的构造函数中通过 call 借助父类的构造函数
+  - 将子类的原型对象修改为父类的实例对象
 - 获取对象类型: xx.constructor.name
 - 对象深拷贝: Object.assign(target,source1,source2).将源对象(source)的所有可枚举资源复制到目标对象(target)
 - 自定义深拷贝
+
     ```javascript
     function depCopy(target,source) {
         // 1. 遍历拿到 source 中所有的属性
@@ -504,17 +537,17 @@ scale-down|内容的尺寸与 none 或 contain 中的一个相同，取决于它
 
 - 属性：
 
-  -  `action`, 提交到哪儿
+  - `action`, 提交到哪儿
   - `method`,  方式--GET, POST, PUT, HEADER, DELETE; 自定义
-  -  **`name`**(必须加)， 可以重复
+  - **`name`**(必须加)， 可以重复
   - `submit`， 提交
--  数据提交
+- 数据提交
 
-  - GET， 数据放在 url 里面。 **容量小**， **看得见（表单）**， **有缓存**， **利于分享，收藏**
+- GET， 数据放在 url 里面。 **容量小**， **看得见（表单）**， **有缓存**， **利于分享，收藏**
 
-  - POST, 数据放在 http-body 里面。**容量大**， **看不见**， **不缓存**， **无法分享， 收藏**
+- POST, 数据放在 http-body 里面。**容量大**， **看不见**， **不缓存**， **无法分享， 收藏**
 
-  -  安全性完全一样， https才是真安全
+- 安全性完全一样， https才是真安全
 - multipart/form-data, 上传时,必须为enctype的值
 - content-type 有哪些类型?
   - text/plain                                                   纯文本
@@ -545,11 +578,11 @@ let oDiv = $('#box')[0];
   const a = 1;
   swicth(a){
       case 1:
-      	console.log('1')
-      	break;
+       console.log('1')
+       break;
       default:
-      	console.log('2')
-      	break;
+       console.log('2')
+       break;
   }
   ```
 
