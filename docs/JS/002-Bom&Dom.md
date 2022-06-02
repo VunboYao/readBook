@@ -63,6 +63,7 @@ window.open('https://www.baidu.com/',"topFrame");
 
 - 整个特性字符串中不允许出现空格
 - 允许我们针对通过 window.open() 创建的窗口调整大小或移动位置
+
   ```
   var wroxWin = window.open("http://www.wrox.com/","wroxWindow",
   "height=400,width=400,top=10,left=10,resizable=yes");
@@ -73,12 +74,15 @@ window.open('https://www.baidu.com/',"topFrame");
   调用 close() 方法还可以关闭新打开的窗口。
   wroxWin.close();
   ```
+
 - 新创建的 window 对象有一个 opener 属性，其中保存着打开它的原始窗口对象。
+
   ```
   var wroxWin = window.open("http://www.wrox.com/","wroxWindow",
   "height=400,width=400,top=10,left=10,resizable=yes");
   alert(wroxWin.opener == window); //true
   ```
+
 - 将 opener 属性设置为 null 就是告诉浏览器新创建的标签页不需要与打开它的标签页通信，因此
   可以在独立的进程中运行。标签页之间的联系一旦切断，将没有办法恢复。
 
@@ -94,6 +98,7 @@ window.open('https://www.baidu.com/',"topFrame");
 - 通过 alert() 、 confirm() 和 prompt() 方法可以调用系统对话框向用户显示消息。
 - 通过这几个方法打开的对话框都是同步和模态的。也就是说，显示这些对话框的时候代码会停止执行，而关掉这些对话框后代码又会恢复执行。
 - confirm("Are you sure?"),取消/确认，返回布尔值。
+
   ```
   let a = confirm('Are you sure?');
   if (a) {
@@ -102,6 +107,7 @@ window.open('https://www.baidu.com/',"topFrame");
       alert('I am sorry to hear you are not sure!')
   }
   ```
+
 - prompt()方法接受两个参数：要显示给用户的文本提示和文本输入域的默认值（可以是一个空字符串）
   - 如果用户单击了 OK，返回数入的值。
   - 如果选择了 Cancel 或其他方式关闭了对话框，该方法返回 null
@@ -154,14 +160,17 @@ function getQueryStringArgs() {
 
 - 使用 assign()方法为其传递一个 URL。`location.assign("http://www.wrox.com");`
 - location.href 或 window.location 设置为一个 URL 值，也会调用 assign() 方法。
+
   ```
   // 下列两行代码与显式调用 assign() 方法的效果完全一样。
    window.location = "http://www.wrox.com";
    location.href = "http://www.wrox.com";
   ```
+
 - 设置 hash, search, hostname, pathname 和 port 属性来改变 URL，除了 hash 属性，都会重新加载页面。
 - 当通过上述任何一种方式修改 URL 之后，浏览器的历史记录中就会生成一条新记录，因此用户通过单击“后退”按钮都会导航到前一个页面。
 - 要禁用这种行为，可以使用 replace() 方法。这个方法只接受一个参数，即要导航到的 URL；结果虽然会导致浏览器位置改变，但不会在历史记录中生成新记录。
+
   ```
   <script type="text/javascript">
       setTimeout(function () {
@@ -169,12 +178,15 @@ function getQueryStringArgs() {
       }, 1000);
   </script>
   ```
+
 - 如果将这个页面加载到浏览器中，浏览器就会在 1 秒钟后重新定向到 **www.wrox.com**.然后，“后退”按钮将处于禁用状态，如果不重新输入完整的 URL，则无法返回示例页面。
 - reload(),重新加载当前显示的页面。不传递参数时，页面就会以最有效的方式重新加载。也就是说，如果页面自上次请求以来并没有改变过，页面就会从浏览器缓存中重新加载。
+
   ```
   location.reload(); //重新加载（有可能从缓存中加载）
   location.reload(true); //重新加载（从服务器重新加载）
   ```
+
 - 位于 reload() 调用之后的代码可能会也可能不会执行，这要取决于网络延迟或系统资源等因素。为此，最好将 reload() 放在代码的最后一行。
 
 ### navigator 对象
@@ -230,13 +242,16 @@ function getElement(id) {
 ```
 
 - 安卓操作系统检测
+
   ```
   // "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36"
   // 搜索字符串 "Android" 并取得紧随其后的版本号。
   let android = /Android (\d+\.\d+)/.test(navigator.userAgent);
   console.log(RegExp.$1);
   ```
+
 - IOS 操作系统检测
+
   ```javascript
   // "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1"
   let iOS = /CPU (?:iPhone )?OS (\d+_\d+)/.test(navigator.userAgent)
@@ -265,6 +280,7 @@ JavaScript 中的所有节点类型都继承自 Node 类型，因此所有节点
 - Node.DOCUMENT_TYPE_NODE (10)；
 - Node.DOCUMENT_FRAGMENT_NODE (11)；
 - Node.NOTATION_NODE (12)。
+
   ```
   if (someNode.nodeType == Node.ELEMENT_NODE){ //在 IE 中无效
       alert("Node is an element.");
@@ -289,11 +305,13 @@ if (someNode.nodeType == 1){
 - NodeList 是一种类数组对象，用于保存一组有序的节点，可以通过位置来访问它们。
 - 可以通过方括号语法来访问 NodeList 的值，也有 length 属性，但不是 Array 的实例。
 - 可以通过方括号、也可以使用 item()方法。访问保存在 NodeList 中的节点。
+
   ```
   var firstChild = someNode.childNodes[0];
   var secondChild = someNode.childNodes.item(1);
   var count = someNode.childNodes.length;
   ```
+
 - 对 arguments 对象使用 Array.prototype.slice() 方法可以将其转换为数组
 - 每个节点都有一个 parentNode 属性，该属性指向文档树中的父节点
 - 在 childNodes 列表中的每个节点相互之间都是同胞节点。通过使用列表中每个节点的 previousSibling 和 nextSibling 属性，可以访问同一列表中的其他节点。列表中第一个节点的 previousSibling 属性值为 null ，而列表中最后一个节点的 nextSibling 属性的值同样也为 null
@@ -316,6 +334,7 @@ if (someNode.nodeType == 1){
 - cloneNode(),用于创建调用这个方法的节点的一个完全的副本。
   - 接受一个布尔值参数，表示是否执行深复制。参数为 true 时，执行深复制;为 false 时，执行浅复制。
   - 复制后返回的节点属于文档所有，但没有为它指定父节点，除非使用以上 appendChild() 、 insertBefore() 或 replaceChild()将它添加到文档中，否则是一个“孤儿”。
+
   ```
    let deepList = a.cloneNode(true)
    console.log(deepList.childNodes.length); // 7
@@ -349,11 +368,13 @@ JavaScript 通过 Document 类型表示文档。在浏览器中， document 对�
 - document.domain，属性中包含页面的域名
 - document.referrer，保存着连接到当前页面的那个页面的 URL，在没有来源页面的情况下，referrer 属性中可能会包含空字符串。
 - 只有 domain 可以设置，但必须是包含的域。
+
   ```
   //假设页面来自 p2p.wrox.com 域
   document.domain = "wrox.com"; // 成功
   document.domain = "nczonline.net"; // 出错！
   ```
+
 - 浏览器对 domain 属性还有一个限制，即如果域名一开始是“松散的”（loose），那么不能将它再设置为“紧绷的”（tight）。换句话说，在将 document.domain 设置为 "wrox.com" 之后，就不能再将其设置回 "p2p.wrox.com" ，否则将会导致错误.
 
 **3.查找元素**
@@ -449,6 +470,7 @@ alert(div.tagName == div.nodeName); //true
 
 - 元素的 childNodes 属性中包含了它的所有子节点，这些子节点有可能是元素、文本节点、注释或处理指令
 - 不同浏览器在看待这些节点方面存在显著的不同
+
   ```
   <ul id="myList">
       <li>Item 1</li>
@@ -459,7 +481,9 @@ alert(div.tagName == div.nodeName); //true
   //如果像下面这样将元素间的空白符删除，那么所有浏览器都会返回相同数目的子节点。
   <ul id="myList"><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>
   ```
+
 - 遍历子节点，先检查一下 nodeType 属性。
+
   ```
   let sum = null;
   for (let i = 0; i < a.childNodes.length; i++) {
@@ -956,6 +980,7 @@ alert(div1.isSameNode(div2)); //false
   > 如何存储数据。
 
 - 框架和内嵌框架分别用 HTMLFrameElement 和 HTMLIFrameElement 表示，在 DOM2 级中多有一个新属性，叫 contentDocument。该属性包含一个指针，指向表示框架内容的文档对象。contentWindow,指向 window 对象
+
   ```
    var iframe = document.getElementById("myIframe");
    var iframeDoc = iframe.contentDocument; //在 IE8
