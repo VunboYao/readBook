@@ -106,15 +106,15 @@
         <li>1.父级设置border</li>
         <li>2.父级设置padding</li>
         <li>3.触发父级的BFC: 如 overflow: hidden</li>
-        <li>4.margin-bottom: 如果父级的height:auto, 同时底部重叠,会触发margin穿透</li>
+        <li>4.margin-bottom: 如果父级的height:auto, 同时底部重叠, 会触发margin穿透</li>
       </ul>
     </li>
     <li>padding: 针对于父子间间隔处理</li>
     <li>行内元素：
       <ul>
-        <li>padding 设置时,上下看起来撑开,但是不占空间</li>
-        <li>border 设置时,上下看起来撑开,但是不占空间</li>
-        <li>margin 设置时,上下不生效</li>
+        <li>padding 设置时, 上下看起来撑开, 但是不占空间</li>
+        <li>border 设置时, 上下看起来撑开, 但是不占空间</li>
+        <li>margin 设置时, 上下不生效</li>
       </ul>
     </li>
     <li>block 元素: 默认宽度计算 width + padding + border + margin</li>
@@ -128,6 +128,9 @@
         <li>标准盒模型: width === content</li>
       </ul>
     </li>
+    <li>background-image: 设置多张图片, 其他图片按顺序层叠在下面</li>
+    <li>background-attachment: 决定背景图像的位置是在视口内固定, 或者随着包含它的区块滚动</li>
+    <li>background 简写: background-size可以省略, 如果不省略, /background-size必须紧跟在background-position的后面</li>
   </ol>
   <div class="x">
     <div class="inner">box</div>
