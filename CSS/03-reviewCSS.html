@@ -14,6 +14,29 @@
     .text-transform {
       text-transform: capitalize;
     }
+
+    .border-demo {
+      width: 200px;
+      border-width: 20px 40px;
+      border-style: solid;
+      border-color: transparent blue green orange;
+      border-bottom-left-radius: 10px 30px;
+    }
+
+    .x {
+      width: 100px;
+      height: 100px;
+      background: green;
+      margin: 0 auto;
+      color: deeppink;
+      border: 10px solid;
+    }
+
+    .inner {
+      width: 50px;
+      height: 50px;
+      background: blue;
+    }
   </style>
 </head>
 
@@ -56,7 +79,59 @@
     <li>伪类顺序： link,visited,focus,hover,active => love fuck hate</li>
     <li>伪元素：::first-line ::first-letter</li>
     <li>伪元素：::after ::before, content: '', 不能省略,默认生成的是行内元素</li>
+    <li>继承: inherited 可以强制声明属性继承</li>
+    <li>权重:伪元素和普通元素一样</li>
+    <li>css属性:权重优先级、style中先后顺序</li>
+    <li>行内替换元素:可以设置宽高, img, video, iframe</li>
+    <li>p元素内不能包括div元素</li>
+    <li>元素隐藏的方法：
+      <ul>
+        <li>不占空间: display:none</li>
+        <li>占据空间: visibility: hidden</li>
+        <li>rgba: 不影响子元素</li>
+        <li>opacity: 影响所有的子元素(应用于一个元素上,整体,包括其所有的子元素)</li>
+      </ul>
+    </li>
+    <li>块级,行内元素: 宽度是 auto, 由浏览器控制</li>
+    <li>border: 梯形实现
+      <div class="border-demo">i am content</div>
+    </li>
+    <li>border-style: 不可以省略</li>
+    <li>border-radius: 百分比(%)时,基于当前元素的宽高来设置</li>
+    <li>border-top-left-radius: x y 单独设置</li>
+    <li>border-color: 会盖在background-color上, 默认会继承 color</li>
+    <li>margin: 更倾向于兄弟间间隔
+      <ul>
+        <li>嵌套时,左右如果和父级重叠，不会穿透</li>
+        <li>1.父级设置border</li>
+        <li>2.父级设置padding</li>
+        <li>3.触发父级的BFC: 如 overflow: hidden</li>
+        <li>4.margin-bottom: 如果父级的height:auto, 同时底部重叠,会触发margin穿透</li>
+      </ul>
+    </li>
+    <li>padding: 针对于父子间间隔处理</li>
+    <li>行内元素：
+      <ul>
+        <li>padding 设置时,上下看起来撑开,但是不占空间</li>
+        <li>border 设置时,上下看起来撑开,但是不占空间</li>
+        <li>margin 设置时,上下不生效</li>
+      </ul>
+    </li>
+    <li>block 元素: 默认宽度计算 width + padding + border + margin</li>
+    <li>box-shadow: x y blur spread color inset</li>
+    <li>text-shadow: x y blur color</li>
+    <li>盒模型
+      <ul>
+        <li>border-box: padding + border + width</li>
+        <li>conten-box: 只有 width, padding 和 border 在外边</li>
+        <li>IE盒子模型: border-box</li>
+        <li>标准盒模型: width === content</li>
+      </ul>
+    </li>
   </ol>
+  <div class="x">
+    <div class="inner">box</div>
+  </div>
 </body>
 
 </html>
