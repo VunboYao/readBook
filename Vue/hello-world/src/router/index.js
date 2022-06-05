@@ -5,8 +5,7 @@ Vue.use(VueRouter)
 
 import user from "../components/user"
 import SideBar from '../components/sidebar.vue'
-import subUser from '../components/subUser.vue'
-import Common from '../components/common.vue'
+import tempRouter from './yyb-router'
 
 export default new VueRouter({
   mode: 'history',
@@ -22,24 +21,7 @@ export default new VueRouter({
       path: '/redirect',
       redirect: '/user/subUser'
     },
-    {
-      path: '/user',
-      name: 'user',
-      components: {
-        sidebar: SideBar,
-        main: user
-      },
-      children: [{
-        path: 'subUser',
-        name: 'subUser',
-        component: subUser
-      }, {
-        path: 'foobar/:id/name/:name',
-        name: 'Common',
-        component: Common,
-        props: true
-      }]
-    },
+    tempRouter,
     {
       path: '*',
       name: 'E404',
