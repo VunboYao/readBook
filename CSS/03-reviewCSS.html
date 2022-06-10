@@ -30,11 +30,13 @@
       margin: 0 auto;
       color: deeppink;
       border: 10px solid;
+      display: flex;
     }
 
     .inner {
-      width: 50px;
-      height: 50px;
+      /* flex: 1; */
+      width: 30%;
+      height: 30%;
       background: blue;
     }
   </style>
@@ -130,7 +132,9 @@
     </li>
     <li>background-image: 设置多张图片, 其他图片按顺序层叠在下面</li>
     <li>background-attachment: 决定背景图像的位置是在视口内固定, 或者随着包含它的区块滚动</li>
-    <li>background 简写: background-size可以省略, 如果不省略, /background-size必须紧跟在background-position的后面</li>
+    <li>background 简写: background-size 可以省略, 如果不省略, /background-size 必须紧跟在 background-position 的后面</li>
+    <li>父级 display: flex; 子元素 flex: 1, width: 0, 以flex为准。 </li>
+    <li>父级 display: flex; 子元素 width: 30%, 如何实现一个正方向? 高度 height: 30% </li>
   </ol>
   <div class="x">
     <div class="inner">box</div>
