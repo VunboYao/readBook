@@ -1,5 +1,16 @@
 # Vue 3 + Vite
 
+## 新特性
+
+- Composition API
+- SFC Composition API setup 语法糖
+- Teleport传送门
+- Fragments, Multiple Root Nodes 时，$attrs 将产生一个 runtime warning，需要明确 bound
+- Emits Component Option, 明确声明组件暴露出去的自定义事件, expose 同理，ref访问时，限制暴露出去的可防范的方法
+- [`createRenderer` API from `@vue/runtime-core`](https://vuejs.org/api/custom-renderer.html) to create custom renderers，自定义渲染器，可以运行在非 DOM 环境，如 canvas 等
+- v-bind in \<style> 动态绑定 CSS，实现主题更换
+- Suspense 实验性特性，异步组件加载子组件时提供一个loading状态
+
 ## Vite
 
 - resolve.extensions：官方不建议忽略.vue
