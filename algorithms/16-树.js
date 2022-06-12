@@ -45,7 +45,7 @@ class Node {
   }
 }
 class BinarySearchTree {
-  constructor(key) {
+  constructor() {
     this.root = null
     this.result = '' // 记录遍历结果
   }
@@ -83,7 +83,34 @@ class BinarySearchTree {
     }
   }
 
-  search(key) { }
+  search(key) {
+    // 1.获取根节点
+    let node = this.root
+    // 2.循化搜索node
+    while (node) {
+      if (key < node.key) {
+        node = node.left
+      } else if (key > node.key) {
+        node = node.right
+      } else {
+        return true
+      }
+    }
+    return false
+
+    // 递归方式
+    // return this.searchNode(this.root, key)
+  }
+  searchNode(node, key) {
+    if (node === null) return false
+    if (key > node.key) {
+      return this.searchNode(node.right, key)
+    } else if (key < node.key) {
+      return this.searchNode(node.left, key)
+    } else {
+      return true
+    }
+  }
 
   // !先序遍历 先处理 root
   preOrderTraverse() {
@@ -144,7 +171,7 @@ class BinarySearchTree {
     }
     return node && node.key
   }
-  
+
   max() {
     let node = this.root
     while (node.right !== null) {
@@ -153,7 +180,9 @@ class BinarySearchTree {
     return node && node.key
   }
 
-  remove(key) { }
+  remove(key) {
+
+  }
 }
 
 // -----------------------------
@@ -193,3 +222,7 @@ console.log(`post: ${post}`);
 let min = bst.min()
 let max = bst.max()
 console.log(`min: ${min}, max: ${max}`);
+
+// *7查询
+let search = bst.search(25)
+console.log(`search: ${search}`);
