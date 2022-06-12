@@ -16,6 +16,7 @@
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",
     "@vitejs/plugin-vue": "^2.2.2",
+    "@vunbo/eslint-config": "^1.0.3",
     "eslint": "^8.10.0",
     "eslint-plugin-vue": "^8.5.0",
     "sass": "^1.49.9",

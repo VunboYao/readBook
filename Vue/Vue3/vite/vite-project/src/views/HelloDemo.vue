@@ -13,5 +13,4 @@ let msg = ref('Hello Vue3')
 </script>
 
 <style lang="scss" scoped>
-
 </style>

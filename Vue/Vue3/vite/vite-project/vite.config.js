@@ -25,7 +25,7 @@ export default defineConfig({
     alias: {
       '@': '/src',
       '@comp': '/src/components',
-      '@page': '/src/pages',
+      '@view': '/src/views',
       '@direct': '/src/directives'
     },
   },

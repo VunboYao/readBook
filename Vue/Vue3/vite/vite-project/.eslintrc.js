@@ -3,7 +3,12 @@ module.exports = {
     es2021: true,
   },
   // Vue3 官方eslint3件套
-  extends: ['plugin:vue/vue3-essential', 'plugin:vue/vue3-recommended', 'plugin:vue/vue3-strongly-recommended'],
+  extends: [
+    'plugin:vue/vue3-essential',
+    'plugin:vue/vue3-recommended',
+    'plugin:vue/vue3-strongly-recommended',
+    '@vunbo/eslint-config'
+  ],
   parserOptions: {
     ecmaVersion: 12,
     sourceType: 'module',

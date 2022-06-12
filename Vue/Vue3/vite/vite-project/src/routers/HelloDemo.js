@@ -1,6 +1,6 @@
 export default {
   path: '/',
   name: 'HelloDemo',
-  component: () => import('@/pages/HelloDemo.vue'),
+  component: () => import('@/views/HelloDemo.vue'),
   children: []
 }
