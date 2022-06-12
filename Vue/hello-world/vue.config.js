@@ -1,5 +1,4 @@
 const webpack = require('webpack')
-const path = require('path')
 module.exports = {
   publicPath: './',
   productionSourceMap: false,
@@ -9,11 +8,11 @@ module.exports = {
     },
     module: {
       rules: [
-        {
-          test: /yyb-router\.js$/,
-          use: ['route-loader'],
-          include: path.resolve(__dirname, 'src/route')
-        }
+        // {
+        //   test: /yyb-router\.js$/,
+        //   use: ['route-loader'],
+        //   include: path.resolve(__dirname, 'src/route')
+        // }
       ]
     },
     plugins: [
