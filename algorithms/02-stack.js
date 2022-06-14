@@ -45,13 +45,15 @@ console.log(stack.toString());
 function dec2Bin(decNumber) {
   let stack = new Stack()
   while (decNumber > 0) {
-    stack.push(decNumber % 2)
-    decNumber = Math.floor(decNumber / 2)
+    stack.push(decNumber % 2) // 获取余数
+    console.log(`stack: ${stack}`);
+    decNumber = Math.floor(decNumber / 2) // 向下取整
+    console.log(`decNumber: ${decNumber}`);
   }
 
   let binaryString = ''
   while (!stack.isEmpty()) {
-    binaryString += stack.pop()
+    binaryString += stack.pop() // 从头取出来
   }
   return binaryString
 }
