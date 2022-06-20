@@ -13,11 +13,12 @@
       <router-link class="link" to="/redirect">redirect</router-link>
     </div>
     <jsx-demo v-for="n in 4" :level="n" :key="n">我是标标题{{ n }}</jsx-demo>
-    <component-a />
+    <component-a :msg="dataFather"/>
     <el-button @click="show">show</el-button>
     <el-button @click="hide">hide</el-button>
     <el-button @click="showMsg">showMsg</el-button>
     <el-button @click="handleRouter">RouterMatched</el-button>
+    <el-button @click="dataFather = '999'">ChangeData</el-button>
   </div>
 </template>
 
@@ -27,7 +28,29 @@ import { FilterData } from './plugin/FilterData/main'
 import mixin from './mixin';
 const componentA = {
   name: "tplA",
-  template: `<h2>Hello World</h2>`,
+  template: `<h2>Hello World {{msg}}</h2>`,
+  props: {
+    msg: String,
+    default: '66'
+  },
+  beforeCreate() {
+    console.log('son: beforeCreate')
+  },
+  created() {
+    console.log('son: created')
+  },
+  beforeMount() {
+    console.log('son: beforeMount')
+  },
+  mounted() {
+    console.log('son: mounted')
+  },
+  beforeUpdate() {
+    console.log('son: beforeUpdate')
+  },
+  updated() {
+    console.log('son: updated')
+  }
 };
 
 export default {
@@ -39,11 +62,13 @@ export default {
   },
   data() {
     return {
-      a: 1
+      a: 1,
+      dataFather: 'none'
     }
   },
   created() {
     console.log(this.a, '>>>')
+    console.log('father: created')
     this.faceTest()
   },
   methods: {
@@ -93,6 +118,21 @@ export default {
       console.log(10)
     }
   },
+  beforeCreate() {
+    console.log('father: beforeCreate')
+  },
+  beforeMount() {
+    console.log('father: beforeMount')
+  },
+  mounted() {
+    console.log('father: mounted')
+  },
+  beforeUpdate() {
+    console.log('father: beforeUpdate')
+  },
+  updated() {
+    console.log('father: updated')
+  }
 };
 </script>
 
