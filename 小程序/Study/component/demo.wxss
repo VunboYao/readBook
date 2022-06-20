@@ -1,8 +1,0 @@
-/* component/demo.wxss */
-:host {
-  color: red;
-}
-
-.inner {
-  color: #090;
-}
