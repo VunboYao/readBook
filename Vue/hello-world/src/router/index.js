@@ -18,6 +18,10 @@ export default new VueRouter({
       }
     },
     {
+      path: '/ruler',
+      components: () => import('../components/ruler.vue')
+    },
+    {
       path: '/redirect',
       redirect: '/user/subUser'
     },
