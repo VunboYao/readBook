@@ -16,6 +16,7 @@
       position: relative;
     }
 
+    /* 刻度线中间值 */
     .box:before {
       position: absolute;
       z-index: 1;
@@ -23,287 +24,320 @@
       top: 0;
       transform: translateX(-50%);
       content: '';
-      width: 3px;
-      height: 35px;
+      width: 2px;
+      height: 70px;
       background-color: #00b0ab;
     }
 
     .canvas {
       display: block;
       margin: 0 auto;
-      transition-duration: 300ms;
+      border-bottom: 1px solid #ccc;
+      /*transition-duration: 300ms;*/
     }
   </style>
 </head>
 
 <body>
-  <div id="values"></div>
-  <div id="app"></div>
-  <script>
-    class SlideRuler {
-      constructor(options = {}) {
-        this.value = ''
-        this.options = {
-          canvasWidth: document.body.clientWidth || 375,
-          canvasHeight: 83,
-          boxColor: '#e4e4e4',
-          scrollLeft: 0,
-          heightDecimal: 35,
-          heightDigit: 18,
-          lineWidth: 2,
-          colorDecimal: '#e4e4e4',
-          colorDigit: '#e4e4e4',
-          divide: 10,
-          precision: 1,
-          fontSize: 20,
-          fontColor: '#666',
-          fontMarginTop: 35,
-          maxValue: 230,
-          minValue: 100,
-          currentValue: 160
-        }
-        this.localeState = {
-          startX: 0,
-          startY: 0,
-          isTouchEnd: true,
-          touchPoints: []
-        }
-        this.browserEnv = window.hasOwnProperty('ontouchstart')
-        this.options = {...this.options, ...options}
-        this.init(this.options)
+<div id="values"></div>
+<div id="app"></div>
+<script>
+  class SlideRuler {
+    constructor(options = {}) {
+      this.value = ''
+      this.options = {
+        canvasWidth: document.body.clientWidth || 375, // 尺子宽度
+        canvasHeight: 83, // 尺子高度
+        // boxColor: 'red',
+        // scrollLeft: 0,
+        heightDecimal: 35, // 长刻度线高度
+        heightDigit: 18, // 刻度线高度
+        lineWidth: 2, // 刻度线宽度
+        colorDecimal: '#f0f', // 长刻度线颜色
+        colorDigit: '#e4e4e4', // 短可断线颜色
+        divide: 10, // 两个刻度之间的像素宽度
+        precision: 1000, // 最小刻度单位
+        fontSize: 20, // 刻度字体大小
+        fontColor: '#666', // 刻度字体颜色
+        fontMarginTop: 35, // 刻度字体与上边界距离
+        maxValue: 200000, // 尺子最大值
+        minValue: 2000, // 尺子最小值
+        currentValue: 3000, // 尺子当前值
       }
 
-      init(options) {
-        this._renderBox(options.el)
+      if (!options.el) {
+        throw new Error('el挂在元素缺失')
       }
 
-      _renderBox(container) {
-        const box = document.createElement('div')
-        const canvas = document.createElement('canvas')
-        this.canvas = canvas
-        box.className = 'box'
-        box.appendChild(canvas)
-        container.appendChild(box)
-        this._renderCanvas()
+      // 存储当前状态
+      this.localeState = {
+        startX: 0,
+        startY: 0,
+        isTouchEnd: true,
+        touchPoints: [],
       }
 
-      _renderCanvas() {
-        const {canvasWidth, canvasHeight} = this.options
-        const canvas = this.canvas
-        canvas.width = canvasWidth * 2
-        canvas.height = canvasHeight * 2
-        canvas.style.width = canvasWidth + 'px'
-        canvas.style.height = canvasHeight + 'px'
-        canvas.className = 'canvas'
-        if (this.browserEnv) {
-          canvas.ontouchstart = this.touchStart.bind(this)
-          canvas.ontouchmove = this.touchMove.bind(this)
-          canvas.ontouchend = this.touchEnd.bind(this)
-        } else {
-          canvas.onmousedown = this.touchStart.bind(this)
-          canvas.onmousemove = this.touchMove.bind(this)
-          canvas.onmouseup = this.touchEnd.bind(this)
+      // 是否可触摸
+      this.browserEnv = window.hasOwnProperty('ontouchstart')
+      this.options = { ...this.options, ...options }
+      this.init(this.options)
+    }
+
+    init(options) {
+      this._renderBox(options.el)
+    }
+
+    /**
+     * 渲染容器，将canvas添加至div中
+     * @param container: 容器
+     * @private
+     */
+    _renderBox(container) {
+      const box = document.createElement('div')
+      const canvas = document.createElement('canvas')
+      this.canvas = canvas
+      box.className = 'box'
+      // 将创建的canvas追加到目标容器
+      box.appendChild(canvas)
+      container.appendChild(box)
+      this._renderCanvas()
+    }
+
+    /**
+     * 渲染canvas，绑定触摸事件
+     * @private
+     */
+    _renderCanvas() {
+      const { canvasWidth, canvasHeight } = this.options
+      const canvas = this.canvas
+      canvas.width = canvasWidth * 2
+      canvas.height = canvasHeight * 2
+      canvas.style.width = `${canvasWidth}px`
+      canvas.style.height = `${canvasHeight}px`
+      canvas.className = 'canvas'
+
+      // 绑定移动端触摸事件,获取到touchEvent
+      if (this.browserEnv) {
+        canvas.ontouchstart = this.touchStart.bind(this)
+        canvas.ontouchmove = this.touchMove.bind(this)
+        canvas.ontouchend = this.touchEnd.bind(this)
+      } else {
+        canvas.onmousedown = this.touchStart.bind(this)
+        canvas.onmousemove = this.touchMove.bind(this)
+        canvas.onmouseup = this.touchEnd.bind(this)
+      }
+      this.drawCanvas()
+    }
+
+    touchStart(e) {
+      e.preventDefault()
+      if (e || this.localeState.isTouchEnd) {
+        this.touchPoints(e) // 存储触摸点信息
+        const touch = (e.touches && e.touches[0]) || e
+        // 存储x,y坐标，以及时间
+        this.localeState.startX = touch.pageX
+        this.localeState.startY = touch.pageY
+        this.localeState.startT = new Date().getTime()
+        this.localeState.isTouchEnd = false // 开始滑动
+      }
+    }
+
+    touchMove(e) {
+      // 鼠标键位判断
+      if (!this.browserEnv && (e.which !== 1 || e.buttons === 0)) { return } // 边界超出问题
+      this.touchPoints(e) // 存储触摸点信息
+      const touch = (e.touches && e.touches[0]) || 0
+      // 计算移动距离
+      const deltaX = touch.pageX - this.localeState.startX
+      const deltaY = touch.pageY - this.localeState.startY
+      // 如果 X 方向上的位移大于 Y 方向，则认为是左右滑动
+      if (
+        Math.abs(deltaX) > Math.abs(deltaY)
+        && Math.abs(Math.round(deltaX / this.options.divide)) > 0
+      ) {
+        // 反弹效果
+        /* if (this.browserEnv && !this.rebound(deltaX)) {
+          return
+        } */
+        this.moveDraw(deltaX)
+        this.localeState.startX = touch.pageX
+        this.localeState.startY = touch.pageY
+      }
+    }
+
+    touchEnd() {
+      this.moveDraw(0)
+      this.localeState.isTouchEnd = true
+      this.localeState.touchPoints = []
+      this.canvas.style.transform = 'translate3d(0,0,0)'
+    }
+
+    inertialShift() {
+      let s = 0
+      if (this.localeState.touchPoints.length >= 4) {
+        const _points = this.localeState.touchPoints.slice(-4)
+        const v = ((_points[3].shift - _points[0].shift)
+            / (_points[3].time - _points[0].time))
+          * 1000 // v 手指离开屏幕后的速度 px/s
+        const a = 6000 // a 手指离开屏幕后的加速度
+        s = (Math.sign(v) * Math.pow(v, 2)) / (2 * a) // s 手指离开屏幕后惯性距离
+      }
+
+      return s
+    }
+
+    // 反弹效果
+    rebound(deltaX) {
+      const { currentValue, maxValue, minValue } = this.options
+      if (
+        (currentValue === minValue && deltaX > 0)
+        || (currentValue === maxValue && deltaX < 0)
+      ) {
+        const reboundX = Math.sign(deltaX) * 1.5988 * Math.pow(Math.abs(deltaX), 0.7962)
+        this.canvas.style.transform = `translate3d(${reboundX}px, 0, 0)`
+        return false
+      }
+      return true
+    }
+
+    moveDraw(shift) {
+      // 获取刻度之间的距离、最小可断单位
+      const { divide, precision } = this.options
+      // 移动距离/每个刻度间距离=最终移动值
+      // 右滑动，是递减过程
+      const moveValue = Math.round(-shift / divide)
+      let _moveValue = Math.abs(moveValue)
+      const draw = () => {
+        if (_moveValue < 1) {
+          return
         }
+        this.options.currentValue += Math.sign(moveValue) * precision
+        // 绘画
         this.drawCanvas()
+        window.requestAnimationFrame(draw)
+        _moveValue--
       }
 
-      touchStart(e) {
-        e.preventDefault()
-        if (e || this.localeState.isTouchEnd) {
-          this.touchPoints(e)
-          let touch = (e.touches && e.touches[0]) || e
-          this.localeState.startX = touch.pageX
-          this.localeState.startY = touch.pageY
-          this.localeState.startT = new Date().getTime()
-          this.localeState.isTouchEnd = false // 开始滑动
-        }
+      draw()
+    }
+
+    drawCanvas() {
+      const canvas = this.canvas
+      const context = canvas.getContext('2d')
+      canvas.height = canvas.height
+      let {
+        canvasWidth,
+        canvasHeight,
+        maxValue,
+        minValue,
+        currentValue,
+        handleValue, // 处理返回结果
+        precision,
+        divide,
+        heightDecimal,
+        heightDigit,
+        lineWidth,
+        colorDecimal,
+        colorDigit,
+        fontSize,
+        fontColor,
+        fontMarginTop,
+      } = this.options
+      // 当前值，不能大于最大，小于最小
+      currentValue = currentValue > minValue
+        ? currentValue < maxValue
+          ? currentValue
+          : maxValue
+        : minValue
+      // 取基于最小刻度单位的整数
+      currentValue = (Math.round((currentValue * 10) / precision) * precision) / 10
+      this.options.currentValue = currentValue
+      handleValue && handleValue(currentValue)
+      // 求出真实的间隔宽度
+      const diffCurrentMin = ((currentValue - minValue) * divide) / precision
+      let startValue = currentValue - Math.floor(canvasWidth / 2 / divide) * precision
+      startValue = startValue > minValue ? startValue < maxValue ? startValue : maxValue : minValue
+      let endValue = startValue + (canvasWidth / divide) * precision
+      endValue = endValue < maxValue ? endValue : maxValue
+      // 原点
+      const origin = {
+        x: diffCurrentMin > canvasWidth / 2
+          ? (canvasWidth / 2
+            - ((currentValue - startValue) * divide) / precision)
+          * 2
+          : (canvasWidth / 2 - diffCurrentMin) * 2,
+        y: canvasHeight * 2,
       }
+      // 定义刻度线样式
+      heightDecimal = heightDecimal * 2
+      heightDigit = heightDigit * 2
+      lineWidth = lineWidth * 2
+      // 定义刻度字体样式
+      fontSize = fontSize * 2
+      fontMarginTop = fontMarginTop * 2
+      // 每个刻度所占位的px
+      divide = divide * 2
+      // 定义每个刻度的精度
+      const derivative = 1 / precision
 
-      touchMove(e) {
-        if (!this.browserEnv && (e.which !== 1 || e.buttons === 0)) return // 边界超出问题
-        this.touchPoints(e)
-        let touch = (e.touches && e.touches[0]) || 0
-        let deltaX = touch.pageX - this.localeState.startX
-        let deltaY = touch.pageY - this.localeState.startY
-        // 如果 X 方向上的位移大于 Y 方向，则认为是左右滑动
-        if (
-          Math.abs(deltaX) > Math.abs(deltaY) &&
-          Math.abs(Math.round(deltaX / this.options.divide)) > 0
-        ) {
-          if (this.browserEnv && !this.rebound(deltaX)) {
-            return
-          }
-          this.moveDraw(deltaX)
-          this.localeState.startX = touch.pageX
-          this.localeState.startY = touch.pageY
-        }
-      }
-
-      touchEnd() {
-        this.moveDraw(this.browserEnv ? this.inertialShift() : 0)
-        this.localeState.isTouchEnd = true
-        this.localeState.touchPoints = []
-        this.canvas.style.transform = 'translate3d(0,0,0)'
-      }
-
-      inertialShift() {
-        let s = 0
-        if (this.localeState.touchPoints.length >= 4) {
-          let _points = this.localeState.touchPoints.slice(-4)
-          let v = ((_points[3].shift - _points[0].shift) /
-            (_points[3].time - _points[0].time)) *
-            1000 // v 手指离开屏幕后的速度 px/s
-          const a = 6000 // a 手指离开屏幕后的加速度
-          s = (Math.sign(v) * Math.pow(v, 2)) / (2 * a) // s 手指离开屏幕后惯性距离
-        }
-
-        return s
-      }
-
-      rebound(deltaX) {
-        const {currentValue, maxValue, minValue} = this.options
-        if (
-          (currentValue === minValue && deltaX > 0) ||
-          (currentValue === maxValue && deltaX < 0)
-        ) {
-          let reboundX = Math.sign(deltaX) * 1.5988 * Math.pow(Math.abs(deltaX), 0.7962)
-          this.canvas.style.transform = `translate3d(${reboundX}px, 0, 0)`
-          return false
-        }
-        return true
-      }
-
-      moveDraw(shift) {
-        const {divide, precision} = this.options
-        let moveValue = Math.round(-shift / divide),
-          _moveValue = Math.abs(moveValue)
-        let draw = () => {
-          if (_moveValue < 1) {
-            return
-          }
-          this.options.currentValue += Math.sign(moveValue) * precision
-          this.drawCanvas()
-          window.requestAnimationFrame(draw)
-          _moveValue--
-        }
-
-        draw()
-      }
-
-      drawCanvas() {
-        const canvas = this.canvas
-        const context = canvas.getContext('2d')
-        canvas.height = canvas.height
-        let {
-          canvasWidth,
-          canvasHeight,
-          maxValue,
-          minValue,
-          currentValue,
-          handleValue, // 处理返回结果
-          precision,
-          divide,
-          heightDecimal,
-          heightDigit,
-          lineWidth,
-          colorDecimal,
-          colorDigit,
-          fontSize,
-          fontColor,
-          fontMarginTop
-        } = this.options
-        // 当前值，不能大于最大，小于最小
-        currentValue = currentValue > minValue ?
-          currentValue < maxValue ?
-            currentValue : maxValue
-          : minValue
-        currentValue = (Math.round((currentValue * 10) / precision) * precision) / 10
-        this.options.currentValue = currentValue
-        handleValue && handleValue(currentValue)
-        let diffCurrentMin = ((currentValue - minValue) * divide) / precision
-        let startValue = currentValue - Math.floor(canvasWidth / 2 / divide) * precision
-        startValue = startValue > minValue ? startValue < maxValue ? startValue : maxValue : minValue
-        let endValue = startValue + (canvasWidth / divide) * precision
-        endValue = endValue < maxValue ? endValue : maxValue
-        // 原点
-        let origin = {
-          x: diffCurrentMin > canvasWidth / 2
-            ? (canvasWidth / 2 -
-              ((currentValue - startValue) * divide) / precision) *
-            2
-            : (canvasWidth / 2 - diffCurrentMin) * 2,
-          y: canvasHeight * 2
-        }
-        // 定义刻度线样式
-        heightDecimal = heightDecimal * 2
-        heightDigit = heightDigit * 2
-        lineWidth = lineWidth * 2
-        // 定义刻度字体样式
-        fontSize = fontSize * 2
-        fontMarginTop = fontMarginTop * 2
-        // 每个刻度所占位的px
-        divide = divide * 2
-        // 定义每个刻度的精度
-        const derivative = 1 / precision
-
-        for (
-          let i = Math.round((startValue / precision) * 10) / 10;
-          i <= endValue / precision;
-          i++
-        ) {
-          context.beginPath()
-          // 画刻度线
-          context.moveTo(origin.x + (i - startValue / precision) * divide, 0)
-          // 画线到刻度高度，10的位数就加高
-          context.lineTo(
+      for (
+        let i = Math.round((startValue / precision) * 10) / 10;
+        i <= endValue / precision;
+        i++
+      ) {
+        context.beginPath()
+        // 画刻度线
+        context.moveTo(origin.x + (i - startValue / precision) * divide, canvasHeight * 2)
+        // 画线到刻度高度，10的位数就加高
+        context.lineTo(
+          origin.x + (i - startValue / precision) * divide,
+          i % 10 === 0 ? canvasHeight*2 - heightDecimal : canvasHeight*2 - heightDigit,
+        )
+        context.lineWidth = lineWidth
+        // 10的位数就加深
+        context.strokeStyle = i % 10 === 0 ? colorDecimal : colorDigit
+        context.stroke()
+        // 描绘刻度值
+        context.fillStyle = fontColor
+        context.textAlign = 'center'
+        context.textBaseline = 'top'
+        if (i % 10 === 0) {
+          context.font = `${fontSize}px Arial`
+          context.fillText(
+            Math.round(i / 10) / (derivative / 10),
             origin.x + (i - startValue / precision) * divide,
-            i % 10 === 0 ? heightDecimal : heightDigit
+            heightDecimal,
           )
-          context.lineWidth = lineWidth
-          // 10的位数就加深
-          context.strokeStyle = i % 10 === 0 ? colorDecimal : colorDigit
-          context.stroke()
-          // 描绘刻度值
-          context.fillStyle = fontColor
-          context.textAlign = 'center'
-          context.textBaseline = 'top'
-          if (i % 10 === 0) {
-            context.font = `${fontSize}px Arial`
-            context.fillText(
-              Math.round(i / 10) / (derivative / 10),
-              origin.x + (i - startValue / precision) * divide,
-              fontMarginTop
-            )
-          }
-          context.closePath()
         }
-      }
-
-      touchPoints(e) {
-        let touch = (e.touches && e.touches[0]) || e,
-          time = new Date().getTime(),
-          shift = touch.pageX
-        this.localeState.touchPoints.push({time, shift})
+        context.closePath()
       }
     }
 
-
-    new SlideRuler(
-      {
-        el: document.querySelector('#app'),
-        maxValue: 230,
-        minValue: 100,
-        currentValue: 180,
-        handleValue: handleValue,
-        precision: 1
-      }
-    );
-    function handleValue(value) {
-      console.log(value); //SlideRuler return value
-      document.querySelector('#values').innerHTML = value;
+    // 存储touch触摸点
+    touchPoints(e) {
+      // 获取第一个事件触摸点
+      const touch = (e.touches && e.touches[0]) || e
+      const time = new Date().getTime()
+      const shift = touch.pageX
+      this.localeState.touchPoints.push({ time, shift })
     }
+  }
 
-  </script>
+  new SlideRuler(
+    {
+      el: document.querySelector('#app'),
+      maxValue: 200000,
+      minValue: 2000,
+      currentValue: 2000,
+      handleValue,
+      precision: 1000,
+    },
+  )
+  function handleValue(value) {
+    console.log(value) // SlideRuler return value
+    document.querySelector('#values').innerHTML = value
+  }
+</script>
 </body>
 
 </html>
