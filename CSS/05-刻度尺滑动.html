@@ -41,6 +41,7 @@
 <body>
 <div id="values"></div>
 <div id="app"></div>
+<button id="btn">Button</button>
 <script>
   class SlideRuler {
     constructor(options = {}) {
@@ -165,7 +166,7 @@
       }
     }
 
-    touchEnd() {
+    touchEnd(step=0) {
       this.moveDraw(0)
       this.localeState.isTouchEnd = true
       this.localeState.touchPoints = []
@@ -323,7 +324,7 @@
     }
   }
 
-  new SlideRuler(
+  let target = new SlideRuler(
     {
       el: document.querySelector('#app'),
       maxValue: 200000,
@@ -336,6 +337,11 @@
   function handleValue(value) {
     console.log(value) // SlideRuler return value
     document.querySelector('#values').innerHTML = value
+  }
+
+  btn.onclick = function () {
+    debugger
+    target.touchEnd(10)
   }
 </script>
 </body>
