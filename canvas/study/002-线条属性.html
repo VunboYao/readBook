@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
@@ -8,22 +9,55 @@
       margin: 0;
       padding: 0;
     }
+
     canvas {
-      background: #109ee9;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
+
 <body>
-<canvas width="500" height="500"></canvas>
-<script>
-  let oCanvas = document.querySelector('canvas');
-  let ctx = oCanvas.getContext('2d');
-	ctx.lineWidth = 50;
-	ctx.strokeStyle = 'blue';
-	ctx.lineCap = 'square';
-	ctx.moveTo(50,50.5);
-	ctx.lineTo(200,50.5);
-	ctx.stroke();
-</script>
+  <canvas width="500" height="500"></canvas>
+  <script>
+    let oCanvas = document.querySelector('canvas');
+    let ctx = oCanvas.getContext('2d');
+
+    // 填充三角形
+    ctx.beginPath()
+    ctx.moveTo(25, 25)
+    ctx.lineTo(105, 25)
+    ctx.lineTo(25, 105)
+    ctx.fill()
+
+    // 描边三角形
+    ctx.beginPath()
+    ctx.moveTo(125, 125)
+    ctx.lineTo(125, 45)
+    ctx.lineTo(45, 125)
+    ctx.closePath()
+    ctx.stroke()
+
+    // 线条样式
+    ctx.strokeStyle = '#09f'
+    ctx.beginPath()
+    ctx.moveTo(200, 200)
+    ctx.lineTo(300, 200)
+    ctx.moveTo(200, 300)
+    ctx.lineTo(300, 300)
+    ctx.stroke()
+
+    let lineCap = ['butt', 'round', 'square']
+
+    ctx.strokeStyle = 'black'
+    for (let i = 0; i < lineCap.length; i++) {
+      ctx.lineWidth = 15
+      ctx.lineCap = lineCap[i]
+      ctx.beginPath()
+      ctx.moveTo(180 + i * 50, 200)
+      ctx.lineTo(180 + i * 50, 300)
+      ctx.stroke()
+    }
+  </script>
 </body>
+
 </html>

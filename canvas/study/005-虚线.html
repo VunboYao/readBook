@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <style>
@@ -12,21 +13,31 @@
     }
   </style>
 </head>
+
 <body>
   <canvas width="500" height="500"></canvas>
   <script>
     let oCanvas = document.querySelector('canvas');
     let ctx = oCanvas.getContext('2d');
-    ctx.moveTo(200,100);
-    ctx.lineTo(400,100);
-    ctx.lineTo(400,400);
-    ctx.lineTo(200,400);
-    ctx.closePath();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = 'blue';
-    ctx.setLineDash([5,20]);
-		ctx.lineDashOffset = -20;
-		ctx.stroke();
+
+    let offset = 0
+
+    function draw() {
+      ctx.clearRect(0, 0, oCanvas.width, oCanvas.height)
+      ctx.strokeStyle = '#ffa500'
+      ctx.setLineDash([8, 4])
+      ctx.lineDashOffset = -offset
+      ctx.strokeRect(10, 10, 100, 100)
+    }
+    setInterval(() => {
+      offset++
+      if (offset > 100) {
+        offset = 0
+      }
+
+      draw()
+    }, 20)
   </script>
 </body>
+
 </html>

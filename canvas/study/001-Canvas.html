@@ -9,18 +9,23 @@
       padding: 0;
     }
     canvas {
-      background: #109ee9;
+      width: 300px;
+      height: 200px;
+      border: 1px solid black;
     }
   </style>
 </head>
 <body>
-<canvas width="500" height="500"></canvas>
+<canvas width="300" height="200" id="tutorial"></canvas>
+<h1>Hello Canvas</h1>
 <script>
-  let oCanvas = document.querySelector('canvas');
-  let oCtx = oCanvas.getContext('2d');
-  oCtx.moveTo(50,50);
-  oCtx.lineTo(200,50);
-  oCtx.stroke();
+  let canvas = document.getElementById('tutorial')
+  let ctx = canvas.getContext('2d')
+  ctx.fillStyle = "rgb(200,0,0)"
+  ctx.fillRect(10,10,55,50)
+
+  ctx.fillStyle = "rgba(0,0,200,0.5"
+  ctx.fillRect(30,30,55,50)
 </script>
 </body>
 </html>
