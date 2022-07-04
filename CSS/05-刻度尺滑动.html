@@ -23,37 +23,50 @@
       top: 0;
       transform: translateX(-50%);
       width: 2px;
-      height: 70px;
+      height: 80px;
       background-color: red;
+      z-index: 1;
     }
 
     .x::after {
       position: absolute;
       content: '';
-      bottom: -4px;
+      bottom: 0;
       left: 50%;
       transform: translateX(-50%) rotateZ(-45deg);
       border-color: red red transparent transparent;
       border-style: solid;
-      border-width: 10px;
+      border-width: 5px;
       z-index: 1;
     }
 
     .canvas {
       margin: 0 auto;
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid #00b0ab;
     }
   </style>
 </head>
 
 <body>
+<div id="showValue"></div>
   <div id="canvas-box">
   </div>
+<button onclick="add()">Add</button>
+<button onclick="reduce()">Reduce</button>
   <script src="./js/SlideRuler.js"></script>
   <script>
-    new SlideRuler({
-      el: document.getElementById('canvas-box')
+    let ruler = new SlideRuler({
+      el: document.getElementById('canvas-box'),
+      handleValue: (value) => {
+        showValue.innerHTML = value
+      }
     })
+    function add() {
+      ruler.stepAdd()
+    }
+    function reduce() {
+      ruler.stepReduce()
+    }
   </script>
 </body>
 
