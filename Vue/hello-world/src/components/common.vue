@@ -1,6 +1,7 @@
 <template>
   <div>
-    <p class="text">{{ id }}>>>>>>>>>>>>>>></p>
+    <p class="text">{{ id }}>>>>>>>I am test>>>>>>>></p>
+    <p>i am new</p>
   </div>
 </template>
 
