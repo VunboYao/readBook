@@ -1,6 +1,7 @@
 <template>
   <div>
-    <p class="text">{{ id }}>123>>>>>>>>>>>>>></p>
+    <p class="text">{{ id }}>>>>>>>I am test>>>>>>>></p>
+    <p>i am new</p>
   </div>
 </template>
 
