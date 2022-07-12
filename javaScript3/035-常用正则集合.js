@@ -26,16 +26,31 @@
 
 
 {
+  function camelize(str) {
+    return str.replace(/[_-\s]+(.)?/g, (match, c) => {
+      return c ? c.toUpperCase() : ''
+    })
+  }
 
-  let regex = /(\d{4})-(\d{2})-(\d{2})/
-  let string = "2017-06-12";
-
-  regex.test(string) // 正常操作即可，例如
-  // regex.exec(string)
-  // string.match(regex)
-
-  console.log(RegExp.$1)
-  console.log(RegExp.$2)
-  console.log(RegExp.$3)
+  console.log(camelize('-mon-transform'));
 }
 
+
+{
+  function dasherize(str) {
+    return str.replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase()
+  }
+
+  console.log(dasherize('MonTransform'));
+}
+
+
+{
+  let regex = /<([^>]+)>[\d\D]*<\/\1>/
+  var string1 = "<title>regular expression</title>";
+  var string2 = "<p>laoyao bye bye</p>";
+  var string3 = "<title>wrong!</p>";
+  console.log( regex.test(string1) ); // true
+  console.log( regex.test(string2) ); // true
+  console.log( regex.test(string3) ); // false
+}
