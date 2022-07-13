@@ -135,6 +135,20 @@
     <li>background 简写: background-size 可以省略, 如果不省略, /background-size 必须紧跟在 background-position 的后面</li>
     <li>父级 display: flex; 子元素 flex: 1, width: 0, 以flex为准。 </li>
     <li>父级 display: flex; 子元素 width: 30%, 如何实现一个正方向? 高度 height: 30% </li>
+    <li>旋转角度问题：
+      <ul>
+        <li>rotate: 旋转, 默认水平是 0deg. 顺时针</li>
+        <li>linear-gradient: 默认 to bottom, 对应 180deg. 逆时针 </li>
+        <li>canvas: 顺时针</li>
+      </ul>
+    </li>
+    <li>弧度和度数间转换
+      <ul>
+        <li>一个完整的圆的弧度是 2π, 所以 2π rad = 360º</li>
+        <li>1π rad = 180º, 1º = π/180rag;  1 rad = 180º/π(约 57.29577051º)</li>
+        <li>以度数展示角度, 把数字乘以 π/180 便转换成弧度 π/180: rad = (π / 180) * deg</li>
+      </ul>
+    </li>
   </ol>
   <div class="x">
     <div class="inner">box</div>
