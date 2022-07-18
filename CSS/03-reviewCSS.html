@@ -125,7 +125,7 @@
     <li>盒模型
       <ul>
         <li>border-box: padding + border + width</li>
-        <li>conten-box: 只有 width, padding 和 border 在外边</li>
+        <li>content-box: 只有 width, padding 和 border 在外边</li>
         <li>IE盒子模型: border-box</li>
         <li>标准盒模型: width === content</li>
       </ul>
@@ -147,6 +147,31 @@
         <li>一个完整的圆的弧度是 2π, 所以 2π rad = 360º</li>
         <li>1π rad = 180º, 1º = π/180rag;  1 rad = 180º/π(约 57.29577051º)</li>
         <li>以度数展示角度, 把数字乘以 π/180 便转换成弧度 π/180: rad = (π / 180) * deg</li>
+      </ul>
+    </li>
+    <li>dl > dt + dd: padding-left 是加在 dd 上</li>
+    <li>table 表格相关属性
+      <ul>
+        <li>caption， 表头标题</li>
+        <li>thead: 表头， th(table head), td</li>
+        <li>tbody: 表体， tr(table row), td(table data)</li>
+        <li>tfoot: 表尾</li>
+        <li>colspan: 跨列合并</li>
+        <li>rowspan: 跨行合并</li>
+      </ul>
+    </li>
+    <li>字节面试：什么是可替换元素？
+      <ul>
+        <li>其内容是可以被替换的元素。 img 标签没有写入任何内容，其内容来自浏览器去下载 src 属性给到的图片，并用该图片资源替换掉 img 标签，在浏览器下载前并不知道图片的宽高。 所以，可替换元素比较特殊，它的宽高是由其加载的内容决定的</li>
+        <li>典型的可替换元素有：iframe, video, embed, img</li>
+        <li>input 在特定情况下被作为可替换元素处理</li>
+      </ul>
+    </li>
+    <li>边框合并属性：border-collapse: collapse</li>
+    <li>nth-child(-n + 2): 表示选择前2行； (-n + 3)：表示前三行</li>
+    <li>form 表单元素
+      <ul>
+        <li>input 行内块级元素，可以设置宽高</li>
       </ul>
     </li>
   </ol>
