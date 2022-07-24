@@ -152,7 +152,7 @@
     <li>dl > dt + dd: padding-left 是加在 dd 上</li>
     <li>table 表格相关属性
       <ul>
-        <li>caption， 表头标题</li>
+        <li>caption, 表头标题</li>
         <li>thead: 表头， th(table head), td</li>
         <li>tbody: 表体， tr(table row), td(table data)</li>
         <li>tfoot: 表尾</li>
@@ -163,15 +163,29 @@
     <li>字节面试：什么是可替换元素？
       <ul>
         <li>其内容是可以被替换的元素。 img 标签没有写入任何内容，其内容来自浏览器去下载 src 属性给到的图片，并用该图片资源替换掉 img 标签，在浏览器下载前并不知道图片的宽高。 所以，可替换元素比较特殊，它的宽高是由其加载的内容决定的</li>
-        <li>典型的可替换元素有：iframe, video, embed, img</li>
+        <li>典型的可替换元素有,iframe, video, embed, img</li>
         <li>input 在特定情况下被作为可替换元素处理</li>
       </ul>
     </li>
-    <li>边框合并属性：border-collapse: collapse</li>
-    <li>nth-child(-n + 2): 表示选择前2行； (-n + 3)：表示前三行</li>
+    <li>边框合并属性, border-collapse: collapse</li>
+    <li>nth-child(-n + 2): 表示选择前2行; (-n + 3)：表示前三行</li>
     <li>form 表单元素
       <ul>
         <li>input 行内块级元素，可以设置宽高</li>
+        <li>type=reset/submit, 可以用于 button</li>
+        <li>label 属性 for='id' 可以不包裹 input, input 需要设置 id</li>
+        <li>对于 radio/checkbox 属性, 需要特定声明 name 与 value</li>
+        <li>对于 checkbox 属性, 相同的类型有共同的 name</li>
+      </ul>
+    </li>
+    <li>emmet语法
+      <ul>
+        <li>div>h1+p: >(子代) 和 +(兄弟)</li>
+        <li>* 多个</li>
+        <li>^ 上一级</li>
+        <li>()分组</li>
+        <li>a[href] 属性</li>
+        <li>ul>li{列表内容$$}*10, 列表内容{}与数字$</li>
       </ul>
     </li>
   </ol>
