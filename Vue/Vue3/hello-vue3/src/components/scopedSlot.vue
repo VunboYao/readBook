@@ -1,24 +1,22 @@
 <template>
   <ul>
     <li v-for="(item,index) in items" :key="index">
-      <slot :item="item" :another-data="index"></slot>
-      <slot name="other" :content="innerData"></slot>
+      <slot :item="item" :another-data="index" />
+      <slot name="other" :content="innerData" />
     </li>
   </ul>
 </template>
 
 <script>
 export default {
-  name: "scoped",
+  name: "Scoped",
   data() {
     return {
       innerData: 'Hello VueSlot',
-      items: ['Feed a cat', 'Buy milk']
+      items: ['Feed a cat', 'Buy milk'],
     }
   },
-  mounted() {
-  },
-  methods: {}
+  methods: {},
 }
 </script>
 

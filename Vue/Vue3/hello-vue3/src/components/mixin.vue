@@ -8,16 +8,14 @@
 import mixin from "@/components/demoMixin"
 
 export default {
-  name: "mixin",
+  name: "Mixin",
   mixins: [mixin],
   data() {
     return {
-      msg: '123'
+      msg: '123',
     }
   },
-  mounted() {
-  },
-  methods: {}
+  methods: {},
 }
 </script>
 

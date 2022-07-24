@@ -1,19 +1,17 @@
 <template>
   <div>base</div>
-<div>{{title}}</div>
+  <div>{{ title }}</div>
 </template>
 
 <script>
 import base from "@/components/extends/base"
 export default {
-  name: "home",
+  name: "Home",
   extends: base,
   data() {
     return {}
   },
-  mounted() {
-  },
-  methods: {}
+  methods: {},
 }
 </script>
 

@@ -3,21 +3,19 @@
 </template>-->
 
 <script>
-import {h} from 'vue'
+import { h } from 'vue'
 export default {
-  name: "helloDemo",
+  name: "HelloDemo",
   data() {
     return {}
   },
+  methods: {},
   render() {
     return h('div', null, [
-        h('h2', null, 'hello demo'),
-        this.$slots.default ? this.$slots.default('123123'): h('span', null, '我是默认的')
+      h('h2', null, 'hello demo'),
+      this.$slots.default ? this.$slots.default('123123') : h('span', null, '我是默认的'),
     ])
   },
-  mounted() {
-  },
-  methods: {}
 }
 </script>
 

@@ -1,3 +1,4 @@
 export default function (app) {
-	app.config.globalProperties.$age = '20'
+  app.config.globalProperties.$age = '20'
 }
+

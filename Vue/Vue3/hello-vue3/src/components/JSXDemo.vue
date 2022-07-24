@@ -3,7 +3,7 @@ export default {
   name: "JSXDemo",
   data(){
     return {
-      counter: 0
+      counter: 0,
     }
   },
   render() {
@@ -14,7 +14,7 @@ export default {
       <button onClick={add}>+1</button>
       <button onClick={down}>-1</button>
     </>
-  }
+  },
 }
 </script>
 

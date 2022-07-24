@@ -1,36 +1,36 @@
 <template>
   <div id="app">
-    <Directive/>
+    <Directive />
     <hr>
-    <JSXDemo/>
+    <JSXDemo />
     <hr>
-    <render/>
+    <render />
     <hr>
     <SetupDemo
-        :title="title2"
-        />
+      :title="title2"
+    />
     <hr>
-    <MixinCom/>
-    <ExtendsHome/>
+    <MixinCom />
+    <ExtendsHome />
     <hr>
     <!--Props模版内能够驼峰或者横线-->
     <h1>{{ title }}</h1>
     <HelloWorld
-        v-model:title.capitalize="title"
-        @submit="submit"
-        v-bind="obj"
+      v-model:title.capitalize="title"
+      v-bind="obj"
+      @submit="submit"
     />
     <hr>
     <TodoButton>
-      <template v-slot:header>
+      <template #header>
         <h1>Here might be a page title</h1>
       </template>
 
-      <template v-slot:footer>
+      <template #footer>
         <h1>Here's some contact info</h1>
       </template>
 
-      <template v-slot:default>
+      <template #default>
         <p>A paragraph for the main content</p>
       </template>
     </TodoButton>
@@ -40,17 +40,17 @@
     </ScopedSlot>
     <!--多作用域插槽的使用需要明确template-->
     <ScopedSlot>
-      <template v-slot="{item, anotherData: index}">
+      <template #default="{item, anotherData: index}">
         <h2>{{ item }}-{{ index + 1 }}</h2>
       </template>
-      <template v-slot:other="{content, item ='placeholder'}">
+      <template #other="{content, item ='placeholder'}">
         <h1>{{ content }}</h1>
         <h2>i am {{ item }}</h2>
       </template>
     </ScopedSlot>
     <!--动态插槽-->
     <TodoButton>
-      <template v-slot:[dynamicSlotName]>
+      <template #[dynamicSlotName]>
         <h1>Here might be a page title</h1>
       </template>
     </TodoButton>
@@ -64,38 +64,32 @@
         <h1>Here's some contact info</h1>
       </template>
 
-      <template v-slot:default>
+      <template #default>
         <p>A paragraph for the main content</p>
       </template>
     </TodoButton>
-    <ScopedSlot #default="{item}">
+    <ScopedSlot v-slot="{item}">
       <h2>{{ item }}</h2>
     </ScopedSlot>
     <hr>
-    <AnimationDemo/>
+    <AnimationDemo />
     <hr>
-    <button v-on:click="ChangeTitle">ChangeTitle</button>
+    <button @click="ChangeTitle">
+      ChangeTitle
+    </button>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-// @ts-ignore
 import TodoButton from './components/slot'
-// @ts-ignore
 import ScopedSlot from "@/components/scopedSlot"
 import AnimationDemo from '@/components/animation.vue'
-// @ts-ignore
 import SetupDemo from "@/components/setup"
-// @ts-ignore
 import MixinCom from '@/components/mixin'
-// @ts-ignore
 import home from "@/components/extends/home"
-// @ts-ignore
 import render from "@/components/render"
-// @ts-ignore
 import JSXDemo from "@/components/JSXDemo"
-// @ts-ignore
 import directive from "@/components/directive"
 import { ref } from 'vue'
 export default {
@@ -110,17 +104,17 @@ export default {
     ExtendsHome: home,
     render,
     JSXDemo,
-    Directive: directive
+    Directive: directive,
   },
   provide() {
     console.log(this)
     return {
-      len: this.title
+      len: this.title,
     }
   },
   setup(props) {
     const count = ref(0)
-    console.log('ref, props :>> ', count, props);
+    console.log('ref, props :>> ', count, props)
   },
   data() {
     return {
@@ -128,17 +122,17 @@ export default {
       title: 'hello',
       obj: {
         name: 'yyb',
-        age: 20
-      }
+        age: 20,
+      },
     }
-  },
-  created() {
-    console.log(this.dynamicSlotName)
   },
   computed: {
     dynamicSlotName() {
       return Math.random() * 10 > 5 ? 'header' : 'footer'
-    }
+    },
+  },
+  created() {
+    console.log(this.dynamicSlotName)
   },
   methods: {
     changeTitle() {
@@ -149,8 +143,8 @@ export default {
     },
     submit(payload) {
       console.log(payload)
-    }
-  }
+    },
+  },
 }
 </script>
 

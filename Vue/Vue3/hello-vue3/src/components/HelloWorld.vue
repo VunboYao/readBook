@@ -1,10 +1,16 @@
 <template>
   <div class="hello">
     <h1>i am child</h1>
-    <input type="text" v-model="email">
-    <input type="text" v-model="password">
-    <button @click="submitForm(email, password)">submit</button>
-    <input type="text" :value="title" @input="emitValue">
+    <input v-model="email" type="text">
+    <input v-model="password" type="text">
+    <button @click="submitForm(email, password)">
+      submit
+    </button>
+    <input
+      type="text"
+      :value="title"
+      @input="emitValue"
+    >
     <h2>{{ age }}-{{ name }}</h2>
   </div>
 </template>
@@ -17,28 +23,27 @@ export default {
     age: Number,
     title: String,
     titleModifiers: { // arg + 'Modifiers'
-      default: () => {
-      }
+      default: () => null,
     },
     modelModifiers: { // 默认修饰符
-      default: () => ({})
-    }
-  },
-  data() {
-    return {
-      email: '',
-      password: ''
-    }
+      default: () => ({}),
+    },
   },
   emits: {
     'update:title': null,
-    submit: ({email, password}) => {
+    submit: ({ email, password }) => {
       if (email && password) {
         return true
       } else {
         console.warn('Invalid submit event payload!')
         return false
       }
+    },
+  },
+  data() {
+    return {
+      email: '',
+      password: '',
     }
   },
   methods: {
@@ -50,16 +55,19 @@ export default {
       this.$emit('update:title', value)
     },
     submitForm(email, password) {
-      this.$emit('submit', {email, password})
-    }
-  }
+      this.$emit('submit', { email, password })
+    },
+  },
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="scss">
+/* @formatter:on */
 h3 {
   margin: 40px 0 0;
+  div {
+    display: flex;}
 }
 
 ul {
@@ -72,7 +80,6 @@ li {
   margin: 0 10px;
 }
 
-a {
-  color: #42b983;
+a {color: #42b983;
 }
 </style>

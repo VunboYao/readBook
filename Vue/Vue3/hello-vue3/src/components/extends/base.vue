@@ -1,18 +1,16 @@
 <template>
-<div>Hello Extends</div>
+  <div>Hello Extends</div>
 </template>
 
 <script>
 export default {
-  name: "base",
+  name: "BaseCom",
   data() {
     return {
-      title: 'extends'
+      title: 'extends',
     }
   },
-  mounted() {
-  },
-  methods: {}
+  methods: {},
 }
 </script>
 

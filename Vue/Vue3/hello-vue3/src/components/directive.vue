@@ -1,22 +1,28 @@
 <template>
-<!--    <input type="text" ref="input">-->
-    <input type="text" ref="input" v-yyb.lazy="'hello'">
-  <h2 v-formatTime="'YYYY/MM/DD'">{{timestamp}}</h2>
+  <!--    <input type="text" ref="input">-->
+  <input
+    ref="input"
+    v-yyb.lazy="'hello'"
+    type="text"
+  >
+  <h2 v-formatTime="'YYYY/MM/DD'">
+    {{ timestamp }}
+  </h2>
 </template>
 
 <script>
 // import {onMounted, ref} from "vue"
-import {getCurrentInstance} from "vue"
+import { getCurrentInstance } from "vue"
 import dayjs from 'dayjs'
-import {onMounted} from "vue"
+import { onMounted } from "vue"
 export default {
-  name: "directive",
+  name: "Directive",
   directives: {
     yyb: {
       mounted(el, binding) {
         console.log(el, binding)
         console.log(binding.modifiers)
-      }
+      },
     },
     formatTime: (el, binding) => {
       console.log('directive mounted=>>>>>>>>>>>>>>>>>')
@@ -30,7 +36,7 @@ export default {
       } else {
         el.textContent = dayjs(value).format(flag)
       }
-    }
+    },
   },
   setup() {
     onMounted(() => {
@@ -40,9 +46,9 @@ export default {
     })
     const timestamp = 1624452193
     return {
-      timestamp
+      timestamp,
     }
-  }
+  },
   /*setup() {
     const input = ref(null)
     onMounted(() => {

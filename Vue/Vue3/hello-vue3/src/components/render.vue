@@ -1,8 +1,9 @@
 <script>
-import {h} from 'vue'
+import { h } from 'vue'
 import HelloDemo from "@/components/helloDemo"
 export default {
-  name: "render",
+  name: "Render",
+  methods: {},
   /* data() {
      return {
        counter: 0
@@ -35,10 +36,9 @@ export default {
   },*/
   render() {
     return h(HelloDemo, null, {
-      default: props => h('span', null, 'app中传入的数据' + props)
+      default: (props) => h('span', null, 'app中传入的数据' + props),
     })
   },
-  methods: {}
 }
 </script>
 

@@ -1,5 +1,6 @@
 export default {
-	install(app){
-		app.config.globalProperties.$name = 'vunboyao'
-	}
+  install(app){
+    app.config.globalProperties.$name = 'vunboyao'
+  },
 }
+
