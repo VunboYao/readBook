@@ -2,10 +2,10 @@
 export const useStore = defineStore('userInfo', {
   state: () => {
     return {
-      score: 100
+      score: 100,
     }
   },
   getters: {
-    doubleCount: (state) => state.score * 2
-  }
+    doubleCount: (state) => state.score * 2,
+  },
 })

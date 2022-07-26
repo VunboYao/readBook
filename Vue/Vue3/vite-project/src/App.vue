@@ -4,13 +4,6 @@ const store = useStore()
 </script>
 
 <template>
-  <div>
-    <el-button>
-      <router-link to="/key">
-        KeyDemo
-      </router-link>
-    </el-button>
-  </div>
   <h2>{{ store.doubleCount }}</h2>
   <RouterView />
 </template>

@@ -1,17 +1,15 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HelloDemo from './HelloDemo'
 
 const routes = [
   {
-    path: '/key',
-    name: 'VKeyDemo',
-    component: () => import('@view/vKeyDemo.vue'),
+    path: '/',
+    name: 'HelloDemo',
+    component: () => import('@/views/01-setupAndTs.vue'),
   },
-  HelloDemo
 ]
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
 })
 
 export default router
