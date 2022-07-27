@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+
+<body>
+  <canvas id="canvas" width="500" height="500"></canvas>
+  <script>
+    var canvas = document.getElementById("canvas"),
+      context = canvas.getContext("2d"),
+      cirX = canvas.width / 2,
+      cirY = canvas.height / 2,
+      rad = Math.PI * 2 / 100,
+      n = 0.75,
+      r = 200;
+
+    //绘制最外层细圈
+    function writeCircle() {
+      context.save();         //save和restore可以保证样式属性只运用于该段canvas元素
+      context.beginPath();    //开始路径
+      context.strokeStyle = "#49f";       //设置边线的颜色
+      context.lineWidth = 4
+      context.lineCap = 'round'
+      context.arc(cirX, cirY, r, Math.PI * 0.75, Math.PI * 2.25, false);      //画一个圆的路径
+      context.stroke();       //绘制边线
+      context.restore();
+    }
+
+    //绘制蓝色外圈
+    function writeBlue(n) {
+      context.save();
+      context.strokeStyle = "#49f";
+      context.lineWidth = 8;
+      context.lineCap = 'round'
+      context.beginPath();
+      context.arc(cirX, cirY, r, Math.PI * 0.75, Math.PI * n, false);
+      context.stroke();
+      context.restore();
+    }
+
+    function DreamLoading() {
+      //清除所有，重新绘制
+      context.clearRect(0, 0, canvas.width, canvas.height)
+
+      writeCircle();
+      writeBlue(n)
+      if (n < 2.25) {
+        if (n < 1) {
+          n += 0.015
+        } else if (n < 1.8) {
+          n += 0.01
+        } else {
+          n += 0.005
+        }
+      }
+      //setTimeout(DreamLoading,speed);
+      requestAnimationFrame(DreamLoading);
+    }
+    DreamLoading();
+  </script>
+</body>
+
+</html>
