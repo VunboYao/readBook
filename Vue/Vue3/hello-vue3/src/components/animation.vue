@@ -6,7 +6,10 @@
     <button @click="remove">
       Remove
     </button>
-    <transition-group name="list" tag="p">
+    <transition-group
+      name="list"
+      tag="p"
+    >
       <span
         v-for="item in items"
         :key="item"
