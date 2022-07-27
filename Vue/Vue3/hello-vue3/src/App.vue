@@ -1,5 +1,11 @@
 <template>
   <div id="app">
+    <h1>ts-Vue3.0</h1>
+    <tsVue />
+    <hr>
+    <h1>TS_Setup3.2</h1>
+    <tsSetupVue />
+    <hr>
     <Directive />
     <hr>
     <JSXDemo />
@@ -92,6 +98,8 @@ import render from "@/components/render"
 import JSXDemo from "@/components/JSXDemo"
 import directive from "@/components/directive"
 import { ref } from 'vue'
+import tsSetupVue from './components/ts-setup.vue'
+import tsVue from './components/ts-vue.vue'
 export default {
   name: 'App',
   components: {
@@ -105,6 +113,8 @@ export default {
     render,
     JSXDemo,
     Directive: directive,
+    tsSetupVue,
+    tsVue,
   },
   provide() {
     console.log(this)

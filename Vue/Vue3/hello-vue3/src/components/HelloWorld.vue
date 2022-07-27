@@ -15,17 +15,28 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'HelloWorld',
   props: {
-    name: String,
-    age: Number,
-    title: String,
+    name: {
+      type: String,
+      default: '',
+    },
+    age: {
+      type: Number,
+      default: 0,
+    },
+    title: {
+      type: String,
+      default: '',
+    },
     titleModifiers: { // arg + 'Modifiers'
+      type: Function,
       default: () => null,
     },
     modelModifiers: { // 默认修饰符
+      type: Object,
       default: () => ({}),
     },
   },
@@ -54,6 +65,7 @@ export default {
       }
       this.$emit('update:title', value)
     },
+
     submitForm(email, password) {
       this.$emit('submit', { email, password })
     },
@@ -66,8 +78,10 @@ export default {
 /* @formatter:on */
 h3 {
   margin: 40px 0 0;
+
   div {
-    display: flex;}
+    display: flex;
+  }
 }
 
 ul {
@@ -80,6 +94,7 @@ li {
   margin: 0 10px;
 }
 
-a {color: #42b983;
+a {
+  color: #42b983;
 }
 </style>
