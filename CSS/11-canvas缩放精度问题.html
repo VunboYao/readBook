@@ -19,12 +19,11 @@
   <script>
     var canvas = document.getElementById("canvas"),
       context = canvas.getContext("2d"),
-      cirX = canvas.width / 4,
-      cirY = canvas.height / 4,
+      cirX = canvas.width / 2,
+      cirY = canvas.height / 2,
       rad = Math.PI * 2 / 100,
       n = 0.75,
       r = 200;
-    context.scale(2, 2)
 
     //绘制最外层细圈
     function writeCircle() {
@@ -59,7 +58,7 @@
       if (n < 2.25) {
         if (n < 1) {
           n += 0.015
-        } else if (n < 1.8) {
+        } else if (n > 1 && n < 1.8) {
           n += 0.01
         } else {
           n += 0.005
