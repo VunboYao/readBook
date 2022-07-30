@@ -4,7 +4,7 @@
     <tsVue />
     <hr>
     <h1>TS_Setup3.2</h1>
-    <tsSetupVue />
+    <tsSetupVue :bar="barValue" @update="onUpdate" />
     <hr>
     <Directive />
     <hr>
@@ -22,7 +22,6 @@
     <!--Props模版内能够驼峰或者横线-->
     <h1>{{ title }}</h1>
     <HelloWorld
-      v-model:title.capitalize="title"
       v-bind="obj"
       @submit="submit"
     />
@@ -124,7 +123,9 @@ export default {
   },
   setup(props) {
     const count = ref(0)
+    let barValue = ref(200)
     console.log('ref, props :>> ', count, props)
+    return { barValue }
   },
   data() {
     return {
@@ -143,8 +144,14 @@ export default {
   },
   created() {
     console.log(this.dynamicSlotName)
+    setTimeout(() => {
+      this.barValue = 300
+    }, 2000)
   },
   methods: {
+    onUpdate(demo) {
+      console.log(demo, '.hello')
+    },
     changeTitle() {
       console.log(this)
       console.log(this.title)

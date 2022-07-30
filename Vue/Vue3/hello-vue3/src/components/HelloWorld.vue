@@ -41,7 +41,7 @@ export default {
     },
   },
   emits: {
-    'update:title': null,
+    'update:title': () => ({}),
     submit: ({ email, password }) => {
       if (email && password) {
         return true
