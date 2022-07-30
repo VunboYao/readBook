@@ -33,7 +33,7 @@ export default {
     },
     titleModifiers: { // arg + 'Modifiers'
       type: Function,
-      default: () => null,
+      default: () => ({}),
     },
     modelModifiers: { // 默认修饰符
       type: Object,
