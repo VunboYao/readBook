@@ -6,6 +6,7 @@
       {{ bar }}
     </button>
     {{ count2 }}
+    <input v-model="count2" type="number">
   </div>
 </template>
 
@@ -14,7 +15,7 @@ import { defineEmits, defineProps, inject, onMounted, provide, ref, watchEffect 
 import type { InjectionKey, Ref } from "vue"
 
 let count: Ref<string | number> = ref()
-let count2 = ref<string | number>('2020')
+let count2 = ref<number>(123)
 interface Props {
   foo?: string
   bar?: number
@@ -29,7 +30,7 @@ const emit = defineEmits<{
 }>()
 
 watchEffect(() => {
-  console.log(foo, bar)
+  console.log(count2, typeof count2.value)
 })
 
 const show = (event: Event) => {

@@ -169,6 +169,7 @@ watch 第一个参数类型
   - 重新定义一个计算属性
 - 对于数组/对象类型的 prop,**仍然可以**更改，但不建议。应该抛出一个事件来通知父组件改变
 - 事件校验：所有抛出事件可以使用对象形式来描述。返回布尔值来表示事件是否合法
+- **组件暴露的方法在使用时，不能加扣号，否则参数丢失**
 
 #### 自定义 v-model
 
@@ -219,6 +220,12 @@ watch 第一个参数类型
 // 对应的声明如下 const props = defineProps(['title', 'titleModifiers']) defineEmits(['update:title]) console.log(props.titleModifiers) // { capitalize: true }
 ```
 
+- `.lazy`，每次 `change` 事件后更新数据
+- `.number`，自动转为数字。底层利用 `parseFloat` 处理，如果无法被 `parseFloat()` 处理，返回原始值。
+  - `parseFloat` 默认返回数字，如果碰到非数字字符串，则自动截取。如果开头不是数字，则返回 `NaN`
+- `.trim`，去除首尾空格
+- **默认绑定的 `v-model` , 其类型是 string， input 中 type 是 number 时， 数据类型是 number**
+
 #### 属性透传
 
 - `inheritAttrs: false`，关闭自动继承 attribute
@@ -228,7 +235,7 @@ watch 第一个参数类型
   - 没有参数的`v-bind`会将一个对象的所有属性都作为 attribute 应用到目标元素上
   - 所有透传属性绑定到内部的元素：`inheritAttrs: false`和使用`v-bind=$attrs`
 - 多根节点没有自动 attribute 透传行为.可通过`$attrs`现实绑定
-- `<script setup>` 中可以通过 `useAttrs()`来访问所有透传属性，否则在`setup（）`上下文对象中。 $attrs不是响应式的，可以在`onUpdated()`中结合最新的 `$attrs`执行副作用.**但总是反应为最新透传的 attribute**
+- `<script setup>` 中可以通过 `useAttrs()`来访问所有透传属性，否则在`setup（）`上下文对象中。 $attrs不是响应式的，可以在`onUpdated()`中结合最新的 `$attrs` 执行副作用.**但总是反应为最新透传的 attribute**
 
 #### 插槽
 
@@ -306,7 +313,7 @@ const ProvideTest = defineAsyncComponent(() => {
 简写 `mounted`和`updated`行为
 
 ```js
-;<div v-color='color'></div>
+<div v-color='color'></div>
 
 app.directive('color', (el, binding) => {
 	// mounted和 updated 时调用
