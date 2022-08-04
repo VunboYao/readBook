@@ -2,6 +2,7 @@ module.exports = {
   root: true,
   env: {
     node: true,
+    "vue/setup-compiler-macros": true,
   },
   extends: [
     "eslint:recommended",
@@ -136,7 +137,7 @@ module.exports = {
     "eol-last": "error",
 
     // 禁止函数调用时有空格
-    "func-call-spacing": "error",
+    "func-call-spacing": "off",
 
     // 禁用标识符，可指定禁止使用的变量标识符
     "id-blacklist": ["error"],
@@ -176,5 +177,7 @@ module.exports = {
         requireLast: false,
       },
     }],
+
+    "vue/no-setup-props-destructure": [0, 'error'],
   },
 }
