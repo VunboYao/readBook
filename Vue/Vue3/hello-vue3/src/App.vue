@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <h1>ts-Vue3.0</h1>
+    <!--    <h1>ts-Vue3.0</h1>
     <tsVue />
     <hr>
-    <h1>TS_Setup3.2</h1>
+    <h1>TS_Setup3.2</h1>-->
     <tsSetupVue />
-    <hr>
+    <!--    <hr>
     <Directive />
     <hr>
     <JSXDemo />
@@ -19,7 +19,7 @@
     <MixinCom />
     <ExtendsHome />
     <hr>
-    <!--Props模版内能够驼峰或者横线-->
+    &lt;!&ndash;Props模版内能够驼峰或者横线&ndash;&gt;
     <h1>{{ title }}</h1>
     <HelloWorld
       v-model:title.capitalize="title"
@@ -40,11 +40,11 @@
         <p>A paragraph for the main content</p>
       </template>
     </TodoButton>
-    <!--默认插槽作用域的缩写-->
+    &lt;!&ndash;默认插槽作用域的缩写&ndash;&gt;
     <ScopedSlot v-slot="{item, anotherData: index}">
       <h2>{{ item }}-{{ index + 1 }}</h2>
     </ScopedSlot>
-    <!--多作用域插槽的使用需要明确template-->
+    &lt;!&ndash;多作用域插槽的使用需要明确template&ndash;&gt;
     <ScopedSlot>
       <template #default="{item, anotherData: index}">
         <h2>{{ item }}-{{ index + 1 }}</h2>
@@ -54,13 +54,13 @@
         <h2>i am {{ item }}</h2>
       </template>
     </ScopedSlot>
-    <!--动态插槽-->
+    &lt;!&ndash;动态插槽&ndash;&gt;
     <TodoButton>
       <template #[dynamicSlotName]>
         <h1>Here might be a page title</h1>
       </template>
     </TodoButton>
-    <!--插槽简写-->
+    &lt;!&ndash;插槽简写&ndash;&gt;
     <TodoButton>
       <template #header>
         <h1>Here might be a page title</h1>
@@ -82,7 +82,7 @@
     <hr>
     <button @click="ChangeTitle">
       ChangeTitle
-    </button>
+    </button>-->
   </div>
 </template>
 
@@ -97,13 +97,15 @@ import home from "@/components/extends/home"
 import render from "@/components/render"
 import JSXDemo from "@/components/JSXDemo"
 import directive from "@/components/directive"
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import tsSetupVue from './components/ts-setup.vue'
 import tsVue from './components/ts-vue.vue'
+import sensors from "sa-sdk-javascript"
+
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    /* HelloWorld,
     TodoButton,
     ScopedSlot,
     AnimationDemo,
@@ -112,9 +114,9 @@ export default {
     ExtendsHome: home,
     render,
     JSXDemo,
-    Directive: directive,
+    Directive: directive,*/
     tsSetupVue,
-    tsVue,
+    // tsVue,
   },
   provide() {
     console.log(this)
@@ -125,6 +127,10 @@ export default {
   setup(props) {
     const count = ref(0)
     console.log('ref, props :>> ', count, props)
+
+    onMounted(() => {
+      console.log('123')
+    })
   },
   data() {
     return {
