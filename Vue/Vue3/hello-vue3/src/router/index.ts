@@ -10,6 +10,11 @@ const routes = [
         name: 'Pinia01',
         component: () => import('@/views/Pinia-01.vue'),
       },
+      {
+        path: 'pinia-02',
+        name: 'Pinia02',
+        component: () => import('@/views/Pinia-02.vue'),
+      },
     ],
   },
 ]
