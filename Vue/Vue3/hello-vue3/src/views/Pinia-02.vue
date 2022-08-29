@@ -18,8 +18,10 @@ import { useUserStore } from '@/store/user'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 
+import { useRouterFrom } from '../hooks/useRouterFrom'
+const useRouterFromData = useRouterFrom()
+
 const user = useUserStore()
-console.log(user)
 
 // 响应式需要包装暴露： reactive => refs
 const { firstName, reserveComputed } = storeToRefs(user)
@@ -40,5 +42,4 @@ const join = () => {
 </script>
 
 <style lang='scss' scoped>
-
 </style>

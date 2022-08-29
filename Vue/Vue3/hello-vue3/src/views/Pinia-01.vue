@@ -14,8 +14,9 @@
 <script setup lang="ts">
 import { useCountStore } from '@/store/counter'
 import { storeToRefs } from 'pinia'
+import { useRouterFrom } from '@/hooks/useRouterFrom'
 const countStore = useCountStore()
-
+const useRouterFromData = useRouterFrom()
 // 不能使用解构，如果用，必须使用toRefs或者 storeToRefs
 const { number, doubleNumber } = storeToRefs(countStore)
 const { add } = countStore
@@ -27,5 +28,4 @@ const down = () => {
 </script>
 
 <style lang='scss' scoped>
-
 </style>

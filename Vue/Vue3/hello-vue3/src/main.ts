@@ -8,7 +8,7 @@ const app = createApp(App)
 
 app.use(pluginObject)
 app.use(pluginFun)
-app.use(Pinia)
 app.use(Router)
+app.use(Pinia)
 
 app.mount('#app')

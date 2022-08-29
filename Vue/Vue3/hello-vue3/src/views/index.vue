@@ -1,20 +1,47 @@
 <template>
   <h1>当前所在路由：{{ route.path }}</h1>
   <div>
-    <RouterLink to="pinia-01">
-      <button>Pinia01</button>
-    </RouterLink>
-    <RouterLink to="pinia-02">
-      <button>Pinia02</button>
-    </RouterLink>
+    <button @click="toPinia01">
+      Pinia01
+    </button>
+    <button @click="toPinia02">
+      Pinia02
+    </button>
   </div>
   <hr>
   <RouterView />
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { useAwait } from '@/hooks/useAwait'
+import { useRouterHooks } from '@/hooks/useRouterHooks'
+const router = useRouter()
 const route = useRoute()
+useRouterHooks()
+const toPinia02 = async () => {
+  if (route.name === 'Pinia02') {
+    return
+  }
+  router.push({
+    name: 'Pinia02',
+    query: {
+      pinia: 2,
+    },
+  })
+}
+
+const toPinia01 = () => {
+  if (route.name === 'Pinia01') {
+    return
+  }
+  router.push({
+    name: 'Pinia01',
+    query: {
+      pinia: 1,
+    },
+  })
+}
 </script>
 
 <style lang='scss' scoped>

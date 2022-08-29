@@ -9,6 +9,9 @@ const routes = [
         path: 'pinia-01',
         name: 'Pinia01',
         component: () => import('@/views/Pinia-01.vue'),
+        meta: {
+          black: ['Pinia02'],
+        },
       },
       {
         path: 'pinia-02',

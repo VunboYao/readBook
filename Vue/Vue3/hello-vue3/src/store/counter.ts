@@ -13,7 +13,6 @@ export const useCountStore = defineStore({
   actions: {
     add() {
       this.number++
-      console.log(this.number)
     },
   },
 })
