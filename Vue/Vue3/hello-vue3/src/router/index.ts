@@ -18,6 +18,11 @@ const routes = [
         name: 'Pinia02',
         component: () => import('@/views/Pinia-02.vue'),
       },
+      {
+        path: 'async-validator',
+        name: 'AsyncValidator',
+        component: () => import('@/view/async-validator.vue'),
+      },
     ],
   },
 ]
