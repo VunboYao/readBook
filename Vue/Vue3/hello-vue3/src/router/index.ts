@@ -11,6 +11,11 @@ const routes = [
         component: () => import('@/views/Pinia-01.vue'),
         meta: {
           black: ['Pinia02'],
+          canAccess: ['hello', 'foo', 'bar'],
+          funcList: [
+            { name: 'foo', operation: 'click' },
+            { name: 'bar', operation: 'blur' },
+          ],
         },
       },
       {

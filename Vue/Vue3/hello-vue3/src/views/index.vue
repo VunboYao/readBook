@@ -27,6 +27,7 @@ const toPinia02 = async () => {
     name: 'Pinia02',
     query: {
       pinia: 2,
+      func: 'foo',
     },
   })
 }
@@ -39,6 +40,7 @@ const toPinia01 = () => {
     name: 'Pinia01',
     query: {
       pinia: 1,
+      func: 'bar',
     },
   })
 }
