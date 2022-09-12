@@ -26,7 +26,7 @@ const routes = [
       {
         path: 'async-validator',
         name: 'AsyncValidator',
-        component: () => import('@/view/async-validator.vue'),
+        component: () => import('@/views/async-validator.vue'),
       },
     ],
   },

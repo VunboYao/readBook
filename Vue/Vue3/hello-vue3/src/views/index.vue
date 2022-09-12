@@ -7,6 +7,9 @@
     <button @click="toPinia02">
       Pinia02
     </button>
+    <router-link to="/async-validator">
+      <button>Async</button>
+    </router-link>
   </div>
   <hr>
   <RouterView />
