@@ -5,6 +5,10 @@
 </template>
 
 <script lang="ts" setup>
+import { EventTrack } from './EventTrack'
+import { provide } from 'vue'
+const Point = new EventTrack()
+provide('track', Point)
 </script>
 
 <style scoped>
