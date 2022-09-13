@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="sensorsdata-sat.full.js"></script>
+</head>
+<body>
+<div>
+  <button>1</button>
+  <button>12</button>
+  <button>13</button>
+  <button>14</button>
+  <button>15</button>
+  <button>16</button>
+  <button>17</button>
+</div>
+<script>
+  var sensors = window['sensorsDataAnalytic201505'];
+  sensors.init({
+    show_log: true,
+    server_url: 'http://test-syg.datasink.sensorsdata.cn/sa?token=xxxxx&project=xxxxxx',
+    is_track_single_page:true, // 单页面配置，默认开启，若页面中有锚点设计，需要将该配置删除，否则触发锚点会多触发 $pageview 事件
+    use_client_time:true,
+    send_type:'beacon',
+    heatmap: {
+      //是否开启点击图，default 表示开启，自动采集 $WebClick 事件，可以设置 'not_collect' 表示关闭。
+      clickmap:'default',
+      //是否开启触达图，not_collect 表示关闭，不会自动采集 $WebStay 事件，可以设置 'default' 表示开启。
+      scroll_notice_map:'not_collect'
+    },
+    batch_send: {
+      datasend_timeout: 6000, //一次请求超过多少毫秒的话自动取消，防止请求无响应。
+      send_interval: 600000, //间隔多少毫秒发一次数据。
+      one_send_max_length: 6 // 一次请求最大发送几条数据，防止数据太大，v1.15.21 及以上版本不支持 one_send_max_length 参数。
+    }
+  });
+
+  setTimeout(() => {
+    sensors.track('BuyProduct', {
+      ProductName: "MacBook Pro",
+      ProductPrice: 123.45,
+      IsAddedToFav: false,
+    });
+  },3000)
+</script>
+</body>
+</html>
