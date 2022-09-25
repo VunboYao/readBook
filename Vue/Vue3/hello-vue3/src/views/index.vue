@@ -10,6 +10,11 @@
     <router-link to="/async-validator">
       <button>Async</button>
     </router-link>
+    <router-link to="/element-form">
+      <button>
+        element-form
+      </button>
+    </router-link>
   </div>
   <hr>
   <RouterView />

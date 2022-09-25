@@ -12,6 +12,5 @@ export class EventTrack {
 
   getPerformanceInfo() {
     const P = window.performance.getEntries()
-    console.log('P :>> ', P)
   }
 }
