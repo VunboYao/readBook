@@ -5,7 +5,7 @@
 
     "checkJs": false, // 是否检查 JS 代码符合规范
 
-    "allowJs": false, // 允许编ç译 js 文件
+    "allowJs": true, // 允许编ç译 js 文件
 
     "removeComments": false, // 删除注释。 除了以 /！* 开头的版权信息
 
