@@ -33,6 +33,11 @@ const routes = [
         name: 'ElementForm',
         component: () => import('@/views/element-form.vue'),
       },
+      {
+        path: 'date-fns',
+        name: 'DateFns',
+        component: () => import('@/views/date-fns.vue'),
+      },
     ],
   },
 ]

@@ -15,6 +15,9 @@
         element-form
       </button>
     </router-link>
+    <router-link to="/date-fns">
+      <button>DateFns</button>
+    </router-link>
   </div>
   <hr>
   <RouterView />
@@ -22,7 +25,6 @@
 
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router'
-import { useAwait } from '@/hooks/useAwait'
 import { useRouterHooks } from '@/hooks/useRouterHooks'
 const router = useRouter()
 const route = useRoute()
