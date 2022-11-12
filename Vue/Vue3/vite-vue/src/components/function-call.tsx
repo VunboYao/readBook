@@ -1,11 +1,28 @@
-import { isBrowser } from '../utils/basic'
-import { usePopupState } from './mount-components'
-import { ComponentInstance, DialogOptions } from './types'
+import { extend, isBrowser } from '../utils/basic'
+import Dialog from './Dialog'
+import { mountComponent, usePopupState } from './mount-components'
+import { ComponentInstance, DialogAction, DialogOptions } from './types'
 
 // 实例
 let instance: ComponentInstance
 
+const DEFAULT_OPTIONS = {
+  title: '',
+  width: '',
+  beforeClose: null,
+  showCancelButton: false,
+  showConfirmButton: false,
+  cancelButtonText: '',
+  confirmButtonText: '',
+  cancelButtonColor: '',
+  confirmButtonColor: '',
+  allowHtml: false,
+  className: '',
+  transition: undefined,
+}
+
 function initInstance() {
+
   const Wrapper = {
     setup() {
       const { state, toggle } = usePopupState()
@@ -13,6 +30,8 @@ function initInstance() {
       return () => <Dialog {...state} onUpdate:show={toggle} />
     },
   }
+
+  !({ instance } = mountComponent(Wrapper))
 }
 
 export function showDialog(options: DialogOptions) {
@@ -24,7 +43,11 @@ export function showDialog(options: DialogOptions) {
     if (!instance) {
       initInstance()
     }
-    resolve({})
-  })
 
+    instance.open(extend({}, DEFAULT_OPTIONS, options, {
+      callback: (action: DialogAction) => {
+        resolve(action)
+      },
+    }))
+  })
 }

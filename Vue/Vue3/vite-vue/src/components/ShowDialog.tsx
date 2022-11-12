@@ -7,7 +7,7 @@ export default defineComponent({
     showDialog({})
 
     return () => {
-      return (<div>input you think</div>)
+      return (<div>input you think, this is a tsx demo</div>)
     }
   },
 })

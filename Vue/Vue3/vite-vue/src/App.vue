@@ -1,6 +1,25 @@
 <script setup lang="ts">
-import ShowDialog from './components/ShowDialog'
+import { showDialog } from './components/function-call'
 
+const show = () => {
+  showDialog({
+    title: 'HelloTSX',
+    showCancelButton: true,
+    showConfirmButton: true,
+    cancelButtonText: '取消',
+    cancelButtonColor: 'red',
+    confirmButtonText: '确认',
+    confirmButtonColor: 'blue',
+    beforeClose() {
+      return new Promise((resolve) => {
+        console.log('beforeClose')
+        resolve(true)
+      })
+    },
+  }).then((res) => {
+    console.log(res, 'come')
+  })
+}
 </script>
 
 <template>
@@ -20,7 +39,9 @@ import ShowDialog from './components/ShowDialog'
       >
     </a>
   </div>
-  <ShowDialog />
+  <button @click="show">
+    showDialog
+  </button>
 </template>
 
 <style scoped>

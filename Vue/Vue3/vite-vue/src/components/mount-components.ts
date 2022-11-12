@@ -1,5 +1,5 @@
 import { extend } from './../utils/basic'
-import { getCurrentInstance, reactive } from 'vue'
+import { Component, createApp, getCurrentInstance, reactive } from 'vue'
 
 interface init {
   show: boolean
@@ -37,5 +37,20 @@ export function useExpose<T = Record<string, any>>(apis: T) {
   const instance = getCurrentInstance()
   if (instance) {
     extend(instance.proxy as object, apis)
+  }
+}
+
+export function mountComponent(RootComponent: Component) {
+  const app = createApp(RootComponent)
+  const root = document.createElement('div')
+
+  document.body.appendChild(root)
+
+  return {
+    instance: app.mount(root),
+    unmount() {
+      app.unmount()
+      document.body.removeChild(root)
+    },
   }
 }
