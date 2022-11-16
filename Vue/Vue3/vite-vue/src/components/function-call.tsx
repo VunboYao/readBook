@@ -8,6 +8,7 @@ let instance: ComponentInstance
 
 const DEFAULT_OPTIONS = {
   title: '',
+  desc: '',
   width: '',
   beforeClose: null,
   showCancelButton: false,
@@ -43,6 +44,8 @@ export function showDialog(options: DialogOptions) {
     if (!instance) {
       initInstance()
     }
+
+    console.log(instance, 'instance')
 
     instance.open(extend({}, DEFAULT_OPTIONS, options, {
       callback: (action: DialogAction) => {

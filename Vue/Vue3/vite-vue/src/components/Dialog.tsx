@@ -1,11 +1,14 @@
-import { defineComponent, PropType, reactive, ref, render } from 'vue'
-import { callInterceptor, ComponentInstance, DialogAction, Interceptor, makeStringProp, numericProp, truthProp, unknownProp } from './types'
+import { defineComponent, PropType, reactive, ref } from 'vue'
+import { useLockScroll } from '../utils/use-lock-scroll'
+import classes from './index.module.css'
+import { callInterceptor, DialogAction, Interceptor, makeStringProp, numericProp, truthProp, unknownProp } from './types'
 
 export default defineComponent({
   name: 'DialogComponent',
   props: {
     title: String,
     show: Boolean,
+    desc: String,
     width: numericProp,
     beforeClose: Function as PropType<Interceptor>,
     showCancelButton: truthProp,
@@ -26,6 +29,8 @@ export default defineComponent({
       cancel: false,
       close: false,
     })
+
+    const dialogRef = ref<HTMLElement>()
 
     const updateShow = (value: Boolean) => emit('update:show', value)
     const close = (action: DialogAction) => {
@@ -61,6 +66,8 @@ export default defineComponent({
     const onConfirm = getActionHandler('confirm')
     const onClose = getActionHandler('close')
 
+    useLockScroll(dialogRef, () => props.show)
+
     return () => {
       const {
         title,
@@ -74,17 +81,23 @@ export default defineComponent({
       } = props
       return (
         show &&
-        <div>
-          <h1>{title}</h1>
-          <div>
-            {showCancelButton && <button
-              style={{ 'color': cancelButtonColor }}
-              onClick={onCancel}
-            >{cancelButtonText}</button>}
-            {showConfirmButton && <button
-              style={{ 'color': confirmButtonColor }}
-              onClick={onConfirm}
-            >{confirmButtonText}</button>}
+        <div
+          ref={dialogRef}
+          class={classes.dialog}
+        >
+          <div class={classes.dialogINner}>
+            <h1>{title}</h1>
+            <div>
+              {showCancelButton && <button
+                style={{ 'color': cancelButtonColor }}
+                onClick={onCancel}
+              >{cancelButtonText}</button>}
+              {showConfirmButton && <button
+                style={{ 'color': confirmButtonColor }}
+                onClick={onConfirm}
+              >{confirmButtonText}</button>}
+              <div class={classes.demo}>{title}</div>
+            </div>
           </div>
         </div>
       )

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { showDialog } from './components/function-call'
 
 const show = () => {
@@ -20,10 +21,23 @@ const show = () => {
     console.log(res, 'come')
   })
 }
+
+const close = () => {
+  console.log('close')
+}
+const startX = ref(0)
+const moveX = ref(0)
+document.addEventListener('touchstart', (e) => {
+  startX.value = e.touches[0].clientX
+})
+document.addEventListener('touchmove', (e) => {
+  const touch = e.touches[0]
+  moveX.value = touch.clientX
+})
 </script>
 
 <template>
-  <div>
+  <div class="main">
     <a href="https://vitejs.dev" target="_blank">
       <img
         src="/vite.svg"
@@ -38,10 +52,10 @@ const show = () => {
         alt="Vue logo"
       >
     </a>
+    <button @click="show">
+      showDialog
+    </button>
   </div>
-  <button @click="show">
-    showDialog
-  </button>
 </template>
 
 <style scoped>
@@ -55,5 +69,21 @@ const show = () => {
 }
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
+}
+
+.main {
+  height: 200vh;
+}
+
+.wrap-father {
+  overflow: hidden;
+}
+.wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,.4);
 }
 </style>
