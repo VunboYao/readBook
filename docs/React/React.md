@@ -1,3 +1,13 @@
+## 核心依赖
+
+- `react`: 包含react所必须的核心代码
+- `react-dom`: react渲染在不同平台所需要的核心代码
+- `babel`: 将 `jsx`转换成 react 代码的工具
+
+## 脚手架
+
+`npm i create-react-app -g`
+
 ## HelloReact
 
 ```react
@@ -12,6 +22,10 @@ const VDOM = (
 // React.createElement(标签名，{属性id,class}, 内容[标签级则React.createElement(标签名,{属性}, 内容)])
 const VDOM = React.createElement('h1', { id: 'title' }, React.createElement('span', {}, 'Hello React'))
 ReactDOM.render(VDOM, document.getElementById('APP'), [回调函数])
+
+// React18版本
+const Root = ReactDOM.createRoot(document.getElementById('app'))
+Root.render(VDOM)
 ```
 
 ## 虚拟 DOM
@@ -30,12 +44,62 @@ ReactDOM.render(VDOM, document.getElementById('APP'), [回调函数])
 
 ​      4.通过告诉JSX，注释内容不是元素内容，将注释内容放置于{}中即可
 
+## 认识JSX
+
+- JSX 是一种JavaScript的语法扩展(eXtension)，也在很多地方称之为JavaScript XML
+- 用于描述UI界面，并且其完全可以和JavaScript融合在一起使用
+
+### 为什么React选择了JSX
+
+React 认为**渲染逻辑**本质上**与其他UI逻辑**存在内在耦合
+
+- 比如UI需要绑定事件
+- 比如UI中需要展示数据状态
+- 比如在某些状态发生改变时，又需要改变UI
+
+### JSX嵌入变量作为子元素
+
+```react
+const root = ReactDOM.createRoot(document.getElementById('app'))
+
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      msg: 'Hello React',
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        {/* this.state.msg 哪些条件展示？ */}
+        <h2>{this.state.msg}</h2>
+      </div>
+    )
+  }
+}
+
+root.render(<App />)
+```
+
+- 情况一：当变量是Numer、String、Array类型时，可以直接显示
+- 情况二：当变量是null、undefined、Boolean类型时，内容为空
+  - 若希望可以显示null、undefined、Boolean，需要转成字符串
+- **情况三：Object对象类型不能作为子元素 (Uncaught Error: Objects are not valid as a React child)**
+
+**可以嵌入的表达式**
+
+- **运算表达式**
+- **三元运算符**
+- **执行一个函数**
+
 ## JSX 语法规则
 
-1. 定义虚拟 DOM 时，不要写引号
-2. 标签中混入 JS 表达式时要用**`{}`**
-3. 样式的类名指定不要用`class`, 要用**`className`**
-4. 内联样式，要用 `style=\{\{key:value\}\}` 的形式去写
+1. 定义虚拟 DOM 时，**不要写引号**
+2. **标签中混入 JS 表达式时要用`{}`**
+3. 样式的**类名指定不要用`class`**, 要用**`className`**
+4. **style**内联样式，要用 `style=\{\{key:value\}\}` 的形式去写
 5. 只有一个根标签。
    1. 代码片段元素**`<React.Fragment key={item.id}></React.Fragment>`， 目前唯一支持 key 属性**
    2. 短语法：**`<></>`, 但不支持 key 属性**
@@ -109,7 +173,7 @@ state 是组件对象最重要的属性，值是对象（可包含多个 key-val
   - 强制绑定 this: 通过函数对象的 bind()
   - **箭头函数**
 
-- 状态数据，不能直接修改或更新
+- **状态数据，不能直接修改或更新**
 
 - **对象式状态改变，setState 默认是异步的**
 
@@ -212,7 +276,7 @@ class Person extends React.Component {
 - 实例调用，则方法中的 this 指向类的实例
 - 若无`fun()`调用，赋值语句给第三方变量，则属于直接调用
 - 类中默认开启严格模式，直接调用方法则返回 undefined。
-- **react 中的`{this.onClick=handleClick}`方法赋值语句就是直接调用**.提取出来单独使用，this 会指向该方法运行时所在的环境
+- **react 中的`{this.onClick=handleClick}`方法赋值语句就是直接调用**.提取出来单独使用，this 会指向该方法运行时所在的环境，因此在class严格模式下，指向undefined
 - **默认情况下react在调用事件监听方法的时候，是通过apply来调用的，并且在调用的时候将监听方法中的this修改为了undefined(ctx)，所以默认情况下我们是无法在监听方法中使用this的**
 
 ```js
@@ -233,13 +297,89 @@ x() // undefined
 
 ### this问题解决方案
 
-1. 箭头函数
-2. 通过添加监听方法的时候，手动通过bind的方式来修改监听方法中的this
-3. 通过在构造函数中，手动通过bind的方式来修改监听方法中的this
+1. **箭头函数**
+
+   ```react
+   // 箭头函数方式
+   func = () => {
+     console.log(this.state.msg);
+   }
+   
+   render() {
+     return (
+       <div>
+         <button onClick={this.func}>{this.state.msg}</button>
+       </div>
+     )
+   }
+   ```
+
+2. 通过添加监听方法的时候，**手动通过bind的方式**来修改监听方法中的this
+
+   ```react
+   func() {
+     console.log(this.state.msg);
+   }
+   
+   render() {
+     return (
+       <div>
+         {/*bind绑定*/}
+         <button onClick={this.func.bind(this)}>{this.state.msg}</button>
+       </div>
+     )
+   }
+   ```
+
+3. 通过**在构造函数**中，手动通过bind的方式来修改监听方法中的this
+
+   ```react
+   class App extends React.Component {
+     constructor(props) {
+       super(props)
+       this.state = {
+         msg: 'Hello React',
+       }
+   
+       this.func = this.func.bind(this) // bind绑定
+     }
+   
+     func() {
+       console.log(this.state.msg);
+     }
+   
+     render() {
+       return (
+         <div>
+           <button onClick={this.func}>{this.state.msg}</button>
+         </div>
+       )
+     }
+   }
+   ```
+
 4. 手动绑定一个箭头函数，然后再通过箭头函数的函数体中手动调用监听方法。
    1. 因为箭头函数中的this,就是当前的实例对象
    2. 因为监听方法并不是React调用的，而是我们在箭头函数中手动调用的
    3. 因为普通的方法，默认情况下谁调用就指向谁
+   4. **可将event对象传入**
+
+   ```react
+   func(params) {
+     console.log(this.state.msg, 'params');
+   }
+   
+   render() {
+     return (
+       <div>
+         {/* 箭头函数中直接调用 */}
+         <button onClick={e => this.func('params')}>{this.state.msg}</button>
+       </div>
+     )
+   }
+   ```
+
+   
 
 **注意点：企业开发中，推荐第四种**
 
