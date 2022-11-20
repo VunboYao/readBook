@@ -8,6 +8,8 @@
 
 `npm i create-react-app -g`
 
+创建项目：`create-react-app your-project`
+
 ## HelloReact
 
 ```react
@@ -155,7 +157,7 @@ root.render(<App />)
 - constructor 中原型方法通过 bind 绑定 this
 - 方法中通过 setState 进行更新，是一种数据合并
 - constructor 构造器只执行一次
-- render 调用 n + 1 次
+- **render 调用 n + 1 次**
 
 ## 嵌入规则
 
@@ -589,8 +591,8 @@ const FnRef = React.forwardRef(function (props, fnRef) {
 5. B-`shouldComponentUpdate(nextProps, nextState)`，组件更新 ? 必须返回 true/false
 6. B-`componentWillUpdate(nextProps, nextState)`, 组件将要更新
 7. B-`render()`，执行渲染
-8. B-`componentDidUpdate(nextProps, nextState)`，组件更新完成。**禁止套娃**
-9. A-`componentDidUpdate(nextProps, nextState)`，组件更新完成。**禁止套娃**
+8. B-`componentDidUpdate(prevProps, prevState, snapshot)`，组件更新完成。**禁止套娃**
+9. A-`componentDidUpdate(prevProps, prevState, snapshot)`，组件更新完成。**禁止套娃**
 
 ### 卸载组件
 

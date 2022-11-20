@@ -1,0 +1,6 @@
+{
+	"extends": "@vunbo",
+	"rules": {
+		"no-tabs": 0
+	}
+}
