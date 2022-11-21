@@ -1,12 +1,16 @@
 import { Component } from 'react'
-
+import PropTypes from 'prop-types'
 export class HelloWorld extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      msg: 'Hello World',
-    }
-    console.log('constructor')
+  state = {
+    msg: 'React',
+  }
+
+  static propTypes = {
+    msg: PropTypes.string, // 字符串：必输
+  }
+
+  static defaultProps = {
+    msg: 'em',
   }
 
   update() {
@@ -20,7 +24,8 @@ export class HelloWorld extends Component {
     return (
 			<div>
 				<h2>{this.state.msg}</h2>
-				<button onClick={() => this.update()}>Change</button>
+        <button onClick={() => this.update()}>Change</button>
+        <h3>{this.props.msg}</h3>
 			</div>
     )
   }

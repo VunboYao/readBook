@@ -215,9 +215,15 @@ state 是组件对象最重要的属性，值是对象（可包含多个 key-val
     })
     ```
 
-## props
+## propTypes
 
 **`array、bool、func、number、object、string、symbol`**
+
+### 使用
+
+- 导入：`import PropTypes from 'prop-types'`
+- 声明：`static propTypes = {}`
+- 默认值：`static defaultProps = {}`
 
 ```react
 // 限制属性

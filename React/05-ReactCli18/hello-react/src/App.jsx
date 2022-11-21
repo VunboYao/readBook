@@ -16,9 +16,8 @@ class App extends Component {
   render() {
     return (
       <>
-        <h2>{this.state.msg}</h2>
         <button onClick={() => this.remove()}>Remove</button>
-        {this.state.show && <HelloWorld />}
+        {this.state.show && <HelloWorld/>}
       </>
     )
   }
