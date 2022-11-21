@@ -273,6 +273,10 @@ class Person extends React.Component {
 
 - **`props`**是只读的
 
+### 组件通信-子传父
+
+通过将父级的函数作为一个属性，传递给子元素，通过`this.props.xxx`调用并传参
+
 ## 事件绑定
 
 - 组件的`render()`, 在组件的原型对象上，供实例使用
