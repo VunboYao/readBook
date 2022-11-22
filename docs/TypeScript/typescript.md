@@ -744,6 +744,18 @@ console.log(add15(10))
 
 # 泛型
 
+- **如下：*尖括号<>语法给函数定义一个泛型参数 P,并指定 param 参数的类型为P***
+- 如果调用泛型函数时受泛型约束的参数有传值，泛型参数可以从参数中进行推导，而无需再现实地指定类型（可缺省）
+
+类型本身可以被定义为拥有不明确的类型参数的泛型，可以接收明确类型作为入参。从而衍生出更具体的类型。
+
+```ts
+function reflect<P>(param: P): P {
+  return param
+}
+const reflectFn: <P>(param: P) => P = reflect
+```
+
 > 泛型指的是类型参数化，即将原来某种具体的类型进行参数化。和定义函数参数一样，我们可以给泛型定义若干个类型参数，并在调用时给泛型传入明确的类型参数。设计泛型的目的在于有效约束类型成员之间的关系，比如函数参数和返回值、类或者接口成员和方法之间的关系。
 
 定义一个数组，固定长度，可用任意值填充
@@ -768,6 +780,8 @@ console.log(res15)
 但是有些情况下我们需要指定的类型满足特定条件后才能指定
 
 那么这个时候我们就使用泛型约束
+
+> 函数的泛型入参必须和参数/参数成员建立有效的约束关系才有实际意义
 
 ```typescript
 // 需求：要求指定的泛型类型必须有length属性才可以
@@ -836,6 +850,51 @@ class Person {
   }
 }
 ```
+
+## 泛型类型
+
+**可以把reflectFn的类型注解提取为一个能被复用的类型别名或者接口**
+
+```ts
+type ReflectFuncton = <P>(param: P) => P;
+interface IReflectFuncton {
+  <P>(param: P): P
+}
+
+const reflectFn2: ReflectFuncton = reflect;
+const reflectFn3: IReflectFuncton = reflect;
+```
+
+将**类型入参**的**定义移动到类型别名或者接口名称后**，此时定义的一个**接收具体类型入参**后返回一个新类型的类型就是**泛型类型**
+
+```ts
+type GenericReflectFunction<P> = (param: P) => P;
+interface IGenericReflectFunction<P> {
+  (param: P): P;
+}
+
+const reflectFn4: GenericReflectFunction<string> = reflect; // 具象化泛型
+const reflectFn5: IGenericReflectFunction<number> = reflect; // 具象化泛型
+
+const reflectFn3Return = reflectFn4('string'); // 入参和返回值都必须是 string 类型
+const reflectFn4Return = reflectFn5(1); //  入参和返回值都必须是 number 类型
+```
+
+**用类型操作符进行运算表达，使泛型可以根据入参的类型衍生出各异的类型**
+
+- 如果入参是联合类型，则会被拆解成一个个独立的（原子）类型进行类型运算
+
+```ts
+type BS = string | boolean
+type SONA<E> = E extends string | number ? E[] : E
+type SArray = SONA<string> // string[]
+type NArray = SONA<number> // number[]
+type NeverGot = SONA<boolean> // boolean
+type SS = SONA<BS> // boolean | string[]
+type BORG = BS extends string | number ? BS[] : BS // string | boolean
+```
+
+# 类
 
 ## 类属性修饰符
 
@@ -1029,58 +1088,6 @@ cache26.add(3)
 cache26.add(5)
 cache26.add(1)
 console.log(cache26.all());
-```
-
-# 泛型类型
-
-类型本身可以被定义为拥有不明确的类型参数的泛型，可以接收明确类型作为入参。从而衍生出更具体的类型。
-
-```ts
-function reflect<P>(param: P): P {
-  return param
-}
-const reflectFn: <P>(param: P) => P = reflect
-```
-
-**可以把reflectFn的类型注解提取为一个能被复用的类型别名或者接口**
-
-```ts
-type ReflectFuncton = <P>(param: P) => P;
-interface IReflectFuncton {
-  <P>(param: P): P
-}
-
-const reflectFn2: ReflectFuncton = reflect;
-const reflectFn3: IReflectFuncton = reflect;
-```
-
-将**类型入参**的**定义移动到类型别名或者接口名称后**，此时定义的一个**接收具体类型入参**后返回一个新类型的类型就是**泛型类型**
-
-```ts
-type GenericReflectFunction<P> = (param: P) => P;
-interface IGenericReflectFunction<P> {
-  (param: P): P;
-}
-
-const reflectFn4: GenericReflectFunction<string> = reflect; // 具象化泛型
-const reflectFn5: IGenericReflectFunction<number> = reflect; // 具象化泛型
-
-const reflectFn3Return = reflectFn4('string'); // 入参和返回值都必须是 string 类型
-const reflectFn4Return = reflectFn5(1); //  入参和返回值都必须是 number 类型
-```
-
-**用类型操作符进行运算表达，使泛型可以根据入参的类型衍生出各异的类型**
-
-- 如果入参是联合类型，则会被拆解成一个个独立的（原子）类型进行类型运算
-
-```ts
-type BS = string | boolean
-type SONA<E> = E extends string | number ? E[] : E
-type SArray = SONA<string> // string[]
-type NArray = SONA<number> // number[]
-type NeverGot = SONA<boolean> // boolean
-type SS = SONA<BS> // boolean | string[]
-type BORG = BS extends string | number ? BS[] : BS // string | boolean
 ```
 
 # 类型守卫
