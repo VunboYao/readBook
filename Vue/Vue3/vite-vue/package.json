@@ -12,6 +12,7 @@
   "dependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
     "@vue/eslint-config-typescript": "^11.0.2",
+    "axios": "^1.2.0",
     "vue": "^3.2.44"
   },
   "devDependencies": {
