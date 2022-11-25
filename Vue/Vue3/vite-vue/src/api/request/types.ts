@@ -22,6 +22,7 @@ export type APIConfig = RequestPath | RequestOptions | RequestFunction
 export type HeaderHandler = (config?: AxiosRequestConfig) => Promise<AxiosRequestHeaders>
 export type RequestErrorHandler = (config: AxiosError) => void
 
+// api接口的定义: 生成具体接口
 export type APISchema = Record<string, {
   request: Record<string, any> | void
   response: Record<string, any> | any
