@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { showDialog } from './components/function-call'
+import axios from 'axios'
 
 const show = () => {
   showDialog({
@@ -33,6 +34,15 @@ document.addEventListener('touchstart', (e) => {
 document.addEventListener('touchmove', (e) => {
   const touch = e.touches[0]
   moveX.value = touch.clientX
+})
+axios.post('http://localhost:8888/', {
+  aa: NaN,
+}, {
+  headers: {
+    'Hello-X': '123',
+  },
+}).then((res) => {
+  console.log(res, '>>')
 })
 </script>
 

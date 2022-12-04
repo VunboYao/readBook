@@ -6,9 +6,19 @@ const app = new Koa()
 // const userRouter = new Router({prefix: '/users'})
 const userRouter = new Router()
 
+app.use((ctx, next) => {
+  ctx.set('access-control-allow-origin', '*')
+})
 userRouter.get('/', ctx => {
   ctx.res.writeHead(200, {
-    'Access-Control-Allow-Origin': '*'
+    'Content-Type': 'text/html;charset=utf8',
+    "access-control-allow-origin": "*",
+    "Access-Control-Allow-Headers": 'Hello-X',
+    "Access-Control-Allow-Methods": "GET,POST",
+    "access-control-expose-headers": "x-demo-xxx,xixi-demo,X-demo-1",
+    "X-demo-xxx": "123",
+    "xixi-demo": 'xixi',
+    "X-demo-1": "demo"
   })
 /*   ctx.response.body = {
     params: ctx.request.params,
@@ -18,9 +28,19 @@ userRouter.get('/', ctx => {
   console.log('track');
 })
 userRouter.post('/', ctx => {
-  ctx.res.writeHead(200, {
-    'Access-Control-Allow-Origin': '*'
+  ctx.response.writeHead(200, {
+    'Content-Type': 'text/html;charset=utf8',
+    "access-control-allow-origin": "*",
+    "Access-Control-Allow-Headers": 'Hello-X',
+    "Access-Control-Allow-Methods": "GET,POST",
+    "access-control-expose-headers": "x-demo-xxx,xixi-demo,X-demo-1",
+    "X-demo-xxx": "123",
+    "xixi-demo": 'xixi',
+    "X-demo-1": "demo"
   })
+  ctx.response.header = {
+    "access-control-allow-origin": "*",
+  }
 /*   ctx.response.body = {
     params: ctx.request.params,
     query: ctx.request.query

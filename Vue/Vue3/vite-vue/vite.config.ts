@@ -7,5 +7,8 @@ export default defineConfig({
   plugins: [vue(), vueJsx()],
   server: {
     host: true,
+    proxy: {
+      '/api': 'http://127.0.0.1:8888',
+    },
   },
 })
