@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { showDialog } from './components/function-call'
+import Pop from './components/PopModal/index'
 import axios from 'axios'
 
 const show = () => {
-  showDialog({
+  /* showDialog({
     title: 'HelloTSX',
     showCancelButton: true,
     showConfirmButton: true,
@@ -20,6 +21,11 @@ const show = () => {
     },
   }).then((res) => {
     console.log(res, 'come')
+  }) */
+  pop({
+    imgSrc: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Foscimg.oschina.net%2Foscnet%2Fc698e3d3cf75d7c935587c4f6c48655e47b.jpg&refer=http%3A%2F%2Foscimg.oschina.net&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1673427148&t=c5204e4718ca5b1c333e47e95b256a26',
+  }).then((res) => {
+    console.log(res, 'mme')
   })
 }
 
