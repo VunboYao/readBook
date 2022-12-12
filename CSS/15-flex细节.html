@@ -7,45 +7,77 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
 	<style>
-		body {
-			width: 500px;
+		* {
 			margin: 0;
 			padding: 0;
+			box-sizing: border-box;
+		}
+
+		.container {
 			display: flex;
-			/* flex-wrap: wrap; */
+			inline-size: 1000px;
+			font-size: 1.5rem;
 		}
 
 		.item {
-			flex: initial;
-			min-width: 0;
-			background-color: #ddd;
+			flex: 1;
+			/* flex-basis: 300px; */
+			/* 也可以使用 width 或 inline-size 来替代 */
+
+			width: 200px;
+			/* 等同于 */
+			/* flex-grow: 0;
+			flex-shrink: 0.1; */
+			/* flex-grow 的初始值 */
+			/* flex-shrink 的初始值 */
+			/* flex-shrink: var(--flex-shrink, 0); */
+		}
+
+		.item span {
+			font-size: 3rem;
 		}
 
 		.item:nth-child(1) {
+			flex: 2;
 			background-color: brown;
 		}
 
 		.item:nth-child(2) {
 			background-color: aquamarine;
+			--flex-shrink: 1;
 		}
 
 		.item:nth-child(3) {
 			background-color: rgb(79, 184, 4);
+			--flex-shrink: 2;
 		}
 
 		.item:nth-child(4) {
 			background-color: rgb(127, 45, 160);
+			--flex-shrink: 3;
+		}
+
+		.item:nth-child(5) {
+			background-color: rgb(6, 93, 92);
+			--flex-shrink: 4;
 		}
 
 	</style>
 </head>
 
 <body>
-	<div class="item">我</div>
-	<div class="item">我的话</div>
-	<div class="item">我的话不多</div>
-	<div class="item">我的话不是一般的多，哈哈</div>
-	<div class="item">你好无耻</div>
+	<div class="container">
+		<!-- Flex 项目 A -->
+		<div class="item"><span>A</span>longlonglongword</div>
+		<!-- Flex 项目 B -->
+		<div class="item"><span>B</span>ook</div>
+		<!-- Flex 项目 C -->
+		<div class="item"><span>C</span>ountries in the east</div>
+		<!-- Flex 项目 D -->
+		<div class="item"><span>D</span>iscuss</div>
+		<!-- Flex 项目 E -->
+		<div class="item"><span>E</span>astern</div>
+	</div>
 </body>
 
 </html>

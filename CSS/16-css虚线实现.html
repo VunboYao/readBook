@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			height: 100vh;
+		}
+
+		.content {
+			width: 500px;
+			height: 500px;
+			background-color: rgb(190, 201, 201);
+			margin: 20px auto;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.dash {
+			position: relative;
+			width: 100%;
+			height: 1px;
+			background-color: transparent;
+			border-bottom: 1px dashed #fff;
+		}
+
+		.dash::before {
+			position: absolute;
+			content: '';
+			display: block;
+			height: 1px;
+			bottom: -1px;
+			left: 0;
+			width: 100%;
+			background: linear-gradient(to right, rgba(190, 201, 201, .5) 0, transparent 40%, transparent 60%, rgba(190, 201, 201, .5) 100%);
+		}
+
+	</style>
+</head>
+
+<body>
+	<div class="content">
+		<div class="dash"></div>
+	</div>
+</body>
+
+</html>
