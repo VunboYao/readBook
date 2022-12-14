@@ -9,7 +9,14 @@
 </head>
 
 <body>
-  <script src="/script.js"></script>
+  <script type="module">
+    const sleep = n => new Promise(resolve => setTimeout(resolve, n))
+
+    for (let i = 0; i < 100; i++) {
+      await fetch('http://127.0.0.1:1929/cache')
+      await sleep(2000)
+    }
+  </script>
 </body>
 
 </html>
