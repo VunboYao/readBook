@@ -20,10 +20,11 @@
       3.其他限制：请求头限制
     */
     fetch('http://127.0.0.1:9999', {
-      method: 'put',
+      method: 'post',
       headers: {
         'X-Test-Cors': '1234' // 请求头限制
-      }
+      },
+      credentials: 'include'
     })
   </script>
 </body>
