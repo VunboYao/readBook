@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body>
+	<script>
+		async function Xhr() {
+			const url = 'https://httpbin.org/'
+			let f1 = await fetch(url + 'post', {
+				mode: 'cors',
+				referrer: 'no-referrer',
+				referrerPolicy: 'same-origin',
+				redirect: 'follow',
+				method: 'POST',
+				body: 'foo=bar&baz=qux',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+				}
+			})
+			console.log(f1.url);
+			let data = await f1.json()
+			console.log(data);
+		}
+		Xhr()
+	</script>
+</body>
+
+</html>
