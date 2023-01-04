@@ -2,7 +2,11 @@ const Http = require('http')
 
 // create server
 const server = Http.createServer((req, res) => {
-  console.log(req.headers.origin,'>>>')
+  const origin = req.headers.origin
+
+  if (origin) {
+    res.setHeader('Vary', 'Origin')
+  }
   // TODO: 1.设置返回header
   // res.setHeader('Content-Type', 'application/json;charset=utf8')
   // TODO: 2.writeHead一起写入
