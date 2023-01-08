@@ -14,10 +14,20 @@
 
 		.container {
 			display: grid;
+			grid-template-columns: [A] 1fr [B] 1fr [C] 1fr [D];
 		}
 
 		item {
-			background-color: antiquewhite;
+			border: 1px dashed;
+		}
+
+		img {
+			width: 100%;
+			grid-area: 1/2;
+		}
+
+		item {
+			grid-area: 1/2;
 		}
 
 	</style>
@@ -25,6 +35,7 @@
 
 <body>
 	<main class="container">
+		<img src="./img/2.jpg" alt="">
 		<item>格子1</item>
 	</main>
 </body>
