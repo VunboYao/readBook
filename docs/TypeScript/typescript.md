@@ -64,7 +64,7 @@ variable = null
 
 与 any 不同的是，unknown 在类型上更安全。
 
-- 比如我们可以将任意类型的值赋值给 unknown，
+- 比如我们可以将**任意类型的值赋值给 unknown**，
 - **unknown 类型的值只能赋值给 unknown 或 any**
 
 ```typescript
@@ -78,6 +78,14 @@ let anything: any = result; // 不会提示错误
   ```typescript
   let result:unknown
   result.toFixed() // error: ts(2571)
+  
+  // 如下
+  let value: unknown;
+  value.foo.bar; // Error
+  value.trim(); // Error
+  value(); // Error
+  new value(); // Error
+  value[0][1]; // Error
   ```
 
 - 所有类型的缩小手段对 unknown 都有效。最终是其他任何类型
@@ -101,7 +109,26 @@ never 类型表示的是那些永不存在的值的类型;一般用于抛出异�
 
 - 反过来，除了 never 自身以外，其他类型（包括 any 在内的类型）都不能为 never 类型赋值
 
-- 在恒为false的类型守卫条件判断下，变量的类型将缩小为never
+- 在恒为false的类型守卫条件判断下，变量的类型将缩小为never。**使用 never 可以避免出现了新增联合类型没有对应的实现，目的就是写出类型绝对安全的代码**
+
+  ```tsx
+  type Foo = string | number
+  function controlFlow(foo: Foo) {
+      if (typeof foo === 'string') {
+          console.log('string')
+      } else if (typeof foo === 'number') {
+          console.log('number')
+      } else {
+          // foo 在这里是 never
+          const check:never = foo
+      }
+  }
+  
+  // 如果后续修改了Foo的类型
+  type Foo = string | number | boolean
+  // 此时else 分之会被收窄为 boolean 类型，并导致错误
+  // 因此，这种方式确保方法 controlFlow 中穷尽了 Foo 的所有类型
+  ```
 
 - 基于never的特性，可以使用never实现一些有意思的功能。如可以把never作为接口类型下的属性类型，用来禁止写接口下特定的属性
 
@@ -148,7 +175,29 @@ console.log(obj) // Object { name: "yyb", age: 12 }
 - 默认情况可以相互赋值
 - **如果不想把 null 和 undefined 赋值给其他的类型，可以开启 strickNullChecks**
   - 如果开启了strickNullChecks，还想把 null 和 undefined 赋值给其他的类型.就必须在声明的时候使用联合类型
-  - 对于可选属性和可选参数而言，如果开启了 strickNullChecks，默认情况下数据类型就是联合类型。当前的类型 + undefined类型
+  - 对于可选属性和可选参数而言，如果开启了 **strickNullChecks**，默认情况下数据类型就是联合类型。当前的类型 + undefined类型
+
+## {}类型
+
+{}类型描述了一个没有成员的对象。当你试图访问这样一个对象的任意属性时，TS会产生一个编译时错误。
+
+```ts
+// Type {}
+const obj = {};
+
+// Error: Property 'prop' does not exist on type '{}'.
+obj.prop = "semlinker";
+```
+
+但是，仍然可以使用在 Object 类型上定义的所有属性和方法，这些属性和方法可通过JS的原型链隐式地使用
+
+```ts
+// Type {}
+const obj = {};
+
+// "[object Object]"
+obj.toString();
+```
 
 ## 类型断言
 
@@ -177,7 +226,7 @@ let str = 'str' as const;
 const readOnlyArr = [0, 1] as const;
 ```
 
-4. 方式四：非空断言：值后边添加`!`断言操作符。排除值为null、undefined的情况。
+4. 方式四：**非空断言**：值后边添加`!`断言操作符。排除值为null、undefined的情况。
    1. 建议使用“类型守卫“代替非空断言
 
 企业中使用第二种，当你在 TypeScript 里使用 JSX 时，只有 as 语法断言是被允许的。**
@@ -383,7 +432,7 @@ function say9({ firstName, lastName, middleName }: FullName): void {
 }
 ```
 
-2. 索引签名：多一个或多多个如何绕开 TS 检查。用于描述那些 ”通过索引得到” 的类型，比如`arr[0]`或`obj['key']`
+2. **索引签名**：多一个或多多个如何绕开 TS 检查。用于描述那些 ”通过索引得到” 的类型，比如`arr[0]`或`obj['key']`
 
 - 使用类型断言
 
@@ -398,7 +447,7 @@ function say9({ firstName, lastName, middleName }: FullName): void {
   say9(obj9)
   ```
 
-- 使用索引签名
+- **使用索引签名**
 
   ```typescript
   interface FullName {
@@ -1404,15 +1453,15 @@ $.ajax();
 
 ## 接口类型
 
-- `Partical`：所有属性变为可选的。**映射类型**
+- `Partial`：所有属性变为可选的。**映射类型**
 
   ```ts
-  type Partical<T> = {
+  type Partial<T> = {
       [P in keyof T]?: T[P]
   }
   ```
 
-- `Required`： 与 `Partical` 相反，所有属性变为必须的
+- `Required`： 与 `Partial` 相反，所有属性变为必须的
 
   ```ts
   type Required<T> = {
