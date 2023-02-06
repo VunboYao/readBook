@@ -1,88 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      #output {
-        color: rgb(207, 84, 84);
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    #output {
+      color: rgb(207, 84, 84);
+    }
+
+    #progress {
+      color: #09bb0c;
+    }
+
+  </style>
+</head>
+
+<body>
+  <input type="file" id="file" multiple />
+  <p id="progress"></p>
+  <p id="output"></p>
+  <script>
+    let filesList = document.getElementById('file')
+    /* filesList.addEventListener('change', e => {
+      let files = e.target.files,
+        i = 0,
+        len = files.length
+      while (i < len) {
+        const f = files[i]
+        // TODO:文件名-文件类型-文件大小
+        console.log(`${f.type}, ${f.name}, ${f.size}`)
+        i++
       }
-      #progress {
-        color: #09bb0c;
+    }) */
+    // TODO:监听文件选择
+    /* filesList.addEventListener('change', e => {
+      let info = '',
+        output = document.getElementById('output'),
+        progress = document.getElementById('progress'),
+        files = e.target.files,
+        file = files[0]
+      type = 'default'
+      // TODO: FileReader类型
+      let reader = new FileReader()
+
+      // TODO: 如果文件是图片，将文件转换为数据URI
+      if (/image/.test(file.type)) {
+        reader.readAsDataURL(file)
+        type = 'image'
+      } else {
+        // TODO: 解析文件内容，转换为读取文本。readAsText
+        reader.readAsText(file)
+        type = 'text'
       }
-    </style>
-  </head>
-  <body>
-    <input type="file" id="file" multiple />
-    <p id="progress"></p>
-    <p id="output"></p>
-    <script>
-      let filesList = document.getElementById('file')
-      // filesList.addEventListener('change', e => {
-      //   let files = e.target.files,
-      //     i = 0,
-      //     len = files.length
-      //   while (i < len) {
-      //     const f = files[i]
-      //     // TODO:文件名-文件类型-文件大小
-      //     console.log(`${f.type}, ${f.name}, ${f.size}`)
-      //     i++
-      //   }
-      // })
-      // TODO:监听文件选择
-      /* filesList.addEventListener('change', e => {
-        let info = '',
-          output = document.getElementById('output'),
-          progress = document.getElementById('progress'),
-          files = e.target.files,
-          file = files[0]
-        type = 'default'
-        // TODO: FileReader类型
-        let reader = new FileReader()
 
-        // TODO: 如果文件是图片，将文件转换为数据URI
-        if (/image/.test(file.type)) {
-          reader.readAsDataURL(file)
-          type = 'image'
-        } else {
-          // TODO: 解析文件内容，转换为读取文本。readAsText
-          reader.readAsText(file)
-          type = 'text'
+      // TODO:监听报错error。返回属性是一个对象，只包含一个属性：code。1：未找到文件，2：安全错误，3：读取被中断，4：文件不可读，5：编码错误
+      reader.onerror = () => {
+        output.innerHTML = 'Could not read file, error code is ' + reader.error.code
+      }
+      // TODO:监听报错progress
+      // TODO:与XHR的progress事件具有相同的信息：lengthComputable, loaded 和 total
+      reader.onprogress = e => {
+        if (e.lengthComputable) {
+          progress.innerHTML = `${e.loaded}/${e.total}`
         }
+      }
 
-        // TODO:监听报错error。返回属性是一个对象，只包含一个属性：code。1：未找到文件，2：安全错误，3：读取被中断，4：文件不可读，5：编码错误
-        reader.onerror = () => {
-          output.innerHTML = 'Could not read file, error code is ' + reader.error.code
-        }
-        // TODO:监听报错progress
-        // TODO:与XHR的progress事件具有相同的信息：lengthComputable, loaded 和 total
-        reader.onprogress = e => {
-          if (e.lengthComputable) {
-            progress.innerHTML = `${e.loaded}/${e.total}`
-          }
-        }
+      // TODO:在load、error和abort事件触发后，还会触发 loadend 事件。表示在上述3中情况下，所有读取操作都已经结束
+      reader.onloadend = e => {
+        console.log('loadend>>>>', e)
+      }
 
-        // TODO:在load、error和abort事件触发后，还会触发 loadend 事件。表示在上述3中情况下，所有读取操作都已经结束
-        reader.onloadend = e => {
-          console.log('loadend>>>>', e)
+      // TODO:文件成功加载后触发，如果error事件被触发，则不会触发该load事件
+      reader.onload = () => {
+        let html = ''
+        switch (type) {
+          case 'image':
+            html = `<img src="${reader.result}">`
+            break
+          case 'text':
+            html = reader.result
+            break
         }
+        output.innerHTML = html
+      }
+    }) */
 
-        // TODO:文件成功加载后触发，如果error事件被触发，则不会触发该load事件
-        reader.onload = () => {
-          let html = ''
-          switch (type) {
-            case 'image':
-              html = `<img src="${reader.result}">`
-              break
-            case 'text':
-              html = reader.result
-              break
-          }
-          output.innerHTML = html
-        }
-      }) */
-    </script>
-  </body>
+    filesList.addEventListener('change', e => {
+      let file = e.target.files[0]
+
+      const reader = new FileReader()
+      reader.readAsDataURL(file) // base64
+      // reader.readAsArrayBuffer(file) // ArrayBuffer
+      reader.onload = function (e) {
+        console.log(e.target.result)
+      }
+    })
+  </script>
+</body>
+
 </html>
