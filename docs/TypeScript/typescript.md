@@ -1,3 +1,5 @@
+TypeScript 是拥有类型的 JS 超集，可以编译成普通、干净、完整的JS代码
+
 #  基础
 
 ## 基础数据类型
@@ -6,6 +8,7 @@
 - `let val2:boolean`, 定义 boolean 类型
 - `let val3:string`, 定义 string 类型
 - **number和bigint都表示数字，但是这两个类型不兼容**
+- string是 TS 所提供
 
 ## 数组和元素类型
 
@@ -42,9 +45,10 @@ value = [1, 2, 3]
 
 2. void 类型
 
-- void 与 any 正好相反，表示没有任何类型，一般用于函数返回值
+- void 与 any 正好相反，表示没有任何类型，**一般用于函数返回值**
 - **在 TS 中只有 null(strickNullChecks: false 时) 和 undefined 可以赋值给 void 类型**
 - **null 和 undefined 是所有类型的子类型，所以可以将 null 和 undefined 赋值给任意类型**
+- 基于上下文的类型推导出返回类型为 void 的时候，并不会强制函数一定不能返回内容
 
 ```typescript
 // 无返回值函数。默认返回undefined
@@ -64,6 +68,8 @@ variable = null
 
 与 any 不同的是，unknown 在类型上更安全。
 
+- **不能在unknow类型上执行，如xxx.length操作**
+
 - 比如我们可以将**任意类型的值赋值给 unknown**，
 - **unknown 类型的值只能赋值给 unknown 或 any**
 
@@ -73,7 +79,7 @@ let num: number = result; // 提示 ts(2322)
 let anything: any = result; // 不会提示错误
 ```
 
-- 使用 unknown 后， TS 会对它做类型检测。但是，如果不缩小（Type Narrowing)，我们对 unknown 执行的任何操作都会出现如下错误
+- 使用 unknown 后， TS 会对它做类型检测。但是，**如果不缩小（Type Narrowing)，我们对 unknown 执行的任何操作都会出现如下错误**
 
   ```typescript
   let result:unknown
@@ -86,6 +92,7 @@ let anything: any = result; // 不会提示错误
   value(); // Error
   new value(); // Error
   value[0][1]; // Error
+  // 避免undefined的方法错误
   ```
 
 - 所有类型的缩小手段对 unknown 都有效。最终是其他任何类型
@@ -228,8 +235,9 @@ const readOnlyArr = [0, 1] as const;
 
 4. 方式四：**非空断言**：值后边添加`!`断言操作符。排除值为null、undefined的情况。
    1. 建议使用“类型守卫“代替非空断言
+   1. **常规使用时，用可选链可替代。但是当未知属性在左侧进行赋值时，会产生错误，此时可以用非空断言**
 
-企业中使用第二种，当你在 TypeScript 里使用 JSX 时，只有 as 语法断言是被允许的。**
+**企业中使用第二种，当你在 TypeScript 里使用 JSX 时，只有 as 语法断言是被允许的。**
 
 - 不建议随意使用非空断言来排除可能为null或undefined的情况
 
@@ -243,6 +251,13 @@ const readOnlyArr = [0, 1] as const;
   ```typescript
   userInfo.id?.toFixed() // Optional Chain
   const myName = userInfo.name ?? `my name is ${userInfo.name}` // 空值合并
+  ```
+
+- TS允许类型断言转换为 **更具体 或者 不太具体(any/unknown)**的类型版本，此规则可防止不可能的强制转换
+
+  ```typescript
+  const name = 'vunbo' as number // error
+  const name = ('vunbo' as unknown) as number
   ```
 
 # 枚举类型
