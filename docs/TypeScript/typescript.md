@@ -409,7 +409,7 @@ function say({ firstName, lastName }: FullName): void {
 say(obj)
 ```
 
-## 可选属性和索引签名
+## 可选属性
 
 1. 可选属性：接口里的属性不全都是必需的。 有些是只在某些条件下存在，或者根本不存在
 
@@ -428,7 +428,12 @@ say(obj)
   }
   ```
 
-  
+
+## 索引签名
+
+- 索引签名只允许`number,string,symbol,模版字符串`和这些基础类型组成的联合类型
+
+- **数字索引签名的返回类型，必须是字符串索引签名返回的类型的字类型**
 
 - **使用接口定义限定了变量或形参，在给变量或形参赋值时，赋予的值必须和接口限定的一样，多一个少一个都不行**
 
@@ -447,7 +452,7 @@ function say9({ firstName, lastName, middleName }: FullName): void {
 }
 ```
 
-2. **索引签名**：多一个或多多个如何绕开 TS 检查。用于描述那些 ”通过索引得到” 的类型，比如`arr[0]`或`obj['key']`
+1. **索引签名**：多一个或多多个如何绕开 TS 检查。用于描述那些 ”通过索引得到” 的类型，比如`arr[0]`或`obj['key']`
 
 - 使用类型断言
 
@@ -481,7 +486,7 @@ function say9({ firstName, lastName, middleName }: FullName): void {
   })
   ```
 
-3. 索引签名用于数组
+2. 索引签名用于数组
 
 ```typescript
 // 索引签名
@@ -524,25 +529,6 @@ let arr10: ReadonlyArray<string|number> = ['a1', 'b1', 'c1']
 console.log(arr10[1])
 // arr10[1] = '666' // error
 console.log(arr10[1])
-```
-
-## 函数接口
-
-- 一个只有参数列表和返回值类型的函数定义；
-- 参数列表里的每个参数都需要名字和类型；
-- 函数的参数名不需要与接口里定义的名字相匹配
-
-```typescript
-interface SearchFunc {
-  // 函数定义：2个参数，字符串，返回值为boolean值
-  (source: string, subString: string): boolean
-}
-
-let mySearch: SearchFunc = (sou: string, sub: string): boolean => {
-  console.log(sou + sub)
-  return 5 > -2
-}
-mySearch('vunbo', ' yao')
 ```
 
 ## 混合接口
@@ -806,6 +792,149 @@ console.log(add15(10))
   
       
 
+# 函数类型
+
+## 函数声明
+
+- 一个只有参数列表和返回值类型的函数定义；
+
+- **参数列表里的每个参数都需要名字和类型**；
+
+  ```typescript
+  type func = (num1: number, num2: number) => void
+  // 接收2个参数：num1和num2，都是number类型
+  // 并且这个函数没有返回值，所以是void
+  ```
+
+- 函数的参数名不需要与接口里定义的名字相匹配
+
+```typescript
+interface SearchFunc {
+  // 函数定义：2个参数，字符串，返回值为boolean值
+  (source: string, subString: string): boolean
+}
+
+let mySearch: SearchFunc = (sou: string, sub: string): boolean => {
+  console.log(sou + sub)
+  return 5 > -2
+}
+mySearch('vunbo', ' yao')
+```
+
+## 调用签名
+
+在 JS中，函数除了可以被调用，自己也可以有属性值
+
+```typescript
+// 函数的调用签名（从对象的角度来看待这个函数，也可以有其他的属性）
+interface iFunc {
+  name: string
+  age: number
+  // 函数可以调用：函数调用签名
+  (num: number): number
+}
+const bar: iFunc = (num: number):number => 123
+bar.name = 'bar'
+bar.age = 18
+```
+
+**开发中如何选择：**
+
+- 如果只描述函数类型本身(函数可以被调用)，使用函数类型表达式(Function Type Expressions)
+- 如果在描述函数作为对象可以被调用，同时也有其他属性时，使用函数调用签名(call Signatures)
+
+## 构造签名
+
+JavaScript函数也可以使用new操作符号调用.当被调用的时候，TypeScript会认为这是一个构造函数，因为会产生一个新对象
+
+```typescript
+class Person {
+  name: string
+  constructor(name:string){
+    this.name = name
+  }
+}
+interface iPerson {
+  // 构造签名
+  new (name:string): Person
+}
+```
+
+## 指定this的类型
+
+在开启``noImplicitThis`的情况下，必须指定this的类型
+
+- 函数的第一个参数可以根据该函数之后被调用的情况，用于声明this的类型（key值必须是this)
+- 在后续调用函数传入参数时，从第二个参数开始传递，this会在编译后抹除
+
+```typescript
+function foo(this: { name: string }, info: { name: string }) {
+	console.log('this', this) // keb
+	console.log('info', info) // vunbo
+}
+
+foo.call({name: 'keb'}, {name: 'vunbo'})
+```
+
+## this相关内置工具
+
+### `ThisParameterType`
+
+- 用于提取一个函数类型**Type**的**this**参数类型
+- 如果这个函数类型没有this参数，返回unknow
+
+```typescript
+function foo(this: { name: string }, info: { name: string }) {
+	console.log('this', this) // keb
+	console.log('info', info) // vunbo
+}
+
+// {name: string}
+type typeThis = ThisParameterType<typeof foo>
+```
+
+### `OmitThisParameter`
+
+- 用于移除一个函数类型Type的this参数类型，并且返回当前的函数类型
+
+```typescript
+function foo(this: { name: string }, info: { name: string }) {
+	console.log('this', this) // keb
+	console.log('info', info) // vunbo
+}
+
+// info: {name: string}
+type OmitThis = OmitThisParameter<typeof foo>
+```
+
+### `ThisType`
+
+```typescript
+interface iState {
+	name: string
+	age: number
+}
+
+interface iData {
+	state: iState
+	running: () => void
+	eating: () => void
+}
+
+// ThisType绑定内部this的上下文：iState是内部函数调用this的上下文
+const info: iData & ThisType<iState> = {
+	state: { name: 'vunbo', age: 18 },
+	running: function () {
+		console.log(this.name);
+	},
+	eating: function () {
+		console.log(this.age);
+	}
+}
+
+info.running.call(info.state)
+```
+
 # 泛型
 
 - **如下：*尖括号<>语法给函数定义一个泛型参数 P,并指定 param 参数的类型为P***
@@ -999,7 +1128,7 @@ class Student21 extends Person21 {
 // const p21 = new Person21('yao', 28, 'man') // 不可使用new构建
 ```
 
-## 类可选属性和参数属性
+## 类可选属
 
 可选属性同可选参数
 
@@ -1015,6 +1144,8 @@ class Person22 {
   }
 }
 ```
+
+## 参数属性
 
 ```typescript
 class Person22 {
@@ -1037,6 +1168,12 @@ class Person22 {
 let p22 = new Person22('yao', 22, 'man')
 console.log(p22);
 ```
+
+## 类型特性
+
+- 可以创建类对应的实例对象
+- 类本身也可以作为这个实例的类型
+- 类也可以当作一个有构造签名的函数
 
 ## 类存取器
 
@@ -1640,7 +1777,6 @@ $.ajax();
   type T = OmitThisParameter<(this: number, x: number) => string> // (x:number) => string
   ```
 
-  
 
 ## 字符串类型
 
