@@ -22,8 +22,15 @@
   <input type="file" id="file" multiple />
   <p id="progress"></p>
   <p id="output"></p>
+  <button onclick="getFile()">Get FIle</button>
   <script>
     let filesList = document.getElementById('file')
+
+    function getFile() {
+      // 通过files属性直接获取文件
+      console.log(filesList.files[0])
+    }
+
     /* filesList.addEventListener('change', e => {
       let files = e.target.files,
         i = 0,
