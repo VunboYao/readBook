@@ -11,13 +11,13 @@ const server = Http.createServer((req, res) => {
   // res.setHeader('Content-Type', 'application/json;charset=utf8')
   // TODO: 2.writeHead一起写入
   res.writeHead(200, {
-    'Content-Type': 'text/html;charset=utf8',
+    'Content-Type': 'application/json;text/html;charset=utf8',
     // 允许的跨域请求站点，等同于*
     "access-control-allow-origin": req.headers.origin,
     // 允许客户端请求时，携带cookie
     "access-control-allow-Credentials": true,
     // 允许客户端请求时，携带的请求头
-    "access-control-allow-headers": "X-Test-Cors",
+    "access-control-allow-headers": "X-Test-Cors,content-type",
     "access-control-expose-headers": "x-demo-xxx,xixi-demo,X-demo-1",
     "X-demo-xxx": "123",
     // 设置cookie
