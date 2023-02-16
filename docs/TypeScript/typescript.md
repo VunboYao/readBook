@@ -1648,6 +1648,10 @@ $.ajax();
   type Omit<T, K extends string | number | symbol> = {
       [P in Exclude<keyof T, K>]: T[P]
   }
+  
+  type MyOmit<T, K extends keyof T> = {
+  	[P in keyof T as P extends K ? never : P]: T[P]
+  }
   ```
 
 ## 联合类型
@@ -1697,7 +1701,7 @@ $.ajax();
   ```
 
 - `Record`：生成接口类型，使用传入的泛型参数分别作为接口类型的属性和值。**将一个类型的所有属性值都映射到另一个类型上并创造出一个新的类型**。`Record` 类型接收两个泛型参数：
-  - 第一个参数作为接口类型的属性
+  - 第一个参数作为接口类型的属性, **K 必须是可以作为key的联合类型**
   - 第二个参数作为接口类型的属性值
   
   ```tsx
@@ -1831,12 +1835,12 @@ $.ajax();
 - **条件类型中的类型判断**，前置条件，它一定是出现在条件类型中的
 - 如果真实的参数类型和 infer 匹配的一致，就返回匹配到的这个类型
 - **仅条件类型的“extends"子语句中才允许“infer“声明**
-- infer声明的变量，只能在条件类型的**true分支中可用**
+- infer声明的变量，**只能在条件类型的true分支中可用**
 
 ```javascript
 type Unpacked<T> =
   T extends (infer U)[] ? U :
-  T extends (...args: any[]) => infer U ? U :
+  T extends (...args: any[]) => infer U ? U : T
   T extends Promise<infer U> ? U : T
 
 type T0 = Unpacked<string> // string
