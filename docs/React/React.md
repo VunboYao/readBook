@@ -175,13 +175,15 @@ state 是组件对象最重要的属性，值是对象（可包含多个 key-val
   - 强制绑定 this: 通过函数对象的 bind()
   - **箭头函数**
 
-- **状态数据，不能直接修改或更新**
+- **状态数据，不能直接修改或更新**。不可变力量，引用类型，先拷贝，再设置新对象
 
 - **对象式状态改变，setState 默认是异步的**
 
-  - 主要是为了优化性能，防止多次修改setState带来的UI渲染消耗
+  - **主要是为了优化性能，防止多次修改setState带来的UI渲染消耗;** 
+  - **如果同步更新了state，但是还没有执行render函数，那么state和props不能保持同步，会产生问题**
   - 通过setState的第二个参数，回调中可以拿到更新后的值
-  - 在**定时器、原生事件中**是同步的
+  - React18之前，在**定时器、原生事件中**是同步的，18版本之后，都是批量处理，异步的
+    - 如果希望可以同步更新，利用**flushSync** 包裹 setState
 
 - **setState合并现象**
 
@@ -507,7 +509,7 @@ class Person extends React.Component {
 
 - 如果获取的是原生的元素，那么拿到的就是元素本身
 - 如果获取的是类组件元素，那么拿到的就是类组件的实例对象
-- 如果获取的是函数组件元素，那么什么都拿不到
+- 如果获取的是**函数组件元素，那么什么都拿不到**
 
 ### 函数式ref实现
 
@@ -516,6 +518,7 @@ class Person extends React.Component {
 - 将外界定义的ref传递到组件内部，传给谁则获取谁
 
 ```react
+// 函数组件定义，传入ref
 const FnRef = React.forwardRef(function (props, fnRef) {
   return (
     <>
@@ -531,6 +534,9 @@ const FnRef = React.forwardRef(function (props, fnRef) {
 ## 受控组件
 
 受到react控制的组件：通过setState控制更新的组件，事件以onChange触发的
+
+- `input、select、textarea`中通过 value 属性绑定 state 中的数据时，就会变成受控组件，需要绑定`onChange`方法获取数据触发更新。即受控组件是**React 的 state 成为“唯一数据源”**
+- 反之，未使用**state中的数据**的`input、select、textarea`, 为**[非受控组件](https://react.docschina.org/docs/uncontrolled-components.html)**。可通过**ref**的方式触发数据改变
 
 ## 事件对象
 
@@ -1133,18 +1139,18 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
 
 ### setState
 
-1. setState(stateChange, [callback])------对象式的 setState
+1. setState(stateChange, [callback])------**对象式的 setState**
    - stateChange 为状态改变对象(该对象可以体现出状态的更改)
    - callback 是可选的回调函数, 它在状态更新完毕、界面也更新后(render 调用后)才被调用
-2. setState(updater, [callback])------函数式的 setState
+2. setState(updater, [callback])------**函数式的 setState**
    - updater 为返回 stateChange 对象的函数
-   - updater 可以接收到 state 和 props
+   - **updater 可以接收到 state 和 props**
    - callback 是可选的回调函数, 它在状态更新、界面也更新后(render 调用后)才被调用
 3. 总结：
-   - 对象式的 setState 是函数式的 setState 的简写方式(语法糖)
-   - 使用原则：
-     1. 如果新状态不依赖于原状态 ===> 使用对象方式
-     2. 如果新状态依赖于原状态 ===> 使用函数方式
+   - **对象式的 setState 是函数式的 setState 的简写方式(语法糖)**
+   - **使用原则：**
+     1. **如果新状态不依赖于原状态 ===> 使用对象方式**
+     2. **如果新状态依赖于原状态 ===> 使用函数方式**
      3. 如果需要在 setState()执行后获取最新的状态数据, 要在第二个 callback 函数中读取
 
 ### lazyLoad
@@ -1288,9 +1294,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
 1. 只要执行 setState(),即使不改变状态数据, 组件也会重新 render()
 2. 只要当前组件重新 render(), 就会自动重新 render 子组件 ==> 效率低
 
-**解决**
+#### 解决:PureComponent 和 memo
 
-- 使用 PureComponent： PureComponent 重写了 shouldComponentUpdate(), 只有 state 或 props 数据有变化才返回 true
+- 使用 **PureComponent**： PureComponent 重写了 shouldComponentUpdate(), 只有 state 或 props 数据有变化才返回 true
 - 注意：**只是进行 state 和 props 数据的浅比较, 如果只是数据对象内部数据变了, 返回 false。不要直接修改 state 数据, 而是要产生新数据**
 - 函数式组建优化方式：通过`React.memo(fn)`创建函数
 
@@ -1499,36 +1505,60 @@ class MyEventEmitter {
     this.eventMap = {}
   }
 
-  // 订阅
-  on(type, handler) {
-    // 非函数则报错
-    if (!handler instanceof Function) {
-      throw new Error('please enter a function')
+  /**
+   * 事件订阅
+   * @param eventName 事件名
+   * @param handler 事件处理函数
+   * @param thisArg this值绑定
+   */
+  on(eventName, handler, thisArg) {
+    // 若不存在，初始化
+    if (!this.eventMap[eventName]) {
+      this.eventMap[eventName] = []
     }
-    // 若不存在，新建该队列
-    if (!this.eventMap[type]) {
-      this.eventMap[type] = []
-    }
-    // 若存在，直接往队列推入 handler
-    this.eventMap[type].push(handler)
+
+    // 存在则直接push
+    this.eventMap[eventName].push({
+      event: handler,
+      thisArg,
+    })
+    
+    // !error: 此处不能利用存储时就绑定this，会导致最后无法销毁
+    // this.eventMap[eventName].push(handler.bind(thisArg))
   }
 
   // 发布
-  emit(type, params) {
+  emit(eventName, ...args) {
     // 若事件已订阅
-    if (this.eventMap[type]) {
-      // 依次执行出队
-      this.eventMap[type].forEach(handler => {
-        handler(params)
+    if (this.eventMap[eventName]) {
+      const funcList = this.eventMap[eventName]
+      // 遍历执行
+      funcList.forEach((func) => {
+        // !bind方式绑定，需要重新调用并执行
+        func.event.bind(func.thisArg, ...args)()
+
+        // !apply方式
+        // func.event.apply(func.thisArg, args)
+
+        // !call方式
+        // func.event.call(func.thisArg, ...args)
       })
+    } else {
+      return null
     }
   }
 
   // 销毁
-  off(type, handler) {
-    if (this.eventMap[type]) {
+  off(eventName, handler) {
+    if (this.eventMap[eventName]) {
+      // 从事件的订阅[]列表中，查找event === handler的事件index
+      const index = this.eventMap[eventName].findIndex(item => item.event === handler)
+
       // 无符号右移：当-1无符号右移时，会变成32位为1的二进制数，巨大的索引找不到就不删除
-      this.eventMap[type].splice(this.eventMap[type].indexOf(handler) >>> 0, 1)
+      this.eventMap[eventName].splice(index >>> 0, 1)
+      
+      // !error: 此处handler和存储的方法已经无法匹配，this已更改，不是同一个函数
+      // this.eventMap[eventName].splice(this.eventMap[eventName].indexOf(handler) >>> 0, 1)
     }
   }
 }
@@ -1537,4 +1567,12 @@ export default MyEventEmitter
 
 // 在B组件中执行事件订阅，以及销毁阶段的关闭
 // A组件中执行事件更新
+
+
+// this更改，函数不相等
+function foo() {
+  console.log('foo', this)
+}
+
+console.log(foo.apply({ name: '123' }) === foo) // false
 ```

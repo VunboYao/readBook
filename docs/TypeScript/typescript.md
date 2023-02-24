@@ -1727,7 +1727,7 @@ $.ajax();
 - `ConstructorParameters`： 用来获取构造函数的构造参数
 
   ```TSX
-  type ConstructorParameters<T extends new (...args: any) => any> =
+  type ConstructorParameters<T extends new (...args: any[]) => any> =
       T extends new (...args: infer P) => any ? P : never
   class Person {
       constructor(name: string, age?: number) {}
@@ -1738,7 +1738,7 @@ $.ajax();
 - `Parameters`: 获取函数的参数并返回序对
 
   ```jsx
-  type Parameters<T extends (...args: any) => any> = T extends (
+  type Parameters<T extends (...args: any[]) => any> = T extends (
       ...args: infer P
   ) => any
       ? P
@@ -1750,7 +1750,7 @@ $.ajax();
 - `ReturnType`：获取函数的返回类型
 
   ```tsx
-  type ReturnType<T extends (...args: any) => any> = T extends (
+  type ReturnType<T extends (...args: any[]) => any> = T extends (
   	...args: any
   ) => infer R
       ? R

@@ -7,7 +7,9 @@ import ReactDOM from 'react-dom/client'
 // import App from './06-组件通信案例练习/App'
 // import App from './07-组件的插槽实现/App'
 // import App from './08-组件作用域插槽/App'
-import App from './09-非父子通信-Context/App'
+// import App from './09-非父子通信-Context/App'
+// import App from './10-非父子组件通信-EventBus/App'
+import App from './11-setState详细使用/App'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(<App />)
