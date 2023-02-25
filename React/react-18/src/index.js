@@ -12,7 +12,8 @@ import ReactDOM from 'react-dom/client'
 // import App from './11-setState详细使用/App'
 // import App from './12-render函数的优化/App'
 // import App from './13-数据不可变力量/App'
-import App from './14-ref获取DOM和组件/03-ref获取函数组件的DOM'
+// import App from './14-ref获取DOM和组件/03-ref获取函数组件的DOM'
+import App from './15-受控和非受控组件/App'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(<App />)
