@@ -20,7 +20,10 @@
     "extends": [
       "react-app",
       "@vunbo"
-    ]
+    ],
+    "rules": {
+      "react/display-name": 1
+    }
   },
   "browserslist": {
     "production": [

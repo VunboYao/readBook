@@ -443,6 +443,9 @@ class Person extends React.Component {
     state = {
         isHot: false,
     }
+  
+  	inputNode = null
+  
     showData = () => {
         this.setState({ isHot: !this.state.isHot })
     }
