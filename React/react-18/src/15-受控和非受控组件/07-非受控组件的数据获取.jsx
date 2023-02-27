@@ -1,4 +1,4 @@
-import { PureComponent } from 'react'
+import { PureComponent, createRef } from 'react'
 
 class App extends PureComponent {
   state = {
@@ -13,7 +13,10 @@ class App extends PureComponent {
     // fruits: 'orange', // 单选时，必须是一个 scalar value
     fruits: ['orange'],
     gender: 'male',
+    intro: 'Hello',
   }
+
+  introRef = createRef()
 
   inputChange(e) {
     // 统一处理，获取name属性
@@ -49,7 +52,6 @@ class App extends PureComponent {
     }) */
 
     // !多选，从selectedOptions上拿到选择的项
-    console.log(e.target.selectedOptions)
     const options = Array.from(e.target.selectedOptions, item => item.value)
 
     this.setState({
@@ -79,11 +81,15 @@ class App extends PureComponent {
     const hobbies = this.state.hobbies.filter(item => item.isChecked).map(item => item.value)
     console.log('hobbies:', hobbies)
 
+    // !非受控组件，可以直接通过ref中获取value值
+    const introData = this.introRef.current.value
+    console.log('introData', introData)
+
     // 3.ajax/fetch/axios
   }
 
   render() {
-    const { userName, password, isAgree, hobbies, fruits, gender } = this.state
+    const { userName, password, isAgree, hobbies, fruits, gender, intro } = this.state
 
     return (
       <div>
@@ -176,6 +182,9 @@ class App extends PureComponent {
               onChange={e => this.handleRadioChange(e)}
             />女性
           </label>
+
+          {/* 6.非受控组件 */}
+          <input type="text" defaultValue={intro} ref={this.introRef}/>
           <button type="submit">SignIn</button>
         </form>
       </div>

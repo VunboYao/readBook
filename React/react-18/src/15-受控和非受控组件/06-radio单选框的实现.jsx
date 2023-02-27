@@ -49,7 +49,6 @@ class App extends PureComponent {
     }) */
 
     // !多选，从selectedOptions上拿到选择的项
-    console.log(e.target.selectedOptions)
     const options = Array.from(e.target.selectedOptions, item => item.value)
 
     this.setState({
