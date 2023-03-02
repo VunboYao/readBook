@@ -4,6 +4,18 @@
 - `react-dom`: react渲染在不同平台所需要的核心代码
 - `babel`: 将 `jsx`转换成 react 代码的工具
 
+## [严格模式](https://zh-hans.reactjs.org/docs/strict-mode.html#detecting-unexpected-side-effects)
+
+- 仅在开发模式下运行；不会影响生产构建
+- 识别不安全的生命周期
+- 使用过是字符串 ref API的警告
+- 使用废弃的 findDOMNode 方法的警告
+- 检测意外的副作用，两次执行生命周期、constructor、render方法等
+  - 查看逻辑代码调用多次时，是否会产生一些副作用
+  - 生产环境中，不会被调用两次
+- 检测过时的 context API
+  - 早期的 Context 是通过 static 属性声明 Context 对象属性，通过 getChildContext 返回 Context 对象等方式来使用 Context
+
 ## 脚手架
 
 `npm i create-react-app -g`

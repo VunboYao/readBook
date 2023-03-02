@@ -1,0 +1,42 @@
+/*
+!* 进入与动画开始 *!
+.yao-appear, .yao-enter {
+  transform: translateX(-150px);
+}
+
+.yao-appear-active, .yao-enter-active {
+  transform: translateX(0);
+  transition: all 2s ease;
+}
+
+!* 离开 *!
+.yao-exit {
+  transform: translateX(0);
+}
+.yao-exit-active {
+  transform: translateX(-150px);
+  transition: all 2s ease-out;
+}
+*/
+
+
+/*
+ 常规只使用进入和进入动画过程
+ */
+.yao-enter {
+  opacity: 0;
+}
+
+.yao-enter-active {
+  opacity: 1;
+  transition: all 2s ease-out;
+}
+
+.yao-exit {
+  opacity: 1;
+}
+
+.yao-exit-active {
+  opacity: 0;
+  transition: all 2s ease-out;
+}
