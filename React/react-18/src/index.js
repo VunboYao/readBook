@@ -21,7 +21,13 @@ import { StrictMode } from 'react'
 // import App from './19-React的严格模式/App'
 // import App from './20-React的动画实现/01-CSSTransition动画/App'
 // import App from './20-React的动画实现/02-SwitchTransition/App'
-import App from './20-React的动画实现/03-TransitionGroup/App'
+// import App from './20-React的动画实现/03-TransitionGroup/App'
+// import App from './21-内联样式CSS/App'
+// import App from './22-普通的CSS写法/App'
+// import App from './23-CSS_Modules/App'
+// import App from './24-Less编写的方式/App'
+// import App from './25-CSS-in-JS/App'
+import App from './26-classNames/App'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(

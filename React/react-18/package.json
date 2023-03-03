@@ -12,9 +12,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -39,6 +39,9 @@
     ]
   },
   "devDependencies": {
-    "@vunbo/eslint-config": "^1.0.5"
+    "@vunbo/eslint-config": "^1.0.5",
+    "classnames": "^2.3.2",
+    "craco-less": "^2.0.0",
+    "styled-components": "^5.3.8"
   }
 }
