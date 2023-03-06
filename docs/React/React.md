@@ -302,7 +302,7 @@ class Person extends React.Component {
 - 实例调用，则方法中的 this 指向类的实例
 - 若无`fun()`调用，赋值语句给第三方变量，则属于直接调用
 - 类中默认开启严格模式，直接调用方法则返回 undefined。
-- **react 中的`{this.onClick=handleClick}`方法赋值语句就是直接调用**.提取出来单独使用，this 会指向该方法运行时所在的环境，因此在class严格模式下，指向undefined
+- **react 中的`onClick={this.handleClick}`方法赋值语句就是直接调用**.提取出来单独使用，this 会指向该方法运行时所在的环境，因此在class严格模式下，指向undefined
 - **默认情况下react在调用事件监听方法的时候，是通过apply来调用的，并且在调用的时候将监听方法中的this修改为了undefined(ctx)，所以默认情况下我们是无法在监听方法中使用this的**
 
 ```js
