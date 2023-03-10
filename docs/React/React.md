@@ -1117,6 +1117,7 @@ export default connect(
   // 映射状态 mapStateToProps
   state => ({ ...state }),
   // 映射操作方法 mapDispatchToProps
+  // 对象方式：是语法层的优化，react-redux会自动执行dispatch
   {
     increment,
     decrement,
