@@ -27,12 +27,17 @@ import { StrictMode } from 'react'
 // import App from './23-CSS_Modules/App'
 // import App from './24-Less编写的方式/App'
 // import App from './25-CSS-in-JS/App'
-import App from './26-classNames/App'
+// import App from './26-classNames/App'
+import { Provider } from 'react-redux'
+import App from './28-react_redux/App'
+import store from './28-react_redux/store' // !引入store挂载给子元素
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </StrictMode>,
 )
 
