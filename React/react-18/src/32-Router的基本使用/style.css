@@ -1,0 +1,23 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+nav {
+  display: flex;
+}
+
+nav a {
+  margin: 0 10px;
+}
+
+main {
+  color: #075A12;
+  background: #9CA3AF;
+  flex: 1;
+}

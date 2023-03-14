@@ -34,7 +34,7 @@ import { StrictMode } from 'react'
 // import App from './26-classNames/App'
 
 /* !redux阶段 */
-import { Provider } from 'react-redux'
+// import { Provider } from 'react-redux'
 // import App from './28-react_redux/App'
 // import store from './28-react_redux/store' // !引入store挂载给子元素
 // import App from './29-react_reduxToolkit/App'
@@ -43,16 +43,22 @@ import { Provider } from 'react-redux'
 // import App from './30-Connect的实现/App'
 // import store from './30-Connect的实现/store'
 // import { StoreContext } from './30-Connect的实现/HOC' // 自定义redux的store.Provider实现
-import App from './31-reduxHOC-log-thunk实现/App'
-import store from './31-reduxHOC-log-thunk实现/store'
+// import App from './31-reduxHOC-log-thunk实现/App'
+// import store from './31-reduxHOC-log-thunk实现/store'
+
+/* !Router 阶段 */
+import { HashRouter } from 'react-router-dom'
+import App from './32-Router的基本使用/App'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <StrictMode>
     {/* <StoreContext.Provider value={store}> */}
-    <Provider store={store}>
+    {/* <Provider store={store}> */}
+    <HashRouter>
       <App />
-    </Provider>
+    </HashRouter>
+    {/* </Provider> */}
     {/* </StoreContext.Provider> */}
   </StrictMode>,
 )
