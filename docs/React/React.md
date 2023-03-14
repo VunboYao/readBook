@@ -744,7 +744,7 @@ const FnRef = React.forwardRef(function (props, fnRef) {
 
 ### NavLink
 
-NavLink 可以实现路由链接的高亮，通过 activeClassName 指定样式名，默认`active`
+NavLink 可以实现路由链接的高亮，通过 **activeClassName** 指定样式名，默认`active`
 
 ```react
 // NavLink封装

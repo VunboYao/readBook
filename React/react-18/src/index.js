@@ -1,5 +1,7 @@
 import ReactDOM from 'react-dom/client'
 import { StrictMode } from 'react'
+
+/* !基础阶段 */
 // import App from './01-类组件和函数组件/App_func'
 // import App from './02-组件生命周期函数/App'
 // import App from './03-组件开发嵌套关系/App'
@@ -19,6 +21,8 @@ import { StrictMode } from 'react'
 // import App from './17-React的Portals/App'
 // import App from './18-React的Fragments/App'
 // import App from './19-React的严格模式/App'
+
+/* ! css动画阶段 */
 // import App from './20-React的动画实现/01-CSSTransition动画/App'
 // import App from './20-React的动画实现/02-SwitchTransition/App'
 // import App from './20-React的动画实现/03-TransitionGroup/App'
@@ -28,21 +32,28 @@ import { StrictMode } from 'react'
 // import App from './24-Less编写的方式/App'
 // import App from './25-CSS-in-JS/App'
 // import App from './26-classNames/App'
-// import { Provider } from 'react-redux'
+
+/* !redux阶段 */
+import { Provider } from 'react-redux'
 // import App from './28-react_redux/App'
 // import store from './28-react_redux/store' // !引入store挂载给子元素
 // import App from './29-react_reduxToolkit/App'
 // import store from './29-react_reduxToolkit/store'
-import App from './30-Connect的实现/App'
-import store from './30-Connect的实现/store'
-import { StoreContext } from './30-Connect的实现/HOC'
+
+// import App from './30-Connect的实现/App'
+// import store from './30-Connect的实现/store'
+// import { StoreContext } from './30-Connect的实现/HOC' // 自定义redux的store.Provider实现
+import App from './31-reduxHOC-log-thunk实现/App'
+import store from './31-reduxHOC-log-thunk实现/store'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <StrictMode>
-    <StoreContext.Provider value={store}>
+    {/* <StoreContext.Provider value={store}> */}
+    <Provider store={store}>
       <App />
-    </StoreContext.Provider>
+    </Provider>
+    {/* </StoreContext.Provider> */}
   </StrictMode>,
 )
 
