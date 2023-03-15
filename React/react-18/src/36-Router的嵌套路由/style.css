@@ -1,0 +1,46 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+nav {
+  display: flex;
+}
+
+nav .active {
+  color: red;
+  font-size: 18px;
+}
+nav .aboutState {
+  color: #B61684;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+nav .loginState {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.nav a {
+  margin: 10px;
+}
+
+nav a {
+  margin: 0 10px;
+}
+
+main {
+  color: #075A12;
+  background: #9CA3AF;
+  flex: 1;
+}
+
+h4 {
+  color: #600;
+}

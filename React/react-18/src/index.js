@@ -51,7 +51,8 @@ import { HashRouter } from 'react-router-dom'
 // import App from './32-Router的基本使用/App'
 // import App from './33-Router的NavLink/App'
 // import App from './34-Router的Navigate/App'
-import App from './35-Router的404界面/App'
+// import App from './35-Router的404界面/App'
+import App from './36-Router的嵌套路由/App'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
