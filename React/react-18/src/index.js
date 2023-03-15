@@ -53,7 +53,8 @@ import { HashRouter } from 'react-router-dom'
 // import App from './34-Router的Navigate/App'
 // import App from './35-Router的404界面/App'
 // import App from './36-Router的嵌套路由/App'
-import App from './37-Router的函数式跳转/App'
+// import App from './37-Router的函数式跳转/App'
+import App from './38-Router传递参数的两种方式/App'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
