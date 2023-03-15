@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client'
-import { StrictMode } from 'react'
+import { StrictMode, Suspense } from 'react'
 
 /* !基础阶段 */
 // import App from './01-类组件和函数组件/App_func'
@@ -55,16 +55,20 @@ import { HashRouter } from 'react-router-dom'
 // import App from './36-Router的嵌套路由/App'
 // import App from './37-Router的函数式跳转/App'
 // import App from './38-Router传递参数的两种方式/App'
-import App from './39-Router的路由配置文件/App'
+// import App from './39-Router的路由配置文件/App'
+import App from './40-router的异步加载路由/App'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <StrictMode>
     {/* <StoreContext.Provider value={store}> */}
     {/* <Provider store={store}> */}
-    <HashRouter>
-      <App />
-    </HashRouter>
+    <Suspense fallback={<div>loading</div>}>
+      <HashRouter>
+        <App />
+      </HashRouter>
+    </Suspense>
+
     {/* </Provider> */}
     {/* </StoreContext.Provider> */}
   </StrictMode>,
