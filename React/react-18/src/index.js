@@ -48,7 +48,8 @@ import { StrictMode } from 'react'
 
 /* !Router 阶段 */
 import { HashRouter } from 'react-router-dom'
-import App from './32-Router的基本使用/App'
+// import App from './32-Router的基本使用/App'
+import App from './33-Router的NavLink/App'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
