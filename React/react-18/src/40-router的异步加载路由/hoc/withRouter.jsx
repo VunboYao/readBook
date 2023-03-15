@@ -2,7 +2,7 @@ import { useLocation, useNavigate, useParams, useSearchParams } from 'react-rout
 
 export default function withRouter(WrapperComponent) {
   /* !函数组件,参数是 props */
-  return (props) => {
+  return function WrapperFunc(props) {
     /* Hooks必须在函数内部声明 */
     const navigate = useNavigate()
 
