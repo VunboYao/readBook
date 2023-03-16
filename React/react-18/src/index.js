@@ -64,7 +64,10 @@ import { HashRouter } from 'react-router-dom'
 // import App from './43-useContext/App'
 // import App from './44-useReducer/App'
 // import App from './45-useCallback/App'
-import App from './46-useMemo/App'
+// import App from './46-useMemo/App'
+// import App from './47-useRef/App'
+// import App from './48-useImperativeHandle/App'
+import App from './49-useLayoutEffect/App'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
