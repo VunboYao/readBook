@@ -1223,7 +1223,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
        return () => { // 在组件卸载前执行
            // 在此做一些收尾工作, 比如清除定时器/取消订阅等
        }
-   }, [stateValue]) // 如果指定的是[], 回调函数只会在第一次render()后执行
+   }, [stateValue]) 
+   // 第二个参数：
+   // 如果指定的是[], 回调函数只会在第一次render()后执行;
+   // 如果传入了特定的state，则在state变化时，回调函数会执行
    ```
 
 4. 可以把 useEffect Hook 看做如下三个函数的组合

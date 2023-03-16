@@ -30,7 +30,7 @@
       "@vunbo"
     ],
     "rules": {
-      "react/display-name": 1
+      "react/display-name": 0
     }
   },
   "browserslist": {

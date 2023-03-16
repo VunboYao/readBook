@@ -1,4 +1,4 @@
-import React from 'react'
+ import React from 'react'
 import ReactDOM from 'react-dom';
 // 类式组件
 /* export default class Demo extends React.Component {
