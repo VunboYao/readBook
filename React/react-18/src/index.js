@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client'
-import { StrictMode, Suspense } from 'react'
+// import { StrictMode, Suspense } from 'react'
 
 /* !基础阶段 */
 // import App from './01-类组件和函数组件/App_func'
@@ -47,7 +47,7 @@ import { StrictMode, Suspense } from 'react'
 // import store from './31-reduxHOC-log-thunk实现/store'
 
 /* !Router 阶段 */
-import { HashRouter } from 'react-router-dom'
+// import { HashRouter } from 'react-router-dom'
 // import App from './32-Router的基本使用/App'
 // import App from './33-Router的NavLink/App'
 // import App from './34-Router的Navigate/App'
@@ -67,23 +67,27 @@ import { HashRouter } from 'react-router-dom'
 // import App from './46-useMemo/App'
 // import App from './47-useRef/App'
 // import App from './48-useImperativeHandle/App'
-import App from './49-useLayoutEffect/App'
+import App from './50-自定义Hooks/App'
 
-const root = ReactDOM.createRoot(document.getElementById('root'))
+// 严格模式
+/* const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <StrictMode>
-    {/* <StoreContext.Provider value={store}> */}
-    {/* <Provider store={store}> */}
+    {/!* <StoreContext.Provider value={store}> *!/}
+    {/!* <Provider store={store}> *!/}
     <Suspense fallback={<div>loading</div>}>
       <HashRouter>
         <App />
       </HashRouter>
     </Suspense>
 
-    {/* </Provider> */}
-    {/* </StoreContext.Provider> */}
+    {/!* </Provider> *!/}
+    {/!* </StoreContext.Provider> *!/}
   </StrictMode>,
-)
+) */
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(<App />)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
