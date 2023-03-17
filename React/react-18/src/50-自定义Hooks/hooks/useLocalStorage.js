@@ -11,7 +11,7 @@ export default function useLocalStorage(key) {
   // 2.监听data的改变，一旦发生改变就存储data最新值
   useEffect(() => {
     localStorage.setItem(key, JSON.stringify(data))
-  }, [data])
+  }, [data, key])
 
   // 3.将data/setData导出给组件使用
   return [data, setData]
