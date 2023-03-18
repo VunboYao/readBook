@@ -326,3 +326,62 @@ module.exports = {
   ```
 
 ## 组件样式隔离
+
+# 问题记录
+
+- 轮播图组件，轮播图高度设置，让图片的自动适配展示？
+- pages下的页面名称不能包含中文
+- bindtap事件绑定，参数传递问题：dataset.xxx `data-xxx=something`
+  - 自定义属性data-\*
+- 插值绑定：`styl="background: {{item.color}}"`
+
+- text => span
+- button，块级元素
+  - open-type的属性
+  - 获取用户信息：getUserInfo废弃
+    - 通过api来获取，wx.getUserProfile
+
+- view => div
+- block => template
+
+- image
+  - 默认320*240
+  - src部分场景可以支持/assets/zz.png
+  - mode属性首选：widthFix
+- 选择相册/视频等：wx.chooseMedia
+
+- 双向绑定：<input model:value="{{value}}"/>
+- hidden=>v-show
+- wx:for=“{{ [‘abc’, ‘cba’, ‘nba’] }}”
+  - key: 传入的是item的一个属性值。不用{{}}包裹
+  - *this，表示item本身
+  - wx:for-item=”自定义名称”
+  - wx:for-index=“index改名”
+
+- Number转换字符串方法？String()???
+
+- 算法：时间前补0操作
+
+  ```jsx
+  function padLeft(time) {
+    time = time + ""
+    return ("00" + time).slice(time.length)
+  }
+  ```
+
+- event的target，选择currentTarget获取dataset数据
+
+- touches: 所有触摸点的集合
+- changedTouches：触摸事件时改变的触摸点集合 
+  - 在touchend时，touches没有值
+
+
+
+
+
+
+
+
+
+
+
