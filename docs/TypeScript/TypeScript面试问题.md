@@ -100,6 +100,8 @@ https://mp.weixin.qq.com/s/wnL1l-ERjTDykWM76l4Ajw;
 - any: 万物皆可any
 - unknown: 更加安全的初始类型声明，不能在unknown类型上做任何操作
 - void: 无返回或者返回的是undefined
+  - 针对函数的返回如果是void，也可以是返回null/undefined.**因为null和undefined是所有类型的子类型**
+
 - never 表示永远不会发生的类型
 - typle元组：useState
 
@@ -149,6 +151,14 @@ https://mp.weixin.qq.com/s/wnL1l-ERjTDykWM76l4Ajw;
 
 `type CalcFunc = (num1: number, num2: number) => void`
 
+```typescript
+type CalcFunc = (num1:number, num2: number) => void
+
+let calcInstance: CalcFunc = (a, b) => {
+  return a + b
+}
+```
+
 **函数调用签名**
 
 通过在一个对象类型中写一个调用签名
@@ -158,6 +168,11 @@ interface iCalcFn {
   name: string
   // 函数调用签名
   (num1: number, num2: number): void
+}
+
+function calc(calcFn: iCalcFn) {
+  console.log(calcFn.name);
+  calcFn(1,2)
 }
 ```
 
@@ -169,6 +184,18 @@ JavaScript函数也可以使用 new 操作服调用，当被调用的时候，Ty
 interface iPerson {
 	new (name: string): Person
 }
+
+// 正常直接使用Person作为类型使用
+class Person {
+  private name: string;
+  constructor(name: string) {
+    this.name = name
+  }
+}
+interface iPerson {
+  new (name:string): void
+}
+let foo:Person = new Person('123')
 ```
 
 ## 10-什么是函数的重载，函数的重载有什么作用？
@@ -197,7 +224,11 @@ interface iPerson {
   type thisType = ThisParameterType<typeof foo> // unknown
   ```
 
-- `OmitThisParameter`：移除函数类型Type的this参数类型
+- `OmitThisParameter`：移除函数类型Type的this参数类型, 返回当前的函数类型
+
+  ```typescript
+  type omitThis = OmitThisParameter<typeof Person>
+  ```
 
 - `ThisType`：用于标记上下文类型中的`this`类型
 
@@ -212,7 +243,7 @@ interface iPerson {
 - 可以在类的内部声明类的属性以及对应的类型
 - 也可以给属性值设置初始值
 - 在默认的`strictPropertyInitialization`模式下，属性必须是初始化的，否则无法编译
-  - 如果不希望初始化，可以使用`name!:string`语法
+  - 如果不希望初始化，可以使用`name!:string`语法。即不需要在constructor中进行初始化
 
 **属性修饰符**
 
@@ -240,7 +271,7 @@ interface iPerson {
 
 ## 14-什么是类类型？类类型具有什么样的特点？
 
-类本身可以作为一种数据类型
+**类本身可以作为一种数据类型**
 
 - 类可以创建类对应的实例对象
 - 类本身可以作为这个实例的类型，即作为类类型
@@ -331,9 +362,11 @@ function foo<T>(arg: T):T[]{
 interface length {
   length: number
 }
-const foo = <T extends length>(value: T, items: 5): T[] => {
-  return new Array(items).fill(value)
+const foo = <T extends length>(value: T): number => {
+  return value.length
 }
+
+console.log(foo('123'))
 ```
 
 ## 19-TypeScript中映射类型有什么特点？如何使用？
@@ -346,6 +379,8 @@ interface iState {
   name: string
   age: number
 }
+
+// in关键字遍历
 type mapType<T> = {
   [P in keyof T]: T[P]
 }
@@ -363,17 +398,29 @@ type myMap = mapType<iState>
 - 用于条件类型中推断，**在 true 分支里使用该推断结果**
 
 ```typescript
-type MyReturnType<T extends (..args:any) => any> = T extends (...args: any) => infer R ? ? : never
+// T继承一个函数，在返回值中推导。如果继承于一个函数，推导infer R 
+type MyReturnType<T extends (..args:any) => any> = T extends (...args: any) => infer R ? R : never
+
+type calcFnType = (num1: number, num2: number) => string
+type calcFn = ReturnType<calcFnType> // string 推导某个函数类型的返回值类型 
 ```
 
 **分布条件类型 distributive**
 
-当在泛型中使用条件类型的时候，如果传入一个联合类型，就会变成分发的
+**当在泛型中使用条件类型的时候，如果传入一个联合类型，就会变成分发的**
 
 ```typescript
 type toArray<T> = T extends any ? T[] : never
 
 type newType = toArray<number ｜ string> // type newType = string[] | number[]
+
+                       
+// 推导函数参数的类型
+type MyParameterType<T extends (...args:any[]) => any> = T extends (...args: infer A) => any ? A : never
+function foo(a: string, b: number) {
+  console.log(a + b);
+}
+type fooCb = MyParameterType<typeof foo> // [a:string, b:string]
 ```
 
 ## 21-列举一下常见的TypeScript内置工具？分别说出它们的作用以及实现
@@ -382,7 +429,7 @@ type newType = toArray<number ｜ string> // type newType = string[] | number[]
 
   ```typescript
   type Partial<T> = {
-    [K in keyof T]-?: T[K]
+    [K in keyof T]?: T[K]
   }
   ```
 
@@ -405,12 +452,12 @@ type newType = toArray<number ｜ string> // type newType = string[] | number[]
 - Record, 基于传入的keys和type，构建一个新的Type类型
 
   ```typescript
-  type Record<K in keyof any, T> = {
+  type MyRecord<K extends keyof any, T> = {
     [P in K]: T
   }
   ```
 
-- Pick, 从一个Type里挑一些 keys，组成新的类型
+- Pick, 从一个**接口**中里挑一些 keys，组成新的类型，**第二个参数应该是接口中的某些字段**
 
   ```typescript
   type Pick<T, K extends keyof T> = {
@@ -418,7 +465,7 @@ type newType = toArray<number ｜ string> // type newType = string[] | number[]
   }
   ```
 
-- Omit, 从Type里面过滤掉一些属性Keys
+- Omit, 从interface里面过滤掉一些属性Keys
 
   ```typescript
   type Omit<T, K extends keyof T> = {
@@ -494,7 +541,7 @@ declare class Person {
 declare module "*.png"
 declare module "*.jpg"
   
-// 不适合声明成模块 (模块都有import导入，jQuery没有导入)
+// 不适合声明成模块,所以使用命名空间 (模块都有import导入，jQuery没有导入)
 declare namespaces $ {
   export function ajax(settings: any): any
 }
