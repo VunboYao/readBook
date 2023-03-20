@@ -265,6 +265,14 @@ module.exports = {
       methods: {
           // 自定义方法
           customMethod: function(){}
+        
+        	// 组件自定义事件: this.triggerEvent,父级通过event.detail获取
+      },
+    	// 外部自定义的属性名传入
+    	externalClasses: ['外部传入的类名'],
+    	options: {
+        styleIsolation: '样式隔离配置'，
+        multipleSlots: true // 启用多slot
       }
   })
   ```
@@ -279,7 +287,29 @@ module.exports = {
   }
   ```
 
+- 父组件调用子组件中的方法
+  - const instance = `this.selectComponent('类名')`获取子组件实例
+  - instance.xxx()
+
 ## 组件wxml的slot
+
+- 不支持插槽默认值。通过css伪类与兄弟选择器处理
+
+  ```html
+  <view class="content">
+    // 不支持默认插槽
+    <slot></slot>
+  </view>
+  <view class="default">哈哈我是默认值</view>
+  
+  .default {
+  	display: none;
+  }
+  
+  .content:empty + .default  {
+  	display: block;
+  }
+  ```
 
 - 默认情况下，一个组件的wxml中只能有一个slot。需要使用多slot时，可以在组件js中声明启用。
 
@@ -310,11 +340,23 @@ module.exports = {
    </y-demo>
   ```
 
+## 组件特性
+
+- 可以在app.json中注册全局组件
+- 组件名称不能以wx-开头
+
 ## 组件样式
 
-- 只用class选择器
+- 只用class选择器，组件内的样式不会影响到组件外的样式
+
+- 不能使用标签选择、id选择器、属性选择器
+
+- 外部文件样式不会影响组件内样式
+
 - 不适用后代选择器
+
 - `font`, `color`会从组件外继承到组件内
+
 - 除继承样式外, `app.wxss`中的样式, 组件所在页面的样式对自定义组件无效(**除非更改组件样式隔离**)
 
 - `:host`选择器,可以指定组件所在节点的默认样式
@@ -327,31 +369,43 @@ module.exports = {
 
 ## 组件样式隔离
 
+![image-20230319154429347](/Users/vunboyao/Desktop/GitHub/readBook/docs/miniApp/miniApp.assets/image-20230319154429347.png)
+
+## behaviors => mixins
+
 # 问题记录
 
 - 轮播图组件，轮播图高度设置，让图片的自动适配展示？
+
 - pages下的页面名称不能包含中文
+
 - bindtap事件绑定，参数传递问题：dataset.xxx `data-xxx=something`
   - 自定义属性data-\*
+  
 - 插值绑定：`styl="background: {{item.color}}"`
 
 - text => span
+
 - button，块级元素
   - open-type的属性
   - 获取用户信息：getUserInfo废弃
     - 通过api来获取，wx.getUserProfile
 
 - view => div
+
 - block => template
 
 - image
   - 默认320*240
   - src部分场景可以支持/assets/zz.png
   - mode属性首选：widthFix
+  
 - 选择相册/视频等：wx.chooseMedia
 
 - 双向绑定：<input model:value="{{value}}"/>
+
 - hidden=>v-show
+
 - wx:for=“{{ [‘abc’, ‘cba’, ‘nba’] }}”
   - key: 传入的是item的一个属性值。不用{{}}包裹
   - *this，表示item本身
@@ -359,6 +413,8 @@ module.exports = {
   - wx:for-index=“index改名”
 
 - Number转换字符串方法？String()???
+
+  - 
 
 - 算法：时间前补0操作
 
@@ -369,19 +425,31 @@ module.exports = {
   }
   ```
 
-- event的target，选择currentTarget获取dataset数据
+- event的target，选择currentTarget获取dataset数据(currentTarget对应绑定事件的目标)
 
 - touches: 所有触摸点的集合
+
 - changedTouches：触摸事件时改变的触摸点集合 
   - 在touchend时，touches没有值
 
+- 事件冒泡：bindtap
+- 事件捕获：capture-bind:tap=‘xxx’
+- capture-catch:tap: 阻止事件进一步传递
+- 组件自定义事件传递参数是否可以多个？？？？
 
+- 路由返回：传递参数
+  - getCurrentPage获取页面实例来操作
+  - 并在onUnload生命周期中做同样的操作。覆盖默认的返回按钮
 
+- 新的路由传参方式
 
+  ![image-20230320105332487](/Users/vunboyao/Desktop/GitHub/readBook/docs/miniApp/miniApp.assets/image-20230320105332487.png)
 
+- navigator组件
 
+# 登陆
 
+- Openid: 微信小程序中，用户的唯一标识
+- Unionid: 微信多个应用，移动应用、小程序等。同一个用户，对同一个微信开放平台下的不同应用，unionid是相同的
 
-
-
-
+- 用户身份多平台共享：手机号/账号=> openid/unionid
