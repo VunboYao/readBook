@@ -8,6 +8,10 @@
 
 {
 	// ？获取返回值：回调方法 || Promise
+  /*
+  * leading: true 首次执行
+  * trailing: false 最后一次是否执行
+  * */
 	function throttle(fn, wait, options = { leading: true, trailing: false }) {
 		const { leading, trailing } = options
 		// 1.上一次的开始时间
