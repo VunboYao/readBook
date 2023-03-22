@@ -5,5 +5,34 @@
   <title>Title</title>
 </head>
 <body>
+<label for="search">查询
+  <input type="text" id="search">
+</label>
+<button id="cancel">Cancel</button>
+<button id="flush">flush</button>
+<!--<script src="https://cdn.bootcdn.net/ajax/libs/underscore.js/1.13.6/underscore-umd-min.js"></script>-->
+<script src="./003-防抖debounce/003-02.js"></script>
+<script>
+  let deFn = debounce( (event) => {
+    return 123
+  })
+  document.getElementById('search').oninput = deFn
+
+
+ /* let deFn = debounce(function (name, age, height) {
+    return 'vunboyao'
+  })
+  deFn('yao',18,198).then(res => {
+    console.log(res,'>>>>')
+  })
+*/
+  document.getElementById('cancel').onclick = function () {
+    deFn.cancel()
+  }
+
+  flush.onclick=function () {
+    deFn.flush()
+  }
+</script>
 </body>
 </html>

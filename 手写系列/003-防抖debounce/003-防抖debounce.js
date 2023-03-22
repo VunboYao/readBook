@@ -45,7 +45,6 @@
 	}
 }
 
-{
 	const debounce = (func, wait = 0) => {
 		let timeout = null
 		let args
@@ -83,4 +82,3 @@
 
 		return debounced
 	}
-}
