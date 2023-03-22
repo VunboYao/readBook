@@ -61,7 +61,7 @@
 	}
 }
 
-{
+{ 
 	const throttle = (func, wait = 0, execFirstCall) => {
 		let timeout = null
 		let args

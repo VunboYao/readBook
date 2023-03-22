@@ -30,7 +30,6 @@ function debounce(fn, delay=1000, immediate = false) {
 
   // 函数不能是箭头函数，需要去绑定外层继承而来的this
   function _debounce(...args) {
-    console.log(this,'>>>')
     argument = args
     // 清除机制
     if (timer) {
