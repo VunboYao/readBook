@@ -8,6 +8,10 @@ class VRequest {
       url
     } = options
     return new Promise((resolve, reject) => {
+      wx.showLoading({
+        mask: true,
+        title: '加载中',
+      })
       wx.request({
         ...options,
         url: this.baseUrl + url,
@@ -17,6 +21,9 @@ class VRequest {
         fail: err => {
           console.log('err:', err);
           reject(err)
+        },
+        complete: () => {
+          wx.hideLoading()
         }
       })
     })
