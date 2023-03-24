@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "title-header": "/components/title-header/title-header",
+    "related-video": "/components/related-video/related-video"
+  },
+  "homeButton": true
+}
