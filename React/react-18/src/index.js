@@ -66,7 +66,15 @@ import ReactDOM from 'react-dom/client'
 // import App from './46-useMemo/App'
 // import App from './47-useRef/App'
 // import App from './48-useImperativeHandle/App'
-import App from './50-自定义Hooks/App'
+// import App from './49-useLayoutEffect/App'
+// import App from './50-自定义Hooks/App'
+// import App from './52-userId的使用/App'
+import UseDeferredValue from './53-useTransition与useDeferredValue/useDeferredValue'
+
+/* !Redux Hooks */
+// import { Provider } from 'react-redux'
+// import App from './51-redux中的hooks/App'
+// import store from './51-redux中的hooks/store'
 
 // 严格模式
 /* const root = ReactDOM.createRoot(document.getElementById('root'))
@@ -86,7 +94,11 @@ root.render(
 ) */
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
-root.render(<App />)
+root.render(
+  // <Provider store={store}>
+      <UseDeferredValue />,
+  // </Provider>,
+)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

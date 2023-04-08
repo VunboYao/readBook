@@ -46,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@vunbo/eslint-config": "^1.0.5",
     "classnames": "^2.3.2",
     "craco-less": "^2.0.0",
