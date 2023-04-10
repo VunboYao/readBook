@@ -1,8 +1,0 @@
-{
-  "usingComponents": {
-    "video-item": "/components/video-item/video-item"
-  },
-  "navigationBarTitleText": "RecommendVideo",
-  "enablePullDownRefresh": true,
-  "onReachBottomDistance": 100
-}
