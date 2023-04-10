@@ -1,0 +1,17 @@
+/* components/titlte-header/title-header.wxss */
+
+.header {
+  display: flex;
+  padding: 24rpx;
+  font-size: 32rpx;
+}
+
+.header .title {
+  flex: 1;
+  font-weight: 600;
+}
+
+.more {
+  color: #666;
+  font-size: 28rpx;
+}

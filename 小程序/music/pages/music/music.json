@@ -1,0 +1,7 @@
+{
+  "navigationBarBackgroundColor": "#fafafa",
+  "usingComponents": {
+    "van-search": "@vant/weapp/search/index",
+    "title-header": "/components/title-header/title-header"
+  }
+}

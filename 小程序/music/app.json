@@ -1,0 +1,38 @@
+{
+  "pages": [
+    "pages/music/music",
+    "pages/video/video",
+    "pages/video-detail/video-detail",
+    "pages/search/search"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "VunboYao",
+    "navigationBarTextStyle": "black",
+    "initialRenderingCache": "static"
+  },
+  "lazyCodeLoading": "requiredComponents",
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/music/music",
+        "text": "Music",
+        "iconPath": "assets/tab-bar/music_normal.png",
+        "selectedIconPath": "assets/tab-bar/music_active.png"
+      },
+      {
+        "pagePath": "pages/video/video",
+        "text": "video",
+        "iconPath": "assets/tab-bar/video_normal.png",
+        "selectedIconPath": "assets/tab-bar/video_active.png"
+      }
+    ]
+  },
+  "resolveAlias": {
+    "utils/*": "utils/*",
+    "services/*": "services/*"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
