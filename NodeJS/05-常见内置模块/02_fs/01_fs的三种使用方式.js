@@ -1,25 +1,26 @@
 const fs = require('fs')
-const path = require('path')
 
-const filePath = path.resolve(__dirname, 'abc.txt')
+// 1.同步读取
+// const res = fs.readFileSync('./abc.txt', {
+// 	encoding: 'utf-8'
+// })
+// console.log(res)
 
-// 一：同步状态：查看文件状态
-const info = fs.statSync(filePath)
-// console.log(info)
+// 2.异步读取：回调函数
+// fs.readFile('./abc.txt', {
+// 	encoding: 'utf-8'
+// }, (err, data) => {
+// 	if (err) {
+// 		console.log('ReadFileError:', err)
+// 		return
+// 	}
+//
+// 	console.log(data)
+// })
 
-// 二：异步
-fs.stat(filePath, (err, info) => {
-	if (err) {
-		throw err
-	} else {
-		// console.log(info)
-	}
-})
-// console.log('异步执行')
-
-// 三：Promise
-fs.promises.stat(filePath).then(res => {
-	console.log(`Promise状态信息`)
+// 3.异步读取：Promise
+fs.promises.readFile('./abc.txt', {
+	encoding: 'utf8'
+}).then(res => {
 	console.log(res)
 })
-console.log('Promise方式调用信息')
