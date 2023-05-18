@@ -3,7 +3,8 @@
     "pages/music/music",
     "pages/video/video",
     "pages/video-detail/video-detail",
-    "pages/search/search"
+    "pages/search/search",
+    "pages/demo/demo"
   ],
   "window": {
     "backgroundTextStyle": "dark",
@@ -14,10 +15,15 @@
   },
   "lazyCodeLoading": "requiredComponents",
   "tabBar": {
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/music/music",
         "text": "Music",
+        "iconPath": "assets/tab-bar/music_normal.png",
+        "selectedIconPath": "assets/tab-bar/music_active.png"
+      },
+      {
+        "pagePath": "pages/demo/demo",
+        "text": "TEST",
         "iconPath": "assets/tab-bar/music_normal.png",
         "selectedIconPath": "assets/tab-bar/music_active.png"
       },

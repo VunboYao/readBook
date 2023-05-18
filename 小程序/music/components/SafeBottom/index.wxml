@@ -1,0 +1,34 @@
+<!--components/SafeBottom/index.wxml-->
+<!-- 
+  68: 底部tabBar高度，
+  136: 是UI高度，
+  40: 预留展示,告知用户没有内容了 
+-->
+<view style="padding-bottom:{{ (hasBottom || customButton)? hasFringe ? 68 + customButtonHeight + 40 : customButtonHeight + 40 : 0}}rpx;">
+  <slot>
+  </slot>
+
+  <!-- hasBottom控制是否需要展示底部按钮 -->
+  <view
+    class="bottom"
+    wx:if="{{hasBottom}}"
+    style="height: {{hasFringe ? 68 + 136 : 136 }}rpx;"
+  >
+    <view
+      class="text"
+      style="color: {{buttonTextColor}};background-color: {{buttonTextBgColor}};"
+      bindtap="onHandle"
+    >
+      {{buttonText}}
+    </view>
+  </view>
+
+  <!-- 插槽：自定义的底部内容 -->
+  <view
+    wx:if="{{customButton}}"
+    class="custom-bottom"
+    style="height: {{hasFringe ? 68 + customButtonHeight : customButtonHeight }}rpx;background: {{customButtonBgColor}};"
+  >
+    <slot name="custom"></slot>
+  </view>
+</view>

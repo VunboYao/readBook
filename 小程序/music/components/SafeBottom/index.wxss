@@ -1,0 +1,31 @@
+.bottom {
+  padding: 24rpx;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 136rpx;
+  background: #FFFFFF;
+  z-index: 99;
+}
+
+.text {
+  display: grid;
+  place-content: center;
+  height: 88rpx;
+  background: #E8360D;
+  border-radius: 10rpx;
+  font-size: 34rpx;
+  color: #FFFFFF;
+}
+
+.custom-bottom {
+  padding: 24rpx;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 136rpx;
+  background: #FFFFFF;
+  z-index: 99;
+}

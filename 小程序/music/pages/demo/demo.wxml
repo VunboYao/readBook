@@ -1,0 +1,26 @@
+<!--pages/demo/demo.wxml-->
+<view class="container">
+
+  <view
+    style="padding-top: {{navHeight}}px"
+    class="custom-navbar"
+  >
+    <!-- 自定义导航。拦截返回操作 -->
+    <view
+      class="filling-div"
+      style="height: {{statusHeight}}px;"
+    >
+    </view>
+    <view
+      class="nav"
+      style="top: {{statusHeight}}px"
+    >
+      <view class="icon-wrap">
+        <van-icon name="arrow-left" />
+      </view>
+      <view class="title">
+        绑定学生管理
+      </view>
+    </view>
+  </view>
+</view>
