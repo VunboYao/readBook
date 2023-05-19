@@ -1,10 +1,10 @@
 {
   "pages": [
+    "pages/demo/demo",
     "pages/music/music",
     "pages/video/video",
     "pages/video-detail/video-detail",
-    "pages/search/search",
-    "pages/demo/demo"
+    "pages/search/search"
   ],
   "window": {
     "backgroundTextStyle": "dark",

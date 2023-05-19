@@ -1,3 +1,7 @@
+page {
+  background-color: skyblue;
+}
+
 .custom-navbar {
   background: #fff;
 }
@@ -14,19 +18,9 @@
   color: #333333;
 }
 
-.filling-div {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #fff;
-  z-index: 999;
-}
-
-.icon-wrap {
+.nav-back {
   position: absolute;
-  left: 4px;
-  top: 2px;
+  left: 8rpx;
   font-size: 44rpx;
   font-weight: bold;
   color: #000;
