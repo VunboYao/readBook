@@ -1,27 +1,14 @@
 <!--pages/demo/demo.wxml-->
-<view class="container">
-
-  <!-- 自定义导航头 -->
-  <view
-    style="padding-top: {{navHeight}}px"
-    class="custom-navbar"
-  >
-    <!-- 自定义导航。拦截返回操作 -->
+<safe-view
+  hasCustomHeader
+  title="VunboYao"
+>
+  <view class="container">
     <view
-      class="nav"
-      style="top: {{statusHeight}}px"
+      wx:for="{{100}}"
+      wx:key="{{index}}"
     >
-      <!-- 返回 -->
-      <view class="nav-back">
-        <van-icon name="arrow-left" />
-      </view>
-      <view
-        class="title"
-        bindtap="goDemo"
-      >
-        VunboYao
-      </view>
+      content - {{index}}
     </view>
-    我是内容啊
   </view>
-</view>
+</safe-view>

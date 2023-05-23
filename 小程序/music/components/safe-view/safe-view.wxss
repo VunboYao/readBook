@@ -1,0 +1,59 @@
+/* components/safe-view/safe-view.wxss */
+/* 导航头自定义 */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  overflow: hidden;
+  z-index: 999;
+}
+
+/* 自定义导航 */
+.nav-bar {
+  display: flex;
+  width: 100%;
+  height: 44px;
+  line-height: 44px;
+  font-weight: bold;
+  color: #000;
+}
+
+/* 返回按钮包装 */
+.nav-back {
+  position: absolute;
+  left: 6px;
+  width: 52rpx;
+  font-size: 44rpx;
+  font-weight: bold;
+  color: #000;
+}
+
+/* 标题居中 */
+.nav-title {
+  flex: 1;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* 底部按钮 */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  min-height: calc(120rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  padding: 16rpx 24rpx;
+  z-index: 999;
+}
+
+.footer-button {
+  background-color: rgb(168, 33, 33);
+  display: grid;
+  place-content: center;
+  border-radius: 8rpx;
+  height: 88rpx;
+  color: #fff;
+}

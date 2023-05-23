@@ -4,12 +4,17 @@ App({
    * 全局数据
    */
   globalData: {
-    menuButtonBoundingClientRect: null, //右上角胶囊数据
-    systemInfo: null, //手机系统数据
-    hasFringe: false, // 是否有刘海
+    //右上角胶囊数据
+    menuButtonBoundingClientRect: null,
+    //手机系统数据
+    systemInfo: null,
+    // 是否有刘海
+    hasFringe: false,
+    // 导航栏高度.systemInfo.statusBarHeight + 44
+    navHeight: 0
   },
 
-  onLaunch(options) {
+  onLaunch() {
     this.getSystemInfo();
     this.getMenuButtonBoundingClientRect();
   },
@@ -36,6 +41,7 @@ App({
     if (system.startsWith('iOS') && statusBarHeight >= 44) {
       this.globalData.hasFringe = true
     }
+    this.globalData.navHeight = statusBarHeight + 44
   },
 
   /**
@@ -43,5 +49,5 @@ App({
    */
   getMenuButtonBoundingClientRect() {
     this.globalData.menuButtonBoundingClientRect = wx.getMenuButtonBoundingClientRect();
-  },
+  }
 })

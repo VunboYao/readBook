@@ -1,2 +1,15 @@
-<!--pages/search/search.wxml-->
-<text>pages/search/search.wxml</text>
+<!-- <!--pages/search/search.wxml-->
+<safe-view
+  hasBottom
+  bottomButtonText="完成"
+>
+  <view class="container">
+    <button bindtap="goTest">onDemo</button>
+    <view
+      wx:for="{{100}}"
+      wx:key="index"
+    >
+      content - {{index}}
+    </view>
+  </view>
+</safe-view>

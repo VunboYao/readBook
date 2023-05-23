@@ -1,0 +1,43 @@
+<!--components/safe-view/safe-view.wxml-->
+<view
+  class="container"
+  style="padding-bottom: calc(constant(safe-area-inset-bottom) + {{hasBottom ? bottomHeight : 0}}rpx);padding-bottom: calc(env(safe-area-inset-bottom) + {{hasBottom ? bottomHeight : 0}}rpx);padding-top: {{hasCustomHeader ? navHeight : 0}}px;"
+>
+  <!-- customNav -->
+  <view
+    wx:if="{{hasCustomHeader}}"
+    class="header"
+    style="height: {{navHeight}}px;"
+  >
+    <!-- 自定义导航。拦截返回操作 -->
+    <view
+      class="nav-bar"
+      style="margin-top: {{statusHeight}}px"
+    >
+      <!-- 返回 -->
+      <view
+        class="nav-back"
+        bindtap="onBack"
+      >
+        <van-icon name="arrow-left" />
+      </view>
+      <!-- 自定义标题 -->
+      <view class="nav-title">
+        {{title}}
+      </view>
+    </view>
+  </view>
+
+  <!-- MAIN主题内容插槽方式 -->
+  <slot></slot>
+
+  <!-- FOOTER -->
+  <view
+    class="footer"
+    wx:if="{{hasBottom}}"
+  >
+    <view class="footer-button">
+      {{bottomButtonText}}
+    </view>
+  </view>
+</view>

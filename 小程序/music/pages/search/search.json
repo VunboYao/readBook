@@ -1,3 +1,5 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "safe-view": "/components/safe-view/safe-view"
+  }
 }

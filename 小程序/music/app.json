@@ -1,10 +1,10 @@
 {
   "pages": [
-    "pages/demo/demo",
     "pages/music/music",
     "pages/video/video",
     "pages/video-detail/video-detail",
-    "pages/search/search"
+    "pages/search/search",
+    "pages/demo/demo"
   ],
   "window": {
     "backgroundTextStyle": "dark",
@@ -22,12 +22,6 @@
         "selectedIconPath": "assets/tab-bar/music_active.png"
       },
       {
-        "pagePath": "pages/demo/demo",
-        "text": "TEST",
-        "iconPath": "assets/tab-bar/music_normal.png",
-        "selectedIconPath": "assets/tab-bar/music_active.png"
-      },
-      {
         "pagePath": "pages/video/video",
         "text": "video",
         "iconPath": "assets/tab-bar/video_normal.png",
@@ -38,6 +32,9 @@
   "resolveAlias": {
     "utils/*": "utils/*",
     "services/*": "services/*"
+  },
+  "usingComponents": {
+    "van-icon": "@vant/weapp/icon/index"
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json"

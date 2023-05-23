@@ -1,6 +1,6 @@
 {
   "usingComponents": {
-    "van-icon": "@vant/weapp/icon/index"
+    "safe-view": "/components/safe-view/safe-view"
   },
   "navigationStyle": "custom"
 }
