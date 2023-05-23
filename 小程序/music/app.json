@@ -33,9 +33,6 @@
     "utils/*": "utils/*",
     "services/*": "services/*"
   },
-  "usingComponents": {
-    "van-icon": "@vant/weapp/icon/index"
-  },
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }
