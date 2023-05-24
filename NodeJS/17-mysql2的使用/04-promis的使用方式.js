@@ -6,7 +6,7 @@ const connection = mysql.createPool({
   user: 'root',
   password: 'root',
   connectionLimit: 10, // * 最多支持的连接数
-  database: 'test'
+  database: 'coderhub'
 })
 
 // 预编译
