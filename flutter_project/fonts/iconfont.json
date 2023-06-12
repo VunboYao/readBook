@@ -1,0 +1,23 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "11349341",
+      "name": "zhifubao",
+      "font_class": "zhifubao",
+      "unicode": "e666",
+      "unicode_decimal": 58982
+    },
+    {
+      "icon_id": "11372717",
+      "name": "微信",
+      "font_class": "weixin",
+      "unicode": "e8bb",
+      "unicode_decimal": 59579
+    }
+  ]
+}
