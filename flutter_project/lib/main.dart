@@ -1,5 +1,6 @@
 // importm
 import 'package:flutter/material.dart';
+import 'package:flutter_project/asset.dart';
 
 void main() {
   runApp(
@@ -16,7 +17,7 @@ void main() {
             style: TextStyle(color: Colors.amber[300]),
           ),
         ),
-        body: const RowColumnExpanded(),
+        body: const BuildButton(),
       ),
     ),
   );
@@ -101,7 +102,7 @@ class MyImage extends StatelessWidget {
             'https://img1.baidu.com/it/u=3578602466,4075824732&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
             scale: 1,
             width: 150,
-            fit: BoxFit.fitHeight,
+            fit: BoxFit.cover,
             repeat: ImageRepeat.noRepeat,
           ),
           const SizedBox(
@@ -136,10 +137,19 @@ class MyImage extends StatelessWidget {
             height: 20,
           ),
           // 本地图片
-          SizedBox(
-            height: 150,
-            width: 150,
-            child: Image.asset('images/car.jpg'),
+          // SizedBox(
+          //   height: 150,
+          //   width: 150,
+          //   child: Image.asset('images/car.jpg'),
+          // ),
+          const CircleAvatar(
+            radius: 76,
+            backgroundColor: Colors.lightBlue,
+            child: CircleAvatar(
+              radius: 70,
+              // backgroundImage: NetworkImage("https://www.itying.com/images/flutter/3.png"),
+              backgroundImage: AssetImage('images/car.jpg'),
+            ),
           ),
         ],
       ),
@@ -203,8 +213,7 @@ class MyListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const url =
-        'https://img2.baidu.com/it/u=1537181016,1087784084&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500';
+    const url = 'https://img2.baidu.com/it/u=1537181016,1087784084&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500';
     return ListView(
       // padding: EdgeInsets.only(left: 20),
       children: <Widget>[
@@ -268,8 +277,7 @@ class MyListViewMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const url =
-        'https://img2.baidu.com/it/u=1537181016,1087784084&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500';
+    const url = 'https://img2.baidu.com/it/u=1537181016,1087784084&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500';
     return SizedBox(
       height: 120,
       child: ListView(
@@ -341,20 +349,17 @@ class MyListViewMain extends StatelessWidget {
 List<Map<String, String>> listData = [
   {
     "title": "Baidu",
-    "icon":
-        "https://img2.baidu.com/it/u=2045218492,1693722965&fm=253&fmt=auto&app=120&f=JPEG?w=1354&h=800",
+    "icon": "https://img2.baidu.com/it/u=2045218492,1693722965&fm=253&fmt=auto&app=120&f=JPEG?w=1354&h=800",
     "author": "Mr.Li",
   },
   {
     "title": "ALi",
-    "icon":
-        "https://img0.baidu.com/it/u=2723467528,3895454668&fm=253&fmt=auto&app=120&f=JPEG?w=1080&h=719",
+    "icon": "https://img0.baidu.com/it/u=2723467528,3895454668&fm=253&fmt=auto&app=120&f=JPEG?w=1080&h=719",
     "author": "JackMa",
   },
   {
     "title": "Tencent",
-    "icon":
-        "https://img2.baidu.com/it/u=3606917007,551039400&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=500",
+    "icon": "https://img2.baidu.com/it/u=3606917007,551039400&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=500",
     "author": "JackMa",
   },
 ];
@@ -650,19 +655,442 @@ class RowColumnExpanded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ListView(
+      shrinkWrap: true,
+      children: [
+        _buildDemo1(),
+        _buildDemo2(),
+      ],
+    );
+  }
+
+  Widget _buildDemo1() {
+    return Column(
+      children: [
+        Container(
+          height: 200,
+          color: Colors.black,
+        ),
+        Row(
+          children: [
+            SizedBox(
+              height: 180,
+              child: Expanded(
+                flex: 2,
+                child: Image.network(YYB.url),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: SizedBox(
+                height: 180,
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Image.asset(
+                          'images/car.jpg',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Image.asset(
+                          'images/2.0x/car.jpg',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDemo2() {
     return Container(
-      width: double.infinity,
-      height: double.infinity,
+      height: 200,
       color: Colors.green,
       child: const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           IconContainer(Icons.school, color: Colors.white),
-          IconContainer(Icons.man),
-          IconContainer(
-            Icons.child_care,
-            color: Colors.blue,
+          Expanded(
+            child: IconContainer(
+              Icons.abc,
+              color: Colors.yellow,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class StackAlignPosition extends StatelessWidget {
+  const StackAlignPosition({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // 媒体查询页面宽度
+    final size = MediaQuery.of(context).size;
+    print(size);
+
+    return buildDemoNavBar();
+  }
+
+  buildDemo1() {
+    return Center(
+      child: Stack(
+        alignment: Alignment.topRight,
+        children: [
+          Container(
+            height: 400,
+            width: 300,
+            color: Colors.red,
+          ),
+          const Text(
+            'some text',
+            style: TextStyle(
+              fontSize: 40,
+              color: Colors.white,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  buildAlign() {
+    return Container(
+      height: 120,
+      width: 120,
+      color: Colors.blue.shade100,
+      child: const Align(
+        // 以矩形的中心点为坐标原点
+        // (Alignment.x*childWidth/2+childWidth/2, Alignment.y*childHeight/2+childHeight/2)
+        alignment: Alignment(2, 0.0),
+        child: FlutterLogo(
+          size: 60,
+        ),
+      ),
+    );
+  }
+
+  // Stack中可以使用 align来实现定位
+  buildStackAlign() {
+    return Center(
+      child: Container(
+        height: 300,
+        width: 300,
+        color: Colors.red,
+        child: const Stack(
+          children: [
+            Align(
+              alignment: Alignment(1, -0.2),
+              child: Icon(Icons.home, size: 40, color: Colors.white),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Icon(
+                Icons.search,
+                size: 30,
+                color: Colors.white,
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Icon(
+                Icons.settings_applications,
+                size: 30,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  buildStackPositioned() {
+    return Center(
+      child: Container(
+        height: 400,
+        width: 300,
+        color: Colors.red,
+        child: Stack(
+          children: [
+            const Positioned(
+              left: 20,
+              child: Icon(
+                Icons.home,
+                size: 40,
+                color: Colors.white,
+              ),
+            ),
+            const Positioned(
+              left: 100,
+              bottom: 0,
+              child: Icon(
+                Icons.search,
+                size: 30,
+                color: Colors.white,
+              ),
+            ),
+            Positioned(
+              right: 0,
+              child: Icon(
+                Icons.settings_applications,
+                size: 30,
+                color: Colors.amber.shade300,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  buildDemoNavBar() {
+    return Column(
+      children: [
+        Container(
+          height: 44,
+          color: Colors.amber,
+          child: const Center(
+            child: Text('Hello Flutter'),
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemBuilder: (context, index) {
+              return Align(
+                heightFactor: 2,
+                alignment: const Alignment(-.7, 0),
+                child: Text(
+                  '${index + 1}. some text of history',
+                  style: const TextStyle(fontSize: 32),
+                ),
+              );
+            },
+            itemCount: 20,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// 根据比例设置子元素的宽高比
+class BuildAspectRatio extends StatelessWidget {
+  const BuildAspectRatio({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // width: 200,
+      color: Colors.yellow,
+      child: AspectRatio(
+        aspectRatio: 3 / 1,
+        child: Container(
+          color: Colors.red,
+        ),
+      ),
+    );
+  }
+}
+
+class BuildCardDemo extends StatelessWidget {
+  const BuildCardDemo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Card(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          elevation: 10,
+          color: Colors.amber[500],
+          margin: const EdgeInsets.all(10),
+          shadowColor: Colors.red,
+          child: const Column(
+            children: [
+              ListTile(
+                title: Text(
+                  'Mi',
+                  style: TextStyle(fontSize: 28),
+                ),
+                subtitle: Text('High level Engine'),
+              ),
+              ListTile(
+                title: Text('tel: 18712341234'),
+              ),
+              ListTile(
+                title: Text('address: china'),
+              )
+            ],
+          ),
+        ),
+        Card(
+          elevation: 20,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              AspectRatio(
+                aspectRatio: 20 / 9,
+                child: Image.network(
+                  "https://www.itying.com/images/flutter/2.png",
+                  fit: BoxFit.cover,
+                ),
+              ),
+              ListTile(
+                leading: ClipOval(
+                  child: Image.network(
+                    "https://www.itying.com/images/flutter/2.png",
+                    fit: BoxFit.cover,
+                    height: 60,
+                    width: 60,
+                  ),
+                ),
+                title: const Text('Hello'),
+                subtitle: const Text('World'),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class BuildButton extends StatelessWidget {
+  const BuildButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text('normal button'),
+          ),
+          TextButton(onPressed: () {}, child: const Text('text button')),
+          OutlinedButton(onPressed: () {}, child: const Text('border button')),
+          IconButton(
+            icon: const Icon(Icons.thumb_up),
+            onPressed: () {},
+          ),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.send),
+            label: const Text("发送"),
+            onPressed: () {},
+          ),
+          OutlinedButton.icon(
+            icon: const Icon(Icons.add),
+            label: const Text("添加"),
+            onPressed: () {},
+          ),
+          TextButton.icon(
+            icon: const Icon(Icons.info),
+            label: const Text("详情"),
+            onPressed: () {},
+          ),
+          // 修改按钮的高度
+          SizedBox(
+            height: 80,
+            width: 200,
+            child: ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                  foregroundColor: MaterialStateProperty.all(Colors.blue)),
+              onPressed: () {},
+              child: const Text('WidthHeight'),
+            ),
+          ),
+          // 自适应按钮
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Container(
+                  height: 60,
+                  margin: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    child: const Text('auto button'),
+                    onPressed: () {},
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // 圆角按钮
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text('circle'),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.blue),
+              foregroundColor: MaterialStateProperty.all(Colors.white),
+              elevation: MaterialStateProperty.all(20),
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+            ),
+          ),
+          // 圆形按钮
+          ElevatedButton(
+            onPressed: () {},
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.blue),
+              foregroundColor: MaterialStateProperty.all(Colors.white),
+              elevation: MaterialStateProperty.all(20),
+              shape: MaterialStateProperty.all(
+                const CircleBorder(
+                  side: BorderSide(color: Colors.white),
+                ),
+              ),
+            ),
+            child: const Text('圆角'),
+          ),
+          // 修改outlineButton的边框
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.all(20),
+                  height: 50,
+                  child: OutlinedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all(Colors.black),
+                        side: MaterialStateProperty.all(
+                          const BorderSide(width: 1, color: Colors.red),
+                        ),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                        ),
+                      ),
+                      child: const Text('register')),
+                ),
+              )
+            ],
           ),
         ],
       ),
