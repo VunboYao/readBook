@@ -4,11 +4,8 @@
   title="VunboYao"
 >
   <view class="container">
-    <view
-      wx:for="{{100}}"
-      wx:key="{{index}}"
-    >
-      content - {{index}}
-    </view>
+    <view>{{count}}</view>
+    <view>{{school.userData.name}}</view>
+    <button bindtap="getData">GetData</button>
   </view>
 </safe-view>

@@ -1,4 +1,5 @@
 // pages/demo/demo.js
+import schoolStore from '../../stores/school.js'
 Page({
 
   /**
@@ -9,12 +10,29 @@ Page({
     statusHeight: 0,
     // 导航栏高度
     navHeight: 0,
+    school: '',
+    count: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  async onLoad(options) {},
+  async onLoad(options) {
+    schoolStore.onState('count', (value) => {
+      this.setData({
+        count: value
+      })
+    })
+    schoolStore.onState('obj', (value) => {
+      this.setData({
+        school: value
+      })
+    })
+  },
+
+  getData() {
+    schoolStore.dispatch('getData')
+  },
   /**
    * 生命周期函数--监听页面显示
    */

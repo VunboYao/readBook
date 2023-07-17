@@ -1,46 +1,33 @@
 // pages/search/search.js
+import schoolStore from '../../stores/school.js'
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    count: 0,
+    school: null
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    console.log('onLoad');
+    schoolStore.onState('count', (value) => {
+      this.setData({
+        count: value
+      })
+    })
+    schoolStore.onState('obj', (value) => {
+      this.setData({
+        school: value
+      })
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-    console.log('onReady');
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-    console.log('onShow');
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-    console.log('onHide');
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-    console.log('onUnload');
+  getData() {
+    schoolStore.dispatch('getData')
   },
 
   goTest() {
