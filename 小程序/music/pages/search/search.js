@@ -14,15 +14,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    schoolStore.onState('count', (value) => {
-      this.setData({
-        count: value
-      })
+    schoolStore.onState('count', this.updateCount)
+    schoolStore.onState('obj', this.updateObj)
+  },
+
+  updateCount(value) {
+    console.log(' search count');
+    this.setData({
+      count: value
     })
-    schoolStore.onState('obj', (value) => {
-      this.setData({
-        school: value
-      })
+  },
+
+  updateObj(value) {
+    console.log('search obj');
+    this.setData({
+      school: value
     })
   },
 
@@ -31,9 +37,14 @@ Page({
   },
 
   goTest() {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/demo/demo',
     })
+  },
+
+  onUnload() {
+    schoolStore.offState('count', this.updateCount)
+    schoolStore.offState('obj', this.updateObj)
   },
 
   /**

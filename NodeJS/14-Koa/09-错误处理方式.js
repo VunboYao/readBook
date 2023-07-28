@@ -6,12 +6,13 @@ app.use(ctx => {
   const isLogin = false
   if (!isLogin) {
     // TODO:暴露错误
-    ctx.app.emit('error', new Error('you should login~'), ctx)
+    ctx.app.emit('error', -400, ctx)
   }
 })
 
 // TODO:捕获错误
 app.on('error', (err, ctx) => {
+  console.log(err, '>>>>');
   ctx.status = 401
   ctx.body = err.message
 })
