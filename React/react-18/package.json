@@ -5,7 +5,7 @@
   "dependencies": {
     "@craco/craco": "^7.1.0",
     "@reduxjs/toolkit": "^1.9.3",
-    "axios": "^1.3.3",
+    "axios": "^1.6.5",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -47,7 +47,8 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
-    "@vunbo/eslint-config": "^1.0.5",
+    "@vunbo/eslint-config": "^1.0.6",
+    "@babel/plugin-proposal-private-property-in-object": "7.21.0-placeholder-for-preset-env.2",
     "classnames": "^2.3.2",
     "craco-less": "^2.0.0",
     "redux-devtools-extension": "^2.13.9",

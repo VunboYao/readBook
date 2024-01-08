@@ -44,7 +44,7 @@ export default class HelloWorld extends Component {
     console.log('React componentWillUnmount =>', this.state)
   }
 
-  // https://beta.reactjs.org/reference/react/Component#shouldcomponentupdate
+  // https://react.dev/reference/react/Component#shouldcomponentupdate
   shouldComponentUpdate(nextProps, nextState, nextContext) {
     console.log('React shouldComponentUpdate =>', nextProps, nextState, nextContext)
     return true
