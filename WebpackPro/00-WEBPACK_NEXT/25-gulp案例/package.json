@@ -22,7 +22,7 @@
     "gulp-less": "^5.0.0",
     "gulp-postcss": "^9.0.1",
     "gulp-terser": "^2.1.0",
-    "postcss": "^8.4.6",
+    "postcss": "^8.4.31",
     "postcss-preset-env": "^7.4.1"
   }
 }
