@@ -15,6 +15,7 @@ export default class App extends Component {
   }
 
   render() {
+    console.log('App Render')
     const { isShow } = this.state
     return (
       <div>
@@ -23,5 +24,9 @@ export default class App extends Component {
         {isShow && <HelloWorld />}
       </div>
     )
+  }
+
+  componentDidMount() {
+    console.log('App React componentDidMount')
   }
 }
