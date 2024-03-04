@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .word {
+        font-size: 20px;
+        color: #00B83F;
+    }
+  </style>
+</head>
+<body>
+<input type="text">
+<div class="word" id="text"></div>
+</body>
+<script>
+  const input = document.querySelector('input')
+  input.oninput = function (e) {
+    const value = e.target.value
+    text.innerText = parseStr2Number(value)
+    // if (parseStr2Number(value).length > 2) {
+    //   input.value = parseStr2Number(value)
+    // }
+  }
+
+  function parseStr2Number(str) {
+    // 1.数据基础过滤
+    const formatStr = parseFloat(str.trim()) + ''
+
+    let num = formatStr
+    // 2.空数据，非法数据时，返回0
+    if (!formatStr || formatStr === 'NaN') return 0
+
+    // 3.长度超过10的，直接过滤
+    if (formatStr.length > 10) {
+      num = formatStr.slice(0, 10)
+    }
+
+    // 4.过滤小数点保留2位
+    let processZeroStartReg = /^(\d+\.)(.*)/g
+    num =  num.replace(processZeroStartReg, (match, $1, $2) => {
+      return `${$1}${$2.slice(0, 2)}`
+    })
+
+    // 5.转为合理的数字
+    return num
+  }
+</script>
+</html>
