@@ -5,22 +5,34 @@ import OtherUseProvider from './OtherUseProvider'
 
 class App extends Component {
   state = {
-    info: { name: 'vunbo', age: 30 },
+    ancestorInfo: {
+      nickName: 'VunboYao',
+      age: 28,
+    },
+  }
+
+  changeAncestorInfo() {
+    this.setState({
+      ancestorInfo: {
+        nickName: 'Still',
+        age: 29,
+      },
+    })
   }
 
   render() {
-    const { info } = this.state
-
+    const { ancestorInfo } = this.state
     return (
       <div>
         {/* 1.扩展运算符传递数据的方式 */}
         {/* <Child {...info}/> */}
         <hr/>
 
+        <button onClick={() => this.changeAncestorInfo()}>Change</button>
         {/* 2.传递数据给后代子组件 */}
-        <UserContext.Provider value={{ nickName: 'bo', age: 20 }}>
-          <HasDefaultContext.Provider value={{ color: 'red', size: 56 }}>
-            <Child {...info}/>
+        <UserContext.Provider value={ancestorInfo}>
+          <HasDefaultContext.Provider value={{ color: 'override-default-red', size: 56 }}>
+            <Child/>
           </HasDefaultContext.Provider>
         </UserContext.Provider>
 

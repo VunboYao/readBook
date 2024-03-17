@@ -9,7 +9,7 @@ class OtherUseProvider extends Component {
           <HasDefaultContext.Consumer>
             {
               (value) => {
-                return <h2>NoGrandPaData: {value.size}</h2>
+                return <h2>NoGrandPaData: default-{value.size}</h2>
               }
             }
           </HasDefaultContext.Consumer>
