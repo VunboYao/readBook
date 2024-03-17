@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    .container {
+      display: grid;
+      grid-template-columns: repeat(4, 200px);
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: repeat(7, 20px);
+      grid-template-rows: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <div class="item" v-for="(item, index) in dateArray" :key="index">
+        <span>日</span>
+        <span>一</span>
+        <span>二</span>
+        <span>三</span>
+        <span>四</span>
+        <span>五</span>
+        <span>六</span>
+        <span v-for="(day, id) in item" :key="id">
+          {{day}}
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script>
+  // 获取每个月的最后一天
+  function getLastDayOfMonth(year, month) {
+    var nextMonth = new Date(year, month, 1);
+    nextMonth.setMonth(nextMonth.getMonth() + 1);
+    nextMonth.setDate(0);
+
+    return nextMonth.getDate();
+  }
+  const { createApp, ref } = Vue
+
+  createApp({
+    setup() {
+      const dateArray = []
+      // 获取年
+      const year = new Date().getFullYear()
+      for (let i = 0; i < 12; i++) {
+        // 每个月第一天
+        const firstDay = new Date(year, i, 1)
+        // 获取最后一天
+        const lastDay = getLastDayOfMonth(year, i)
+        // 获取周几
+        const weekDay = firstDay.getDay()
+        let tempArray = new Array(weekDay)
+        for (let i = 1; i <= lastDay; i++) {
+          tempArray.push(i)
+        }
+        dateArray.push(tempArray)
+      }
+      return {
+        dateArray
+      }
+    }
+  }).mount('#app')
+</script>
+
+</html>

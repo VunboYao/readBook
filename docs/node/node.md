@@ -490,7 +490,7 @@ fs.readFile(path.join(__dirname, '07-core.js'), () => {
   >
   > `bin:{`
   >
-  > ​ 'demo': 'index.js'
+  >  'demo': 'index.js'
   >
   > `}`
 

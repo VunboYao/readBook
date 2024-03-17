@@ -19,8 +19,17 @@ const fs = require('fs')
 // })
 
 // 3.异步读取：Promise
-fs.promises.readFile('./abc.txt', {
-	encoding: 'utf8'
-}).then(res => {
-	console.log(res)
+// fs.promises.readFile('./abc.txt', {
+// 	encoding: 'utf8'
+// }).then(res => {
+// 	console.log(res)
+// })
+
+fs.readdir('./', (err, files) => {
+  if (err) {
+    console.log('ReadDirError:', err)
+    return
+  }
+
+  console.log(files)
 })
