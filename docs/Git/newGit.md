@@ -90,13 +90,13 @@
 
   **等同于 local**
 
-  - `git config --local` 只针对某个仓库有效
-  - `git config --global`, 对当前用户所有仓库有效
-  - `git config --system`, 对系统所有登录的用户有效
+- `git config --local` 只针对某个仓库有效
+- `git config --global`, 对当前用户所有仓库有效
+- `git config --system`, 对系统所有登录的用户有效
 
 ## 查看固定的属性
 
-  - git config --local user.name
+- git config --local user.name
 
 ## global 和 local 参数同事存在时, local优先级更高
 
