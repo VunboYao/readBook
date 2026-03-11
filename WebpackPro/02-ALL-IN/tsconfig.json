@@ -1,6 +1,0 @@
-{
-  "extends": "@vunbo/config-ts",
-  "compilerOptions": {
-    "declaration": false
-  }
-}
