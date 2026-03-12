@@ -2,6 +2,12 @@
   "name": "react-18",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
     "@craco/craco": "^7.1.0",
     "@reduxjs/toolkit": "^1.9.3",
@@ -18,19 +24,38 @@
     "vunbo": "^1.0.6",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "7.21.0-placeholder-for-preset-env.2",
+    "@faker-js/faker": "^7.6.0",
+    "@vunbo/eslint-config": "^1.0.6",
+    "classnames": "^2.3.2",
+    "craco-less": "^2.0.0",
+    "redux-devtools-extension": "^2.13.9",
+    "styled-components": "^5.3.8",
+    "typescript": "^4.9.5"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "@vunbo"
+      "@vunbo/eslint-config"
     ],
     "rules": {
-      "react/display-name": 0
+      "indent": [
+        "error",
+        2
+      ],
+      "react/jsx-indent": [
+        "error",
+        2
+      ],
+      "react/jsx-indent-props": [
+        "error",
+        2
+      ],
+      "react/display-name": 0,
+      "react/prop-types": 0,
+      "no-restricted-globals": 0,
+      "@typescript-eslint/no-unused-vars": 0
     }
   },
   "browserslist": {
@@ -44,15 +69,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@faker-js/faker": "^7.6.0",
-    "@vunbo/eslint-config": "^1.0.6",
-    "@babel/plugin-proposal-private-property-in-object": "7.21.0-placeholder-for-preset-env.2",
-    "classnames": "^2.3.2",
-    "craco-less": "^2.0.0",
-    "redux-devtools-extension": "^2.13.9",
-    "styled-components": "^5.3.8",
-    "typescript": "^4.9.5"
   }
 }

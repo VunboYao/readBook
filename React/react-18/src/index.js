@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom/client'
+import './00-study/style.css'
 // import { StrictMode, Suspense } from 'react'
 
 /* !基础阶段 */
@@ -11,7 +12,7 @@ import ReactDOM from 'react-dom/client'
 // import App from './06-组件通信案例练习/App'
 // import App from './07-组件的插槽实现/App'
 // import App from './08-组件作用域插槽/App'
-import App from './09-非父子通信-Context/App'
+// import App from './09-非父子通信-Context/App'
 // import App from './10-非父子组件通信-EventBus/App'
 // import App from './11-setState详细使用/App'
 // import App from './12-render函数的优化/App'
@@ -94,10 +95,12 @@ root.render(
   </StrictMode>,
 ) */
 
+import App from './00-study/App'
+
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   // <Provider store={store}>
-      <App />,
+  <App />,
   // </Provider>,
 )
 
