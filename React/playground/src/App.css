@@ -18,7 +18,7 @@ body {
 }
 
 .app {
-  max-width: 800px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 24px 16px 48px;
 }
@@ -37,7 +37,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .chapter-nav button {
@@ -52,6 +52,97 @@ body {
   border-color: #2563eb;
   background: #eff6ff;
   color: #1d4ed8;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .compare-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.compare-pane {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.pane-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pane-header h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.pane-header code {
+  font-size: 0.8rem;
+  word-break: break-all;
+}
+
+.pane-header-practice {
+  background: #fffbeb;
+  border-bottom-color: #fcd34d;
+}
+
+.pane-header-practice h2 {
+  color: #b45309;
+}
+
+.pane-header-answer {
+  background: #ecfdf5;
+  border-bottom-color: #6ee7b7;
+}
+
+.pane-header-answer h2 {
+  color: #047857;
+}
+
+.pane-body {
+  padding: 16px;
+}
+
+/* 旧单栏 app-main 样式保留兼容，对比布局用 pane-body */
+.app-main {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.practice-todo {
+  border: 1px dashed #f59e0b;
+  background: #fffbeb;
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+
+.practice-todo-label {
+  margin: 0 0 8px;
+  font-weight: 600;
+  color: #b45309;
+  font-size: 0.9rem;
+}
+
+.practice-todo ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: #78350f;
+  font-size: 0.9rem;
 }
 
 .app-main {

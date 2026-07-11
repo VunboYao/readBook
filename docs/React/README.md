@@ -23,7 +23,8 @@
 
 - 项目：[`React/playground`](../../React/playground/README.md)
 - 启动：`cd React/playground && npm install && npm run dev`
-- **01–09 每章都有完整可交互演示**（顶栏切换 / URL `#01`…`#09`），不是文档里的零散片段堆砌
+- **左右对照**：左「练习」写 `src/practice/*`（DemoSection 壳 + 验收 TODO）；右「参考答案」为 `src/chapters/*` 完整实现，无需来回切换
+- 章节 `#01`…`#09`；窄屏上下堆叠
 - 09（真 RSC/Server Actions）仍需另建 Next 项目；playground 内是边界对照页
 
 ## 怎么读

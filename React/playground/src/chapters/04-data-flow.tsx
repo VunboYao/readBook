@@ -59,7 +59,10 @@ type FormState = { email: string; agree: boolean }
 function SubmitBtn() {
   const { pending } = useFormStatus()
   return (
-    <button type="submit" disabled={pending}>
+    <button
+      type="submit"
+      disabled={pending}
+    >
       {pending ? '提交中…' : '保存昵称'}
     </button>
   )
@@ -105,7 +108,10 @@ export function Chapter04DataFlow() {
         title="A. 状态提升"
         point="SearchInput 与 ResultList 共享 keyword → 提升到父组件，子组件只收 props+回调。"
       >
-        <SearchInput value={keyword} onChange={setKeyword} />
+        <SearchInput
+          value={keyword}
+          onChange={setKeyword}
+        />
         <ResultList keyword={keyword} />
       </DemoSection>
 
@@ -117,9 +123,7 @@ export function Chapter04DataFlow() {
           <WhoAmI />
           <button
             type="button"
-            onClick={() =>
-              setAuthUser((u) => (u ? null : { name: 'Alice' }))
-            }
+            onClick={() => setAuthUser((u) => (u ? null : { name: 'Alice' }))}
           >
             {authUser ? '登出' : '登录'}
           </button>
@@ -130,7 +134,10 @@ export function Chapter04DataFlow() {
         title="C. 受控多字段表单"
         point="单一 form state + patch；校验/禁用提交清晰。字段多时改用 RHF（08）。"
       >
-        <form onSubmit={onSignup} className="stack-form">
+        <form
+          onSubmit={onSignup}
+          className="stack-form"
+        >
           <label>
             email
             <input
@@ -146,7 +153,10 @@ export function Chapter04DataFlow() {
             />{' '}
             同意条款
           </label>
-          <button type="submit" disabled={!form.agree || !form.email}>
+          <button
+            type="submit"
+            disabled={!form.agree || !form.email}
+          >
             提交
           </button>
         </form>
@@ -168,7 +178,10 @@ export function Chapter04DataFlow() {
           }}
           className="stack-form"
         >
-          <input name="name" defaultValue={name} />
+          <input
+            name="name"
+            defaultValue={name}
+          />
           <SubmitBtn />
         </form>
       </DemoSection>

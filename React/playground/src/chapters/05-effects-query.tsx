@@ -41,7 +41,9 @@ function EffectFetchDemo() {
           setUser(data)
           setLog((l) => [`Effect 请求 ${id} 完成`, ...l].slice(0, 6))
         } else {
-          setLog((l) => [`Effect 请求 ${id} 已忽略(cancelled)`, ...l].slice(0, 6))
+          setLog((l) =>
+            [`Effect 请求 ${id} 已忽略(cancelled)`, ...l].slice(0, 6),
+          )
         }
       })
       .finally(() => {
@@ -56,7 +58,11 @@ function EffectFetchDemo() {
     <div>
       <div className="row-actions">
         {(['u1', 'u2', 'u3'] as const).map((x) => (
-          <button key={x} type="button" onClick={() => setId(x)}>
+          <button
+            key={x}
+            type="button"
+            onClick={() => setId(x)}
+          >
             加载 {x}
           </button>
         ))}
@@ -101,7 +107,11 @@ function QueryUserDemo() {
     <div>
       <div className="row-actions">
         {(['u1', 'u2', 'u3'] as const).map((x) => (
-          <button key={x} type="button" onClick={() => setId(x)}>
+          <button
+            key={x}
+            type="button"
+            onClick={() => setId(x)}
+          >
             queryKey 含 {x}
           </button>
         ))}

@@ -9,7 +9,10 @@ import { ChapterHeading, DemoSection } from '../shared/demo'
 function LikeButton({ initial }: { initial: number }) {
   const [n, setN] = useState(initial)
   return (
-    <button type="button" onClick={() => setN((x) => x + 1)}>
+    <button
+      type="button"
+      onClick={() => setN((x) => x + 1)}
+    >
       赞 {n}（Client 岛：有 useState）
     </button>
   )

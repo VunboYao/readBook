@@ -26,7 +26,10 @@ export function Chapter01Mindset() {
         <p>
           本组件已渲染 <strong>{renderRef.current}</strong> 次
         </p>
-        <button type="button" onClick={() => setCount((c) => c + 1)}>
+        <button
+          type="button"
+          onClick={() => setCount((c) => c + 1)}
+        >
           count: {count}（函数式更新）
         </button>
         <button
@@ -47,9 +50,7 @@ export function Chapter01Mindset() {
         <pre className="demo-pre">{JSON.stringify(user, null, 2)}</pre>
         <button
           type="button"
-          onClick={() =>
-            setUser((u) => ({ ...u, score: u.score + 1 }))
-          }
+          onClick={() => setUser((u) => ({ ...u, score: u.score + 1 }))}
         >
           score +1（展开新对象）
         </button>

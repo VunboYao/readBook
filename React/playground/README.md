@@ -1,10 +1,10 @@
 # React Playground
 
-对齐 [`docs/React`](../../docs/React/README.md) 的**完整可交互演示**（不是文档碎片粘贴）。
+对齐 [`docs/React`](../../docs/React/README.md)：**左右对照**——左练习、右参考答案。
 
 - **底座**：Vite + React 19 + TypeScript
 - **已预装**：`react-router`、`zustand`、`@tanstack/react-query`、`react-hook-form`
-- **章节**：`#01`–`#09` 顶栏切换；每章内用 `DemoSection` 分块标出技术点
+- **布局**：同一章节并排显示；改左侧文件即可，右侧随时比对行为
 
 ## 启动
 
@@ -14,30 +14,36 @@ npm install
 npm run dev
 ```
 
-## 章节 ↔ 文档 ↔ 演示重点
+## 练习怎么用
 
-| Hash | 文件 | 文档 | 演示组装了什么 |
-|------|------|------|----------------|
-| `#01` | `01-counter.tsx` | 思维模型 | 重渲染次数、批处理、不可变 vs 原地改 |
-| `#02` | `02-list-form.tsx` | JSX | children、key 错位实验、受控/非受控、Portal、key 重置 |
-| `#03` | `03-hooks-toggle.tsx` | Hooks | state/reducer/ref/effect/memo/context/id/自定义 Hook |
-| `#04` | `04-data-flow.tsx` | 数据流 | 状态提升、Context、受控表单、Actions+乐观更新 |
-| `#05` | `05-effects-query.tsx` | 副作用 | 正确 Effect、Effect 请求竞态、TanStack Query |
-| `#06` | `06-perf.tsx` | 性能 | memo 行渲染计数、deferred / transition 过滤 |
-| `#07` | `07-engineering.tsx` | 工程 TS | Props 类型、事件类型、CSS Modules、env |
-| `#08` | `08-ecosystem.tsx` | 生态 | MemoryRouter 迷你应用 + Zustand + RHF |
-| `#09` | `09-next-guide.tsx` | Next | RSC 边界对照（真 Next 需另建项目） |
+1. 打开页面：左侧黄头「练习」，右侧绿头「参考答案」。
+2. 选章节（或 hash `#03`），按左侧黄色验收要点在 `src/practice/*` 实现。
+3. 保存后 HMR 刷新左侧；直接和右侧答案交互效果比对。
+4. 建议先自己写，再看右侧实现细节；窄屏会上下堆叠。
 
-## 怎么自己加练习
+| 侧            | 目录                         |
+| ------------- | ---------------------------- |
+| 左 · 练习     | `src/practice/0x-*.tsx`      |
+| 右 · 参考答案 | `src/chapters/*`（只读对照） |
 
-1. 在 `src/chapters/` 新建或改现有文件，用 `ChapterHeading` + `DemoSection` 包起来。
-2. 在 `App.tsx` 的 `chapters` 数组注册。
-3. 保存后 HMR 刷新。
+## 章节对照表
+
+| Hash  | 练习文件                        | 参考答案                        | 文档主题           |
+| ----- | ------------------------------- | ------------------------------- | ------------------ |
+| `#01` | `practice/01-mindset.tsx`       | `chapters/01-counter.tsx`       | 思维模型           |
+| `#02` | `practice/02-jsx.tsx`           | `chapters/02-list-form.tsx`     | JSX                |
+| `#03` | `practice/03-hooks.tsx`         | `chapters/03-hooks-toggle.tsx`  | Hooks              |
+| `#04` | `practice/04-data-flow.tsx`     | `chapters/04-data-flow.tsx`     | 数据流             |
+| `#05` | `practice/05-effects-query.tsx` | `chapters/05-effects-query.tsx` | 副作用/Query       |
+| `#06` | `practice/06-perf.tsx`          | `chapters/06-perf.tsx`          | 性能               |
+| `#07` | `practice/07-engineering.tsx`   | `chapters/07-engineering.tsx`   | 工程 TS            |
+| `#08` | `practice/08-ecosystem.tsx`     | `chapters/08-ecosystem.tsx`     | Router/Zustand/RHF |
+| `#09` | `practice/09-next-guide.tsx`    | `chapters/09-next-guide.tsx`    | Next 对照          |
 
 ## 脚本
 
-| 命令 | 作用 |
-|------|------|
-| `npm run dev` | 开发 |
-| `npm run build` | 类型检查 + 生产构建 |
-| `npm run preview` | 预览构建产物 |
+| 命令              | 作用                |
+| ----------------- | ------------------- |
+| `npm run dev`     | 开发                |
+| `npm run build`   | 类型检查 + 生产构建 |
+| `npm run preview` | 预览构建产物        |

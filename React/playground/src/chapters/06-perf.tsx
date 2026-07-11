@@ -11,7 +11,10 @@ import { ChapterHeading, DemoSection } from '../shared/demo'
 
 type Item = { id: string; title: string }
 
-const ALL = Array.from({ length: 3000 }, (_, i) => `item-${String(i).padStart(4, '0')}`)
+const ALL = Array.from(
+  { length: 3000 },
+  (_, i) => `item-${String(i).padStart(4, '0')}`,
+)
 
 const Row = memo(function Row({
   item,
@@ -52,7 +55,10 @@ function MemoListDemo() {
     <div>
       <p>
         父 tick={parentTick}{' '}
-        <button type="button" onClick={() => setParentTick((t) => t + 1)}>
+        <button
+          type="button"
+          onClick={() => setParentTick((t) => t + 1)}
+        >
           父组件 setState（不改列表 props）
         </button>
       </p>
@@ -101,8 +107,8 @@ function DeferredSearchDemo() {
         />
       </label>
       <p>
-        即时 text=<code>{text}</code> / deferred=<code>{deferred}</code> /
-        命中 {deferredResult.length}
+        即时 text=<code>{text}</code> / deferred=<code>{deferred}</code> / 命中{' '}
+        {deferredResult.length}
       </p>
       <ul className="short-list">
         {deferredResult.slice(0, 8).map((x) => (

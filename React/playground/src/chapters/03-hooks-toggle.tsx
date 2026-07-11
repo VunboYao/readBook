@@ -13,11 +13,12 @@ import { ChapterHeading, DemoSection } from '../shared/demo'
 
 type CounterState = { count: number }
 type CounterAction =
-  | { type: 'inc' }
-  | { type: 'add'; payload: number }
-  | { type: 'reset' }
+  { type: 'inc' } | { type: 'add'; payload: number } | { type: 'reset' }
 
-function counterReducer(state: CounterState, action: CounterAction): CounterState {
+function counterReducer(
+  state: CounterState,
+  action: CounterAction,
+): CounterState {
   switch (action.type) {
     case 'inc':
       return { count: state.count + 1 }
@@ -39,9 +40,7 @@ function useTheme() {
 
 function ThemedBadge() {
   const theme = useTheme()
-  return (
-    <span className={`theme-badge theme-${theme}`}>当前主题：{theme}</span>
-  )
+  return <span className={`theme-badge theme-${theme}`}>当前主题：{theme}</span>
 }
 
 function useToggle(initial = false) {
@@ -82,16 +81,25 @@ export function Chapter03Hooks() {
 
   return (
     <div className="chapter">
-      <ChapterHeading id="03" title="Hooks 核心" doc="03-Hooks核心.md" />
+      <ChapterHeading
+        id="03"
+        title="Hooks 核心"
+        doc="03-Hooks核心.md"
+      />
 
       <DemoSection
         title="A. useState + 函数式更新"
         point="异步/连续更新用 setN(v => ...)，避免闭包陈旧值。"
       >
-        <button type="button" onClick={() => setN((v) => v + 1)}>
+        <button
+          type="button"
+          onClick={() => setN((v) => v + 1)}
+        >
           useState: {n}
         </button>
-        <p className="demo-hint">renderCount(ref)={renderCount.current}（改 ref 不触发渲染）</p>
+        <p className="demo-hint">
+          renderCount(ref)={renderCount.current}（改 ref 不触发渲染）
+        </p>
       </DemoSection>
 
       <DemoSection
@@ -99,7 +107,10 @@ export function Chapter03Hooks() {
         point="多分支状态迁移集中在 reducer；类似迷你 Redux。"
       >
         <p>count = {state.count}</p>
-        <button type="button" onClick={() => dispatch({ type: 'inc' })}>
+        <button
+          type="button"
+          onClick={() => dispatch({ type: 'inc' })}
+        >
           inc
         </button>
         <button
@@ -108,7 +119,10 @@ export function Chapter03Hooks() {
         >
           +5
         </button>
-        <button type="button" onClick={() => dispatch({ type: 'reset' })}>
+        <button
+          type="button"
+          onClick={() => dispatch({ type: 'reset' })}
+        >
           reset
         </button>
       </DemoSection>
@@ -117,7 +131,10 @@ export function Chapter03Hooks() {
         title="C. useRef + useEffect 清理"
         point="ref 拿 DOM；Effect 订阅外部系统并 cleanup。下方 tick 每秒 +1。"
       >
-        <input ref={inputRef} placeholder="挂载后自动 focus" />
+        <input
+          ref={inputRef}
+          placeholder="挂载后自动 focus"
+        />
         <p>interval tick: {tick}</p>
       </DemoSection>
 
@@ -127,7 +144,10 @@ export function Chapter03Hooks() {
       >
         <p>filtered ok items: {filtered.map((i) => i.label).join(', ')}</p>
         <p>toggle: {on ? 'ON' : 'OFF'}</p>
-        <button type="button" onClick={toggle}>
+        <button
+          type="button"
+          onClick={toggle}
+        >
           useToggle
         </button>
       </DemoSection>
@@ -140,16 +160,17 @@ export function Chapter03Hooks() {
           <ThemedBadge />
           <button
             type="button"
-            onClick={() =>
-              setTheme((t) => (t === 'light' ? 'dark' : 'light'))
-            }
+            onClick={() => setTheme((t) => (t === 'light' ? 'dark' : 'light'))}
           >
             切换主题
           </button>
         </ThemeContext>
         <div style={{ marginTop: 12 }}>
           <label htmlFor={fieldId}>昵称</label>{' '}
-          <input id={fieldId} placeholder={`id=${fieldId}`} />
+          <input
+            id={fieldId}
+            placeholder={`id=${fieldId}`}
+          />
         </div>
       </DemoSection>
     </div>

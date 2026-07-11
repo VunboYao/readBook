@@ -46,10 +46,16 @@ function HomePage() {
     <div>
       <h4>首页</h4>
       <p>嵌套路由 index。点下面加入 Zustand 购物车（selector 只订 count）。</p>
-      <button type="button" onClick={() => add('sku-react')}>
+      <button
+        type="button"
+        onClick={() => add('sku-react')}
+      >
         加入 React 书
       </button>
-      <button type="button" onClick={() => add('sku-vue')}>
+      <button
+        type="button"
+        onClick={() => add('sku-vue')}
+      >
         加入 Vue 书
       </button>
     </div>
@@ -100,7 +106,10 @@ function UserDetail() {
       >
         切换 search tab
       </button>
-      <button type="button" onClick={() => navigate(-1)}>
+      <button
+        type="button"
+        onClick={() => navigate(-1)}
+      >
         navigate(-1)
       </button>
     </div>
@@ -130,7 +139,9 @@ function LoginForm() {
         password
         <input
           type="password"
-          {...register('password', { minLength: { value: 6, message: '至少 6 位' } })}
+          {...register('password', {
+            minLength: { value: 6, message: '至少 6 位' },
+          })}
         />
       </label>
       {errors.password && (
@@ -147,24 +158,45 @@ function RouterDemo() {
     <MemoryRouter initialEntries={['/']}>
       <div className="mini-app">
         <nav className="mini-nav">
-          <NavLink to="/" end>
+          <NavLink
+            to="/"
+            end
+          >
             首页
           </NavLink>
           <NavLink to="/users">用户</NavLink>
           <NavLink to="/login">登录</NavLink>
           <CartBadge />
-          <button type="button" onClick={clear}>
+          <button
+            type="button"
+            onClick={clear}
+          >
             清空购物车
           </button>
         </nav>
         <div className="mini-outlet">
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/users" element={<UsersLayout />}>
-              <Route index element={<UserList />} />
-              <Route path=":id" element={<UserDetail />} />
+            <Route
+              path="/"
+              element={<HomePage />}
+            />
+            <Route
+              path="/users"
+              element={<UsersLayout />}
+            >
+              <Route
+                index
+                element={<UserList />}
+              />
+              <Route
+                path=":id"
+                element={<UserDetail />}
+              />
             </Route>
-            <Route path="/login" element={<LoginForm />} />
+            <Route
+              path="/login"
+              element={<LoginForm />}
+            />
           </Routes>
         </div>
       </div>

@@ -71,7 +71,10 @@ export function Chapter07Engineering() {
           <Button onClick={() => setLog((l) => ['primary click', ...l])}>
             primary
           </Button>
-          <Button variant="ghost" onClick={() => setLog((l) => ['ghost', ...l])}>
+          <Button
+            variant="ghost"
+            onClick={() => setLog((l) => ['ghost', ...l])}
+          >
             ghost
           </Button>
           <Button disabled>disabled</Button>
