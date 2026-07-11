@@ -6,6 +6,7 @@ export function Practice01Mindset() {
   const [count, setCount] = useState(0)
   const renderRef = useRef(0)
   renderRef.current += 1
+  const [user, setUser] = useState({ name: 'react', score: 0 })
 
   return (
     <div className="chapter">
@@ -57,6 +58,19 @@ export function Practice01Mindset() {
             '按钮：展开新对象 name 追加 !',
           ]}
         />
+        <pre className="demo-pre">{JSON.stringify(user, null, 2)}</pre>
+        <button
+          type="button"
+          onClick={() => setUser((u) => ({ ...u, score: u.score + 1 }))}
+        >
+          展开新对象 score +1
+        </button>
+        <button
+          type="button"
+          onClick={() => setUser((u) => ({ ...u, name: u.name + '!' }))}
+        >
+          name + !
+        </button>
       </DemoSection>
 
       <DemoSection
@@ -69,6 +83,19 @@ export function Practice01Mindset() {
             '对比 B：说明为何界面可能不变',
           ]}
         />
+        <button
+          type="button"
+          onClick={() => {
+            // 反模式：可变写法（Vue 习惯），React 下经常不触发更新
+            user.score += 1
+            setUser(user) // 同一引用
+          }}
+        >
+          错误：user.score++ 后 setUser(user)
+        </button>
+        <p className="demo-hint">
+          若分数不变：说明需要新对象。打开 React DevTools 看 state。
+        </p>
       </DemoSection>
     </div>
   )
