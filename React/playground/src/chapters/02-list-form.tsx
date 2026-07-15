@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { ChapterHeading, DemoSection } from '../shared/demo'
+import * as React from 'react'
 
 type Item = { id: string; title: string }
 

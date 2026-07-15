@@ -1,7 +1,70 @@
 import { ChapterHeading, DemoSection, PracticeTodo } from '../shared/demo'
+import { useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
+
+type CardProps = { name: string; children: React.ReactNode; accent?: boolean }
+function Card({ name, children, accent }: CardProps) {
+  return (
+    <div
+      className="box"
+      style={{
+        padding: 8,
+        border: '1px solid #ddd',
+        borderRadius: 6,
+        background: accent ? '#eff6ff' : '#fafafa',
+      }}
+    >
+      <h4 style={{ margin: '0 0 8px' }}>Hello, {name}</h4>
+      {children}
+    </div>
+  )
+}
+
+type ModalProps = { open: boolean
+  onClose: () => void
+  children: React.ReactNode }
+function Modal({open, onClose, children}: ModalProps) {
+  if (!open) return null
+  return createPortal(
+    <div
+      className='modal-mask'
+      onClick={onClose}
+      role='presentation'
+    >
+      <div
+        className="modal-dialog"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+        <button
+          type='button'
+          onClick={onClose}
+        >Close</button>
+      </div>
+    </div>
+  , document.body)
+}
+
+type Item = { id: string; title: string }
 
 /** 练习：对照 src/chapters/02-list-form.tsx */
 export function Practice02Jsx() {
+  const [show, setShow] = useState<boolean>(true)
+  const [items, setItems] = useState<Item[]>([
+    { id: 'a', title: 'Alpha' },
+    { id: 'b', title: 'Beta' },
+    { id: 'c', title: 'Gamma' },
+  ])
+  function shuffle() {
+    setItems((prevState) => [...prevState].sort(() => Math.random() - 0.5))
+  }
+  function onDelete() {
+    setItems((prevState) => prevState.slice(1))
+  }
+  const [text, setText] = useState('')
+  const uncontrolledRef = useRef<HTMLInputElement>(null)
+  const [resetKey, setResetKey] = useState(0)
+  const [modalOpen, setModalOpen] = useState(false)
   return (
     <div className="chapter">
       <ChapterHeading
@@ -20,6 +83,19 @@ export function Practice02Jsx() {
             'checkbox 控制 accent / 条件渲染一段文案',
           ]}
         />
+        <Card
+          name="React19"
+          accent={show}
+        >
+          <p>这段是 children（类似 Vue default slot）</p>
+        </Card>
+        <input
+          type="checkbox"
+          checked={show}
+          onClick={() => setShow((s) => !s)}
+        />{' '}
+        accent 条件控制
+        {show && <p>checkbox 控制 accent / 条件渲染一段文案</p>}
       </DemoSection>
 
       <DemoSection
@@ -33,6 +109,21 @@ export function Practice02Jsx() {
             '（可选）对比 key=index 的错位现象',
           ]}
         />
+        <button onClick={shuffle}>打乱顺序</button>
+        <button onClick={onDelete}>删除第一项</button>
+        <ul>
+          {items.map((item) => (
+            <li
+              key={item.id}
+              style={{ marginTop: 8 }}
+            >
+              {item.title} <input
+                type="text"
+                placeholder={item.id}
+              />
+            </li>
+          ))}
+        </ul>
       </DemoSection>
 
       <DemoSection
@@ -45,6 +136,25 @@ export function Practice02Jsx() {
             '非受控 input + ref，按钮 alert 当前值',
           ]}
         />
+        <label>
+          <span>受控</span>
+          <input
+            type="text"
+            onChange={(e) => setText(e.target.value)}
+          />
+        </label>
+        <p>state={text}</p>
+        <label>
+          <span>非受控</span>
+          <input
+            type="text"
+            defaultValue="init"
+            ref={uncontrolledRef}
+          />
+          <button onClick={() => alert(uncontrolledRef.current?.value)}>
+            alert
+          </button>
+        </label>
       </DemoSection>
 
       <DemoSection
@@ -57,7 +167,34 @@ export function Practice02Jsx() {
             'createPortal Modal：点遮罩关闭，内容区 stopPropagation',
           ]}
         />
+        <button
+          type='button'
+          onClick={() => setResetKey((k) => k + 1)}
+        >
+          resetKey
+        </button>
+        <DraftBox key={resetKey}/>
+        <button onClick={() => setModalOpen(true)}>Open</button>
+        <Modal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+        >
+          <p>Modal content</p>
+        </Modal>
       </DemoSection>
     </div>
+  )
+}
+
+function DraftBox(){
+  const [draft, setDraft] = useState('')
+  return (
+    <p>
+      草稿（本地 state）：
+      <input
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+      />
+    </p>
   )
 }
