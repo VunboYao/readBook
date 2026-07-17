@@ -1,7 +1,8 @@
-import { ChapterHeading, DemoSection, PracticeTodo } from '../shared/demo'
+// import { ChapterHeading, DemoSection, PracticeTodo } from '../shared/demo'
+import { useReducer } from 'react'
 
 /** 练习：对照 src/chapters/03-hooks-toggle.tsx */
-export function Practice03Hooks() {
+/*export function Practice03Hooks() {
   return (
     <div className="chapter">
       <ChapterHeading
@@ -69,6 +70,42 @@ export function Practice03Hooks() {
           ]}
         />
       </DemoSection>
+    </div>
+  )
+}*/
+
+type State = {count: number}
+type Action = {type: 'inc'} | {type: 'add', payload: number} | {type: 'reset'}
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case 'inc':
+      return { count: state.count + 1 }
+    case 'add':
+      return { count: state.count + action.payload }
+    case 'reset':
+      return { count: 0 }
+    default:
+      return state
+  }
+}
+
+function Demo() {
+  const [state, dispatch] = useReducer(reducer, { count: 0 })
+  return (
+    <>
+      <p>{state.count}</p>
+      <button onClick={() => dispatch({type: 'inc'})}> + 1</button>
+      <button onClick={() => dispatch({type: 'add', payload: 10})}> + 10</button>
+    </>
+  )
+}
+
+export function Practice03Hooks() {
+
+  return (
+    <div>
+      <Demo/>
     </div>
   )
 }
