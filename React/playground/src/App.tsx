@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type ComponentType } from 'react'
 import { Chapter01Mindset } from './chapters/01-counter'
 import { Chapter02Jsx } from './chapters/02-list-form'
 import { Chapter03Hooks } from './chapters/03-hooks-toggle'
@@ -17,9 +17,28 @@ import { Practice06Perf } from './practice/06-perf'
 import { Practice07Engineering } from './practice/07-engineering'
 import { Practice08Ecosystem } from './practice/08-ecosystem'
 import { Practice09NextGuide } from './practice/09-next-guide'
+import { Practice10Sandbox } from './practice/10-sandbox'
 import './App.css'
 
-const chapters = [
+type CompareChapter = {
+  id: string
+  label: string
+  solo?: false
+  practiceFile: string
+  answerFile: string
+  Practice: ComponentType
+  Answer: ComponentType
+}
+
+type SoloChapter = {
+  id: string
+  label: string
+  solo: true
+  practiceFile: string
+  Practice: ComponentType
+}
+
+const chapters: readonly (CompareChapter | SoloChapter)[] = [
   {
     id: '01',
     label: '01 思维',
@@ -92,7 +111,14 @@ const chapters = [
     Practice: Practice09NextGuide,
     Answer: Chapter09NextGuide,
   },
-] as const
+  {
+    id: '10',
+    label: '10 练习',
+    solo: true,
+    practiceFile: 'src/practice/10-sandbox.tsx',
+    Practice: Practice10Sandbox,
+  },
+]
 
 type ChapterId = (typeof chapters)[number]['id']
 
@@ -100,6 +126,48 @@ function readChapterFromHash(): ChapterId {
   const raw = window.location.hash.replace(/^#/, '').split('?')[0]
   if (chapters.some((c) => c.id === raw)) return raw as ChapterId
   return '01'
+}
+
+function ComparePanes({
+  practiceFile,
+  answerFile,
+  Practice,
+  Answer,
+}: {
+  practiceFile: string
+  answerFile: string
+  Practice: ComponentType
+  Answer: ComponentType
+}) {
+  return (
+    <div className="compare-grid">
+      <section
+        className="compare-pane compare-practice"
+        aria-label="练习"
+      >
+        <header className="pane-header pane-header-practice">
+          <h2>练习</h2>
+          <code>{practiceFile}</code>
+        </header>
+        <div className="pane-body">
+          <Practice />
+        </div>
+      </section>
+
+      <section
+        className="compare-pane compare-answer"
+        aria-label="参考答案"
+      >
+        <header className="pane-header pane-header-answer">
+          <h2>参考答案</h2>
+          <code>{answerFile}</code>
+        </header>
+        <div className="pane-body">
+          <Answer />
+        </div>
+      </section>
+    </div>
+  )
 }
 
 export default function App() {
@@ -111,7 +179,6 @@ export default function App() {
   )
 
   const Practice = current.Practice
-  const Answer = current.Answer
 
   function select(id: ChapterId) {
     setChapterId(id)
@@ -122,11 +189,17 @@ export default function App() {
     <div className="app">
       <header className="app-header">
         <h1>React Playground</h1>
-        <p>
-          <strong>左：练习</strong>（改 <code>src/practice/*</code>）·{' '}
-          <strong>右：参考答案</strong>（<code>src/chapters/*</code>
-          ，只读对照）。 先按左侧验收要点实现，再和右侧比对行为。
-        </p>
+        {current.solo ? (
+          <p>
+            自由练习：改 <code>{current.practiceFile}</code>
+          </p>
+        ) : (
+          <p>
+            <strong>左：练习</strong>（改 <code>src/practice/*</code>）·{' '}
+            <strong>右：参考答案</strong>（<code>src/chapters/*</code>
+            ，只读对照）。 先按左侧验收要点实现，再和右侧比对行为。
+          </p>
+        )}
 
         <nav className="chapter-nav">
           {chapters.map((c) => (
@@ -142,33 +215,23 @@ export default function App() {
         </nav>
       </header>
 
-      <div className="compare-grid">
+      {current.solo ? (
         <section
-          className="compare-pane compare-practice"
-          aria-label="练习"
+          className="sandbox-solo"
+          aria-label="自由练习"
         >
-          <header className="pane-header pane-header-practice">
-            <h2>练习</h2>
-            <code>{current.practiceFile}</code>
-          </header>
-          <div className="pane-body">
+          <div className="sandbox-solo-inner">
             <Practice />
           </div>
         </section>
-
-        <section
-          className="compare-pane compare-answer"
-          aria-label="参考答案"
-        >
-          <header className="pane-header pane-header-answer">
-            <h2>参考答案</h2>
-            <code>{current.answerFile}</code>
-          </header>
-          <div className="pane-body">
-            <Answer />
-          </div>
-        </section>
-      </div>
+      ) : (
+        <ComparePanes
+          practiceFile={current.practiceFile}
+          answerFile={current.answerFile}
+          Practice={current.Practice}
+          Answer={current.Answer}
+        />
+      )}
     </div>
   )
 }

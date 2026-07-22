@@ -1,1 +1,2 @@
 /* 全局 reset 已在 App.css；保留空文件避免旧引用报错 */
+@import 'tailwindcss';

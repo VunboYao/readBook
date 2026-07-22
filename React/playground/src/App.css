@@ -54,6 +54,19 @@ body {
   color: #1d4ed8;
 }
 
+.sandbox-solo {
+  min-height: calc(100vh - 180px);
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.sandbox-solo-inner {
+  width: 100%;
+  max-width: 720px;
+}
+
 .compare-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

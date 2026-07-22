@@ -1,5 +1,17 @@
+import { useEffect, useState } from 'react'
 import { ChapterHeading, DemoSection, PracticeTodo } from '../shared/demo'
 
+function ClockEffectDemo() {
+  const [now, setNow] = useState(() => new Date().toLocaleTimeString())
+  useEffect(() => {
+    const id = window.setInterval(
+      () => setNow(new Date().toLocaleTimeString()),
+      1000,
+    )
+    return () => window.clearInterval(id)
+  }, [])
+  return <p>正确 Effect 示例（同步外部时钟）：{now}</p>
+}
 /** 练习：对照 src/chapters/05-effects-query.tsx */
 export function Practice05EffectsQuery() {
   return (
@@ -16,6 +28,31 @@ export function Practice05EffectsQuery() {
       >
         <PracticeTodo
           checks={['useEffect 驱动本地时钟每秒更新', 'cleanup 清除 interval']}
+        />
+        <ClockEffectDemo/>
+      </DemoSection>
+
+      <DemoSection
+        title="D. 可能不需要 Effect（≈ Vue computed）"
+        point="派生值在渲染时算；别用 Effect + setState 同步。"
+      >
+        <PracticeTodo
+          checks={[
+            'first/last 输入，fullName 渲染时拼接（无 Effect）',
+            '本地列表 + 关键词 filter，渲染时过滤（无 Effect）',
+          ]}
+        />
+      </DemoSection>
+
+      <DemoSection
+        title="E. 将事件从 Effect 分开"
+        point="用户动作走事件；同步外部控件才走 Effect。"
+      >
+        <PracticeTodo
+          checks={[
+            '按钮切换 isPlaying；Effect 把 isPlaying 同步到 <video>',
+            '草稿 input + 发送按钮；发送只在 onClick（禁止 Effect watch draft）',
+          ]}
         />
       </DemoSection>
 
