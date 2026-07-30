@@ -1,4 +1,60 @@
+import { memo, useCallback, useRef, useState } from 'react'
 import { ChapterHeading, DemoSection, PracticeTodo } from '../shared/demo'
+
+type Item = {id: string, title: string}
+
+const ALL = Array.from({length: 3000}, (_, i) => ({id: `item-${i}`, title: `Item ${i}`}))
+
+const Row = memo(function ({item, onSelect, selected}: {item: Item, onSelect: (id: string) => void, selected: boolean}) {
+  const renders = useRef(0)
+  renders.current += 1
+  return (
+    <li>
+      <button
+        type="button" onClick={() => onSelect(item.id)}
+        style={{ fontWeight: selected ? 700 : 400 }}
+      >{item.title}</button>
+      <small className="muted"> row-renders:{renders.current}</small>
+    </li>
+  )
+})
+function MemoListDemo() {
+  const [items] = useState<Item[]>([
+    { id: '1', title: '一行' },
+    { id: '2', title: '二行' },
+    { id: '3', title: '三行' },
+  ])
+  const [selected, setSelected] = useState<string | null>(null)
+  const [parentTick, setParentTick] = useState(0)
+  const onSelect = useCallback((id: string) => setSelected(id), [])
+  return (
+    <div>
+        <p>
+        父 tick={parentTick}{' '}
+        <button
+          type="button"
+          onClick={() => setParentTick((t) => t + 1)}
+        >
+          父组件 setState（不改列表 props）
+        </button>
+      </p>
+      <p className="demo-hint">
+        Row 被 memo + 稳定 onSelect：父 tick 增加时，各行 renders 不应狂涨。
+      </p>
+      <ul>
+        {items.map((item) => (
+          <Row
+            key={item.id}
+            item={item}
+            onSelect={onSelect}
+            selected={selected === item.id}
+          />
+        ))}
+      </ul>
+      <p>selected: {selected ?? '无'}</p>
+    </div>
+  )
+}
 
 /** 练习：对照 src/chapters/06-perf.tsx */
 export function Practice06Perf() {
@@ -21,6 +77,7 @@ export function Practice06Perf() {
             '验证：点父按钮时各行 renders 不应狂涨',
           ]}
         />
+        <MemoListDemo />
       </DemoSection>
 
       <DemoSection

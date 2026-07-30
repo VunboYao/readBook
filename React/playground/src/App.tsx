@@ -195,8 +195,8 @@ export default function App() {
           </p>
         ) : (
           <p>
-            <strong>左：练习</strong>（改 <code>src/practice/*</code>）·{' '}
-            <strong>右：参考答案</strong>（<code>src/chapters/*</code>
+            <strong>左：练习</strong>（改 <code>src/practice/*</code>）· <strong>右：参考答案</strong>（
+            <code>src/chapters/*</code>
             ，只读对照）。 先按左侧验收要点实现，再和右侧比对行为。
           </p>
         )}
@@ -216,12 +216,9 @@ export default function App() {
       </header>
 
       {current.solo ? (
-        <section
-          className="sandbox-solo"
-          aria-label="自由练习"
-        >
+        <section className="sandbox-solo" aria-label="自由练习">
           <div className="sandbox-solo-inner">
-            <Practice />
+              <Practice />
           </div>
         </section>
       ) : (

@@ -16,7 +16,7 @@ export default [
     },
     rules: {
       // 多个 JSX 属性时强制一行一个，并对齐缩进
-      '@stylistic/jsx-max-props-per-line': ['error', { maximum: 1 }],
+      '@stylistic/jsx-max-props-per-line': ['error', { maximum: 2 }],
       '@stylistic/jsx-first-prop-new-line': ['error', 'multiline'],
       '@stylistic/jsx-closing-bracket-location': ['error', 'line-aligned'],
       '@stylistic/jsx-indent-props': ['error', 2],

@@ -1151,6 +1151,56 @@ const mapDispatchToProps = dispatch => {
 export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
 ```
 
+### 异步thunk中间件实现原理
+
+```typescript
+function thunk(store) {
+  // 保存原始的 store.dispatch
+  const next = store.dispatch;
+
+  // 重写后的 dispatch 方法
+  function dispatchThunk(action) {
+    // 判断：如果传入的 action 是函数
+    if (typeof action === "function") {
+      // 执行这个函数，并且把 dispatch、getState 传给它
+      action(store.dispatch, store.getState);
+    } else {
+      // 普通对象action，交给原始dispatch处理
+      next(action);
+    }
+  }
+
+  // 用新的 dispatchThunk 覆盖掉 store 原本的 dispatch
+  store.dispatch = dispatchThunk;
+}
+
+// 执行中间件，改造store
+thunk(store)
+
+```
+
+1. 调用 `thunk(store)`，拿到仓库实例；
+
+2. 缓存**原生 `dispatch`** 到 `next`；
+
+3. 定义新函数 `dispatchThunk`，覆盖 `store.dispatch`；
+
+4. 之后你调用 `store.dispatch(xxx)`，实际执行 `dispatchThunk`：
+
+   1. ✅ 传入**函数**：直接运行这个 action 函数，并传入 `dispatch`、`getState`
+
+   2. ```typescript
+      // 我们平时写的异步action
+      const asyncAction = (dispatch, getState) => {
+        setTimeout(() => {
+          dispatch({type: "UPDATE"});
+        }, 1000)
+      }
+      store.dispatch(asyncAction)
+      ```
+
+​	3.传入**普通对象 action**：调用原生 `next(action)`，走 Redux 默认流程
+
 ## 扩展
 
 ### setState
@@ -1217,6 +1267,16 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
 
 3. 语法和说明:
 
+   1. **第一个参数: 执行副作用, 返回卸载方法**
+
+   2. **useEffect可以在组件中使用多次,如果抽离成独立的hook, 则可以继续使用useEffect**
+
+   3. **第二个参数**
+      1. 如果指定: **`[]`, 则只会在第一次render()后执行**
+
+      2. 如果传入了特定的state，则在state变化时，回调函数会执行
+
+
    ```react
    useEffect(() => {
        // 在此可以执行任何带副作用操作
@@ -1227,6 +1287,16 @@ export default connect(mapStateToProps, mapDispatchToProps)(CountUI)
    // 第二个参数：
    // 如果指定的是[], 回调函数只会在第一次render()后执行;
    // 如果传入了特定的state，则在state变化时，回调函数会执行
+   
+   
+   
+   // 可以写多个Effect
+   useEffect(() => {
+       // 在此可以执行任何带副作用操作
+       return () => { // 在组件卸载前执行
+           // 在此做一些收尾工作, 比如清除定时器/取消订阅等
+       }
+   }, [stateValue]) 
    ```
 
 4. 可以把 useEffect Hook 看做如下三个函数的组合

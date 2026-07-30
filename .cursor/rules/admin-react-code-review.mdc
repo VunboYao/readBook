@@ -1,0 +1,106 @@
+---
+description: Admin-React 提交前代码审查；React 坑点与项目约定 checklist
+globs: Admin-React/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Admin-React 提交前 Code Review
+
+适用于 `Admin-React/`。用户要求「提交前 review / 按规范检查」或正在改该目录代码时，**按下列清单逐项审查本次 diff**，只报真实问题，按严重度排序；无问题则明确说「可提交」。
+
+对照文档：`Admin-React/SKILLS_CHECKLIST.md`、`Admin-React/DEVELOPMENT_PLAN.md`。Vue 版 `Admin/` 只读对照，勿改。
+
+## 审查输出格式
+
+```text
+## Review 结论：可提交 | 需修改后再提交
+
+### 必须改
+- [文件:行] 问题 → 建议改法
+
+### 建议改
+- ...
+
+### 可选 / 风格
+- ...
+```
+
+---
+
+## 1. 状态与渲染（最高优先）
+
+- [ ] 状态不可变：禁止对 state 对象/数组原地 `push` / 直接赋值后再 `setState`
+- [ ] 派生数据直接计算，禁止「props/state → useEffect → 另一份 state」同步
+- [ ] 连续更新用函数式 `setX(prev => ...)`，不依赖闭包旧值
+- [ ] 状态能下沉就下沉；勿无必要上 Context / 全局 store
+
+```tsx
+// ❌
+arr.push(item); setList(arr);
+useEffect(() => setFiltered(list.filter(fn)), [list]);
+
+// ✅
+setList(prev => [...prev, item]);
+const filtered = list.filter(fn);
+```
+
+## 2. Effect（Vue 人最易滥用）
+
+- [ ] 能不用 `useEffect` 就不用：优先事件回调 / mutation `onSuccess`
+- [ ] 依赖数组写全；勿用空依赖「骗过」eslint 却闭包过期
+- [ ] 订阅 / timer / AbortController 必须在 cleanup 里释放
+- [ ] 禁止 Effect 把 props 同步进本地 state（该受控就受控）
+- [ ] 接受 StrictMode 双调用；cleanup 正确则不是 bug
+
+## 3. Hooks 边界
+
+- [ ] Hooks 仅在组件或自定义 hook 顶层调用（禁止条件/循环内）
+- [ ] axios 拦截器、普通 util、非 React 模块内 **禁止** 调任何 hook
+- [ ] 401 清登录态：调 Zustand `getState()` / 事件，不在拦截器里用 hook
+
+## 4. 服务端状态 vs 客户端状态
+
+- [ ] 列表/详情/统计等服务端数据 → **TanStack Query**，禁止塞进 Zustand
+- [ ] Zustand **仅** auth（及明确的纯客户端 UI 态）；与 Vue Admin 的 Pinia 范围一致
+- [ ] `queryKey` 必须包含筛选、分页等影响结果的参数
+- [ ] 写成功后 `invalidateQueries`，勿再手搓第二份 list state
+- [ ] 区分首次加载与后台刷新（`isPending` vs `isFetching`）
+
+## 5. 列表 / 条件 / 表单
+
+- [ ] 列表 `key` 用稳定业务 id；可排序/增删列表禁用下标当长期 key
+- [ ] `{count && <X/>}`：注意 `0` 会渲染出来；用 `count > 0 ? <X/> : null`
+- [ ] 表单默认受控（`value` + `onChange`）；文件 input 可非受控
+- [ ] Ant Design 受控控件接 RHF 时用 `Controller`，勿硬套 `register`
+- [ ] 校验用 zod + resolver；错误展示落到对应 Form.Item
+
+## 6. 性能（默认不做）
+
+- [ ] **默认不写** `memo` / `useMemo` / `useCallback`
+- [ ] 仅在有证据时加：昂贵计算、或稳定引用确能减少可感知卡顿
+- [ ] 勿为「预防重渲染」到处包一层；有 React Compiler 也不替代上述判断
+- [ ] 先查状态粒度、整表重渲染、重复请求，再谈 memo
+- [ ] **引用提示（建议改）**：父渲染时向子组件传入**每轮新引用**（内联 `{{}}` / `[]` / `() => {}`，或 selector/Context `value` 返回新对象），而子组件是 `memo` / 较重子树时，应提示：会导致子组件无法跳过更新、存在多余重渲风险；按需收窄订阅、稳引用或去掉无效 `memo`
+- [ ] Zustand / 类似 selector：`(s) => ({ a: s.a })` 每轮新对象 → 同样提示多余订阅更新；优先选标量，或加浅比较
+
+## 7. 组件与工程约定
+
+- [ ] 优先 `children` / 组合；避免万能配置对象 props
+- [ ] 路由懒加载有 `Suspense` / 错误兜底，勿空白屏
+- [ ] 与 Vue Admin 行为对等；API 路径、token key `admin_token`、解包 `code === 0` 保持一致
+- [ ] 端口与 env：开发 **5174**；勿改 Vue `Admin/`
+
+## 8. TypeScript
+
+- [ ] 组件 props 显式类型即可，不必强上 `React.FC`
+- [ ] 禁止无必要 `any`；事件用 `React.ChangeEvent<...>` 等
+- [ ] API `get<T>` / `post<T>` 泛型解包；`code !== 0` 错误策略全项目一致
+
+---
+
+## 审查时注意
+
+- 只评 **本次 diff** 引入或触及的问题，不借机大重构。
+- 教学项目：指出「对应 Vue 里哪类写法」可一句带过，勿长篇科普。
+- 与 `ponytail.mdc` 一致：能复用已有 hook/组件就复用；最短正确 diff。
+- 新引用导致子更新：默认归 **建议改**（性能提示），无正确性/可感知卡顿勿升为必须改。

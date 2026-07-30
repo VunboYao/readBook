@@ -7,7 +7,8 @@ export function Practice01Mindset() {
   const renderRef = useRef(0)
   renderRef.current += 1
   const [user, setUser] = useState({ name: 'react', score: 0 })
-
+  console.log('render times');
+  
   return (
     <div className="chapter">
       <ChapterHeading
@@ -87,10 +88,9 @@ export function Practice01Mindset() {
           type="button"
           onClick={() => {
             // 反模式：可变写法（Vue 习惯），React 下经常不触发更新
-            user.score += 1
-            setUser(user) // 同一引用
+            setUser({...user, score: user.score + 1}) // 同一引用
           }}
-        >
+        >{user.score}
           错误：user.score++ 后 setUser(user)
         </button>
         <p className="demo-hint">

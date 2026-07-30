@@ -1,6 +1,59 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ChapterHeading, DemoSection, PracticeTodo } from '../shared/demo'
 
+function EventVsEffectDemo() {
+  const [isPlaying, setIsPlaying] = useState(false)
+  const videoEl = useRef<HTMLVideoElement>(null)
+  const [draft, setDraft] = useState('')
+  const [sent, setSent] = useState<string[]>([])
+  useEffect(() => {
+    if (!videoEl.current) return
+    if (isPlaying) {
+      videoEl.current.play()
+    } else {
+      videoEl.current.pause()
+    }
+  }, [isPlaying])
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      onSend()
+    }
+  }
+  function onSend() {
+    const text = draft.trim()
+    if (!text) return
+    setSent((list) => [text, ...list].slice(0, 5))
+    setDraft('')
+  }
+  return (<>
+    <button style={{width: '200px', marginBottom: 10}} onClick={() => setIsPlaying(!isPlaying)}>
+      {isPlaying ? 'Pause' : 'Play'}
+    </button>
+    <video
+      ref={videoEl} loop
+      playsInline muted
+      style={{ width: '100%', maxWidth: 280 }} 
+      src="https://www.w3schools.com/html/mov_bbb.mp4"
+    ></video>
+
+    <div className="row-actions" style={{ marginTop: 12 }}>
+      <input
+        value={draft} onChange={e => setDraft(e.target.value)}
+        placeholder="message draft" onKeyDown={e => handleKeyDown(e)}
+      />
+      <button onClick={onSend}>Send (event)</button>
+      <ul>
+        {
+          sent.map((item, index) => (
+            <li key={index} style={{ listStyle: 'none', marginBottom: 4 }}>
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </>) 
+}
 function ClockEffectDemo() {
   const [now, setNow] = useState(() => new Date().toLocaleTimeString())
   useEffect(() => {
@@ -14,6 +67,13 @@ function ClockEffectDemo() {
 }
 /** 练习：对照 src/chapters/05-effects-query.tsx */
 export function Practice05EffectsQuery() {
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const fullName = () => `${firstName} ${lastName}`
+
+  const [items] = useState(['apple', 'banana', 'apricot', 'berry'])
+  const [q, setQ] = useState('')
+  const filtered = useMemo(() => items.filter(item => item.toLowerCase().includes(q.toLowerCase())), [items, q])
   return (
     <div className="chapter">
       <ChapterHeading
@@ -42,6 +102,11 @@ export function Practice05EffectsQuery() {
             '本地列表 + 关键词 filter，渲染时过滤（无 Effect）',
           ]}
         />
+        <span>first</span><input type="text" onChange={e => setFirstName(e.target.value)} />
+        <span>last</span><input type="text" onChange={e => setLastName(e.target.value)} />
+        <p>fullName: {fullName()}</p>
+        filter: <input type="text" onChange={e => setQ(e.target.value)} />
+        <p>filtered: {filtered.join(', ')}</p>
       </DemoSection>
 
       <DemoSection
@@ -66,6 +131,7 @@ export function Practice05EffectsQuery() {
             'Effect 内 cancelled 标志防竞态；可打日志「已忽略」',
           ]}
         />
+        <EventVsEffectDemo />
       </DemoSection>
 
       <DemoSection

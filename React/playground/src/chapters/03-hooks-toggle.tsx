@@ -67,6 +67,7 @@ export function Chapter03Hooks() {
   const [theme, setTheme] = useState<Theme>('light')
   const [on, toggle] = useToggle(false)
   const fieldId = useId()
+  
 
   const filtered = useMemo(() => items.filter((i) => i.ok), [items])
 
@@ -131,10 +132,10 @@ export function Chapter03Hooks() {
         title="C. useRef + useEffect 清理"
         point="ref 拿 DOM；Effect 订阅外部系统并 cleanup。下方 tick 每秒 +1。"
       >
-        <input
+        {/* <input
           ref={inputRef}
           placeholder="挂载后自动 focus"
-        />
+        /> */}
         <p>interval tick: {tick}</p>
       </DemoSection>
 

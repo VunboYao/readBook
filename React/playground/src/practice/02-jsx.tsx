@@ -92,7 +92,7 @@ export function Practice02Jsx() {
         <input
           type="checkbox"
           checked={show}
-          onClick={() => setShow((s) => !s)}
+          onChange={() => setShow((s) => !s)}
         />{' '}
         accent 条件控制
         {show && <p>checkbox 控制 accent / 条件渲染一段文案</p>}
