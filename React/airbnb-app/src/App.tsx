@@ -1,11 +1,13 @@
 import { Link, Outlet, ScrollRestoration, useNavigation } from "react-router";
+import GlobalFeedback from "@/components/GlobalFeedback";
 
 export default function App() {
   const navigation = useNavigation();
-  const loading = navigation.state === 'loading';
+  const routeLoading = navigation.state === 'loading';
 
   return (<>
-    {loading && <div className="text-red-500 text-5xl">Loading...</div>}
+    <GlobalFeedback />
+    {routeLoading && <div className="text-red-500 text-5xl">Loading...</div>}
     <nav className="flex gap-4 p-4">
       <Link to="/">Home</Link>
       <Link to="/detail">Detail</Link>

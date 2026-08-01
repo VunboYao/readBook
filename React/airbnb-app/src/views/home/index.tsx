@@ -1,10 +1,18 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { add, subtract } from '@/store/home.tsx'
 import type { RootState } from '@/store/index.tsx'
+import { useEffect } from 'react'
+import request from '@/api'
 
 export function Component() {
   const currentPage = useSelector((state: RootState) => state.home.currentPage)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    // request.get('/home/highscore').then((res) => {
+    //   console.log(res)
+    // })
+  }, [])
 
   return (
     <div>
