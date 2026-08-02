@@ -1,0 +1,119 @@
+---
+description: React 提交前代码审查；对照 docs/React 的坑点与项目约定 checklist
+globs: React/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# React 提交前 Code Review
+
+适用于 `React/`（`playground`、`airbnb-app` 等）。用户要求「提交前 review / 按规范检查」或正在改该目录代码时，**按下列清单逐项审查本次 diff**，只报真实问题，按严重度排序；无问题则明确说「可提交」。
+
+对照文档：`docs/React/`（尤其 [10-工作上手清单](docs/React/10-工作上手清单与面试索引.md)）。`playground/src/chapters/*` 为参考答案只读对照，勿改；练习改 `src/practice/*`。
+
+## 审查输出格式
+
+```text
+## Review 结论：可提交 | 需修改后再提交
+
+### 必须改
+- [文件:行] 问题 → 建议改法
+
+### 建议改
+- ...
+
+### 可选 / 风格
+- ...
+```
+
+---
+
+## 1. 状态与渲染（最高优先）
+
+- [ ] 状态不可变：禁止对 state 对象/数组原地 `push` / 直接赋值后再 `setState`
+- [ ] 派生数据直接计算，禁止「props/state → useEffect → 另一份 state」同步
+- [ ] 连续更新用函数式 `setX(prev => ...)`，不依赖闭包旧值
+- [ ] 状态能下沉就下沉；勿无必要上 Context / 全局 store
+
+```tsx
+// ❌
+arr.push(item); setList(arr);
+useEffect(() => setFiltered(list.filter(fn)), [list]);
+
+// ✅
+setList(prev => [...prev, item]);
+const filtered = list.filter(fn);
+```
+
+> RTK `createSlice` 内可用 Immer 写法（`state.x = ...`）；组件/`useState` 侧仍须不可变。
+
+## 2. Effect（Vue 人最易滥用）
+
+- [ ] 能不用 `useEffect` 就不用：优先事件回调 / Query·mutation `onSuccess`
+- [ ] 依赖数组写全；勿用空依赖「骗过」lint 却闭包过期
+- [ ] 订阅 / timer / AbortController 必须在 cleanup 里释放
+- [ ] 禁止 Effect 把 props 同步进本地 state（该受控就受控）
+- [ ] 接受 StrictMode 双调用；cleanup 正确则不是 bug
+
+## 3. Hooks 边界
+
+- [ ] Hooks 仅在组件或自定义 hook 顶层调用（禁止条件/循环内）
+- [ ] axios 拦截器、普通 util、非 React 模块内 **禁止** 调任何 hook
+- [ ] 401 清登录态：调 store 的非 hook API（Zustand `getState()` / RTK `store.dispatch`）或事件，不在拦截器里用 hook
+
+## 4. 服务端状态 vs 客户端状态
+
+按项目栈审查（勿强行塞未引入的库）：
+
+| 项目 | 客户端态 | 服务端态 |
+|------|----------|----------|
+| `playground` | Zustand 主推；RTK 仅作对照 | TanStack Query |
+| `airbnb-app` | Redux Toolkit | axios + 页面/hook 拉数（引入 Query 后再迁） |
+
+- [ ] 列表/详情等服务端数据：**有 Query 时走 Query**，禁止塞进 Zustand/RTK
+- [ ] 全局 store **仅** auth / 跨页纯客户端 UI 态；页面局部态留在组件
+- [ ] `queryKey` 必须包含筛选、分页等影响结果的参数
+- [ ] 写成功后 `invalidateQueries`，勿再手搓第二份 list state
+- [ ] 区分首次加载与后台刷新（`isPending` vs `isFetching`）
+- [ ] 自研 request：加载/空/错三态齐全；竞态用 AbortController 或忽略过期响应
+
+## 5. 列表 / 条件 / 表单
+
+- [ ] 列表 `key` 用稳定业务 id；可排序/增删列表禁用下标当长期 key
+- [ ] `{count && <X/>}`：注意 `0` 会渲染出来；用 `count > 0 ? <X/> : null`
+- [ ] 表单默认受控（`value` + `onChange`）；文件 input 可非受控
+- [ ] 用 RHF 时：受控 UI 库控件用 `Controller`，勿硬套 `register`
+- [ ] 校验错误展示落到对应字段；受控 `value` 勿在 `undefined`/有值间切换
+
+## 6. 性能（默认不做）
+
+- [ ] **默认不写** `memo` / `useMemo` / `useCallback`
+- [ ] 仅在有证据时加：昂贵计算、或稳定引用确能减少可感知卡顿
+- [ ] 勿为「预防重渲染」到处包一层；有 React Compiler 也不替代上述判断
+- [ ] 先查状态粒度、整表重渲染、重复请求，再谈 memo
+- [ ] **引用提示（建议改）**：父渲染时向子传入**每轮新引用**（内联 `{{}}` / `[]` / `() => {}`，或 selector/Context `value` 返回新对象），而子是 `memo` / 较重子树时，提示多余重渲风险；按需收窄订阅、稳引用或去掉无效 `memo`
+- [ ] Zustand / `useSelector`：`(s) => ({ a: s.a })` 每轮新对象 → 同样提示；优先选标量，或加浅比较（`shallow` / `shallowEqual`）
+
+## 7. 组件与工程约定
+
+- [ ] 优先 `children` / 组合；避免万能配置对象 props
+- [ ] 路由懒加载有 `Suspense` / 错误兜底，勿空白屏
+- [ ] 路径别名 `@/` → `src/`；与现有目录约定一致（`views` / `api` / `store` / `components`）
+- [ ] `airbnb-app`：token key `token`、axios 封装与 toast/loading 工具复用，勿平行再造一套
+- [ ] env：仅 `VITE_` 前缀可进前端；密钥勿写进客户端
+- [ ] 开发端口以各项目 `vite.config` 为准（常见 5173）；勿改无关子项目
+
+## 8. TypeScript
+
+- [ ] 组件 props 显式类型即可，不必强上 `React.FC`
+- [ ] 禁止无必要 `any`；事件用 `React.ChangeEvent<...>` 等
+- [ ] API `get<T>` / `post<T>`（或项目等价封装）泛型解包；错误策略与现有 `request` 一致
+- [ ] RTK：导出/使用 `RootState`、`AppDispatch`；组件侧用项目封装的 `useAppDispatch` / `useAppSelector`（若已有）
+
+---
+
+## 审查时注意
+
+- 只评 **本次 diff** 引入或触及的问题，不借机大重构。
+- 教学仓库：指出「对应 Vue 里哪类写法 / 见 docs 哪章」可一句带过，勿长篇科普。
+- 能复用已有 hook/组件/request 封装就复用；最短正确 diff。
+- 新引用导致子更新：默认归 **建议改**（性能提示），无正确性/可感知卡顿勿升为必须改。

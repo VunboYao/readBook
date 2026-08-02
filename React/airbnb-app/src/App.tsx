@@ -14,14 +14,14 @@ export default function App() {
       <Link to="/entire">Entire</Link>
     </nav>
     <div>
-      <div className="header text-red-500 cursor-pointer hover:text-blue-500 hover:underline text-2xl font-bold">
-        header component
+      <div className="header text-airbnb cursor-pointer hover:text-blue-500 hover:underline text-2xl font-bold">
+        header outlet AppHeader Component
       </div>
       <div className="main">
         <Outlet />
       </div>
       <div className="footer">
-        footer component
+        footer outlet AppFooter Component
       </div>
       <ScrollRestoration />
     </div>
