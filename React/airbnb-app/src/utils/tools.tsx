@@ -1,7 +1,7 @@
 export default function styleStrToObject(styleStr: string) {
   const obj: Record<string, string> = {}
 
-  const s = styleStr.toLocaleLowerCase().replace(/-(.)/g, function (m, g) {
+  const s = styleStr.toLocaleLowerCase().replace(/-(.)/g, function (_, g) {
     return g.toUpperCase()
   }).replace(/;\s?$/g, "").split(/:|;/g)
 

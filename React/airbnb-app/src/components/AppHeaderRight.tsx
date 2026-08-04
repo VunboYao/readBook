@@ -41,15 +41,15 @@ export default function AppHeaderRight() {
           isMenuOpen && (
             <div className="absolute top-13 w-60 right-0 text-[#666] bg-white rounded-lg shadow-md">
               <div className="border-b border-solid border-[#ddd]">
-                <span className={styles.items}>登录</span>
-                <span className={styles.items}>注册</span>
+                <button className={styles.items}>登录</button>
+                <button className={styles.items}>注册</button>
               </div>
               <div className="py-2.5">
-                <span className={styles.items}>我的账户</span>
-                <span className={styles.items}>我的订单</span>
-                <span className={styles.items}>我的收藏</span>
-                <span className={styles.items}>我的消息</span>
-                <span className={styles.items}>我的评价</span>
+                <button className={styles.items}>我的账户</button>
+                <button className={styles.items}>我的订单</button>
+                <button className={styles.items}>我的收藏</button>
+                <button className={styles.items}>我的消息</button>
+                <button className={styles.items}>我的评价</button>
               </div>
             </div>
           )

@@ -1,6 +1,3 @@
-import { useSelector, useDispatch } from 'react-redux'
-import { add, subtract } from '@/store/home.tsx'
-
 export function Component() {
   return (
     <div>
