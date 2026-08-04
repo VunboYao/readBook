@@ -8,3 +8,11 @@ body {
   font-size: 14px;
   color: #484848;
 }
+
+@utility box-shadow {
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+  }
+}

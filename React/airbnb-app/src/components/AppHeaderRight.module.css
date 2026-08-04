@@ -1,0 +1,12 @@
+.items {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 16px;
+  display: block;
+  cursor: pointer;
+
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}
