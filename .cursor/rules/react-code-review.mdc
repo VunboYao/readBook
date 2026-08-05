@@ -109,6 +109,34 @@ const filtered = list.filter(fn);
 - [ ] API `get<T>` / `post<T>`（或项目等价封装）泛型解包；错误策略与现有 `request` 一致
 - [ ] RTK：导出/使用 `RootState`、`AppDispatch`；组件侧用项目封装的 `useAppDispatch` / `useAppSelector`（若已有）
 
+## 9. Tailwind：Theme + 组件分层
+
+分层约定：**Token 在 theme，视觉在组件，页面管数据/交互 + 少量布局**。审查时按此收敛，勿要求「页面零 class」或「所有 utility 进 css」。
+
+| 层级 | 放什么 | 不放什么 |
+|------|--------|----------|
+| `index.css` `@theme`（团队约定） | 色板、字号阶梯、常用间距/圆角/阴影、容器宽 | 单个组件的 `gap-4`、`line-clamp-2` 等一次性布局 |
+| 基础/业务组件 | Token + utility 拼出具体 UI（色、字号、圆角、hover） | 请求/路由等业务编排（可留在页面或容器） |
+| 页面 / 容器 | 调组件、数据与交互、布局 class（`flex` / `grid` / `gap` / 宽度容器） | 满屏装饰性 class、散落 `#rrggbb` |
+
+- [ ] 业务页出现重复的 `#hex` / 魔法宽高 → **建议改**：抽到 `@theme`，改用语义 utility（如 `text-text`、`border-border`）
+- [ ] 同一视觉块在多处复制长 class → **建议改**：抽组件（如 `RoomCard`），页面只编排
+- [ ] 页面堆视觉细节（`rounded-xl`、`hover:scale-110`、`text-[#767676]`）而非布局 → **建议改**：下沉到组件
+- [ ] **禁止** `className={\`text-[${color}]\`}` 等运行时拼接 arbitrary：构建期扫不到完整类名，含 fallback 也不生效
+- [ ] 接口/运行时动态色：用 `style={{ color }}`，或 `style` 设 CSS 变量 + 静态 class 引用变量
+- [ ] 教学练习可暂留硬编码；**上项目 / 提交前 review** 按上表收敛，新增魔法值与复制粘贴 class 应指出
+
+```tsx
+// ❌ 页面堆视觉 + 动态拼接 class（无效）
+<div className={`text-[${item.color || '#39576a'}] rounded-xl hover:scale-110`}>...</div>
+
+// ✅ Token（theme）+ 组件内样式；动态值走 style
+// @theme { --color-verify: #39576a; --color-text-muted: #767676; }
+<p style={{ color: item.color ?? 'var(--color-verify)' }} className="text-xs font-bold">
+  {item.label}
+</p>
+```
+
 ---
 
 ## 审查时注意
