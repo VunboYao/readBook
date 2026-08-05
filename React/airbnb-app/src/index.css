@@ -2,6 +2,9 @@
 
 @theme {
   --color-airbnb: #ff385c;
+  --color-text: #484848;
+  --color-verify: #39576a;
+  --color-rating: #00848a;
 }
 
 body {

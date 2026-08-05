@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import request from '@/api'
+import type { RoomItem } from '@/components/RoomCard'
 
 /** 异步 action：请求高性价比房源 */
 export const fetchGoodPriceAction = createAsyncThunk(
   'home/fetchGoodPrice',
   async () => {
-    const res = await request.get('/home/goodPrice')
+    const res = await request.get<IGoodPrice>('/home/goodPrice')
     return res
   },
 )
@@ -13,7 +14,7 @@ export const fetchGoodPriceAction = createAsyncThunk(
 interface IGoodPrice {
   title: string
   subtitle: string
-  list: Record<string, any>[]
+  list: RoomItem[]
 }
 
 const homeSlice = createSlice({
@@ -24,7 +25,7 @@ const homeSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchGoodPriceAction.fulfilled, (state, { payload }) => {
-      state.goodPrice = payload as IGoodPrice
+      state.goodPrice = payload
     })
   },
 })
