@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getGoodPriceData, getHighScoreData, getHomeDiscountData, getHomeRecommendData, getHomePlansData, type IHomeSection, type IHomeSectionV2 } from '@/api/home'
+import { getGoodPriceData, getHighScoreData, getHomeDiscountData, getHomeRecommendData, getHomePlansData, getHomeLongforData, type IHomeSection, type IHomeSectionV2 } from '@/api/home'
 
 /** 异步 action：请求高性价比房源 */
 export const fetchGoodPriceAction = createAsyncThunk(
@@ -27,6 +27,11 @@ export const fetchHomePlansAction = createAsyncThunk(
   () => getHomePlansData()
 )
 
+export const fetchHomeLongforAction = createAsyncThunk(
+  'home/fetchHomeLongfor',
+  () => getHomeLongforData()
+)
+
 const homeSlice = createSlice({
   name: 'home',
   initialState: {
@@ -35,6 +40,7 @@ const homeSlice = createSlice({
     homeDiscount: {} as IHomeSectionV2,
     homeRecommend: {} as IHomeSectionV2,
     homePlans: {} as IHomeSection,
+    homeLongfor: {} as IHomeSection,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -52,6 +58,9 @@ const homeSlice = createSlice({
     })
     builder.addCase(fetchHomePlansAction.fulfilled, (state, { payload }) => {
       state.homePlans = payload
+    })
+    builder.addCase(fetchHomeLongforAction.fulfilled, (state, { payload }) => {
+      state.homeLongfor = payload
     })
   }
 })

@@ -23,6 +23,9 @@ export interface IHomeSectionItem {
     text_color?: string
     messages?: string[]
   }
+  city?: string
+  image_url?: string
+  price?: string
   bottom_info?: {
     content?: string
   } | null
@@ -47,4 +50,8 @@ export const getHomeRecommendData = async () => {
 
 export const getHomePlansData = async () => {
   return request.get<IHomeSection>('/home/plus')
+}
+
+export const getHomeLongforData = async () => {
+  return request.get<IHomeSection>('/home/longfor')
 }

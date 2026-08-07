@@ -29,7 +29,7 @@ export const ScrollView = memo(({ children, className = "", contentClassName = "
     setPosIndex(0)
     setShowLeft(false)
     setShowRight(totalDistanceRef.current > 0)
-  }, [childCount])
+  }, [childCount, deps])
 
   const handleScroll = (direction: number) => {
     const el = scrollRef.current
@@ -47,25 +47,31 @@ export const ScrollView = memo(({ children, className = "", contentClassName = "
     setShowLeft(nextElLeft > 0)
   }
 
+  const btnBase =
+    'absolute flex items-center justify-center cursor-pointer w-7 h-7 rounded-full border-2 border-solid border-white box-shadow top-1/2 -translate-y-1/2 z-9 bg-gray-100'
+
   return (
     <div className={`relative ${className}`}>
-      {showLeft && (
-        <button
-          className="absolute flex items-center justify-center cursor-pointer w-7 h-7 rounded-full border-2 border-solid border-white box-shadow top-1/2 -translate-y-1/2 -left-1 z-9 bg-gray-100"
-          onClick={() => handleScroll(-1)}
-        >
-          <ArrowLeft />
-        </button>
-      )}
+      {/* 始终占位，用 visibility 切换，避免箭头挂载导致 CLS */}
+      <button
+        type="button"
+        aria-hidden={!showLeft}
+        tabIndex={showLeft ? 0 : -1}
+        className={`${btnBase} -left-1 ${showLeft ? '' : 'invisible pointer-events-none'}`}
+        onClick={() => handleScroll(-1)}
+      >
+        <ArrowLeft />
+      </button>
 
-      {showRight && (
-        <button
-          className="absolute flex items-center justify-center cursor-pointer w-7 h-7 rounded-full border-2 border-solid border-white box-shadow top-1/2 -translate-y-1/2 -right-1 z-9 bg-gray-100"
-          onClick={() => handleScroll(1)}
-        >
-          <ArrowRight />
-        </button>
-      )}
+      <button
+        type="button"
+        aria-hidden={!showRight}
+        tabIndex={showRight ? 0 : -1}
+        className={`${btnBase} -right-1 ${showRight ? '' : 'invisible pointer-events-none'}`}
+        onClick={() => handleScroll(1)}
+      >
+        <ArrowRight />
+      </button>
 
       <div className="overflow-hidden">
         <div
