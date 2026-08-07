@@ -1,23 +1,9 @@
 import { Rating } from '@mui/material'
-
-export interface RoomItem {
-  id: number | string
-  name: string
-  picture_url: string
-  price_format: string
-  star_rating?: number | null
-  reviews_count?: number
-  verify_info?: {
-    text_color?: string
-    messages?: string[]
-  }
-  bottom_info?: {
-    content?: string
-  } | null
-}
+import type { IHomeSectionItem } from '@/api/home'
+import { memo } from 'react'
 
 /** 房源卡片：视觉样式关在组件内，动态色走 style + theme fallback */
-export function RoomCard({ item }: { item: RoomItem }) {
+export const RoomCard = memo(({ item }: { item: IHomeSectionItem }) => {
   const verifyColor = item.verify_info?.text_color ?? 'var(--color-verify)'
 
   return (
@@ -51,4 +37,4 @@ export function RoomCard({ item }: { item: RoomItem }) {
       </div>
     </article>
   )
-}
+})

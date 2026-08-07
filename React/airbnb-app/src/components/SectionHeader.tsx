@@ -7,7 +7,7 @@ interface IProps {
 
 export const SectionHeader = memo(({ title, subtitle = '' }: IProps) => {
   return (
-    <div className="text-[#222]">
+    <div className="text-[#222] mt-7.5">
       <h2 className="text-2xl font-bold mb-4">{title}</h2>
       {subtitle && <p className="text-base mb-5">{subtitle}</p>}
     </div>
