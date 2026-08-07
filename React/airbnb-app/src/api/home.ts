@@ -5,6 +5,13 @@ export interface IHomeSection {
   list: IHomeSectionItem[]
 }
 
+export interface IHomeSectionV2 {
+  title: string
+  subtitle: string
+  dest_list: Record<string, IHomeSectionItem[]>
+  dest_address: { name: string }[]
+}
+
 export interface IHomeSectionItem {
   id: number | string
   name: string
@@ -28,4 +35,12 @@ export const getGoodPriceData = async () => {
 
 export const getHighScoreData = async () => {
   return request.get<IHomeSection>('/home/highScore')
+}
+
+export const getHomeDiscountData = async () => {
+  return request.get<IHomeSectionV2>('/home/discount')
+}
+
+export const getHomeRecommendData = async () => {
+  return request.get<IHomeSectionV2>('/home/hotrecommenddest')
 }

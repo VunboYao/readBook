@@ -9,6 +9,6 @@ export const HomeSectionV1 = memo(({ initData }: { initData: IHomeSection }) => 
 
   return <div>
     <SectionHeader title={title} subtitle={subtitle} />
-    <SectionRooms roomList={list} />
+    <SectionRooms roomList={list.slice(0, 8)} cols={4} />
   </div>
 })
