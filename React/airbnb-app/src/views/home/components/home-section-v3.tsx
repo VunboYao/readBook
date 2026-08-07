@@ -5,12 +5,12 @@ import type { IHomeSection } from "@/api/home"
 import { SectionFooter } from "@/components/SectionFooter"
 
 
-export const HomeSectionV1 = memo(({ initData }: { initData: IHomeSection }) => {
+export const HomeSectionV3 = memo(({ initData }: { initData: IHomeSection }) => {
   const { title, subtitle, list } = initData
 
   return <div>
     <SectionHeader title={title} subtitle={subtitle} />
-    <SectionRooms roomList={list.slice(0, 8)} cols={4} />
-    <SectionFooter />
+    <SectionRooms roomList={list} cols={5} />
+    <SectionFooter name='plus' />
   </div>
 })

@@ -44,3 +44,7 @@ export const getHomeDiscountData = async () => {
 export const getHomeRecommendData = async () => {
   return request.get<IHomeSectionV2>('/home/hotrecommenddest')
 }
+
+export const getHomePlansData = async () => {
+  return request.get<IHomeSection>('/home/plus')
+}

@@ -3,6 +3,7 @@ import { SectionHeader } from "@/components/SectionHeader"
 import { SectionRooms } from "@/components/SectionRooms"
 import type { IHomeSectionV2 } from "@/api/home"
 import { SectionTabs } from "@/components/SectionTabs"
+import { SectionFooter } from "@/components/SectionFooter"
 
 
 export const HomeSectionV2 = memo(({ initData }: { initData: IHomeSectionV2 }) => {
@@ -16,5 +17,6 @@ export const HomeSectionV2 = memo(({ initData }: { initData: IHomeSectionV2 }) =
     <SectionHeader title={title} subtitle={subtitle} />
     <SectionTabs tabs={tabNames} activeTab={activeTab} onTabChange={setActiveTab} />
     <SectionRooms roomList={dest_list[activeTab]} cols={3} />
+    <SectionFooter name={activeTab} />
   </div>
 })
